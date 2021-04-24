@@ -10,7 +10,7 @@ License: GPL
 Group: Graphical desktop/KDE
 Summary: DnfDrake  is a frontend for DNF. Powerful like a terminal and simple like a GUI!
 Url: http://www.
-Source: %{name}_%version.tar.gz
+Source: https://github.com/astrgl/dnfdrake/blob/main/%{name}_%version.tar.gz
 Requires:	sudo
 Requires: gambas3-runtime
 Requires: gambas3-gb-form

@@ -1,6 +1,6 @@
 %define name dnfdrake
-%define version 1.17.12
-%define release %mkrel 2
+%define version 1.17.15
+%define release %mkrel 1
 
 Name: %{name}
 Version: %{version}
@@ -10,7 +10,7 @@ License: GPL
 Group: Graphical desktop/KDE
 Summary: DnfDrake  is a frontend for DNF. Powerful like a terminal and simple like a GUI!
 Url: http://www.
-Source: https://github.com/astrgl/dnfdrake/raw/main/dnfdrake_1.17.12.tar.gz
+Source: https://file-store.openmandriva.org/download/d1262e1b2f9cf9ebb7af8936107739b53e465f51
 Requires:	sudo
 Requires: gambas3-runtime
 Requires: gambas3-gb-form

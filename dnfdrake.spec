@@ -9,7 +9,7 @@ Packager: Astragalo
 License: GPL
 Group: Graphical desktop/KDE
 Summary: DnfDrake  is a frontend for DNF. Powerful like a terminal and simple like a GUI!
-Url: http://www.
+Url: https://file-store.openmandriva.org/download/d1262e1b2f9cf9ebb7af8936107739b53e465f51
 Source: https://file-store.openmandriva.org/download/d1262e1b2f9cf9ebb7af8936107739b53e465f51
 Requires:	sudo
 Requires: gambas3-runtime

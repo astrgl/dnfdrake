@@ -12,13 +12,13 @@ Summary: DnfDrake  is a frontend for DNF
 Url: http://www.
 Source: %{name}.tar.gz
 Requires:	sudo
-Requires: gambas3-runtime
-Requires: gambas3-gb-form
-Requires: gambas3-gb-image
-Requires: gambas3-gb-gui
-Requires: gambas3-gb-qt5
-Requires: gambas3-gb-gtk3
-Requires: gambas3-gb-dbus
+Requires: gambas3-runtime = 3.15.2-6
+Requires: gambas3-gb-form = 3.15.2-6
+Requires: gambas3-gb-image = 3.15.2-6
+Requires: gambas3-gb-gui = 3.15.2-6
+Requires: gambas3-gb-qt5 = 3.15.2-6
+Requires: gambas3-gb-gtk3 = 3.15.2-6
+Requires: gambas3-gb-dbus = 3.15.2-6
 Requires: hicolor-icon-theme
 Requires: dnf-utils
 BuildArch:	noarch

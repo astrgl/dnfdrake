@@ -9,7 +9,7 @@ Packager: Astragalo
 License: GPL
 Group: Graphical desktop/KDE
 Summary: DnfDrake  is a frontend for DNF
-Url: http://www.
+Url: https://mib.pianetalinux.org/
 Source: %{name}-%version.tar.gz
 Requires:	sudo
 Requires: gambas3-runtime 

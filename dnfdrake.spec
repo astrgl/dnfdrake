@@ -23,7 +23,7 @@ Requires: hicolor-icon-theme
 Requires: dnf-utils
 Requires:  python-dnf-plugin-versionlock
 BuildArch:	noarch
-Conflicts:  gambas3-runtime  > 3.16.3-2
+Conflicts:  gambas3-runtime  > 3.16.3-3
 
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot

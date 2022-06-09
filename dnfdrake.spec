@@ -1,5 +1,5 @@
 %define name dnfdrake
-%define version 3.0.10
+%define version 3.1.2
 %define release %mkrel 2
 
 Name: %{name}
@@ -23,7 +23,7 @@ Requires: hicolor-icon-theme
 Requires: dnf-utils
 Requires:  python-dnf-plugin-versionlock
 BuildArch:	noarch
-Conflicts:  gambas3-runtime  > 3.16.3-3
+Conflicts:  gambas3-runtime  > 3.16.3
 
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot

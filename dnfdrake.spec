@@ -1,6 +1,6 @@
 %define name dnfdrake
-%define version 3.1.5
-%define release %mkrel 2
+%define version 3.1.96
+%define release %mkrel 1
 
 Name: %{name}
 Version: %{version}
@@ -21,6 +21,8 @@ Requires: gambas3-gb-gtk3
 Requires: gambas3-gb-dbus
 Requires: hicolor-icon-theme
 Requires: dnf-utils
+Requires: lsb-release
+Requires: createrepo_c
 Requires:  python-dnf-plugin-versionlock
 BuildArch:	noarch
 Conflicts:  gambas3-runtime  > 3.17.2

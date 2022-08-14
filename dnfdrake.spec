@@ -1,6 +1,6 @@
 %define name dnfdrake
-%define version 3.1.96
-%define release %mkrel 1
+%define version 3.2.0
+%define release %mkrel 2
 
 Name: %{name}
 Version: %{version}
@@ -19,6 +19,7 @@ Requires: gambas3-gb-gui
 Requires: gambas3-gb-qt5
 Requires: gambas3-gb-gtk3
 Requires: gambas3-gb-dbus
+Requires: gambas3-gb-form-stock
 Requires: hicolor-icon-theme
 Requires: dnf-utils
 Requires: lsb-release

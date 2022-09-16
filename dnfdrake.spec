@@ -1,5 +1,5 @@
 %define name dnfdrake
-%define version 3.3.2
+%define version 3.4.0
 %define release %mkrel 1
 
 Name: %{name}
@@ -25,6 +25,7 @@ Requires: dnf-utils
 Requires: lsb-release
 Requires: createrepo_c
 Requires:  python-dnf-plugin-versionlock
+Requires: xrandr
 BuildArch:	noarch
 Conflicts:  gambas3-runtime  > 3.17.2
 

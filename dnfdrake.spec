@@ -36,7 +36,6 @@ Powerful like a terminal and simple like a GUI!
 %autosetup -n dnfdrake
 
 %install
-#rm -rf %{buildroot}
 
 install -Dm 755 dnfdrake.gambas -t %{buildroot}/%{_bindir}/
 install -Dm 755 dnfdraketray.gambas -t %{buildroot}/%{_bindir}/
@@ -46,9 +45,6 @@ install -Dm 644 dnfdrake-COMMAND -t %{buildroot}/%{_datadir}/dnfdrake/
 install -Dm 644 dnfdrake-*-* -t %{buildroot}/%{_datadir}/dnfdrake/
 install -Dm 755 dnfdraketray.gambas.desktop -t %{buildroot}/%{_datadir}/dnfdrake/
 install -Dm 644 dnfdrake.svg  -t %{buildroot}/%{_datadir}/icons/hicolor/32x32/apps/
-
-#%%clean
-#rm -rf %{buildroot}
 
 %files
 %{_bindir}/dnfdrake.gambas

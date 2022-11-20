@@ -1,5 +1,5 @@
 Name: dnfdrake
-Version: 3.4.4
+Version: 3.5.0
 Release: 1
 Packager: Astragalo
 License: GPL

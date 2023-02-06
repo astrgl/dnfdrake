@@ -1,5 +1,5 @@
 Name: dnfdrake
-Version: 3.6.3
+Version: 3.6.4
 Release: 1
 Packager: Astragalo
 License: GPL
@@ -26,7 +26,7 @@ Requires: xrandr
 
 BuildArch: noarch
 
-Conflicts:  gambas3-runtime  > 3.17.2
+Conflicts:  gambas3-runtime  > 3.18.0
 
 %description
 DnfDrake  is a frontend for DNF package manager

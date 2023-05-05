@@ -8,7 +8,16 @@ Summary: DnfDrake  is a frontend for DNF
 Url: https://mib.pianetalinux.org/
 Source: %{name}-%{version}.tar.gz
 
-BuildRequires: gambas3-devel 
+BuildRequires:	gambas3-devel
+BuildRequires:	gambas3-gb-dbus
+BuildRequires:	gambas3-gb-form
+BuildRequires:	gambas3-gb-form-stock
+BuildRequires:	gambas3-gb-gtk3
+BuildRequires:	gambas3-gb-gui
+BuildRequires:	gambas3-gb-image
+BuildRequires:	gambas3-gb-qt5
+BuildRequires:	imagemagick
+
 
 Requires: sudo
 Requires: gambas3-runtime
@@ -39,9 +48,9 @@ Powerful like a terminal and simple like a GUI!
 %autosetup -n %{name}
 
 %build
-gbc3
-sleep 2
+gbc3 -e -a -g -t  -f public-module -f public-control -j%{?_smp_mflags}
 gba3
+
 
 
 %install

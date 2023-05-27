@@ -1,0 +1,16 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,65,15)
+  Icon = Picture["dnfdrake.svg"]
+  { TXTMSG Label
+    MoveScaled(2,1,61,5)
+    Alignment = Align.Center
+  }
+  { BTNSI Button
+    MoveScaled(3,9,15.7143,4)
+  }
+  { BTNNO Button
+    MoveScaled(46,9,15.7143,4)
+  }
+}

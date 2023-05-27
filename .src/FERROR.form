@@ -1,0 +1,27 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,115,74)
+  Icon = Picture["dnfdrake.svg"]
+  Resizable = False
+  { BTNDNFCLEAN Button
+    MoveScaled(2,68,16,4)
+    Text = ("Dnf Clean Pkg")
+  }
+  { BTNCLOSE Button
+    MoveScaled(97,68,16,4)
+  }
+  { TextArea1 TextArea
+    MoveScaled(1,6,113,61)
+    Font = Font["Monospace"]
+  }
+  { TextBox1 TextBox
+    MoveScaled(1,1,113,4)
+    Text = ("DnfDrake have detected an error. Details:")
+    Alignment = Align.Center
+  }
+  { BTNRETRY Button
+    MoveScaled(49,68,16,4)
+    Text = ("Retry")
+  }
+}

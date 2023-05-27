@@ -1,0 +1,147 @@
+' Gambas class file
+
+Public $LOADLIST As String
+Public $LOADINST As String
+Public $LOADNONINST As String
+Public $LOADAGG As String
+Public $UPDATEDIPS As String
+
+
+Public Sub Form_Open()
+ Dim flTTP As File  
+ Dim jTTP As Byte
+ Dim s$TTP As String
+ Dim ss$TTP As New String[]
+
+'TITOLI E TOOTIP*******************************************************************
+  flTTP = Open "/usr/share/dnfdrake/dnfdrake-TTP-" & Fmain.$LANG For Read   ' ...oppure "Input"
+ While Not Eof(flTTP)
+   Input #flTTP, s$TTP
+   ss$TTP.Add(s$TTP)
+  Wend
+   Close #flTTP
+  For jTTP = 0 To ss$TTP.Max
+      $LOADLIST = Replace(ss$TTP[33], "_", " ")
+      $LOADINST = Replace(ss$TTP[34], "_", " ")
+      $LOADNONINST = Replace(ss$TTP[35], "_", " ")
+      $LOADAGG = Replace(ss$TTP[36], "_", " ")
+  Next
+  flTTP.Close
+ '*********************************************************************************
+TXTSTATO.Text = $LOADLIST
+If Fmain.$SECUREMODE = "SECURE" Then
+  Fmain.Enabled = False
+Endif
+If Fmain.$RPMPATH = "" Then
+   Else
+      Timer1.Enabled = False
+      Fmain.Btnclear_click
+      Fmain.Btncleartxtpkg_click
+      Fmain.txtpkg.Text = Fmain.$RPMPATH
+      FINSTALL.Show
+      'Fmain.$RPMPATH = ""      ELIMINATA PER GESTIONE CON FINSTALL
+      Me.Close 
+Endif
+
+End
+
+
+Public Sub TXTSTATO_MouseDown()
+
+End
+
+Public Sub ProgressBar1_MouseDown()
+
+End
+
+Public Sub Timer1_Timer()
+
+Dim b As Byte
+
+Dim flUPD As File  
+Dim jUPD As Byte
+Dim s$UPD As String
+Dim ss$UPD As New String[]
+  ' If Fmain.$RPMPATH = "" 
+    For b = 1 To 10
+       ProgressBar1.Value = b / 100
+       BTNSKIP.Enabled = False
+       Wait 0.01
+     Next
+    TXTSTATO.Text = $LOADINST
+    Shell "dnf list installed >" & User.Home &/ ".config/dnfdrake/installati.txt" Wait
+     For b = 10 To 40
+       ProgressBar1.Value = b / 100
+       Wait 0.01
+     Next
+     TXTSTATO.Text = $LOADNONINST
+     Shell "dnf list available >" & User.Home &/ ".config/dnfdrake/noninstallati.txt" Wait
+     For b = 40 To 80
+       ProgressBar1.Value = b / 100
+       Wait 0.01
+     Next
+     TXTSTATO.Text = $LOADAGG
+     Shell "dnf list upgrades >" & User.Home &/ ".config/dnfdrake/updates.txt" Wait
+     For b = 80 To 100
+       ProgressBar1.Value = b / 100
+       Wait 0.01
+     Next
+     If ProgressBar1.Value = 1 Then
+       Fmain.Btnclear_click
+       Fmain.Btncleartxtpkg_click
+       Me.Close
+     Endif
+     Timer1.Enabled = False
+     
+     'VERIFICA SE PRESENTI AGGIORNAMENTI
+       If Exist(User.Home &/ ".config/dnfdrake/locktray") Then
+           flUPD = Open User.Home &/ ".config/dnfdrake/locktray" For Read 
+         
+              While Not Eof(flUPD)
+                Input #flUPD, s$UPD
+                ss$UPD.Add(s$UPD)
+               Wend
+                Close #flUPD
+            If ss$UPD.max > -1 Then
+               For jUPD = 0 To ss$UPD.Max
+               $UPDATEDIPS = Replace(ss$UPD[0], "_", " ")
+              
+               Next
+            Endif
+           flUPD.Close
+           
+          If $UPDATEDIPS = 1 Then
+            File.Save(User.Home &/ "/.config/dnfdrake/locktray", "0")
+            Fmain.Cmbtipo.index = 3
+            Fmain.btncerca_CLICK
+          Endif
+      Endif
+  ' Else
+  '     Timer1.Enabled = False
+  '     Fmain.Btnclear_click
+  '     Fmain.Btncleartxtpkg_click
+  '     Fmain.txtpkg.Text = Fmain.$RPMPATH
+  '     FINSTALL.Show
+  '     'Fmain.$RPMPATH = ""      ELIMINATA PER GESTIONE CON FINSTALL
+  '     Me.Close 
+  ' Endif    
+End
+
+Public Sub BTNSKIP_Click()
+   BTNSKIP.Enabled = False
+   Timer1.Enabled = False
+   Fmain.Btnclear_click
+   Fmain.Btncleartxtpkg_click
+   Me.Close
+
+End
+
+
+Public Sub Form_Close()
+Fmain.Btnclear_click
+Fmain.TMPLISTCLEAN
+Fmain.EXCLUDETEST
+If FINSTALL.Visible = False Then
+  Fmain.Enabled = True
+Endif
+End

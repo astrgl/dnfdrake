@@ -1,0 +1,25 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,64,64)
+  Icon = Picture["dnfdrake.svg"]
+  Resizable = False
+  { TextArea1 TextArea
+    MoveScaled(6,8,52,49)
+    Enabled = False
+    Foreground = Color.TextForeground
+    Alignment = Align.Center
+  }
+  { BTNCLOSE Button
+    MoveScaled(24,58,16,4)
+  }
+  { Panel1 Panel
+    MoveScaled(6.4286,2,51,5)
+    { Label1 Label
+      MoveScaled(1,1,50,4)
+      Font = Font["+7"]
+      Alignment = Align.Center
+      Text = ("DNFDRAKE 3.6.8")
+    }
+  }
+}

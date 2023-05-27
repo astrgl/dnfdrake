@@ -1,0 +1,185 @@
+' Gambas class file
+
+
+'variabili di sistema
+ Public $SI As String
+ Public $NO As String
+ Public $SECURE As Integer
+Public Sub Form_Open()
+ 'pulsanti
+ Dim flBTN As File  
+ Dim jBTN As Byte
+ Dim s$BTN As String
+ Dim ss$BTN As New String[]
+ 'testi e tooltip
+ Dim flTTP As File  
+ Dim jTTP As Byte
+ Dim s$TTP As String
+ Dim ss$TTP As New String[]
+ 'parole chiave
+ Dim flKEY As File  
+ Dim jKEY As Byte
+ Dim s$KEY As String
+ Dim ss$KEY As New String[]
+ 
+'RIDIMENSIONAMENTO FINESTRA************************
+ If Fmain.Width > 1366 Then
+  FSINOSECURE.Width = FSINOSECURE.Width * (Fmain.$RISOLUZIONEX / 1366)
+  FSINOSECURE.Height = FSINOSECURE.Height * (Fmain.$RISOLUZIONEY / 786)
+  TextArea1.Width = TextArea1.Width * (Fmain.$RISOLUZIONEX / 1366)
+  TextArea1.Height = TextArea1.Height * (Fmain.$RISOLUZIONEY / 786)
+  BTNSI.Y = BTNSI.Y + (FSINOSECURE.Height - 518)
+  BTNNO.X = BTNNO.X + (FSINOSECURE.Width - 889)
+  BTNNO.Y = BTNNO.Y + (FSINOSECURE.Height - 518)
+Endif
+'**************************************************
+ flBTN = Open "/usr/share/dnfdrake/dnfdrake-BTN-" & Fmain.$LANG For Read   ' ...oppure "Input"
+ While Not Eof(flBTN)
+   Input #flBTN, s$BTN
+' ' Poiché "Input" legge le stringhe in un File di testo fino all'interruzione dello spazio o al carattere di "nuova linea",
+' ' ogni parola del testo, delimitata da uno spazio, viene individuata e caricata in un nuovo elemento della variabile-array ss$:
+   ss$BTN.Add(s$BTN)
+  Wend
+   Close #flBTN
+' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
+  For jBTN = 0 To ss$BTN.Max
+     BTNSI.Text = ss$BTN[16]
+     BTNNO.Text = ss$BTN[17]
+      Next
+   flBTN.Close      
+   
+'TITOLI E TOOTIP*******************************************************************
+  flTTP = Open "/usr/share/dnfdrake/dnfdrake-TTP-" & Fmain.$LANG For Read   ' ...oppure "Input"
+ While Not Eof(flTTP)
+   Input #flTTP, s$TTP
+' ' Poiché "Input" legge le stringhe in un File di testo fino all'interruzione dello spazio o al carattere di "nuova linea",
+' ' ogni parola del testo, delimitata da uno spazio, viene individuata e caricata in un nuovo elemento della variabile-array ss$:
+   ss$TTP.Add(s$TTP)
+  Wend
+   Close #flTTP
+' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
+  For jTTP = 0 To ss$TTP.Max
+      FSINO.Text = Replace(ss$TTP[23], "_", " ")
+       Next
+   flTTP.Close  
+   
+'PAROLE CHIAVE*******************************************************************
+  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & Fmain.$LANG For Read   ' ...oppure "Input"
+ While Not Eof(flKEY)
+   Input #flKEY, s$KEY
+' ' Poiché "Input" legge le stringhe in un File di testo fino all'interruzione dello spazio o al carattere di "nuova linea",
+' ' ogni parola del testo, delimitata da uno spazio, viene individuata e caricata in un nuovo elemento della variabile-array ss$:
+   ss$KEY.Add(s$KEY)
+  Wend
+   Close #flKEY
+' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
+  For jKEY = 0 To ss$KEY.Max
+'risposta si
+      $SI = Replace(ss$KEY[5], "_", " ")
+'risposta no
+        $NO = Replace(ss$KEY[6], "_", " ")
+    Next
+   flKEY.Close
+ '*********************************************************************************
+ If FRUN.Visible = True Then
+   FRUN.Close
+ Endif
+ If FERROR.Visible = True Then
+   FERROR.Close
+ Endif
+ Fmain.Enabled = False
+ BTNSI.Enabled = False
+ BTNNO.Enabled = False
+ Timer1.Enabled = True
+ $SECURE = 0
+End
+
+Public Sub BTNSI_Click()
+ BTNSI.Enabled = False
+ Print #Fmain.$hProcess, $SI & gb.NewLine;
+ If Fmain.$SECUREMODE = "SECURE" Then
+  FRUN.Show 
+ Endif
+ $SECURE = 1 
+ Me.Close  
+
+End
+
+Public Sub BTNNO_Click()
+BTNNO.Enabled = False
+If $SECURE = 0 Then
+  Print #Fmain.$hProcess, $NO & gb.NewLine; 
+  Wait 0.5
+  Fmain.Btnclear_click
+  Fmain.Mouse = Mouse.Default
+  Fmain.TMPLISTCLEAN
+  Fmain.Enabled = True
+  $SECURE = 1 
+  Me.Close  
+Endif
+  
+End
+
+Public Sub Form_Close()
+If $SECURE = 1 Then
+Else 
+  BTNNO_Click
+Endif
+If Fmain.$AUTOSUSPEND = 1 Then
+  Fmain.$CLEARLOGSUSPEND = 1  
+Endif
+
+End
+
+Public Sub TextArea1_KeyPress()
+End
+
+Public Sub LOADTEXT()
+'********SOSTITUITO CON NUOVA FUNZIONE CHE AZZERA I TEMPI DI ATTESA
+'  Dim fl As File  
+'  Dim s$ As String 
+'  Dim x As Integer
+'  Me.Mouse = Mouse.Wait
+'   'caricamento elenco pacchetti da installare/rimuovere (MODIFICATO CON FILE.LOAD PER VELOCIZZARE IL CARICAMENTO IN FSINOSECURE)***********
+'   fl = Open User.Home &/ ".config/dnfdrake/log/last.log" For Read   ' ...oppure "Input"
+'  's$ = File.Load(User.Home &/ ".config/dnfdrake/log/last.log")
+' ' ' Compie il ciclo fin tanto che non è giunto alla fine del file:
+'    While Not Eof(fl)
+' ' ' "Line Input" legge le stringhe in un File di testo fino al carattere di "nuova linea a capo":
+'     
+'      Line Input #fl, s$
+'      If x = 0 And If InStr(s$, "=") Then
+'          x = 1
+'          TextArea1.Text = ""
+'      Endif
+'      If x = 1 Then
+'         TextArea1.Text = TextArea1.Text & s$ & "\n"
+'          Wait 0.00001
+'      Endif 
+' ' ' Mostra il contenuto della variabile s$ in una "TextArea":
+' '     TextArea1.Text = s$ & "\n" 'da usare con file.load
+'    Wend
+'    x = 0
+'    Me.Mouse = Mouse.Default
+'    fl.Close
+'   BTNSI.Enabled = True
+'   BTNNO.Enabled = True
+'   BTNSI.SetFocus
+'*******************************************************************************************************************
+  Me.Mouse = Mouse.Wait
+  Shell "cat " & Fmain.$PATHLOG & "/last.log" & " | sed -n '/=/,/*/p'" To TextArea1.Text
+  Me.Mouse = Mouse.Default
+
+  BTNSI.Enabled = True
+  BTNNO.Enabled = True
+  BTNSI.SetFocus
+
+  
+End
+
+Public Sub Timer1_Timer()
+    LOADTEXT
+    Timer1.Enabled = False
+
+End
+

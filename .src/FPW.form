@@ -1,0 +1,28 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  Move(0,0,420,105)
+  #Scaled = False
+  Icon = Picture["dnfdrake.svg"]
+  Resizable = False
+  { BTNVIEWPW Button
+    Move(308,14,42,28)
+    Picture = Picture["icon:/22/watch"]
+  }
+  { TXTPW TextBox
+    Move(63,14,252,28)
+    Alignment = Align.Center
+    Password = True
+  }
+  { !BTNANNULLA Button
+    Move(49,56,112,28)
+    #Public = True
+  }
+  { Btnok Button
+    Move(259,56,112,28)
+  }
+  { Timer1 #Timer
+    #Move(189,49)
+    Delay = 100
+  }
+}

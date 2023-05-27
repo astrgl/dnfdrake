@@ -1,0 +1,22 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,127,74)
+  Icon = Picture["dnfdrake.svg"]
+  Resizable = False
+  { BTNSI Button
+    MoveScaled(7,69,16,4)
+  }
+  { BTNNO Button
+    MoveScaled(104,69,16,4)
+  }
+  { TextArea1 TextArea
+    MoveScaled(1,1,125,67)
+    Font = Font["Monospace"]
+  }
+  { Timer1 #Timer
+    #MoveScaled(60,65)
+    Enabled = True
+    Delay = 10
+  }
+}

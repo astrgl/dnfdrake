@@ -1,0 +1,203 @@
+' Gambas class file
+
+
+Public Sub Form_Open()
+  Dim s As String
+  Dim t As Stream
+  Dim p As Integer
+  
+  FTEMPPKGLIST.Text = Fmain.TXTPKGLISTNOME.Text
+  
+  'TITOLI E TOOTIP*******************************************************************
+    Dim flTTP As File  
+    Dim jTTP As Byte
+    Dim s$TTP As String
+    Dim ss$TTP As New String[]
+   
+    flTTP = Open "/usr/share/dnfdrake/dnfdrake-TTP-" & Fmain.$LANG For Read   ' ...oppure "Input"  
+    While Not Eof(flTTP)
+      Input #flTTP, s$TTP
+      ss$TTP.Add(s$TTP)
+     Wend
+     Close #flTTP
+     For jTTP = 0 To ss$TTP.Max
+   
+         BTNAPPLY.Tooltip = Replace(ss$TTP[55], "_", " ") 
+         BTNREFRESH.Tooltip = Replace(ss$TTP[56], "_", " ") 
+         BTNSAVEAS.Tooltip = Replace(ss$TTP[57], "_", " ") 
+         BTNCLOSE.Tooltip = Replace(ss$TTP[4], "_", " ") 
+     Next
+     flTTP.Close
+ '*********************************************************************************
+  Me.Mouse = Mouse.Wait  
+  If Fmain.TXTPKGLISTNOME.Text = "Remove Package List" Then
+    t = Open User.Home &/ ".config/dnfdrake/log/rempkglist.txt"
+      For Each s In t.Lines
+        If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") Then
+           p = p + LSTPKG.Count
+           LSTPKG.add(p, s)
+            If Fmain.$COLORTEXT = "color"
+              LSTPKG[p].Foreground = &H0038D079
+            Endif
+        Endif
+      Next 
+  Else If Fmain.TXTPKGLISTNOME.Text = "Install Package List"
+    t = Open User.Home &/ ".config/dnfdrake/log/addpkglist.txt"    
+      For Each s In t.Lines
+        If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") Then
+            p = p + LSTPKG.Count
+            LSTPKG.add(p, s)
+              If Fmain.$COLORTEXT = "color"
+                LSTPKG[p].Foreground = &H00F47E59
+              Endif
+        Endif
+      Next 
+  Else If Fmain.TXTPKGLISTNOME.Text = "Update Package List"
+    t = Open User.Home &/ ".config/dnfdrake/log/updpkglist.txt" 
+      For Each s In t.Lines   
+        If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") Then
+            p = p + LSTPKG.Count
+            LSTPKG.add(p, s)
+              If Fmain.$COLORTEXT = "color"
+                LSTPKG[p].Foreground = &H0033A0D9
+              Endif
+        Endif
+      Next 
+  Endif    
+    LSTPKG.SelectAll
+    Me.Mouse = Mouse.Default
+End
+
+Public Sub BTNCLOSE_Click()
+  BTNCLOSE.Enabled = False
+  If LSTPKG.Count = 0 Then
+   Fmain.TXTPKGLISTNOME.Text = "None"
+  Endif  '
+ 
+  Me.Close
+
+End
+
+
+Public Sub BTNAPPLY_Click()
+'ELIMINATO PER UTILIZZARE IL REFRESH *******************************************************************
+  ' Dim a As String
+  ' Dim s As String
+  ' 
+  '   If FTEMPPKGLIST.Text = "Remove Package List" Then
+  '     Shell "echo  > " & User.Home &/ ".config/dnfdrake/log/rempkglist.txt" Wait
+  '       For Each a In LSTPKG.Selection
+  '         s = LSTPKG[a].Text
+  '         Shell "echo " & s & " >> " & User.Home &/ ".config/dnfdrake/log/rempkglist.txt" Wait
+  '       Next 
+  '   
+  '   Else If FTEMPPKGLIST.Text = "Install Package List"
+  '     Shell "echo  > " & User.Home &/ ".config/dnfdrake/log/addpkglist.txt" Wait
+  '       For Each a In LSTPKG.Selection
+  '         s = LSTPKG[a].Text
+  '         Shell "echo " & s & " >> " & User.Home &/ ".config/dnfdrake/log/addpkglist.txt" Wait
+  '       Next 
+  '       
+  '   Else If FTEMPPKGLIST.Text = "Update Package List"
+  '     Shell "echo  > " & User.Home &/ ".config/dnfdrake/log/updpkglist.txt" Wait
+  '       For Each a In LSTPKG.Selection
+  '         s = LSTPKG[a].Text
+  '         Shell "echo " & s & " >> " & User.Home &/ ".config/dnfdrake/log/addpkglist.txt" Wait
+  '       Next 
+  '       
+  '   Endif
+'*********************************************************************************************************
+    BTNREFRESH_Click
+    If LSTPKG.Count = 0 Then
+      Fmain.TXTPKGLISTNOME.Text = "None"
+    Endif  '
+  BTNCLOSE_Click
+End
+
+
+
+Public Sub BTNSAVEAS_Click()
+  '  Dialog.Title = Fmain.$DIALOGDIRTITLE
+  Dialog.Path = Fmain.$pathdir                   'IMPOSTA LA FINESTRA IN CUI SALVARE LA LISTA
+  
+  
+  Dialog.Filter = ["*.txt", "Text Files"]
+    If Dialog.SaveFile() Then Return
+      Fmain.$pathdir = Replace(Dialog.Path, " ", Chr$(92) & " ")                     ' serve agestire percorsi con gli spazi
+        If FTEMPPKGLIST.Text = "Remove Package List" Then
+          Shell "cp " & User.Home &/ ".config/dnfdrake/log/rempkglist.txt " & Dialog.Path Wait 
+        Else If FTEMPPKGLIST.Text = "Install Package List"
+          Shell "cp " & User.Home &/ ".config/dnfdrake/log/addpkglist.txt " & Dialog.Path Wait 
+        Else If FTEMPPKGLIST.Text = "Update Package List"   
+          Shell "cp " & User.Home &/ ".config/dnfdrake/log/updpkglist.txt " & Dialog.Path Wait 
+        Endif 
+  Catch
+    Message.Info("Si è verificato un errore!", "Ok")
+End
+
+Public Sub BTNREFRESH_Click()
+
+  Dim a As String
+  Dim s As String
+  Dim r As String
+  Dim t As Stream
+  Dim p As Integer    
+    If FTEMPPKGLIST.Text = "Remove Package List" Then
+      Shell "echo  > " & User.Home &/ ".config/dnfdrake/log/rempkglist.txt" Wait
+        For Each a In LSTPKG.Selection
+          s = LSTPKG[a].Text
+          Shell "echo " & s & " >> " & User.Home &/ ".config/dnfdrake/log/rempkglist.txt" Wait
+        Next 
+        LSTPKG.UnSelectAll
+        LSTPKG.Clear
+     t = Open User.Home &/ ".config/dnfdrake/log/rempkglist.txt"
+      For Each r In t.Lines
+        If InStr(r, ".x86_64") Or InStr(r, ".noarch") Or InStr(r, ".znver1") Or InStr(r, ".aarch64") Or InStr(r, ".i686") Then
+           p = p + LSTPKG.Count
+           LSTPKG.add(p, r)
+            If Fmain.$COLORTEXT = "color"
+              LSTPKG[p].Foreground = &H0038D079
+            Endif
+        Endif
+      Next  
+      LSTPKG.SelectAll  
+    Else If FTEMPPKGLIST.Text = "Install Package List"
+      Shell "echo  > " & User.Home &/ ".config/dnfdrake/log/addpkglist.txt" Wait
+        For Each a In LSTPKG.Selection
+          s = LSTPKG[a].Text
+          Shell "echo " & s & " >> " & User.Home &/ ".config/dnfdrake/log/addpkglist.txt" Wait
+        Next 
+        LSTPKG.UnSelectAll
+        LSTPKG.Clear
+     t = Open User.Home &/ ".config/dnfdrake/log/addpkglist.txt"
+      For Each r In t.Lines
+        If InStr(r, ".x86_64") Or InStr(r, ".noarch") Or InStr(r, ".znver1") Or InStr(r, ".aarch64") Or InStr(r, ".i686") Then
+           p = p + LSTPKG.Count
+           LSTPKG.add(p, r)
+            If Fmain.$COLORTEXT = "color"
+              LSTPKG[p].Foreground = &H00F47E59
+            Endif
+        Endif
+      Next  
+      LSTPKG.SelectAll  
+    Else If FTEMPPKGLIST.Text = "Update Package List"
+      Shell "echo  > " & User.Home &/ ".config/dnfdrake/log/updpkglist.txt" Wait
+        For Each a In LSTPKG.Selection
+          s = LSTPKG[a].Text
+          Shell "echo " & s & " >> " & User.Home &/ ".config/dnfdrake/log/updpkglist.txt" Wait
+        Next 
+         LSTPKG.UnSelectAll
+        LSTPKG.Clear
+     t = Open User.Home &/ ".config/dnfdrake/log/updpkglist.txt"
+      For Each r In t.Lines
+        If InStr(r, ".x86_64") Or InStr(r, ".noarch") Or InStr(r, ".znver1") Or InStr(r, ".aarch64") Or InStr(r, ".i686") Then
+           p = p + LSTPKG.Count
+           LSTPKG.add(p, r)
+            If Fmain.$COLORTEXT = "color"
+              LSTPKG[p].Foreground = &H0033A0D9
+            Endif
+        Endif
+      Next  
+      LSTPKG.SelectAll  
+    Endif
+End

@@ -1,0 +1,189 @@
+' Gambas class file
+
+ Public $SECURE As Integer
+ Public $MYREPOPEN As Integer
+
+Public Sub Form_Open()
+ 
+ Dim flBTN As File  
+ Dim jBTN As Byte
+ Dim s$BTN As String
+ Dim ss$BTN As New String[]
+ 
+ Dim flTTP As File  
+ Dim jTTP As Byte
+ Dim s$TTP As String
+ Dim ss$TTP As New String[]
+ 
+ $MYREPOPEN = 0
+
+ flBTN = Open "/usr/share/dnfdrake/dnfdrake-BTN-" & Fmain.$LANG For Read   ' ...oppure "Input"
+ While Not Eof(flBTN)
+   Input #flBTN, s$BTN
+' ' Poiché "Input" legge le stringhe in un File di testo fino all'interruzione dello spazio o al carattere di "nuova linea",
+' ' ogni parola del testo, delimitata da uno spazio, viene individuata e caricata in un nuovo elemento della variabile-array ss$:
+   ss$BTN.Add(s$BTN)
+  Wend
+   Close #flBTN
+' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
+  For jBTN = 0 To ss$BTN.Max
+      BTNANNULLA.Text = ss$BTN[14]
+      Btnok.Text = ss$BTN[15]
+      Next
+   flBTN.Close      
+  'TITOLI E TOOTIP*******************************************************************
+
+  flTTP = Open "/usr/share/dnfdrake/dnfdrake-TTP-" & Fmain.$LANG For Read   ' ...oppure "Input"
+ While Not Eof(flTTP)
+   Input #flTTP, s$TTP
+' ' Poiché "Input" legge le stringhe in un File di testo fino all'interruzione dello spazio o al carattere di "nuova linea",
+' ' ogni parola del testo, delimitata da uno spazio, viene individuata e caricata in un nuovo elemento della variabile-array ss$:
+   ss$TTP.Add(s$TTP)
+  Wend
+   Close #flTTP
+' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
+  For jTTP = 0 To ss$TTP.Max
+      FPW.Text = Replace(ss$TTP[21], "_", " ")
+       Next
+   flTTP.Close
+'************************************************************************************
+If Fmain.$SECUREMODE = "SECURE" Then
+   Fmain.Enabled = False  
+      If FMYREPO.Visible = True Then
+       $MYREPOPEN = 1
+       FMYREPO.Enabled = False
+       FMYREPO.Visible = False
+       FMYREPO.Timer1.Enabled = False
+      Endif
+Endif
+
+If FRUN.Visible = True Then
+    FRUN.Close
+    Timer1.Enabled = False
+    Fmain.Enabled = False
+   Else 
+     Timer1.Enabled = True
+ Endif
+ 
+  
+TXTPW.SetFocus
+$SECURE = 0
+End
+
+Public Sub TXTPW_Activate()
+
+   Dim sLig As String
+  
+  sLig = TXTPW.Text & gb.NewLine
+  TXTPW.Clear
+  sLig = Conv$(sLig, Desktop.Charset, System.Charset)
+  Print #Fmain.$hProcess, sLig;
+  FRUNSHOW
+  $SECURE = 1
+  Me.Close
+  
+   
+End
+
+Public Sub Btnok_Click()
+ Btnok.Enabled = False
+ Print #Fmain.$hProcess, TXTPW.Text & gb.NewLine; 
+ FRUNSHOW
+ $SECURE = 1
+ Me.Close  
+End
+
+Public Sub BTNANNULLA_Click()
+  If FEXCLUDELIST.Visible = True Then
+    FEXCLUDELIST.BTNREFRESH_click
+  Endif
+  BTNANNULLA.Enabled = False 
+  If Fmain.$WAITSUSPEND = 1
+     Fmain.$ABORT = 1
+     Fmain.$WAITSUSPEND = 0
+  Endif  
+  Fmain.btnCtrlC_click
+  Sleep 0.1
+  Fmain.btnCtrlC_click 
+  Wait 0.3
+  Fmain.Btnclear_click
+  Fmain.Mouse = Mouse.Default
+  Fmain.TMPLISTCLEAN
+  $SECURE = 1
+  If FPW.Visible = True Then
+    Me.Close  
+  Endif
+
+End
+
+
+
+Public Sub BTNVIEWPW_MouseDown()
+
+TXTPW.Password = False
+
+End
+
+Public Sub BTNVIEWPW_MouseUp()
+
+  TXTPW.Password = True
+  TXTPW.SetFocus
+
+End
+
+
+Public Sub TXTPW_KeyPress()
+End
+
+Private Sub FRUNSHOW()
+  
+ 'GESTIONE FINESTRA FRUN***************************
+  If $MYREPOPEN = 0
+    If Fmain.$SECUREMODE = "SECURE" Then
+        If Fmain.$FRUNMAIN = 1 Then
+          FRUN.Show
+        Endif
+        Fmain.$FRUNPW = 1
+    Endif
+  Endif   
+'************************************************* 
+  
+End
+
+Public Sub Form_Close()
+If $SECURE = 1 Then
+  If FRUN.Visible = True Or FMYREPO.Visible = True Then
+  Else 
+    If FEXCLUDELIST.Visible = False Then
+      Fmain.Enabled = True   
+    Endif
+  Endif
+Else 
+  BTNANNULLA_Click
+  If FEXCLUDELIST.Visible = False Then
+    Fmain.Enabled = True   
+  Endif
+Endif
+If Fmain.$WAITSUSPEND = 1 And If Fmain.$SECUREMODE = "SECURE" Then
+  Fmain.Enabled = False
+Endif
+
+If $MYREPOPEN = 1 Then
+  FMYREPO.Visible = True
+  FMYREPO.Enabled = False
+  FMYREPO.Timer1.Delay = 3000
+  FMYREPO.Timer1.Enabled = True
+  Fmain.Enabled = False
+Endif 
+
+
+End
+
+Public Sub Timer1_Timer()
+If FRUN.Visible = True Then
+   FRUN.Close
+ Endif
+If Fmain.Enabled = True And Fmain.$SECUREMODE = "SECURE" Then
+  Fmain.Enabled = False
+Endif
+End

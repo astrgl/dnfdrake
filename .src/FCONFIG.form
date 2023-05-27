@@ -1,0 +1,106 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,83,82)
+  Icon = Picture["dnfdrake.svg"]
+  { Label3 Label
+    MoveScaled(46,10,34,4)
+    Border = Border.Plain
+  }
+  { Label1 Label
+    MoveScaled(3,69,34,4)
+    Border = Border.Plain
+  }
+  { TXTUPDATECMD TextBox
+    MoveScaled(3,6,77.1429,4)
+  }
+  { TXTINSTALL Label
+    MoveScaled(3,25,77,3)
+    Alignment = Align.Center
+    Border = Border.Plain
+    Text = ("Install command")
+  }
+  { TXTINSTALLCMD TextBox
+    MoveScaled(3,28,77.1429,4)
+  }
+  { TXTUNINSTALL Label
+    MoveScaled(3,34,77,3)
+    Alignment = Align.Center
+    Border = Border.Plain
+    Text = ("Uninstall command")
+  }
+  { TXTUNINSTALLCMD TextBox
+    MoveScaled(3,37,77.1429,4)
+  }
+  { BTNCLOSE Button
+    MoveScaled(5,76,16,4)
+    Text = ("Close")
+  }
+  { BTNOK Button
+    MoveScaled(61,76,16,4)
+    Text = ("Apply")
+  }
+  { BTNDEFAULT Button
+    MoveScaled(33,76,16,4)
+    Text = ("Reset Default")
+  }
+  { TXTUPDATEPKG Label
+    MoveScaled(3,16,77,3)
+    Alignment = Align.Center
+    Border = Border.Plain
+    Text = ("Update PKG command")
+  }
+  { TXTUPDATEPKGCMD TextBox
+    MoveScaled(3,19,77.1429,4)
+  }
+  { TXTUPDATE Label
+    MoveScaled(3,3,77,3)
+    Alignment = Align.Center
+    Border = Border.Plain
+    Text = ("Update SYS command")
+  }
+  { TXTDOWNGRADE Label
+    MoveScaled(3,43,77,3)
+    Alignment = Align.Center
+    Border = Border.Plain
+    Text = ("Downgrade command")
+  }
+  { TXTDOWNGRADECMD TextBox
+    MoveScaled(3,46,77.1429,4)
+  }
+  { TXTCUSTOM Label
+    MoveScaled(3,61,77,3)
+    Alignment = Align.Center
+    Border = Border.Plain
+    Text = ("Custom command")
+  }
+  { TXTCUSTOMCMD TextBox
+    MoveScaled(3,64,77.1429,4)
+  }
+  { CHKCOLORTEXT CheckBox
+    MoveScaled(3,69,33,4)
+    Text = ("  Color text active")
+  }
+  { TXTREINSTALL Label
+    MoveScaled(3,52,77,3)
+    Alignment = Align.Center
+    Border = Border.Plain
+    Text = ("Reinstall command")
+  }
+  { TXTREINSTALLCMD TextBox
+    MoveScaled(3,55,77.1429,4)
+  }
+  { Label2 Label
+    MoveScaled(3,10,34,4)
+    Border = Border.Plain
+  }
+  { CHKLOG CheckBox
+    MoveScaled(3,10,33,4)
+    Text = ("Save Log")
+    Value = CheckBox.True
+  }
+  { CHKSECUREMODE CheckBox
+    MoveScaled(46,10,34,4)
+    Text = ("Secure Mode")
+  }
+}

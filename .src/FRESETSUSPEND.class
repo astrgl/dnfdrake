@@ -1,0 +1,108 @@
+' Gambas class file
+
+$FRUNSTATE As Integer
+$FOKSTATE As Integer
+
+Public Sub Form_Open()
+
+ Dim flBTN As File  
+ Dim jBTN As Byte
+ Dim s$BTN As String
+ Dim ss$BTN As New String[]
+ 
+ Dim flTTP As File  
+ Dim jTTP As Byte
+ Dim s$TTP As String
+ Dim ss$TTP As New String[]
+'PULSANTI*******************************************************************
+ flBTN = Open "/usr/share/dnfdrake/dnfdrake-BTN-" & Fmain.$LANG For Read   ' ...oppure "Input"
+ While Not Eof(flBTN)
+   Input #flBTN, s$BTN
+   ss$BTN.Add(s$BTN)
+  Wend
+   Close #flBTN
+  For jBTN = 0 To ss$BTN.Max
+      BTNNO.Text = ss$BTN[17]
+      BTNSI.Text = ss$BTN[16]
+      Next
+   flBTN.Close 
+'TITOLI E TOOTIP*******************************************************************
+  flTTP = Open "/usr/share/dnfdrake/dnfdrake-TTP-" & Fmain.$LANG For Read   ' ...oppure "Input"
+ While Not Eof(flTTP)
+   Input #flTTP, s$TTP
+   ss$TTP.Add(s$TTP)
+  Wend
+   Close #flTTP
+  For jTTP = 0 To ss$TTP.Max
+      TXTMSG.Text = Replace(ss$TTP[84], "_", " ")
+       Next
+   flTTP.Close 
+'*************************************************************************************    
+' 
+' TXTMSG.Text = "DnfDrake ha disabilitato la sospensione la vuoi ripristinare?"
+
+If Fmain.$SECUREMODE = "SECURE" Then
+  Fmain.Enabled = False
+Endif
+If Fmain.$AUTOSUSPEND = 0 Then
+  Me.Close
+Endif
+If FRUN.Visible = True Then
+    FRUN.Visible = False
+    $FRUNSTATE = 1
+  Else 
+    $FRUNSTATE = 0    
+Endif
+If FOK.Visible = True Then
+    FOK.Visible = False
+    $FOKSTATE = 1
+  Else 
+    $FOKSTATE = 0    
+Endif 
+End
+
+Public Sub Form_Close()
+ BTNNO_Click
+ Fmain.VERIFYSUSPEND
+ If Fmain.$CLEARLOGSUSPEND = 1 Then
+   Fmain.Btnclear_click
+ Endif
+ If Fmain.$ABORT = 1 Then
+   Fmain.Enabled = True
+ Endif
+ Fmain.$ABORT = 0
+ If $FRUNSTATE = 1 Or If $FOKSTATE = 1 Then
+    Fmain.Enabled = False   
+ Endif 
+End
+
+Private Sub PRIORITA()
+If $FRUNSTATE = 1 Then
+  FRUN.Visible = True
+Endif
+If $FOKSTATE = 1 Then
+  FOK.Visible = True
+Endif 
+End
+
+
+Public Sub BTNSI_Click()
+BTNSI.Enabled = False
+Fmain.Enabled = True
+Wait 0.1
+Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
+Wait 0.1
+Fmain.$PROGRESSBARFORCESUSPEND = 1
+PRIORITA
+FRESETSUSPEND.Close
+End
+
+Public Sub BTNNO_Click()
+BTNNO.Enabled = False
+Fmain.Enabled = True
+PRIORITA
+FRESETSUSPEND.Close
+End
+
+Public Sub TXTMSG_MouseDown()
+End

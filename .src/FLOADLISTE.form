@@ -1,0 +1,26 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  Move(0,0,658,49)
+  #Scaled = False
+  Mouse = Mouse.Wait
+  Icon = Picture["dnfdrake.svg"]
+  Resizable = False
+  { TXTSTATO Label
+    Move(7,14,224,21)
+    Alignment = Align.Left
+    Text = ("Preparazione Liste Pacchetti")
+  }
+  { ProgressBar1 ProgressBar
+    Move(231,17,364,14)
+  }
+  { Timer1 #Timer
+    #Move(497,0)
+    Enabled = True
+    Delay = 3000
+  }
+  { BTNSKIP Button
+    Move(602,14,49,21)
+    Text = ("Skip")
+  }
+}

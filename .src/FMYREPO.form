@@ -1,0 +1,113 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,63,83)
+  Text = ("My Repo Creator!")
+  Icon = Picture["dnfdrake.svg"]
+  Resizable = False
+  { LabelName5 Label
+    MoveScaled(2,2,59,43)
+    Alignment = Align.Top
+    Border = Border.Plain
+    Text = ("Summary")
+  }
+  { LabelName4 Label
+    MoveScaled(2,45,59,36)
+    Alignment = Align.Top
+    Border = Border.Plain
+    Text = ("Details")
+  }
+  { TXTPATH TextBox
+    MoveScaled(2.8571,58,52.8571,4)
+  }
+  { BTNCLOSE Button
+    MoveScaled(55.1429,76,5,4)
+    Picture = Picture["icon:/16/close"]
+  }
+  { BTNBUILDREPO Button
+    MoveScaled(2.8571,76,5,4)
+    Picture = Picture["icon:/16/exec"]
+  }
+  { Btnpathfile Button
+    MoveScaled(55.5714,58,4.4286,4)
+    Picture = Picture["icon:/16/directory"]
+  }
+  { BTNREMOVE Button
+    MoveScaled(37.5714,76,5,4)
+    Picture = Picture["icon:/16/trash"]
+  }
+  { BTNNOMECLEAR Button
+    MoveScaled(51.2857,51,4.4286,4)
+    Picture = Picture["icon:/16/clear"]
+  }
+  { LabelName Label
+    MoveScaled(3,48,56.8571,3)
+    Alignment = Align.Center
+    Border = Border.Plain
+  }
+  { LabelPATHREPO Label
+    MoveScaled(2.8571,55,57,3)
+    Alignment = Align.Center
+    Border = Border.Plain
+  }
+  { BTNADDREPO Button
+    MoveScaled(20.4286,76,5,4)
+    Picture = Picture["icon:/16/apply"]
+  }
+  { Label1 Label
+    MoveScaled(3,69,57,4)
+    Border = Border.Plain
+  }
+  { CMBREPO ComboBox
+    MoveScaled(2.8571,51,48.5714,4)
+  }
+  { CHKENABLED CheckBox
+    MoveScaled(3.8571,69,11.4286,4)
+    Text = ("Enabled")
+  }
+  { CHKGPG CheckBox
+    MoveScaled(25.8571,69,11.4286,4)
+    Text = ("GPG")
+  }
+  { CHKREMOTE CheckBox
+    MoveScaled(47.8571,69,11.4286,4)
+    Text = ("Remote")
+  }
+  { LabelPATHGPGKEY Label
+    MoveScaled(2.8571,62,57,3)
+    Alignment = Align.Center
+    Border = Border.Plain
+  }
+  { TXTPATHGPG TextBox
+    MoveScaled(2.8571,65,52.8571,4)
+  }
+  { BTNPATHGPG Button
+    MoveScaled(55.7143,65,4.4286,4)
+    Picture = Picture["icon:/16/directory"]
+  }
+  { BTNPULISCI Button
+    MoveScaled(55.5714,51,4.4286,4)
+    Picture = Picture["icon:/16/erase"]
+  }
+  { LSTREPO ListView
+    MoveScaled(3,8,57,36)
+    Mode = Select.Multiple
+    ShowCheck = True
+  }
+  { LabelName2 Label
+    MoveScaled(11,5,49,3)
+    Alignment = Align.Center
+    Border = Border.Plain
+    Text = ("MyRepoList")
+  }
+  { LabelName3 Label
+    MoveScaled(3,5,8,3)
+    Alignment = Align.Left
+    Border = Border.Plain
+    Text = (" Enabled")
+  }
+  { Timer1 #Timer
+    #MoveScaled(28,73)
+    Delay = 3000
+  }
+}

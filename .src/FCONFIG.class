@@ -1,0 +1,134 @@
+' Gambas class file
+
+Public Sub Form_Open()
+        If Fmain.$SECUREMODE = "SECURE" Then
+           Fmain.Enabled = False   
+        Endif
+        TXTINSTALLCMD.Text = Fmain.$INSTALL
+        TXTUNINSTALLCMD.Text = Fmain.$UNINSTALL
+        TXTUPDATECMD.Text = Fmain.$UPDATE
+        'TXTUPDATECMD.Text = Fmain.$UPDATE
+        TXTUPDATEPKGCMD.Text = Fmain.$PKGUPDATE
+        TXTDOWNGRADECMD.Text = Fmain.$DOWNGRADE
+        TXTREINSTALLCMD.Text = Fmain.$REINSTALL
+        TXTCUSTOMCMD.Text = Fmain.$CUSTOMCMD
+        
+        If Fmain.$COLORTEXT = "color" Then
+          CHKCOLORTEXT.Value = True
+          Else
+            CHKCOLORTEXT.Value = False
+        Endif
+        
+        If Exist(User.Home &/ ".config/dnfdrake/distrosync") Then
+           TXTUPDATE.Text = "DistroSync command"
+           TXTUPDATECMD.Text = "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync"
+           TXTUPDATECMD.Enabled = False
+        Else  
+           TXTUPDATECMD.Enabled = True
+        Endif
+        
+        If Fmain.$LOG = "LOG" Then
+          CHKLOG.Value = True
+          Else 
+            CHKLOG.Value = False
+        Endif
+        
+        If Fmain.$SECUREMODE = "SECURE" Then
+          CHKSECUREMODE.Value = True
+          Else 
+            CHKSECUREMODE.Value = False
+        Endif
+        
+End
+
+Public Sub BTNDEFAULT_Click()
+  BTNDEFAULT.Enabled = False
+  Print #Fmain.$hProcess, "rm -f " & User.Home & "/.config/dnfdrake/dnfdrake-COMMAND" & gb.NewLine;
+  Message.Info("For Apply The Change Restart Dnfdrake", "OK")
+  Me.Close
+End
+
+Public Sub BTNCLOSE_Click()
+  BTNCLOSE.Enabled = False
+  Me.Close
+End
+
+Public Sub BTNOK_Click()
+ BTNOK.Enabled = False
+ If Not Exist(User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND") Then
+ File.Save(User.Home &/ "/.config/dnfdrake/dnfdrake-COMMAND", "")
+ Endif 
+  Dim fl As File
+   fl = Open User.Home &/ "/.config/dnfdrake/dnfdrake-COMMAND" For Create
+   Print #fl, Replace(TXTINSTALLCMD.Text, " ", "_")
+   Print #fl, Replace(TXTUNINSTALLCMD.Text, " ", "_")
+'SERVE PER EVITARE DI SALVARE IL COMANDO DI DISTROSYNC*********************
+   If TXTUPDATECMD.Enabled = True Then
+      Print #fl, Replace(TXTUPDATECMD.Text, " ", "_")  
+   Else 
+      Print #fl, Replace(Fmain.$UPDATE, " ", "_")   
+   Endif
+'**************************************************************************
+   Print #fl, Replace(TXTUPDATEPKGCMD.Text, " ", "_")
+   Print #fl, Replace(TXTDOWNGRADECMD.Text, " ", "_")
+   Print #fl, Replace(TXTCUSTOMCMD.Text, " ", "_")
+   If CHKCOLORTEXT.Value = True Then
+     Print #fl, "color"
+     Else
+     Print #fl, "nero"  
+   Endif
+   Print #fl, Replace(TXTREINSTALLCMD.Text, " ", "_")
+   If CHKLOG.Value = True Then
+     Print #fl, "LOG"
+     Else 
+       Print #fl, "NOLOG"
+   Endif
+   If CHKSECUREMODE.Value = True Then
+     Print #fl, "SECURE"
+     Else 
+       Print #fl, "NOSECURE"
+   Endif
+  fl.Close
+
+  Message.Info("Restart DnfDrake for the changes to be applied", "OK")
+  Me.Close
+End
+
+Public Sub TXTUPDATEPKGCMD_KeyPress()
+End
+
+Public Sub CHKCOLORTEXT_Click()
+End
+
+Public Sub TXTREINSTALLCMD_KeyPress()
+End
+
+Public Sub TXTINSTALLCMD_KeyPress()
+End
+
+Public Sub Form_Close()
+
+  Fmain.Enabled = True
+
+End
+
+Public Sub CHKSECUREMODE_Click()
+If CHKSECUREMODE.Value = True Then
+  If CHKLOG.Value = False Then
+    Message.Info("Secure Mode work only whit Save Log active, DnfDrake have set it!", "Ok") 
+    CHKLOG.Value = True
+    FCONFIG.Show
+  Endif
+Endif
+End
+
+Public Sub CHKLOG_Click()
+If CHKLOG.Value = False Then
+  If CHKSECUREMODE.Value = True Then
+    Message.Info("Secure Mode work only whit Save Log active, DnfDrake have disable it!", "Ok") 
+    CHKSECUREMODE.Value = False
+    FCONFIG.Show
+  Endif
+Endif
+
+End

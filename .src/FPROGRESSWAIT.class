@@ -1,0 +1,56 @@
+' Gambas class file
+
+
+Public Sub Form_Open()
+ Dim flTTP As File  
+ Dim jTTP As Byte
+ Dim s$TTP As String
+ Dim ss$TTP As New String[]
+ 'TITOLI E TOOTIP*******************************************************************
+ 
+  flTTP = Open "/usr/share/dnfdrake/dnfdrake-TTP-" & Fmain.$LANG For Read   ' ...oppure "Input"
+ While Not Eof(flTTP)
+   Input #flTTP, s$TTP
+' ' Poiché "Input" legge le stringhe in un File di testo fino all'interruzione dello spazio o al carattere di "nuova linea",
+' ' ogni parola del testo, delimitata da uno spazio, viene individuata e caricata in un nuovo elemento della variabile-array ss$:
+   ss$TTP.Add(s$TTP)
+  Wend
+   Close #flTTP
+' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
+  For jTTP = 0 To ss$TTP.Max
+      LBLATTIVITA.Text = Replace(ss$TTP[80], "_", " ")
+       Next
+   flTTP.Close 
+   
+   BTNSTOP.Text = Fmain.btnstop.Text 
+   
+   If Fmain.$SECUREMODE = "SECURE" Then
+      Fmain.Enabled = False
+   Endif 
+   Wait 0.05
+   MONITORVIEW.Visible = True
+   MONITORVIEW.Text = "" 
+
+End
+
+Public Sub LBLATTIVITA_MouseDown()
+
+End
+
+Public Sub BTNSTOP_Click()
+
+  Fmain.BTNSTOP_Click
+  MONITORVIEW.Visible = False
+
+End
+
+Public Sub Form_Close()
+
+  Fmain.Enabled = True  
+
+End
+
+
+Public Sub MONITORVIEW_MouseDown()
+
+End

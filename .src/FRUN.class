@@ -1,0 +1,85 @@
+' Gambas class file
+
+Public Sub Form_Open()
+  Dim flBTN As File  
+  Dim jBTN As Byte
+  Dim s$BTN As String
+  Dim ss$BTN As New String[]
+  
+  If Fmain.$PROGRESSBARFORCESUSPEND = 1 Then
+     FRUN.ProgressBar1.Pulse = False    
+     FRUN.ProgressBar1.Value = 1
+'Mette OK sul pulsante********************************************
+   flBTN = Open "/usr/share/dnfdrake/dnfdrake-BTN-" & Fmain.$LANG For Read 
+      While Not Eof(flBTN)
+      Input #flBTN, s$BTN
+      ss$BTN.Add(s$BTN)
+    Wend
+    Close #flBTN
+    For jBTN = 0 To ss$BTN.Max
+      BTNSTOP.Text = ss$BTN[15]
+      Next
+    flBTN.Close     
+'*******************************************************************
+     BTNSTOP.Enabled = True
+     FRUN.MONITORVIEW.Visible = False
+     FRUN.Text = "DnfDrake,  " & Fmain.$FATTO
+  Else 
+     Timer1.Enabled = True
+     ProgressBar1.Pulse = True
+     Fmain.txtconsole.Enabled = True
+     BTNSTOP.Text = Fmain.btnstop.Text 
+  Endif 
+  
+  Wait 0.2
+  Fmain.Enabled = False  
+  
+End
+
+
+Public Sub Form_Close()
+
+  If FSINOSECURE.Visible = True Then
+  Else 
+  Fmain.Enabled = True  
+  Endif
+  ' If Fmain.$MEMOCOMMAND = "RECOVERSUSPEND" Then
+  '   Fmain.Enabled = False
+  ' Endif
+  ' 
+End
+
+Public Sub BTNSTOP_Click()
+BTNSTOP.Enabled = False
+Fmain.VERIFYSUSPEND
+If ProgressBar1.Value = 1 Then
+    If Fmain.txtConsole.Visible = True Then
+      Endif
+    Fmain.TimerUPLISTE.Enabled = True
+    Fmain.Mouse = Mouse.Default
+    Fmain.TMPLISTCLEAN
+    Fmain.$FRUNMAIN = 0
+    Me.Close
+  Else 
+    Fmain.BTNSTOP_Click
+    Sleep 0.5
+    Fmain.Btnclear_Click
+    Fmain.$ABORT = 1
+    Fmain.$FRUNMAIN = 0
+    Fmain.$CLEARLOGSUSPEND = 1
+    Fmain.TMPLISTCLEAN
+    Me.Close
+Endif
+End
+
+Public Sub ProgressBar1_MouseDown()
+
+End
+
+
+Public Sub Timer1_Timer()
+  BTNSTOP.Enabled = True
+End
+Public Sub MONITORVIEW_MouseDown()
+
+End

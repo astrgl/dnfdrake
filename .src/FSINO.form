@@ -1,0 +1,14 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  Move(0,0,406,84)
+  #Scaled = False
+  Icon = Picture["dnfdrake.svg"]
+  Resizable = False
+  { BTNSI Button
+    Move(49,28,112,28)
+  }
+  { BTNNO Button
+    Move(252,28,112,28)
+  }
+}

@@ -78,7 +78,7 @@ Public Sub Form_Open()
 '  CHKDNFDRAKETRAY.Value = True
 '  Endif
  
- If Exist(User.Home &/ ".config/autostart/dnfdraketray.gambas.desktop") Then
+ If Exist(User.Home &/ ".config/autostart/dnfdraketray.desktop") Then
  CHKDNFDRAKETRAYLAUNCH.Value = True
  Endif
  

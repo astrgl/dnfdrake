@@ -47,10 +47,10 @@ Public $SUSPENDONTTP As String
 Public $SUSPENDOFFTTP As String
 Public $WAITSUSPEND As Integer
 Public $ABORT As Integer
-Public $COUNTRECOVERSUSPEND As Integer
+'Public $COUNTRECOVERSUSPEND As Integer ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
 Public $AUTOSUSPEND As Integer
-Public $CLEARLOGSUSPEND As Integer
-Public $PROGRESSBARFORCESUSPEND As Integer
+Public $CLEARLOGSUSPEND As Integer 
+Public $PROGRESSBARFORCESUSPEND As Integer 
 Public $COUNTBTNCLOSE As Integer
 Public $CLOSEPASS As Integer
 Public $SI As String
@@ -613,8 +613,8 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
   VERIFYSUSPEND
   $WAITSUSPEND = 0
   $ABORT = 0
-  $CLEARLOGSUSPEND = 1
-  $PROGRESSBARFORCESUSPEND = 0
+  $CLEARLOGSUSPEND = 1 
+  $PROGRESSBARFORCESUSPEND = 0 
   $COUNTBTNCLOSE = 0
   'ABILITA AUTOSUSPEND****************************************
   If Exist(User.Home &/ ".config/dnfdrake/autosuspend") Then
@@ -684,10 +684,10 @@ Public Sub Process_Read()
         FSELECTION.Show
        Endif
     '****************************************************************************************
-      If InStr($sText, $FATTO) > 0 Then                         ' OPERAZIONE TERMINATA (FATTO)"
-        If $MEMOCOMMAND = "RECOVERSUSPEND" Then
-          $CLEARLOGSUSPEND = 0
-        Endif
+      If InStr($sText, $FATTO) > 0 Then                           ' OPERAZIONE TERMINATA (FATTO)"
+        ' If $MEMOCOMMAND = "RECOVERSUSPEND" Then   ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
+        '   $CLEARLOGSUSPEND = 0
+        ' Endif
         FOK.Show
       Endif
       If InStr($sText, $NONRIUSCITO) > 0 Then                   ' OPERAZIONE TERMINATA (NON RIUSCITO)"
@@ -781,16 +781,17 @@ Public Sub Process_Read()
          Endif
        Endif
 '**************************************************************************
-       If $MEMOCOMMAND = "RECOVERSUSPEND" Then
-            If $COUNTRECOVERSUSPEND = 1 Then
-                $MEMOCOMMAND = ""
-                FRESETSUSPEND.Show
-                $COUNTRECOVERSUSPEND = 0
-            Else 
-                $COUNTRECOVERSUSPEND = $COUNTRECOVERSUSPEND + 1 
-                $CLEARLOGSUSPEND = 0
-            Endif
-       Endif
+' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
+       ' If $MEMOCOMMAND = "RECOVERSUSPEND" Then
+       '      If $COUNTRECOVERSUSPEND = 1 Then
+       '          $MEMOCOMMAND = ""
+       '          FRESETSUSPEND.Show
+       '          $COUNTRECOVERSUSPEND = 0
+       '      Else 
+       '          $COUNTRECOVERSUSPEND = $COUNTRECOVERSUSPEND + 1 
+       '          $CLEARLOGSUSPEND = 0
+       '      Endif
+       ' Endif
 
 '**************************************************************************
        If $MEMOEXEC = "txtpkgclear" And $ListpkgWR = 0 Then
@@ -2163,12 +2164,12 @@ Private Sub DSTRSYNC()
      FUPDATERESUME.Show
   Else 
     Me.Mouse = Mouse.Wait 
-    ' $MEMOCOMMAND = "RECOVERSUSPEND"
+    ' $MEMOCOMMAND = "RECOVERSUSPEND" ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
     If $LOG = "NOLOG"
     Print #$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync" & $VERBOSE & gb.NewLine;
     FRUNSHOW
     Wait 2
-    $MEMOCOMMAND = "RECOVERSUSPEND"
+    '$MEMOCOMMAND = "RECOVERSUSPEND" ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
     Endif 
     If $LOG = "LOG" Then
     DATATIME
@@ -2176,9 +2177,10 @@ Private Sub DSTRSYNC()
     FRUNSHOW
     'Wait 2
     Endif
-    If $AUTOSUSPEND = 1 Then
-      $MEMOCOMMAND = "RECOVERSUSPEND"
-    Endif
+    ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
+    ' If $AUTOSUSPEND = 1 Then
+    '   '$MEMOCOMMAND = "RECOVERSUSPEND"
+    'Endif
   Endif 
 End
 

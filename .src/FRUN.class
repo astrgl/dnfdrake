@@ -51,7 +51,7 @@ End
 
 Public Sub BTNSTOP_Click()
 BTNSTOP.Enabled = False
-Fmain.VERIFYSUSPEND
+' Fmain.VERIFYSUSPEND ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
 If ProgressBar1.Value = 1 Then
     If Fmain.txtConsole.Visible = True Then
       Endif
@@ -66,7 +66,7 @@ If ProgressBar1.Value = 1 Then
     Fmain.Btnclear_Click
     Fmain.$ABORT = 1
     Fmain.$FRUNMAIN = 0
-    Fmain.$CLEARLOGSUSPEND = 1
+    'Fmain.$CLEARLOGSUSPEND = 1 ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
     Fmain.TMPLISTCLEAN
     Me.Close
 Endif

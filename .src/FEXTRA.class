@@ -202,15 +202,15 @@ Public Sub BTNCLOSE_Click()
      Fmain.$KILL = 0
    Endif
    
-   If CHKDNFDRAKETRAYLAUNCH.VALUE = True And If Not Exist(User.Home &/ ".config/autostart/dnfdraketray.gambas.desktop") Then
+   If CHKDNFDRAKETRAYLAUNCH.VALUE = True And If Not Exist(User.Home &/ ".config/autostart/dnfdraketray.desktop") Then
    If Not Exist(User.Home &/ ".config/autostart") Then
    Shell ("mkdir " & User.Home &/ ".config/autostart")
    Endif
-   Shell ("cp /usr/share/dnfdrake/dnfdraketray.gambas.desktop  " & User.Home &/ ".config/autostart/")
+   Shell ("cp /usr/share/dnfdrake/dnfdraketray.desktop  " & User.Home &/ ".config/autostart/")
    Endif
    
-   If CHKDNFDRAKETRAYLAUNCH.VALUE = False And If Exist(User.Home &/ ".config/autostart/dnfdraketray.gambas.desktop") Then
-     Shell ("rm -f " & User.Home &/ ".config/autostart/dnfdraketray.gambas.desktop")
+   If CHKDNFDRAKETRAYLAUNCH.VALUE = False And If Exist(User.Home &/ ".config/autostart/dnfdraketray.desktop") Then
+     Shell ("rm -f " & User.Home &/ ".config/autostart/dnfdraketray.desktop")
    Endif
     
     If CHKOFFLINE.Value = True Then

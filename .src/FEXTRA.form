@@ -7,43 +7,54 @@
   { Label5 Label
     MoveScaled(2,60,60,13)
     Border = Border.Plain
+    BorderRadius = 10
   }
   { Label1 Label
     MoveScaled(2,9,60,15)
     Border = Border.Plain
+    BorderRadius = 10
   }
   { Label2 Label
     MoveScaled(14,1,36,4)
     Font = Font["+4"]
     Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 12
     Text = ("EXTRA OPTIONS")
   }
   { Label3 Label
     MoveScaled(2,28,60,14)
     Border = Border.Plain
+    BorderRadius = 10
   }
   { Label4 Label
     MoveScaled(2,46,60,10)
     Border = Border.Plain
+    BorderRadius = 10
   }
   { CHKDUPLICATE CheckBox
     MoveScaled(4,10,24,4)
     Text = (" --showduplicate")
   }
   { TXTSEARCH Label
-    MoveScaled(2,6,24,3)
+    MoveScaled(20,5.4286,24,3)
+    Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
     Text = ("  Search")
   }
   { Label6 Label
-    MoveScaled(2,25,24,3)
+    MoveScaled(20,24.5714,24,3)
+    Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
     Text = ("  Install/Uninstall")
   }
   { Label7 Label
-    MoveScaled(2,43,24,3)
+    MoveScaled(20,42.5714,24,3)
+    Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
     Text = ("  Extra Option")
   }
   { BTNCLOSE Button
@@ -63,8 +74,10 @@
     Text = ("Run on Startup")
   }
   { Label8 Label
-    MoveScaled(2,57,24,3)
+    MoveScaled(20,56.5714,24,3)
+    Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
     Text = ("  Launch DnfDrakeTray")
   }
   { Button1 Button

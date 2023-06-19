@@ -57,7 +57,9 @@ If Fmain.$SECUREMODE = "SECURE" Then
       Endif
 Endif
 
+
 If FRUN.Visible = True Then
+    FRUN.$CLOSEPASS = 1
     FRUN.Close
     Timer1.Enabled = False
     Fmain.Enabled = False

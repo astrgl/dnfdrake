@@ -1,7 +1,8 @@
 ' Gambas class file
 
-$FRUNSTATE As Integer
-$FOKSTATE As Integer
+'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
+' $FRUNSTATE As Integer
+' $FOKSTATE As Integer
 
 Public Sub Form_Open()
 
@@ -47,18 +48,20 @@ Endif
 If Fmain.$AUTOSUSPEND = 0 Then
   Me.Close
 Endif
-If FRUN.Visible = True Then
-    FRUN.Visible = False
-    $FRUNSTATE = 1
-  Else 
-    $FRUNSTATE = 0    
-Endif
-If FOK.Visible = True Then
-    FOK.Visible = False
-    $FOKSTATE = 1
-  Else 
-    $FOKSTATE = 0    
-Endif 
+Fmain.$WAITSUSPEND = 0
+'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
+' If FRUN.Visible = True Then
+'     FRUN.Visible = False
+'     $FRUNSTATE = 1
+'   Else 
+'     $FRUNSTATE = 0    
+' Endif
+' If FOK.Visible = True Then
+'     FOK.Visible = False
+'     $FOKSTATE = 1
+'   Else 
+'     $FOKSTATE = 0    
+' Endif 
 End
 
 Public Sub Form_Close()
@@ -71,19 +74,21 @@ Public Sub Form_Close()
    Fmain.Enabled = True
  Endif
  Fmain.$ABORT = 0
- If $FRUNSTATE = 1 Or If $FOKSTATE = 1 Then
-    Fmain.Enabled = False   
- Endif 
+ 'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
+ ' If $FRUNSTATE = 1 Or If $FOKSTATE = 1 Then
+ '    Fmain.Enabled = False   
+ ' Endif 
 End
 
-Private Sub PRIORITA()
-If $FRUNSTATE = 1 Then
-  FRUN.Visible = True
-Endif
-If $FOKSTATE = 1 Then
-  FOK.Visible = True
-Endif 
-End
+'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
+ ' Private Sub PRIORITA()
+' If $FRUNSTATE = 1 Then
+'   FRUN.Visible = True
+' Endif
+' If $FOKSTATE = 1 Then
+'   FOK.Visible = True
+' Endif 
+ ' End
 
 
 Public Sub BTNSI_Click()
@@ -93,14 +98,16 @@ Wait 0.1
 Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
 Wait 0.1
 Fmain.$PROGRESSBARFORCESUSPEND = 1
-PRIORITA
+'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
+' PRIORITA
 FRESETSUSPEND.Close
 End
 
 Public Sub BTNNO_Click()
 BTNNO.Enabled = False
 Fmain.Enabled = True
-PRIORITA
+'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
+'PRIORITA
 FRESETSUSPEND.Close
 End
 

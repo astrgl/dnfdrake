@@ -31,5 +31,6 @@
     Font = Font["FreeMono,+2"]
     Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
   }
 }

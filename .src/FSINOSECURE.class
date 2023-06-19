@@ -82,6 +82,7 @@ Endif
    flKEY.Close
  '*********************************************************************************
  If FRUN.Visible = True Then
+   FRUN.$CLOSEPASS = 1
    FRUN.Close
  Endif
  If FERROR.Visible = True Then

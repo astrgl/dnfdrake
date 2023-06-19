@@ -10,13 +10,13 @@
   { Label2 Label
     Move(312,74,236,35)
     Border = Border.Plain
+    BorderRadius = 8
   }
   { PCTDISCONNECT PictureBox
     Move(546,112,28,27)
     Visible = False
     Picture = Picture.Load("icon:/16/disconnect")
     Alignment = Align.Center
-    Border = Border.Plain
   }
   { !txtpkg TextBox
     Move(7,7,567,28)
@@ -28,6 +28,7 @@
     Move(7,140,1337,490)
     Background = Color.Transparent
     Border = Border.Plain
+    BorderRadius = 10
   }
   { HBox1 HBox
     Move(119,662,700,28)
@@ -93,6 +94,7 @@
     Move(574,112,196,27)
     Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 12
     Text = ("MONITOR")
   }
   { Btncommand Button
@@ -134,6 +136,7 @@
     Move(770,112,28,27)
     Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 12
     Text = ("US")
   }
   { BtnCFG Button
@@ -226,7 +229,6 @@
     Visible = False
     Picture = Picture.Load("icon:/16/connect")
     Alignment = Align.Center
-    Border = Border.Plain
   }
   { CMBVERSLOCK ComboBox
     Move(315,77,70,28)
@@ -351,5 +353,16 @@
     Move(45,116,20,20)
     Picture = Picture.Load("icon:/16/suspend")
     Alignment = Align.Center
+  }
+  { PICLOGODISTRO PictureBox
+    Move(14,147,1323,476)
+    Picture = Picture.Load("OMA.png")
+    Alignment = Align.Center
+  }
+  { BORDOCONNECT Label
+    Move(546,112,28,27)
+    Alignment = Align.Center
+    Border = Border.Plain
+    BorderRadius = 12
   }
 }

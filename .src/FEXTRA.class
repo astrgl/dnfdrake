@@ -206,7 +206,7 @@ Public Sub BTNCLOSE_Click()
    If Not Exist(User.Home &/ ".config/autostart") Then
    Shell ("mkdir " & User.Home &/ ".config/autostart")
    Endif
-   Shell ("cp /usr/share/dnfdrake/dnfdraketray.desktop  " & User.Home &/ ".config/autostart/")
+   Shell ("cp /usr/share/dnfdraketray/dnfdraketray.desktop  " & User.Home &/ ".config/autostart/")
    Endif
    
    If CHKDNFDRAKETRAYLAUNCH.VALUE = False And If Exist(User.Home &/ ".config/autostart/dnfdraketray.desktop") Then

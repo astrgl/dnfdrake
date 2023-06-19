@@ -6,27 +6,31 @@
   { Label3 Label
     MoveScaled(46,10,34,4)
     Border = Border.Plain
+    BorderRadius = 12
   }
   { Label1 Label
     MoveScaled(3,69,34,4)
     Border = Border.Plain
+    BorderRadius = 12
   }
   { TXTUPDATECMD TextBox
     MoveScaled(3,6,77.1429,4)
   }
   { TXTINSTALL Label
-    MoveScaled(3,25,77,3)
+    MoveScaled(27.2857,24.5714,28.5714,3)
     Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
     Text = ("Install command")
   }
   { TXTINSTALLCMD TextBox
     MoveScaled(3,28,77.1429,4)
   }
   { TXTUNINSTALL Label
-    MoveScaled(3,34,77,3)
+    MoveScaled(27.2857,33.5714,28.5714,3)
     Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
     Text = ("Uninstall command")
   }
   { TXTUNINSTALLCMD TextBox
@@ -45,46 +49,51 @@
     Text = ("Reset Default")
   }
   { TXTUPDATEPKG Label
-    MoveScaled(3,16,77,3)
+    MoveScaled(27.2857,15.5714,28.5714,3)
     Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
     Text = ("Update PKG command")
   }
   { TXTUPDATEPKGCMD TextBox
     MoveScaled(3,19,77.1429,4)
   }
   { TXTUPDATE Label
-    MoveScaled(3,3,77,3)
+    MoveScaled(27.2857,2.5714,28.5714,3)
     Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
     Text = ("Update SYS command")
   }
   { TXTDOWNGRADE Label
-    MoveScaled(3,43,77,3)
+    MoveScaled(27.2857,42.5714,28.5714,3)
     Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
     Text = ("Downgrade command")
   }
   { TXTDOWNGRADECMD TextBox
     MoveScaled(3,46,77.1429,4)
   }
   { TXTCUSTOM Label
-    MoveScaled(3,61,77,3)
+    MoveScaled(27.2857,60.5714,28.5714,3)
     Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
     Text = ("Custom command")
   }
   { TXTCUSTOMCMD TextBox
     MoveScaled(3,64,77.1429,4)
   }
   { CHKCOLORTEXT CheckBox
-    MoveScaled(3,69,33,4)
+    MoveScaled(4,69,33,4)
     Text = ("  Color text active")
   }
   { TXTREINSTALL Label
-    MoveScaled(3,52,77,3)
+    MoveScaled(27.2857,51.5714,28.5714,3)
     Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
     Text = ("Reinstall command")
   }
   { TXTREINSTALLCMD TextBox
@@ -93,14 +102,15 @@
   { Label2 Label
     MoveScaled(3,10,34,4)
     Border = Border.Plain
+    BorderRadius = 12
   }
   { CHKLOG CheckBox
-    MoveScaled(3,10,33,4)
+    MoveScaled(4,10,33,4)
     Text = ("Save Log")
     Value = CheckBox.True
   }
   { CHKSECUREMODE CheckBox
-    MoveScaled(46,10,34,4)
+    MoveScaled(47,10,32,4)
     Text = ("Secure Mode")
   }
 }

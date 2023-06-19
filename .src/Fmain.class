@@ -610,6 +610,17 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
       Else 
       BTNPICKER.Visible = False
     Endif
+  'CARICA L'IMMAGINE DI PICLOGODISTRO
+  If InStr($DISTRO, "OpenMandriva", 0, gb.IgnoreCase) Then
+    PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/OMA.png")
+  Else 
+      If InStr($DISTRO, "ROSA", 0, gb.IgnoreCase) Then  
+         PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/ROSA.png")
+         'PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/OMA.png")
+      Else 
+         PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/LINUX.png")
+      Endif
+  Endif     
   'VERIFICA SE IL SUSPEND È ABILITATO E ALTRE FUNZIONI*********
   VERIFYSUSPEND
   $WAITSUSPEND = 0
@@ -826,7 +837,7 @@ Public Sub Process_Read()
   If $ListpkgWR = 3 And $STATUS = 1 And $ListpkgCK = 0 Then
     $ListpkgCK = 3
   Endif
-'***********************************************************************
+'******************************************************************
 End
 
 
@@ -1075,6 +1086,7 @@ Public Sub btnupdate_Click()
    Else 
    DSTUPDATE ' SOSTITUISCE IL CODICE PER EVITARE DI RIPETERLO *********************************
   Endif 
+  PICLOGODISTRO.Visible = False  
 End
 
 Public Sub txtConsole_KeyPress()
@@ -1342,7 +1354,7 @@ Public Sub BTNPKGUPDATE_Click()
                                   Btnexp2_Click  
                               Endif
                           Me.Mouse = Mouse.Wait 
-                          Print #$hProcess, $PKGUPDATE & spkg & $VERBOSE & gb.NewLine;
+                          Print #$hProcess, $PKGUPDATE & spkg & $VERBOSE & gb.NewLine; 
                           FRUNSHOW
                       Endif
                    Endif   
@@ -1357,7 +1369,7 @@ Public Sub txtCommand_KeyPress()
 End
 
 Public Sub Btnexp1_Click()
-
+    PICLOGODISTRO.Visible = False
     If Btnexp2.Text = "UEXP2" Then
     Btnexp2_Click
   Endif
@@ -1421,7 +1433,7 @@ Public Sub Btnexp1_Click()
 End
 
 Public Sub Btnexp2_Click()
-      
+      PICLOGODISTRO.Visible = False
       If Btnexp1.Text = "UEXP1" Then
        Btnexp1_Click
     Endif
@@ -1456,6 +1468,7 @@ Public Sub Btnexp2_Click()
 End
 
 Public Sub btninfo_Click()
+   
    Btnclear_Click
    TABHIDE
    If Listpkg.Visible = True Then
@@ -1466,6 +1479,7 @@ Public Sub btninfo_Click()
         Endif
       txtConsole.Text = ""
       Print #$hProcess, "dnf repolist" & gb.NewLine;
+      PICLOGODISTRO.Visible = False  
    Else
       If txtpkg.text = "" Then 
           Message.Info($SELECTPKG, "OK")
@@ -1476,26 +1490,32 @@ Public Sub btninfo_Click()
    If Cmbtipoinfo.index = 0                                         'GENERALE
       txtConsole.Text = ""
       Print #$hProcess, "dnf info " & txtpkg.Text & gb.NewLine;
+      PICLOGODISTRO.Visible = False  
    Endif
    If Cmbtipoinfo.Index = 3                                         'CHANGELOG
      txtConsole.Text = ""
      Print #$hProcess, "dnf provides " & txtpkg.Text & gb.NewLine;
+     PICLOGODISTRO.Visible = False  
    Endif
    If Cmbtipoinfo.Index = 1                                         'DIPENDENZE
       txtConsole.Text = ""
       Print #$hProcess, "dnf deplist " & txtpkg.Text & " | grep dependency" & gb.NewLine;
+      PICLOGODISTRO.Visible = False  
    Endif
    If Cmbtipoinfo.Index = 2                                            'FILE
      txtConsole.Text = ""
       If Cmbtipo.Index = 1
          Print #$hProcess, "rpm -ql " & txtpkg.Text & gb.NewLine;
+         PICLOGODISTRO.Visible = False  
       Else
          Print #$hProcess, "repoquery -l " & txtpkg.Text & gb.NewLine;
+         PICLOGODISTRO.Visible = False  
       Endif
    Endif
    If Cmbtipoinfo.index = 4                                             'HOMEPAGE                                              
       txtConsole.Text = ""
       Print #$hProcess, "dnf info " & txtpkg.Text & " | grep URL" & gb.NewLine;
+      PICLOGODISTRO.Visible = False  
    Endif
   Endif
  Endif
@@ -1512,6 +1532,7 @@ Public Sub btncerca_Click()
           txtConsole.Text = ""
           Me.Mouse = Mouse.Wait  
           Print #$hProcess, "dnf list " & gb.NewLine; 
+           PICLOGODISTRO.Visible = False  
           If Btnexp2.Text = "EXP2" Then
           Btnexp2_Click 
           Endif
@@ -1525,6 +1546,7 @@ Public Sub btncerca_Click()
 '****************************************************************
           Me.Mouse = Mouse.Wait  
           Print #$hProcess, "dnf " & $SEARCH & " list | grep " & txtpkg.Text & gb.NewLine;
+          PICLOGODISTRO.Visible = False  
           ' $MEMOEXEC = "txtpkgclear"
         Endif
         Endif
@@ -1778,6 +1800,7 @@ If BTNFULLSCREEN.Visible = True
   Btncommand.Y = Btncommand.Y + ($RISOLUZIONEY - 768)
   PCTCONNECT.X = PCTCONNECT.X + ($RISOLUZIONEX - 1366) / 2
   PCTDISCONNECT.X = PCTDISCONNECT.X + ($RISOLUZIONEX - 1366) / 2
+  BORDOCONNECT.X = BORDOCONNECT.X + ($RISOLUZIONEX - 1366) / 2
   Label1.X = Label1.X + ($RISOLUZIONEX - 1366) / 2
   txtlang.X = txtlang.X + ($RISOLUZIONEX - 1366) / 2 
   CORNICE.Width = CORNICE.Width + ($RISOLUZIONEX - 1366)
@@ -1814,6 +1837,9 @@ If BTNFULLSCREEN.Visible = True
   BTNPKGLISTCLEAN.Y = BTNPKGLISTCLEAN.Y + ($RISOLUZIONEY - 768)
   BTNFULLSCREEN.Visible = False
   BTNRESIZE.Visible = True
+  PICLOGODISTRO.Width = PICLOGODISTRO.Width + ($RISOLUZIONEX - 1366)
+  PICLOGODISTRO.Height = PICLOGODISTRO.Height + ($RISOLUZIONEY - 768)
+
 Else 
   Fmain.X = 0
   Fmain.Y = 0
@@ -1826,6 +1852,7 @@ Else
   Btncommand.Y = 662
   PCTCONNECT.X = 546
   PCTDISCONNECT.X = 546
+  BORDOCONNECT.X = 546
   Label1.X = 574
   txtlang.X = 770 
   CORNICE.Width = 1337
@@ -1862,6 +1889,8 @@ Else
   BTNPKGLISTCLEAN.Y = 630
   BTNRESIZE.Visible = False
   BTNFULLSCREEN.Visible = True
+  PICLOGODISTRO.Width = 1332 - 8
+  PICLOGODISTRO.Height = 476
 Endif 
 End
 
@@ -2146,6 +2175,7 @@ If $SECUREMODE = "SECURE" Then
     Endif
     $FRUNMAIN = 1
 Endif
+PICLOGODISTRO.Visible = False  
 '************************************************* 
 End 
 Private Sub DSTRSYNC()
@@ -2258,6 +2288,7 @@ Public Sub Btncommand_Click()
       If Btnexp2.Text = "EXP2" Then
         Btnexp2_Click 
       Endif
+    PICLOGODISTRO.Visible = False  
   Else
       Btncommand.Text = Left(Btncommand.Text, -2)
       HBox1.Visible = False
@@ -2266,6 +2297,7 @@ Public Sub Btncommand_Click()
       btnCtrlC.Visible = False
       btnCtrlZ.Visible = False
       Btnexp2_Click 
+      PICLOGODISTRO.Visible = True
       
   Endif
 
@@ -2279,6 +2311,7 @@ Public Sub Btncrono_Click()
    Endif
    txtConsole.Text = ""
    Print #$hProcess, "dnf history" & gb.NewLine;
+   PICLOGODISTRO.Visible = False  
   
 End
 
@@ -2302,6 +2335,8 @@ Public Sub Btnclear_Click()
     ListpkgUPGRADE.UnselectAll
 
     txtConsole.text = ""
+       
+    
 'GESTIONE PER POTER INSTALLARE DA TXTPKG SE PRESENTI AGGIONAMENTI
       If $OFFLINE = 1 Then
         If Btncommand.Text = Btncommand.Text Then
@@ -2325,6 +2360,9 @@ Public Sub Btnclear_Click()
       BTNALLVIEW
       Me.Mouse = Mouse.Default
       $PROGRESSBARFORCESUSPEND = 0
+      If txtCommand.Visible = False Then
+       PICLOGODISTRO.Visible = True
+      Endif 
 End
 
 Public Sub BTNABOUT_Click()
@@ -2608,6 +2646,7 @@ Public Sub Btndownload_Click()
               Else
                 txtConsole.Text = ""
                 Print #$hProcess, "dnf download " & txtpkg.Text & $VERBOSE & gb.NewLine;
+                PICLOGODISTRO.Visible = False  
                 If $SECUREMODE = "SECURE" Then
                    FPROGRESSWAIT.Show
                 Endif 
@@ -2630,6 +2669,7 @@ Public Sub Btndownload_Click()
                                Message.Info($SELECTPKG, "OK")
                            Else
                               Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine;
+                              PICLOGODISTRO.Visible = False  
                               If $SECUREMODE = "SECURE" Then
                                  FPROGRESSWAIT.Show
                               Endif 
@@ -2651,6 +2691,7 @@ Public Sub Btndownload_Click()
                                Message.Info($SELECTPKG, "OK")
                            Else
                               Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine;
+                              PICLOGODISTRO.Visible = False  
                               If $SECUREMODE = "SECURE" Then
                                  FPROGRESSWAIT.Show
                               Endif
@@ -2672,6 +2713,7 @@ Public Sub Btndownload_Click()
                                Message.Info($SELECTPKG, "OK")
                            Else
                               Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine;
+                              PICLOGODISTRO.Visible = False  
                               If $SECUREMODE = "SECURE" Then
                                  FPROGRESSWAIT.Show
                               Endif
@@ -2694,6 +2736,7 @@ Public Sub Btndownload_Click()
                            Message.Info($SELECTPKG, "OK")
                         Else
                           Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine;
+                          PICLOGODISTRO.Visible = False  
                           If $SECUREMODE = "SECURE" Then
                              FPROGRESSWAIT.Show
                           Endif
@@ -2705,7 +2748,7 @@ Public Sub Btndownload_Click()
                   If Btnexp2.Text = "EXP2" Then
                      Btnexp2_Click  
                   Endif
-  Endif   
+  Endif 
 End
 
 Public Sub BtnCFG_Click()
@@ -2939,6 +2982,7 @@ Public Sub BTNCUSTOM_Click()
    
    Print #$hProcess, $CUSTOMCMD & txtpkg.Text & gb.NewLine;
    txtConsole.Text = ""
+   PICLOGODISTRO.Visible = False
   
 
 End
@@ -3026,14 +3070,13 @@ Public Sub BTNVERSLOCK_Click()
      Dim spkg As String
      spkg = ""
     ' Btnclear_Click
- 
- 
  If CMBVERSLOCK.index = 0 Then                      'List
           Btnclear_Click
           If Btnexp2.Text = "EXP2" Then
             Btnexp2_Click 
           Endif
           Print #$hProcess, "dnf versionlock list " & $VERBOSE & gb.NewLine; 
+          PICLOGODISTRO.Visible = False  
  Endif
 '**************************************************************************
 
@@ -3049,7 +3092,8 @@ If CMBVERSLOCK.index = 1 Then                      'Add
           spkg = txtpkg.Text
           txtpkg.Text = ""
            Btnclear_Click
-           Print #$hProcess, "sudo dnf versionlock add " & spkg & $VERBOSE & gb.NewLine; 
+           Print #$hProcess, "sudo dnf versionlock add " & spkg & $VERBOSE & gb.NewLine;
+           PICLOGODISTRO.Visible = False   
       Endif
  Else   
       If $OFFLINE = 0 Then
@@ -3071,6 +3115,7 @@ If CMBVERSLOCK.index = 1 Then                      'Add
                       TABHIDE
                       Listpkg.Visible = False
                     Print #$hProcess, "sudo dnf versionlock add " & spkg & $VERBOSE & gb.NewLine; 
+                    PICLOGODISTRO.Visible = False  
                 Endif
           Endif
      Else     
@@ -3092,6 +3137,7 @@ If CMBVERSLOCK.index = 1 Then                      'Add
                       TABHIDE
                       Listpkg.Visible = False
                     Print #$hProcess, "sudo dnf versionlock add " & spkg & $VERBOSE & gb.NewLine; 
+                    PICLOGODISTRO.Visible = False   
                 Endif
           Endif
           
@@ -3113,6 +3159,7 @@ If CMBVERSLOCK.index = 1 Then                      'Add
                       TABHIDE
                       Listpkg.Visible = False
                     Print #$hProcess, "sudo dnf versionlock add " & spkg & $VERBOSE & gb.NewLine; 
+                    PICLOGODISTRO.Visible = False   
                 Endif
           Endif
           
@@ -3134,6 +3181,7 @@ If CMBVERSLOCK.index = 1 Then                      'Add
                       TABHIDE
                       Listpkg.Visible = False
                     Print #$hProcess, "sudo dnf versionlock add " & spkg & $VERBOSE & gb.NewLine; 
+                    PICLOGODISTRO.Visible = False   
           Endif
       Endif
 
@@ -3156,7 +3204,8 @@ If CMBVERSLOCK.index = 2 Then                      'Delete
           spkg = txtpkg.Text
           txtpkg.Text = ""
            Btnclear_Click
-           Print #$hProcess, "sudo dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine; 
+           Print #$hProcess, "sudo dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine;
+           PICLOGODISTRO.Visible = False    
       Endif
  Else   
       If $OFFLINE = 0 Then
@@ -3178,6 +3227,7 @@ If CMBVERSLOCK.index = 2 Then                      'Delete
                       TABHIDE
                       Listpkg.Visible = False
                     Print #$hProcess, "sudo dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine; 
+                    PICLOGODISTRO.Visible = False   
                 Endif
           Endif
      Else     
@@ -3199,6 +3249,7 @@ If CMBVERSLOCK.index = 2 Then                      'Delete
                       TABHIDE
                       Listpkg.Visible = False
                     Print #$hProcess, "sudo dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine; 
+                    PICLOGODISTRO.Visible = False   
                 Endif
           Endif
           
@@ -3220,6 +3271,7 @@ If CMBVERSLOCK.index = 2 Then                      'Delete
                       TABHIDE
                       Listpkg.Visible = False
                     Print #$hProcess, "sudo dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine; 
+                    PICLOGODISTRO.Visible = False  
                 Endif
           Endif
           
@@ -3241,6 +3293,7 @@ If CMBVERSLOCK.index = 2 Then                      'Delete
                       TABHIDE
                       Listpkg.Visible = False
                     Print #$hProcess, "sudo dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine; 
+                    PICLOGODISTRO.Visible = False   
           Endif
       Endif
 
@@ -3257,6 +3310,7 @@ Endif
           Btnexp2_Click 
           Endif
           Print #$hProcess, "sudo dnf versionlock clear " & $VERBOSE & gb.NewLine; 
+          PICLOGODISTRO.Visible = False   
   Endif
  
 End
@@ -3285,7 +3339,7 @@ Public Sub BTNDISTUPDATE_Click()
    Else 
      DSTRSYNC ' SOSTITUISCE IL CODICE PER EVITARE DI RIPETERLO *********************************
   Endif
-
+  PICLOGODISTRO.Visible = False  
 End
 
 Public Sub BTNPICKER_Click()
@@ -3384,7 +3438,7 @@ Public Sub BTNREINSTALL_Click()
                            Btnexp2_Click  
                            Endif
                             Me.Mouse = Mouse.Wait 
-                           Print #$hProcess, $REINSTALL & spkg & $VERBOSE & gb.NewLine;
+                           Print #$hProcess, $REINSTALL & spkg & $VERBOSE & gb.NewLine; 
                            FRUNSHOW
                         Endif
                      Endif   
@@ -3410,6 +3464,7 @@ Public Sub BTNVIEWLOG_Click()
      $PRINTLOG = 1
      ' $PATHFILELOG = Replace(Dialog.Path, " ", Chr$(92) & " ") ' serve agestire percorsi con gli spazi
    Print #$hProcess, "cat " & $PATHFILELOG 
+   PICLOGODISTRO.Visible = False  
    Next
 Catch
   Message.Info(Error.Text)
@@ -3422,10 +3477,12 @@ Public Sub BTNREPLAY_Click()
   Btnclear_Click
   If Right(txtpkg.Text, 4) = ".txt" Then '*************Verifica se esiste un elenco di pacchetti da installare 
      Print #$hProcess, "cat " & txtpkg.Text & gb.NewLine;
+     PICLOGODISTRO.Visible = False  
   Else 
       Btnclear_Click
       $PRINTLOG = 1
       Print #$hProcess, "cat " & $PATHLOG & "/last.log"
+      PICLOGODISTRO.Visible = False  
   Endif
 End
 Public Sub DATATIME()
@@ -3467,6 +3524,7 @@ Public Sub BTNDNFCLEAN_Click()
   txtConsole.Text = ""
   $MEMOCOMMAND = "dnf repolist"
   Print #$hProcess, "sudo dnf clean all; dnf clean all;" & gb.NewLine; 
+   PICLOGODISTRO.Visible = False  
   
 End
 
@@ -3682,11 +3740,13 @@ Public Sub BTNAUTOREMOVE_Click()
    Me.Mouse = Mouse.Wait 
    If $LOG = "NOLOG"
        Print #$hProcess, "sudo dnf autoremove" & $VERBOSE & gb.NewLine;
+       PICLOGODISTRO.Visible = False  
        FRUNSHOW
    Endif 
    If $LOG = "LOG" Then
       DATATIME
       Print #$hProcess, "sudo dnf autoremove | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-autoremove.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+       PICLOGODISTRO.Visible = False  
       FRUNSHOW
    Endif
 
@@ -3732,13 +3792,16 @@ Public Sub TXTINFOBOX_KeyPress()
 End
 
 Public Sub BTNSUSPEND_Click()
+
  If BTNSUSPEND.Enabled = True 
       Btnclear_Click  
       ' If BTNSUSPEND.Text = "    Suspend On" Then
       If PICSUSPEND.Visible = True
-         Print #$hProcess, "sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;  
+         Print #$hProcess, "sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine; 
+          PICLOGODISTRO.Visible = False   
       Else 
          Print #$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
+          PICLOGODISTRO.Visible = False  
       Endif
       $MEMOCOMMAND = "CLEARSUSPEND"
   Endif     
@@ -3751,6 +3814,7 @@ End
 Public Sub PICSUSPENDLOCK_MouseDown()
     BTNSUSPEND_Click
 End
+
 
 
 Public Sub PICEXCLUDE_MouseDown()

@@ -1,15 +1,17 @@
 ' Gambas class file
 
+Public $CLOSEPASS As Integer
+
 Public Sub Form_Open()
   Dim flBTN As File  
   Dim jBTN As Byte
   Dim s$BTN As String
   Dim ss$BTN As New String[]
-  
+
   If Fmain.$PROGRESSBARFORCESUSPEND = 1 Then
      FRUN.ProgressBar1.Pulse = False    
      FRUN.ProgressBar1.Value = 1
-'Mette OK sul pulsante********************************************
+'TESTI E TOOLTIP********************************************
    flBTN = Open "/usr/share/dnfdrake/dnfdrake-BTN-" & Fmain.$LANG For Read 
       While Not Eof(flBTN)
       Input #flBTN, s$BTN
@@ -17,7 +19,7 @@ Public Sub Form_Open()
     Wend
     Close #flBTN
     For jBTN = 0 To ss$BTN.Max
-      BTNSTOP.Text = ss$BTN[15]
+      BTNSTOP.Text = Replace(ss$BTN[15], "_", " ")
       Next
     flBTN.Close     
 '*******************************************************************
@@ -31,6 +33,8 @@ Public Sub Form_Open()
      BTNSTOP.Text = Fmain.btnstop.Text 
   Endif 
   
+     $CLOSEPASS = 0    
+ 
   Wait 0.2
   Fmain.Enabled = False  
   
@@ -39,18 +43,38 @@ End
 
 Public Sub Form_Close()
 
-  If FSINOSECURE.Visible = True Then
-  Else 
-  Fmain.Enabled = True  
-  Endif
-  ' If Fmain.$MEMOCOMMAND = "RECOVERSUSPEND" Then
-  '   Fmain.Enabled = False
-  ' Endif
-  ' 
+'MODIFICA IN CORSO PROTEZIONE CHIUSURA
+ If $CLOSEPASS = 0 Then
+   If FPW.Visible = False Then
+      Dim iAnswer As Integer = Message.Question(Fmain.$ASKEXIT, Fmain.$SI, Fmain.$NO)
+        If (iAnswer = 1) Then
+          BTNSTOP_Click
+          Fmain.Enabled = True
+        Else
+           BTNSTOP.Enabled = True
+           Stop Event
+        Endif 
+    Else 
+        FRUN.Close  
+    Endif 
+ Else 
+   If FSINOSECURE.Visible = True Then
+   Else 
+     Fmain.Enabled = True  
+   Endif
+       ' If Fmain.$MEMOCOMMAND = "RECOVERSUSPEND" Then
+        '   Fmain.Enabled = False
+       ' Endif
+ Endif 
+'************************************************************
+
+
+  
 End
 
 Public Sub BTNSTOP_Click()
 BTNSTOP.Enabled = False
+$CLOSEPASS = 1
 ' Fmain.VERIFYSUSPEND ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
 If ProgressBar1.Value = 1 Then
     If Fmain.txtConsole.Visible = True Then
@@ -68,6 +92,7 @@ If ProgressBar1.Value = 1 Then
     Fmain.$FRUNMAIN = 0
     'Fmain.$CLEARLOGSUSPEND = 1 ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
     Fmain.TMPLISTCLEAN
+    Fmain.$WAITSUSPEND = 1
     Me.Close
 Endif
 End

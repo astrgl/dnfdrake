@@ -3820,3 +3820,9 @@ End
 Public Sub PICEXCLUDE_MouseDown()
   BTNEXCLUDE_Click
 End
+
+Public Sub PICLOGODISTRO_MouseDown()
+
+  
+
+End

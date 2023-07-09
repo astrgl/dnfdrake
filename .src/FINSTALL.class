@@ -1,7 +1,8 @@
-' Gambas class file
 
+' Gambas class file
 $TXTRPMPATH As String
 Public $SECURE As Integer
+Public $NAMEPGK As String
 
 Public Sub Form_Open()
 
@@ -31,10 +32,45 @@ BTNPKGREINSTALL.Text = Fmain.BTNREINSTALL.Text
 TXTRPMPATH.Text = $TXTRPMPATH & Right(Fmain.$RPMPATH, "-" & RInStr(Fmain.$RPMPATH, "/")) & " ?"
 If Fmain.$SECUREMODE = "SECURE" Then
   Fmain.Enabled = False  
+  CLEARNAME
+  CHECKINSTALL
 Endif
 $SECURE = 0
 End
 
+Private Sub CLEARNAME()
+  Dim i As Integer
+  i = 0
+  $NAMEPGK = Right(Fmain.$RPMPATH, "-" & RInStr(Fmain.$RPMPATH, "/")) 'LASCIA SOLO IL NOME DEL PACCHETTO COMPLETO DI ESTENSIONE
+  While i < 3
+      $NAMEPGK = Left($NAMEPGK, -1 + RInStr($NAMEPGK, "-")) 'LASCIA SOLO IL NOME PURO ELIMINA ESTENSIONE E ALTRI DATI
+      i = i + 1
+  Wend 
+End
+
+Private Sub CHECKINSTALL()
+  
+   Dim s As String
+   Dim t As Stream
+   Dim CHK As Integer
+   CHK = 0
+
+     t = Open User.Home & "/.config/dnfdrake/installati.txt"
+     For Each s In t.Lines 
+       If InStr(s, RTrim$(LTrim$($NAMEPGK)), 0, gb.IgnoreCase) Then
+          'Message.Info("installato", "ok")
+          CHK = 1
+          Break 
+       Endif                     
+     Next
+     If CHK = 1 Then
+       BTNINSTALL.Enabled = False
+     Else 
+       BTNPKGUPDATE.Enabled = False
+       BTNPKGREINSTALL.Enabled = False     
+     Endif
+
+End
 
 Public Sub BTNANNULLA_Click()
 

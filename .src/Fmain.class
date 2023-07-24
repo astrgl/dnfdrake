@@ -56,6 +56,7 @@ Public $CLOSEPASS As Integer
 Public $SI As String
 Public $NO As String
 Public $ASKEXIT As String
+Public $FLATDRAKESEARCH As String
 'VARIABILI EXTRA OPTIONS*****************************************************************************
 Public $SEARCH As String
 'PAROLE CHIAVE LETTURA STRINGA***********************************************************************
@@ -634,6 +635,22 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
   Else  
     $AUTOSUSPEND = 0
   Endif  
+  
+  'VERIFICA SE DNFDRAKE È LANCIATO DAL FLATDRAKE E ADATTA LA RICERCA******* IN TEST**************
+   If Exist(User.Home &/ ".config/flatdrake/flatsearchtmp") Then
+      TimerUPLISTE.Enabled = False
+      Shell "cat " & User.Home &/ ".config/flatdrake/flatsearchtmp" To $FLATDRAKESEARCH
+      txtpkg.Text = $FLATDRAKESEARCH
+      btncerca_Click
+      BTNTABAVIABLE_Click
+     ' $MEMOCOMMAND = "FLATDRAKESEARCH"
+      ' Dim iAnswer As Integer = Message.Question("Prima di installare aggiornare le liste?", $SI, $NO)
+      '  If (iAnswer = 1) Then
+      '     TimerUPLISTE.Enabled = True
+      '  Else
+      '     Stop Event
+      '  Endif 
+   Endif
   '************************************************************  
 End
 
@@ -810,6 +827,16 @@ Public Sub Process_Read()
           Btncleartxtpkg_Click
           $MEMOEXEC = ""
        Endif
+'**************************************************************************
+  'IN TEST NON SO SE USARLO SE NON SI USA CANCELLARE!!!
+       ' If $MEMOCOMMAND = "FLATDRAKESEARCH" Then
+       '    'TimerUPLISTE.Enabled = False
+       '    Shell "cat " & User.Home &/ ".config/flatdrake/flatsearchtmp" To $FLATDRAKESEARCH
+       '    txtpkg.Text = $FLATDRAKESEARCH
+       '    btncerca_Click
+       '    BTNTABAVIABLE_Click
+       '    $MEMOCOMMAND = ""
+       ' Endif
 '**************************************************************************
        If $ListpkgWR = 0 And $CHKERROR > 0 Then
           Try Message.Info("N°" & $CHKERROR & " ERRORS HAVE BEEN DETECTED, PLEASE IMPROVE THE SEARCH CRITERIA", "OK")

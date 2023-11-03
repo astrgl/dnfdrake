@@ -19,7 +19,7 @@
     Alignment = Align.Center
   }
   { !txtpkg TextBox
-    Move(7,7,567,28)
+    Move(7,7,565,28)
     #Public = True
     Expand = True
     Alignment = Align.Left
@@ -65,9 +65,6 @@
   }
   { btnupdate Button
     Move(672,42,110,28)
-  }
-  { Btnclose Button
-    Move(1232,7,110,28)
   }
   { btninstall Button
     Move(672,7,110,28)
@@ -139,19 +136,25 @@
     BorderRadius = 14
     Text = ("US")
   }
-  { BtnCFG Button
-    Move(553,42,110,28)
-  }
-  { Btndownload Button
-    Move(315,42,110,28)
-  }
   { Btnpathfile Button
     Move(601,7,31,28)
     Picture = Picture["icon:/16/directory"]
   }
+  { Btndownload Button
+    Move(315,42,110,28)
+  }
   { Btncleartxtpkg Button
-    Move(572,7,31,28)
-    Picture = Picture["icon:/16/clear"]
+    Move(571,7,31,28)
+  }
+  { Btnpathpkglist Button
+    Move(631,7,31,28)
+    ToolTip = ("Create a list of packages to install")
+  }
+  { Btnclose Button
+    Move(1232,7,110,28)
+  }
+  { BtnCFG Button
+    Move(553,42,110,28)
   }
   { BTNPICKER Button
     Move(1232,112,112,28)
@@ -164,12 +167,10 @@
   { BTNSELECTALL Button
     Move(7,630,35,28)
     Visible = False
-    Picture = Picture["icon:/16/add"]
   }
   { BTNUNSELECTALL Button
     Move(42,630,35,28)
     Visible = False
-    Picture = Picture["icon:/16/remove"]
   }
   { BTNPKGUPDATE Button
     Move(910,7,110,28)
@@ -179,10 +180,16 @@
   }
   { BTNCUSTOM Button
     Move(1162,662,56,28)
-    Picture = Picture["icon:/16/emote-cool"]
   }
   { BTNEXTRA Button
     Move(553,77,110,28)
+  }
+  { ListpkgNODEPS ListView
+    Move(14,147,1323,476)
+    Visible = False
+    Font = Font["Monospace"]
+    Mode = Select.Multiple
+    ShowCheck = True
   }
   { ListpkgINSTALLATI ListView
     Move(14,147,1323,476)
@@ -208,17 +215,14 @@
   { BTNTABINSTALLED Button
     Move(182,630,120,28)
     Visible = False
-    Picture = Picture["ICONS-EXTRA/installed.png"]
   }
   { BTNTABAVIABLE Button
     Move(308,630,120,28)
     Visible = False
-    Picture = Picture["ICONS-EXTRA/install.png"]
   }
   { BTNTABUPDATE Button
     Move(434,630,120,28)
     Visible = False
-    Picture = Picture["ICONS-EXTRA/update.png"]
   }
   { TimerUPLISTE #Timer
     #Move(1183,7)
@@ -250,12 +254,6 @@
   { BTNVIEWLOG Button
     Move(1232,630,112,28)
     Text = ("Log")
-    Picture = Picture["icon:/16/directory"]
-  }
-  { BTNREPLAY Button
-    Move(1162,630,56,28)
-    ToolTip = ("Replay Last Log or view package list")
-    Picture = Picture["icon:/16/play"]
   }
   { BTNUNLOCK Button
     Move(931,665,42,28)
@@ -266,11 +264,6 @@
     Move(910,42,110,28)
     Text = ("Dnf Clean Cache")
   }
-  { Btnpathpkglist Button
-    Move(630,7,31,28)
-    ToolTip = ("Create a list of packages to install")
-    Picture = Picture["icon:/16/save-as"]
-  }
   { TXTINFOBOX TextArea
     Move(567,147,770,476)
     Visible = False
@@ -278,20 +271,21 @@
     Foreground = Color.TextForeground
     Wrap = True
   }
+  { BTNREPLAY Button
+    Move(1162,630,56,28)
+    ToolTip = ("Replay Last Log or view package list")
+  }
   { BTNADDPKGLIST Button
     Move(576,630,28,28)
     Visible = False
-    Picture = Picture["icon:/16/insert-text"]
   }
   { PICBTNDISTUPDATE PictureBox
     Move(679,48,21,17)
     Visible = False
-    Picture = Picture.Load("icon:/16/refresh")
   }
   { BTNPKGLISTVIEW Button
     Move(864,630,28,28)
     Visible = False
-    Picture = Picture["icon:/16/watch"]
   }
   { TXTPKGLISTLABEL TextBox
     Move(602,630,98,28)
@@ -311,7 +305,6 @@
   { BTNPKGLISTCLEAN Button
     Move(889,630,28,28)
     Visible = False
-    Picture = Picture["icon:/16/trash"]
   }
   { BTNEXCLUDE Button
     Move(465,77,80,28)
@@ -320,7 +313,6 @@
   { PICEXCLUDE PictureBox
     Move(527,83,15,17)
     Visible = False
-    Picture = Picture.Load("icon:/16/lock-screen")
   }
   { BTNMYREPO Button
     Move(1232,77,112,28)
@@ -329,15 +321,12 @@
   { BTNAUTOREMOVE Button
     Move(791,42,110,28)
     Text = Shortcut(("Autoremove"), "v")
-    Picture = Picture["icon:/16/trash"]
   }
   { BTNFULLSCREEN Button
     Move(7,112,35,28)
-    Picture = Picture["icon:/16/fullscreen"]
   }
   { BTNRESIZE Button
     Move(7,112,35,28)
-    Picture = Picture["icon:/16/resize"]
   }
   { BTNSUSPEND Button
     Move(42,112,80,28)
@@ -346,12 +335,10 @@
   { PICSUSPENDLOCK PictureBox
     Move(45,116,20,20)
     Visible = False
-    Picture = Picture.Load("icon:/16/lock")
     Alignment = Align.Center
   }
   { PICSUSPEND PictureBox
     Move(45,116,20,20)
-    Picture = Picture.Load("icon:/16/suspend")
     Alignment = Align.Center
   }
   { PICLOGODISTRO PictureBox
@@ -364,5 +351,20 @@
     Alignment = Align.Center
     Border = Border.Plain
     BorderRadius = 14
+  }
+  { LBLNODEPS Label
+    Move(553,7,110,28)
+    Visible = False
+    Border = Border.Sunken
+  }
+  { CHKNODEPS CheckBox
+    Move(581,7,77,28)
+    Visible = False
+    Text = ("Nodeps")
+  }
+  { PICNODEPS PictureBox
+    Move(553,7,28,28)
+    Visible = False
+    Alignment = Align.Center
   }
 }

@@ -3,6 +3,7 @@
 $DNFCLEANCACHE As Integer
 $INFOCLEANCACHE As String
 $MODIFICHE As Integer
+$MEMOCOMMAND As String
 
 Public Sub Form_Open()
  Dim flTTP As File  
@@ -36,24 +37,38 @@ Public Sub Form_Open()
       BTNNOMECLEAR.Tooltip = Replace(ss$TTP[24], "_", " ")
       BTNREMOVE.Tooltip = Replace(ss$TTP[61], "_", " ")
       $INFOCLEANCACHE = Replace(ss$TTP[75], "_", " ")
-       Next
+      BTNCHECKALL.Tooltip = Replace(ss$TTP[89], "_", " ")
+      BTNUNCHECKALL.Tooltip = Replace(ss$TTP[90], "_", " ")
+  Next
    flTTP.Close 
+   BTNCLOSE.Picture = Picture.Load("/usr/share/dnfdrake/close.png")
+   BTNREMOVE.Picture = Picture.Load("/usr/share/dnfdrake/remove.png")
+   BTNADDREPO.Picture = Picture.Load("/usr/share/dnfdrake/ok.png")
+   BTNBUILDREPO.Picture = Picture.Load("/usr/share/dnfdrake/run-build.png")
+   BTNCHECKALL.Picture = Picture.Load("/usr/share/dnfdrake/checkall.png")
+   BTNUNCHECKALL.Picture = Picture.Load("/usr/share/dnfdrake/uncheckall.png")
 '*************************************************************************************
- 
   If Fmain.$SECUREMODE = "SECURE" Then
       Fmain.Enabled = False 
    Endif 
  CERCAREPO
  $DNFCLEANCACHE = 0
  $MODIFICHE = 0
- LSTREPO.SetFocus
- If LSTREPO.Count > -1 Then
-   LSTREPO.KEY = 0
+ If LSTREPO.Count > -1 And If Timer1.Enabled = False Then
+   REPOINDEXDEFAULT
+   ' LSTREPO.Key = 0
+   ' CMBREPO.Index = 0
+   ' ' LSTREPO_Click 
+   ' LSTREPO.SetFocus
  Endif
- 
+'RICHIESTA PASSWORD PREVENTIVA  ******************************* 
+ Wait 0.1
+ Print #Fmain.$hProcess, "sudo echo Enable My Repo Tool" & gb.NewLine;
+
 End
 
 Public Sub Form_Close()
+  
   Print #Fmain.$hProcess, "rm -f " & User.Home & "/.config/dnfdrake/repolist.tmp "
   Wait 0.02
   Fmain.Btnclear_click
@@ -71,35 +86,47 @@ Public Sub Form_Close()
 End
 
 Public Sub CERCAREPO()
- Dim flREPO As File  
- Dim jREPO As Byte
- Dim s$REPO As String
- Dim ss$REPO As New String[]
+ ' Dim flREPO As File  
+ ' Dim jREPO As Byte
+ ' Dim s$REPO As String
+ ' Dim ss$REPO As New String[]
+
+ Dim s As String
+ Dim i As Integer
+ i = 0
+ ' ListView1.Clear
+ 
+
 
 'PULISCE LA COMBOX*************************************************************
 CMBREPO.Clear
 LSTREPO.Clear
 'CARICARE NOMI DEI REPO NEL CMBBOX*********************************************
- Print #Fmain.$hProcess, "ls /etc/yum.repos.d/ |grep drake > " & User.Home & "/.config/dnfdrake/repolist.tmp"
- Wait 0.02
- Fmain.Btnclear_click
- flREPO = Open User.Home & "/.config/dnfdrake/repolist.tmp" For Read   ' ...oppure "Input"
- While Not Eof(flREPO)
-   Input #flREPO, s$REPO
-' ' Poiché "Input" legge le stringhe in un File di testo fino all'interruzione dello spazio o al carattere di "nuova linea",
-' ' ogni parola del testo, delimitata da uno spazio, viene individuata e caricata in un nuovo elemento della variabile-array ss$:
-   ss$REPO.Add(s$REPO)
-  Wend
-   Close #flREPO
-' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
-    If ss$REPO.Max > -1
-      For jREPO = 0 To ss$REPO.Max
-        CMBREPO.add(ss$REPO[jREPO], jREPO)
-        LSTREPO.Add(jREPO, "          " & ss$REPO[jREPO])
-      Next
-     Endif  
-       flREPO.Close 
-       CMBREPO_Click      
+For Each s In Dir("/etc/yum.repos.d/", "*MyRepo*.*", gb.File)
+   LSTREPO.Add(i, "          " & s)
+   CMBREPO.Add(s, i)
+   i = i + 1
+ Next
+'  Print #Fmain.$hProcess, "ls /etc/yum.repos.d/ |grep drake > " & User.Home & "/.config/dnfdrake/repolist.tmp"
+'  Wait 0.02
+'  Fmain.Btnclear_click
+'  flREPO = Open User.Home & "/.config/dnfdrake/repolist.tmp" For Read   ' ...oppure "Input"
+'  While Not Eof(flREPO)
+'    Input #flREPO, s$REPO
+' ' ' Poiché "Input" legge le stringhe in un File di testo fino all'interruzione dello spazio o al carattere di "nuova linea",
+' ' ' ogni parola del testo, delimitata da uno spazio, viene individuata e caricata in un nuovo elemento della variabile-array ss$:
+'    ss$REPO.Add(s$REPO)
+'   Wend
+'    Close #flREPO
+' ' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
+'     If ss$REPO.Max > -1
+'       For jREPO = 0 To ss$REPO.Max
+'         CMBREPO.add(ss$REPO[jREPO], jREPO)
+'         LSTREPO.Add(jREPO, "          " & ss$REPO[jREPO])
+'       Next
+'      Endif  
+'        flREPO.Close 
+       ' CMBREPO_Click      
 'SPOSTATO DA OPEN PER PROVA*************************************  
   If CMBREPO.Text = "" Then
    CMBREPO.Text = "MyRepo-"
@@ -140,6 +167,18 @@ If LSTREPO.Count > -1 Then
 Endif
 
 End
+Public Sub REPOINDEXDEFAULT()
+  
+  If LSTREPO.Count > -1 Then
+   Fmain.Btnclear_click 
+   LSTREPO.Key = 0
+   CMBREPO.Index = 0
+   ' LSTREPO_Click 
+   LSTREPO.SetFocus
+ Endif
+  CMBREPO.ReadOnly = True
+End
+
 
 Public Sub BTNCLOSE_Click()
   BTNCLOSE.Enabled = False
@@ -155,8 +194,6 @@ Public Sub Btnpathfile_Click()
     If Dialog.SelectDirectory() Then 
     Else
         TXTPATH.Text = Replace(Dialog.Path, " ", Chr$(92) & " ")                     ' serve agestire percorsi con gli spazi
-        ' $repopathdir = Replace(Dialog.Path, " ", Chr$(92) & " ")                     ' serve agestire percorsi con gli spazi
-        ' TXTPATH.Text = $repopathdir
     Endif     
   '************************************************************* 
 End
@@ -189,53 +226,53 @@ Fmain.$MEMOCOMMAND = ""
 'MODIFICA REPO ESISTENTE*********************************************************  
                If InStr(CMBREPO.Text, "-dnfdrake.repo") Then
                   Print #Fmain.$hProcess, "echo '#Questo file è crearo in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
-                  Wait 0.05
+                  'Wait 0.05
                   Print #Fmain.$hProcess, "echo '[" & Left(CMBREPO.Text, -14) & "]' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
-                  Wait 0.05
+                 'Wait 0.05
                   Print #Fmain.$hProcess, "echo 'name=" & Left(CMBREPO.Text, -14) & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
-                  Wait 0.05
+                 ' Wait 0.05
                   Print #Fmain.$hProcess, "echo 'baseurl=" & TXTPATH.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
-                  Wait 0.05
+                  'Wait 0.05
                   If CHKGPG.Value = True
                      Print #Fmain.$hProcess, "echo 'gpgcheck=1'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
                   Else 
                      Print #Fmain.$hProcess, "echo 'gpgcheck=0'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
                   Endif  
-                  Wait 0.05
+                  'Wait 0.05
                   If CHKENABLED.Value = True
                      Print #Fmain.$hProcess, "echo 'enabled=1'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
                   Else 
                      Print #Fmain.$hProcess, "echo 'enabled=0'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
                   Endif  
-                  Wait 0.05
+                  'Wait 0.05
                   Print #Fmain.$hProcess, "echo 'gpgkey=" & TXTPATHGPG.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
-                  Wait 0.5
+                  Wait 0.1
                   Print #Fmain.$hProcess, "sudo cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & " /etc/yum.repos.d/" & gb.NewLine;
                   Fmain.$MEMOCOMMAND = "TMPREPOCLEAR"
 'CREAZIONE NUOVO REPO*********************************************************  
                Else 
                   Print #Fmain.$hProcess, "echo '#Questo file è crearo in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
-                  Wait 0.05
+                  'Wait 0.05
                   Print #Fmain.$hProcess, "echo '[" & CMBREPO.Text & "]' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine; 
-                  Wait 0.05
+                  'Wait 0.05
                   Print #Fmain.$hProcess, "echo 'name=" & CMBREPO.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine; 
-                  Wait 0.05
+                  'Wait 0.05
                   Print #Fmain.$hProcess, "echo 'baseurl=" & TXTPATH.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
-                  Wait 0.05
+                 ' Wait 0.05
                   If CHKGPG.Value = True Then
                      Print #Fmain.$hProcess, "echo 'gpgcheck=1'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
                   Else 
                      Print #Fmain.$hProcess, "echo 'gpgcheck=0'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;   
                   Endif
-                  Wait 0.05
+                  'Wait 0.05
                   If CHKENABLED.Value = True
                      Print #Fmain.$hProcess, "echo 'enabled=1'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
                   Else 
                      Print #Fmain.$hProcess, "echo 'enabled=0'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine; 
                   Endif  
-                  Wait 0.05
+                  'Wait 0.05
                   Print #Fmain.$hProcess, "echo 'gpgkey=" & TXTPATHGPG.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
-                  Wait 0.5
+                  Wait 0.1
                   Print #Fmain.$hProcess, "sudo cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & "/etc/yum.repos.d/" & gb.NewLine;
                   Fmain.$MEMOCOMMAND = "TMPREPOCLEAR"
                Endif
@@ -255,53 +292,53 @@ Fmain.$MEMOCOMMAND = ""
 'MODIFICA REPO ESISTENTE*********************************************************       
                 If InStr(CMBREPO.Text, "-dnfdrake.repo") Then
                    Print #Fmain.$hProcess, "echo '#Questo file è crearo in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
-                   Wait 0.05
+                   'Wait 0.05
                    Print #Fmain.$hProcess, "echo '[" & Left(CMBREPO.Text, -14) & "]' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
-                   Wait 0.05
+                   'Wait 0.05
                    Print #Fmain.$hProcess, "echo 'name=" & Left(CMBREPO.Text, -14) & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
-                   Wait 0.05
+                   'Wait 0.05
                    Print #Fmain.$hProcess, "echo 'baseurl=" & TXTPATH.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
-                   Wait 0.05
+                   'Wait 0.05
                    If CHKGPG.Value = True
                       Print #Fmain.$hProcess, "echo 'gpgcheck=1'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
                    Else 
                       Print #Fmain.$hProcess, "echo 'gpgcheck=0'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
                    Endif  
-                   Wait 0.05
+                   'Wait 0.05
                    If CHKENABLED.Value = True
                       Print #Fmain.$hProcess, "echo 'enabled=1'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
                    Else 
                       Print #Fmain.$hProcess, "echo 'enabled=0'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
                    Endif  
-                   Wait 0.05
+                   'Wait 0.05
                    Print #Fmain.$hProcess, "echo 'gpgkey=" & TXTPATHGPG.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
-                   Wait 0.5
+                   Wait 0.1
                    Print #Fmain.$hProcess, "sudo cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & " /etc/yum.repos.d/" & gb.NewLine;
                    Fmain.$MEMOCOMMAND = "TMPREPOCLEAR"
 'CREAZIONE NUOVO REPO*********************************************************  
                 Else 
                    Print #Fmain.$hProcess, "echo '#Questo file è crearo in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
-                   Wait 0.05
+                   'Wait 0.05
                    Print #Fmain.$hProcess, "echo '[" & CMBREPO.Text & "]' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine; 
-                   Wait 0.05
+                   'Wait 0.05
                    Print #Fmain.$hProcess, "echo 'name=" & CMBREPO.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine; 
-                   Wait 0.05
+                   'Wait 0.05
                    Print #Fmain.$hProcess, "echo 'baseurl=" & TXTPATH.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
-                   Wait 0.05
+                   'Wait 0.05
                    If CHKGPG.Value = True Then
                       Print #Fmain.$hProcess, "echo 'gpgcheck=1'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
                    Else 
                       Print #Fmain.$hProcess, "echo 'gpgcheck=0'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;   
                    Endif
-                   Wait 0.05
+                   'Wait 0.05
                    If CHKENABLED.Value = True
                       Print #Fmain.$hProcess, "echo 'enabled=1'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
                    Else 
                       Print #Fmain.$hProcess, "echo 'enabled=0'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine; 
                    Endif  
-                   Wait 0.05
+                   'Wait 0.05
                    Print #Fmain.$hProcess, "echo 'gpgkey=" & TXTPATHGPG.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
-                   Wait 0.5
+                   Wait 0.1
                    Print #Fmain.$hProcess, "sudo cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & "/etc/yum.repos.d/" & gb.NewLine;
                    Fmain.$MEMOCOMMAND = "TMPREPOCLEAR"
                 Endif
@@ -309,10 +346,15 @@ Fmain.$MEMOCOMMAND = ""
           Endif
       Endif 
    Endif 
-   
+   Wait 0.5
+   REPOINDEXDEFAULT
+   ' LSTREPO_Click 
+   ' LSTREPO.Key = 0
+   ' LSTREPO.SetFocus
    
 End
 Public Sub BTNNOMECLEAR_Click()
+  CMBREPO.ReadOnly = False
   CMBREPO.Text = ""
 End
 Public Sub CHKENABLED_Click()
@@ -322,6 +364,7 @@ Public Sub CMBREPO_Click()
  Dim jCHK As Byte
  Dim s$CHK As String
  Dim ss$CHK As New String[]
+ CMBREPO.ReadOnly = True
  If InStr(CMBREPO.Text, ".repo")
   flCHK = Open "/etc/yum.repos.d/" & CMBREPO.Text For Read   ' ...oppure "Input"
  While Not Eof(flCHK)
@@ -353,14 +396,18 @@ Public Sub CMBREPO_Click()
   Next
    flCHK.Close     
  Endif 
- 
+  LSTREPO.Key = CMBREPO.Index
 End
 
 Public Sub BTNREMOVE_Click()
 $MODIFICHE = 1
 Print #Fmain.$hProcess, "sudo rm  /etc/yum.repos.d/" & CMBREPO.Text & gb.NewLine;
-' Print #Fmain.$hProcess, "sudo rm -f /etc/yum.repos.d/" & CMBREPO.Text & gb.NewLine;
 Fmain.$MEMOCOMMAND = "TMPREPOCLEAR"
+Wait 0.5
+REPOINDEXDEFAULT
+' LSTREPO_Click 
+' LSTREPO.Key = 0
+' LSTREPO.SetFocus
 
 End
 Public Sub CHKGPG_Click()
@@ -382,6 +429,7 @@ Public Sub BTNPATHGPG_Click()
 
 End
 Public Sub BTNPULISCI_Click()
+CMBREPO.ReadOnly = False
 CMBREPO.Text = "MyRepo-"
 TXTPATH.Text = ""
 TXTPATHGPG.Text = ""
@@ -406,7 +454,7 @@ Public Sub CHKREMOTE_Click()
   TXTPATHGPG.Text = ""
 End
 Public Sub LSTREPO_Click()
-
+CMBREPO.ReadOnly = True
 CMBREPO.Index = LSTREPO.Item.Key
 If CHKENABLED.Value = True Then
   LSTREPO[CMBREPO.Index].Selected = True
@@ -420,7 +468,24 @@ CERCALSTREPO
 End
 Public Sub Timer1_Timer()
   FMYREPO.Enabled = True
-  
+  Fmain.Btnclear_click
+  If $MEMOCOMMAND = "UNCHECKALL" Then
+     BTNUNCHECKALL_Click
+     $MEMOCOMMAND = ""
+  Endif
+  If $MEMOCOMMAND = "CHECKALL" Then
+     BTNCHECKALL_Click
+     $MEMOCOMMAND = ""
+  Endif
+  REPOINDEXDEFAULT
+ ' If LSTREPO.Count > -1 Then
+ '   LSTREPO.Key = 0
+ '   CMBREPO.Index = 0
+ '   ' LSTREPO_Click 
+ '   LSTREPO.SetFocus
+ ' Endif
+ Timer1.Enabled = False
+ 
 End
 Public Sub LabelName_MouseDown()
 End
@@ -434,6 +499,119 @@ End
 
 Public Sub LabelName5_MouseDown()
 
-  
+End
 
+Public Sub BTNUNCHECKALL_Click()
+Dim I As Integer
+Dim X As String[]
+X = LSTREPO.Keys
+$MODIFICHE = 1
+Fmain.$MEMOCOMMAND = ""
+For I = 0 To X.Max
+    LSTREPO.Key = I
+    CMBREPO.Index = I
+    CHKENABLED.Value = False
+    Print #Fmain.$hProcess, "echo '#Questo file è crearo in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+    'Wait 0.05
+    Print #Fmain.$hProcess, "echo '[" & Left(CMBREPO.Text, -14) & "]' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
+   ' Wait 0.05
+    Print #Fmain.$hProcess, "echo 'name=" & Left(CMBREPO.Text, -14) & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
+   ' Wait 0.05
+    Print #Fmain.$hProcess, "echo 'baseurl=" & TXTPATH.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+   ' Wait 0.05
+    If CHKGPG.Value = True
+       Print #Fmain.$hProcess, "echo 'gpgcheck=1'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+    Else 
+       Print #Fmain.$hProcess, "echo 'gpgcheck=0'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+    Endif  
+    'Wait 0.05
+    If CHKENABLED.Value = True
+       Print #Fmain.$hProcess, "echo 'enabled=1'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+    Else 
+       Print #Fmain.$hProcess, "echo 'enabled=0'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
+    Endif  
+    'Wait 0.05
+    Print #Fmain.$hProcess, "echo 'gpgkey=" & TXTPATHGPG.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+    Wait 0.1
+    Print #Fmain.$hProcess, "sudo cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & " /etc/yum.repos.d/" & gb.NewLine;
+    Wait 0.1
+    If FPW.Visible Then
+       FPW.BTNANNULLA_Click
+       Timer1.Delay = 50
+       $MEMOCOMMAND = "UNCHECKALL"
+       Print #Fmain.$hProcess, "sudo echo Enable My Repo Tool" & gb.NewLine;
+       Break 
+    Endif
+    Wait 0.1
+    CHKENABLED.Value = False
+Next
+If Shell("ls .config/dnfdrake |grep .repo") = ""
+Else 
+   Print #Fmain.$hProcess, "rm -f  " & User.Home & "/.config/dnfdrake/*.repo " & gb.NewLine; 
+Endif 
+Wait 0.1  
+CERCAREPO
+Wait 0.5
+REPOINDEXDEFAULT
+' LSTREPO_Click 
+' LSTREPO.Key = 0
+' LSTREPO.SetFocus
+
+End
+
+Public Sub BTNCHECKALL_Click()
+Dim I As Integer
+Dim X As String[]
+X = LSTREPO.Keys
+$MODIFICHE = 1
+Fmain.$MEMOCOMMAND = ""
+For I = 0 To X.Max
+    LSTREPO.Key = I
+    CMBREPO.Index = I
+    CHKENABLED.Value = True
+    Print #Fmain.$hProcess, "echo '#Questo file è crearo in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+    'Wait 0.05
+    Print #Fmain.$hProcess, "echo '[" & Left(CMBREPO.Text, -14) & "]' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
+   ' Wait 0.05
+    Print #Fmain.$hProcess, "echo 'name=" & Left(CMBREPO.Text, -14) & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
+   ' Wait 0.05
+    Print #Fmain.$hProcess, "echo 'baseurl=" & TXTPATH.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+   ' Wait 0.05
+    If CHKGPG.Value = True
+       Print #Fmain.$hProcess, "echo 'gpgcheck=1'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+    Else 
+       Print #Fmain.$hProcess, "echo 'gpgcheck=0'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+    Endif  
+    'Wait 0.05
+    If CHKENABLED.Value = True
+       Print #Fmain.$hProcess, "echo 'enabled=1'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+    Else 
+       Print #Fmain.$hProcess, "echo 'enabled=0'  >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
+    Endif  
+    'Wait 0.05
+    Print #Fmain.$hProcess, "echo 'gpgkey=" & TXTPATHGPG.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+    Wait 0.1
+    Print #Fmain.$hProcess, "sudo cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & " /etc/yum.repos.d/" & gb.NewLine;
+    Wait 0.1
+    If FPW.Visible Then
+       FPW.BTNANNULLA_Click
+       Timer1.Delay = 50
+       $MEMOCOMMAND = "CHECKALL"
+       Print #Fmain.$hProcess, "sudo echo Enable My Repo Tool" & gb.NewLine;
+       Break 
+    Endif
+    Wait 0.1
+    CHKENABLED.Value = True
+Next
+If Shell("ls .config/dnfdrake |grep .repo") = ""
+Else 
+   Print #Fmain.$hProcess, "rm -f  " & User.Home & "/.config/dnfdrake/*.repo " & gb.NewLine; 
+Endif   
+Wait 0.1  
+CERCAREPO
+Wait 0.5
+REPOINDEXDEFAULT
+' LSTREPO_Click 
+' LSTREPO.Key = 0
+' LSTREPO.SetFocus
 End

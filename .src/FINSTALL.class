@@ -1,3 +1,4 @@
+' Gambas class file
 
 ' Gambas class file
 $TXTRPMPATH As String
@@ -29,6 +30,10 @@ BTNINSTALL.Text = Fmain.btninstall.Text
 BTNANNULLA.Text = Fmain.btnstop.Text   
 BTNPKGUPDATE.Text = Fmain.BTNPKGUPDATE.Text  
 BTNPKGREINSTALL.Text = Fmain.BTNREINSTALL.Text  
+BTNINSTALL.Picture = Picture.Load("/usr/share/dnfdrake/add.png")
+BTNANNULLA.Picture = Picture.Load("/usr/share/dnfdrake/close.png")
+BTNPKGUPDATE.Picture = Picture.Load("/usr/share/dnfdrake/redo.png")
+BTNPKGREINSTALL.Picture = Picture.Load("/usr/share/dnfdrake/refresh.png")
 TXTRPMPATH.Text = $TXTRPMPATH & Right(Fmain.$RPMPATH, "-" & RInStr(Fmain.$RPMPATH, "/")) & " ?"
 If Fmain.$SECUREMODE = "SECURE" Then
   Fmain.Enabled = False  

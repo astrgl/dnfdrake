@@ -1,9 +1,9 @@
 # Gambas Form File 3.0
 
 { Form Form
-  Move(0,0,658,49)
+  Move(0,0,672,49)
   #Scaled = False
-  Mouse = Mouse.Wait
+  Mouse = Cursor.Wait
   Icon = Picture["dnfdrake.svg"]
   Resizable = False
   { TXTSTATO Label
@@ -20,7 +20,7 @@
     Delay = 3000
   }
   { BTNSKIP Button
-    Move(602,14,49,21)
+    Move(602,12,65,25)
     Text = ("Skip")
   }
 }

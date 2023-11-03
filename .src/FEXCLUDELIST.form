@@ -6,19 +6,15 @@
   Resizable = False
   { BTNCLOSE Button
     MoveScaled(61,86,15.7143,4)
-    Picture = Picture["icon:/16/close"]
   }
   { BTNREMOVE Button
     MoveScaled(6,86,15.7143,4)
-    Picture = Picture["icon:/16/remove"]
   }
   { BTNREFRESH Button
     MoveScaled(24.2857,86,15.7143,4)
-    Picture = Picture["icon:/16/refresh"]
   }
   { BTNSAVEAS Button
     MoveScaled(42.7143,86,15.7143,4)
-    Picture = Picture["icon:/16/save-as"]
   }
   { LSTPKG ListView
     MoveScaled(3,5,77,79)
@@ -32,5 +28,9 @@
     Alignment = Align.Center
     Border = Border.Plain
     BorderRadius = 10
+  }
+  { TextBox1 TextBox
+    MoveScaled(3,71,77,13)
+    Visible = False
   }
 }

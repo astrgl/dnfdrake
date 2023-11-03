@@ -32,18 +32,20 @@ Public Sub Form_Open()
      Fmain.txtconsole.Enabled = True
      BTNSTOP.Text = Fmain.btnstop.Text 
   Endif 
-  
+  BTNSTOP.Picture = Picture.Load("/usr/share/dnfdrake/stop.png")
      $CLOSEPASS = 0    
  
   Wait 0.2
   Fmain.Enabled = False  
+  btnstop.SetFocus
   
+  If Fmain.PICLOGODISTRO.Visible = True Then
+     Fmain.PICLOGODISTRO.Visible = False
+  Endif
 End
 
 
 Public Sub Form_Close()
-
-'MODIFICA IN CORSO PROTEZIONE CHIUSURA
  If $CLOSEPASS = 0 Then
    If FPW.Visible = False Then
       Dim iAnswer As Integer = Message.Question(Fmain.$ASKEXIT, Fmain.$SI, Fmain.$NO)
@@ -66,8 +68,7 @@ Public Sub Form_Close()
         '   Fmain.Enabled = False
        ' Endif
  Endif 
-'************************************************************
-
+'*******************************************************************
 
   
 End
@@ -75,6 +76,9 @@ End
 Public Sub BTNSTOP_Click()
 BTNSTOP.Enabled = False
 $CLOSEPASS = 1
+'PULIZIA PACCHETTI INSTALLAZIONI NODEPS**********************************************
+  Fmain.NODEPSTMPCLEAR
+'************************************************************************************
 ' Fmain.VERIFYSUSPEND ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
 If ProgressBar1.Value = 1 Then
     If Fmain.txtConsole.Visible = True Then

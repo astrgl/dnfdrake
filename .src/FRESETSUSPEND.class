@@ -65,6 +65,7 @@ Fmain.$WAITSUSPEND = 0
 End
 
 Public Sub Form_Close()
+ Fmain.$MEMOCOMMAND = "QUITRESTORESUSPEND"
  BTNNO_Click
  Fmain.VERIFYSUSPEND
  If Fmain.$CLEARLOGSUSPEND = 1 Then
@@ -104,11 +105,16 @@ FRESETSUSPEND.Close
 End
 
 Public Sub BTNNO_Click()
-BTNNO.Enabled = False
-Fmain.Enabled = True
-'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
-'PRIORITA
-FRESETSUSPEND.Close
+ BTNNO.Enabled = False
+ Fmain.Enabled = True
+ If Fmain.$CLOSEPASS = 1 Then
+    Wait 0.1
+    Print #Fmain.$hProcess, "" & gb.NewLine;
+    Wait 0.1  
+ Endif
+ 'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
+ 'PRIORITA
+ FRESETSUSPEND.Close
 End
 
 Public Sub TXTMSG_MouseDown()

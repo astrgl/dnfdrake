@@ -32,6 +32,10 @@ Public Sub Form_Open()
          LTITOLO.Text = Replace(ss$TTP[64], "_", " ") 
      Next
      flTTP.Close
+     BTNREMOVE.Picture = Picture.Load("/usr/share/dnfdrake/remove.png")
+     BTNREFRESH.Picture = Picture.Load("/usr/share/dnfdrake/refresh.png")
+     BTNSAVEAS.Picture = Picture.Load("/usr/share/dnfdrake/save-as.png")
+     BTNCLOSE.Picture = Picture.Load("/usr/share/dnfdrake/close.png")
  '*********************************************************************************
   Me.Mouse = Mouse.Wait  
     t = Open "/etc/dnf/dnf.conf"
@@ -80,6 +84,7 @@ Public Sub BTNREMOVE_Click()
       LSTPKG[a].Delete
       Next
         Print #Fmain.$hProcess, "sudo " & "sed -i 's/" & s & "//g' " & " /etc/dnf/dnf.conf " & gb.NewLine; 
+        'TextBox1.Text = "sudo " & "sed -i 's/" & s & "//g' " & " /etc/dnf/dnf.conf "
     Endif
      Wait 0.1
      Fmain.Enabled = True

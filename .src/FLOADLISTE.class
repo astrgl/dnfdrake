@@ -27,6 +27,7 @@ Public Sub Form_Open()
       $LOADAGG = Replace(ss$TTP[36], "_", " ")
   Next
   flTTP.Close
+  BTNSKIP.Picture = Picture.Load("/usr/share/dnfdrake/skip.png")
  '*********************************************************************************
 TXTSTATO.Text = $LOADLIST
 If Fmain.$SECUREMODE = "SECURE" Then
@@ -57,12 +58,6 @@ End
 Public Sub Timer1_Timer()
 
 Dim b As Byte
-
-Dim flUPD As File  
-Dim jUPD As Byte
-Dim s$UPD As String
-Dim ss$UPD As New String[]
-  ' If Fmain.$RPMPATH = "" 
     For b = 1 To 10
        ProgressBar1.Value = b / 100
        BTNSKIP.Enabled = False
@@ -93,39 +88,38 @@ Dim ss$UPD As New String[]
      Endif
      Timer1.Enabled = False
      
-     'VERIFICA SE PRESENTI AGGIORNAMENTI
-       If Exist(User.Home &/ ".config/dnfdrake/locktray") Then
-           flUPD = Open User.Home &/ ".config/dnfdrake/locktray" For Read 
-         
-              While Not Eof(flUPD)
-                Input #flUPD, s$UPD
-                ss$UPD.Add(s$UPD)
-               Wend
-                Close #flUPD
-            If ss$UPD.max > -1 Then
-               For jUPD = 0 To ss$UPD.Max
-               $UPDATEDIPS = Replace(ss$UPD[0], "_", " ")
-              
-               Next
-            Endif
-           flUPD.Close
-           
-          If $UPDATEDIPS = 1 Then
-            File.Save(User.Home &/ "/.config/dnfdrake/locktray", "0")
-            Fmain.Cmbtipo.index = 3
-            Fmain.btncerca_CLICK
-          Endif
-      Endif
-  ' Else
-  '     Timer1.Enabled = False
-  '     Fmain.Btnclear_click
-  '     Fmain.Btncleartxtpkg_click
-  '     Fmain.txtpkg.Text = Fmain.$RPMPATH
-  '     FINSTALL.Show
-  '     'Fmain.$RPMPATH = ""      ELIMINATA PER GESTIONE CON FINSTALL
-  '     Me.Close 
-  ' Endif    
+CHECKUPDATES
+ 
 End
+Private Sub CHECKUPDATES()
+'VERIFICA SE PRESENTI AGGIORNAMENTI
+Dim flUPD As File  
+Dim jUPD As Byte
+Dim s$UPD As String
+Dim ss$UPD As New String[]
+
+ If Exist(User.Home &/ ".config/draketray/locktray") Then
+    flUPD = Open User.Home &/ ".config/draketray/locktray" For Read 
+    While Not Eof(flUPD)
+      Input #flUPD, s$UPD
+      ss$UPD.Add(s$UPD)
+    Wend
+      Close #flUPD
+    If ss$UPD.max > -1 Then
+       For jUPD = 0 To ss$UPD.Max
+       $UPDATEDIPS = Replace(ss$UPD[0], "_", " ")
+    Next
+    Endif
+   flUPD.Close
+   
+   If $UPDATEDIPS = 1 Then
+      File.Save(User.Home &/ "/.config/draketray/locktray", "0")
+      Fmain.Cmbtipo.index = 3
+      Fmain.btncerca_CLICK
+   Endif
+ Endif
+End
+
 
 Public Sub BTNSKIP_Click()
    BTNSKIP.Enabled = False
@@ -133,7 +127,7 @@ Public Sub BTNSKIP_Click()
    Fmain.Btnclear_click
    Fmain.Btncleartxtpkg_click
    Me.Close
-
+   CHECKUPDATES
 End
 
 
@@ -144,4 +138,5 @@ Fmain.EXCLUDETEST
 If FINSTALL.Visible = False Then
   Fmain.Enabled = True
 Endif
+Fmain.DRAKETRAYUPDATE
 End

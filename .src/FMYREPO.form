@@ -1,96 +1,99 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,63,83)
+  MoveScaled(0,0,63,86)
   Text = ("My Repo Creator!")
   Icon = Picture["dnfdrake.svg"]
   Resizable = False
-  { LabelName5 Label
-    MoveScaled(2,2,59,43)
-    Alignment = Align.Top
-    Border = Border.Plain
-    Text = ("Summary")
-  }
   { LabelName4 Label
-    MoveScaled(2,45,59,36)
+    MoveScaled(2,47,59,37)
     Alignment = Align.Top
     Border = Border.Plain
+    BorderRadius = 10
     Text = ("Details")
   }
+  { LabelName5 Label
+    MoveScaled(2,2,59,45)
+    Alignment = Align.Top
+    Border = Border.Plain
+    BorderRadius = 10
+    Text = ("Summary")
+  }
   { TXTPATH TextBox
-    MoveScaled(2.8571,58,52.8571,4)
+    MoveScaled(2.8571,60,52.8571,4)
   }
   { BTNCLOSE Button
-    MoveScaled(55.1429,76,5,4)
-    Picture = Picture["icon:/16/close"]
+    MoveScaled(55.1429,78,5,4)
   }
   { BTNBUILDREPO Button
-    MoveScaled(2.8571,76,5,4)
-    Picture = Picture["icon:/16/exec"]
+    MoveScaled(2.8571,78,5,4)
   }
   { Btnpathfile Button
-    MoveScaled(55.5714,58,4.4286,4)
+    MoveScaled(55.5714,60,4.4286,4)
     Picture = Picture["icon:/16/directory"]
   }
   { BTNREMOVE Button
-    MoveScaled(37.5714,76,5,4)
-    Picture = Picture["icon:/16/trash"]
+    MoveScaled(45,78,5,4)
   }
   { BTNNOMECLEAR Button
-    MoveScaled(51.2857,51,4.4286,4)
+    MoveScaled(51.2857,53,4.4286,4)
     Picture = Picture["icon:/16/clear"]
   }
   { LabelName Label
-    MoveScaled(3,48,56.8571,3)
+    MoveScaled(3,50,56.8571,3)
     Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
   }
   { LabelPATHREPO Label
-    MoveScaled(2.8571,55,57,3)
+    MoveScaled(2.8571,57,57,3)
     Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
   }
   { BTNADDREPO Button
-    MoveScaled(20.4286,76,5,4)
-    Picture = Picture["icon:/16/apply"]
+    MoveScaled(35,78,5,4)
   }
   { Label1 Label
-    MoveScaled(3,69,57,4)
+    MoveScaled(3,71,57,4)
     Border = Border.Plain
+    BorderRadius = 15
   }
   { CMBREPO ComboBox
-    MoveScaled(2.8571,51,48.5714,4)
+    MoveScaled(3,53,48.5714,4)
+    ReadOnly = True
   }
   { CHKENABLED CheckBox
-    MoveScaled(3.8571,69,11.4286,4)
+    MoveScaled(3.8571,71,11.4286,4)
     Text = ("Enabled")
   }
   { CHKGPG CheckBox
-    MoveScaled(25.8571,69,11.4286,4)
+    MoveScaled(25.8571,71,11.4286,4)
     Text = ("GPG")
   }
   { CHKREMOTE CheckBox
-    MoveScaled(47.8571,69,11.4286,4)
+    MoveScaled(47.8571,71,11.4286,4)
     Text = ("Remote")
   }
   { LabelPATHGPGKEY Label
-    MoveScaled(2.8571,62,57,3)
+    MoveScaled(2.8571,64,57,3)
     Alignment = Align.Center
     Border = Border.Plain
+    BorderRadius = 10
   }
   { TXTPATHGPG TextBox
-    MoveScaled(2.8571,65,52.8571,4)
+    MoveScaled(2.8571,67,52.8571,4)
   }
   { BTNPATHGPG Button
-    MoveScaled(55.7143,65,4.4286,4)
+    MoveScaled(55.7143,67,4.4286,4)
     Picture = Picture["icon:/16/directory"]
   }
   { BTNPULISCI Button
-    MoveScaled(55.5714,51,4.4286,4)
-    Picture = Picture["icon:/16/erase"]
+    MoveScaled(55.5714,53,4.4286,4)
+    Picture = Picture["icon:/16/wizard"]
   }
   { LSTREPO ListView
-    MoveScaled(3,8,57,36)
+    MoveScaled(3,8,57,38)
     Mode = Select.Multiple
     ShowCheck = True
   }
@@ -107,7 +110,13 @@
     Text = (" Enabled")
   }
   { Timer1 #Timer
-    #MoveScaled(28,73)
+    #MoveScaled(28,39)
     Delay = 3000
+  }
+  { BTNUNCHECKALL Button
+    MoveScaled(23,78,5,4)
+  }
+  { BTNCHECKALL Button
+    MoveScaled(13,78,5,4)
   }
 }

@@ -12,18 +12,14 @@
   }
   { BTNCLOSE Button
     MoveScaled(61,86,15.7143,4)
-    Picture = Picture["icon:/16/close"]
   }
   { BTNAPPLY Button
     MoveScaled(6,86,15.7143,4)
-    Picture = Picture["icon:/16/ok"]
   }
   { BTNREFRESH Button
     MoveScaled(24,86,15.7143,4)
-    Picture = Picture["icon:/16/refresh"]
   }
   { BTNSAVEAS Button
     MoveScaled(43,86,15.7143,4)
-    Picture = Picture["icon:/16/save-as"]
   }
 }

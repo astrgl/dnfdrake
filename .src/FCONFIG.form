@@ -9,7 +9,7 @@
     BorderRadius = 12
   }
   { Label1 Label
-    MoveScaled(3,69,34,4)
+    MoveScaled(3,10,34,4)
     Border = Border.Plain
     BorderRadius = 12
   }
@@ -86,7 +86,7 @@
     MoveScaled(3,64,77.1429,4)
   }
   { CHKCOLORTEXT CheckBox
-    MoveScaled(4,69,33,4)
+    MoveScaled(4,10,32,4)
     Text = ("  Color text active")
   }
   { TXTREINSTALL Label
@@ -100,17 +100,26 @@
     MoveScaled(3,55,77.1429,4)
   }
   { Label2 Label
-    MoveScaled(3,10,34,4)
+    MoveScaled(3,70,76.8571,4)
     Border = Border.Plain
     BorderRadius = 12
   }
   { CHKLOG CheckBox
-    MoveScaled(4,10,33,4)
+    MoveScaled(4,70,13,4)
     Text = ("Save Log")
     Value = CheckBox.True
   }
   { CHKSECUREMODE CheckBox
     MoveScaled(47,10,32,4)
     Text = ("Secure Mode")
+  }
+  { CHKCLEARLOG CheckBox
+    MoveScaled(50,70,29,4)
+    Text = ("Delete Log after               days")
+    Value = CheckBox.True
+  }
+  { CMBDAYSLOG ComboBox
+    MoveScaled(66.7143,70.1429,7,3.2857)
+    List = [("5"), ("15"), ("30"), ("60"), ("90"), ("180"), ("365")]
   }
 }

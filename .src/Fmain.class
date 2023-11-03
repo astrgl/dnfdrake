@@ -9,6 +9,9 @@ Public $MEMOEXEC As String
 Public $INSTALL As String
 Public $UNINSTALL As String
 Public $UPDATE As String
+Public $INSTALLNODEPS As String
+Public $UNINSTALLNODEPS As String
+Public $UPDATENODEPS As String
 Public $PKGUPDATE As String
 Public $DOWNGRADE As String
 Public $REINSTALL As String
@@ -57,9 +60,11 @@ Public $SI As String
 Public $NO As String
 Public $ASKEXIT As String
 Public $FLATDRAKESEARCH As String
+Public $CLEARLOG As Integer
+Public $CLEARTXTPKG As Integer
 'VARIABILI EXTRA OPTIONS*****************************************************************************
 Public $SEARCH As String
-'PAROLE CHIAVE LETTURA STRINGA***********************************************************************
+'PAROLE CHIAVE LETTURA STRINGA E MESSAGGI************************************************************
 Public $PASSWORD As String
 Public $RQSTPASSWORD As String
 Public $PROCEDERE As String
@@ -71,7 +76,11 @@ Public $DIALOGFILETITLE As String
 Public $SELECTPKG As String
 Public $CERCAFILE As String
 Public $TXTRUN As String
-
+Public $MSGAVVIOMULTIPLO As String
+Public $MSGUPDATESASK As String
+Public $MSGTRAYREMOVE As String
+Public $OK As String
+Public $NODEPSINFO As String
 
 Public Sub Form_Open()
 'COMANDI
@@ -110,16 +119,6 @@ Public Sub Form_Open()
  Dim s$DSTSYNC As String
  Dim ss$DSTSYNC As New String[] 
  
- 'VERIFICA CHE DNFDRAKE NON SIA GIA IN ESECUZIONE
- Dim $LOCK As String
- Dim $LOCKVAL As Integer
-  Shell "ps aux | grep gbr3 | grep -w dnfdrake.gambas | wc -l" Wait To $LOCK 
-  $LOCKVAL = CInteger(Val(Right(Left($LOCK))))
-  If $LOCKVAL > 2 Then
-  Message.Info("Please don't run multiple session of DnfDrake!", "OK")
-    Quit 
-  Endif 
-
 'IMPOSTA LA DIMENSIONE DELLA FINESTRA IN BASE ALLA RISOLUZIONE DELLO SCHERMO
   Shell "xrandr --current |grep '*'" To $RISOLUZIONE
   $RISOLUZIONEX = Val(Str(Right(Left($risoluzione, 7), 4)))
@@ -142,10 +141,13 @@ Public Sub Form_Open()
  
  'controllo esistenza delle directory del programma***************************************************
    If Not Exist(User.Home &/ ".config/dnfdrake/") Then
-   Mkdir User.Home &/ "/.config/dnfdrake/"
+      Mkdir User.Home &/ "/.config/dnfdrake/"
    Endif
    If Not Exist(User.Home &/ ".config/dnfdrake/log") Then
-   Mkdir User.Home &/ "/.config/dnfdrake/log"
+      Mkdir User.Home &/ "/.config/dnfdrake/log"
+   Endif
+   If Not Exist(User.Home &/ ".config/dnfdrake/tmp") Then
+      Mkdir User.Home &/ "/.config/dnfdrake/tmp"
    Endif
  '***********************************************************************************************
   
@@ -278,50 +280,71 @@ Else
       $INSTALL = Replace(ss$CMD[0], "_", " ")
       $UNINSTALL = Replace(ss$CMD[1], "_", " ")
       $UPDATE = Replace(ss$CMD[2], "_", " ")
-     
       
   ' GESTIONE ERRORE DA ELIMINARE TRA 10 VERSIONI (1.10.1)
       Try $PKGUPDATE = Replace(ss$CMD[3], "_", " ")
       If Error Then 
+      If Exist(User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND")
       Shell "rm -f " & User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND"
       Message.Delete("The default configuration had to be restored. Please restart DnfDrake!", "OK")
+      Endif 
       Endif
       
       Try $DOWNGRADE = Replace(ss$CMD[4], "_", " ")
-       If Error Then 
+      If Error Then 
+      If Exist(User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND")
       Shell "rm -f " & User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND"
       Message.Delete("The default configuration had to be restored. Please restart DnfDrake!", "OK")
+      Endif 
       Endif      
       
       Try $CUSTOMCMD = Replace(ss$CMD[5], "_", " ")
-      If Error Then 
+      If Error Then
+      If Exist(User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND") 
       Shell "rm -f " & User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND"
       Message.Delete("The default configuration had to be restored. Please restart DnfDrake!", "OK")
+      Endif 
       Endif
       
       Try $COLORTEXT = Replace(ss$CMD[6], "_", " ")
-      If Error Then 
+      If Error Then
+      If Exist(User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND") 
       Shell "rm -f " & User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND"
       Message.Delete("The default configuration had to be restored. Please restart DnfDrake!", "OK")
+      Endif 
       Endif
       
       Try $REINSTALL = Replace(ss$CMD[7], "_", " ")
-      If Error Then 
+      If Error Then
+      If Exist(User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND")  
       Shell "rm -f " & User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND"
       Message.Delete("The default configuration had to be restored. Please restart DnfDrake!", "OK")
       Endif
+      Endif 
 
       Try $LOG = Replace(ss$CMD[8], "_", " ")
-      If Error Then 
+      If Error Then
+      If Exist(User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND")  
       Shell "rm -f " & User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND"
       Message.Delete("The default configuration had to be restored. Please restart DnfDrake!", "OK")
       Endif
+      Endif 
+      
+      Try $CLEARLOG = Replace(ss$CMD[10], "_", " ")
+      If Error Then
+      If Exist(User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND")  
+      Shell "rm -f " & User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND"
+      Message.Delete("The default configuration had to be restored. Please restart DnfDrake!", "OK")
+      Endif
+      Endif 
       
       Try $SECUREMODE = Replace(ss$CMD[9], "_", " ")
-      If Error Then 
+      If Error Then
+      If Exist(User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND")  
       Shell "rm -f " & User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND"
       Message.Delete("The default configuration had to be restored. Please restart DnfDrake!", "OK")
       Endif
+      Endif 
 
   '****************************************************
       Next
@@ -355,6 +378,7 @@ Else
       btninfo.Text = Replace(ss$BTN[4], "_", " ")
       Btnclose.Text = Replace(ss$BTN[5], "_", " ")
       btncerca.Text = Replace(ss$BTN[6], "_", " ")
+      $OK = Replace(ss$BTN[15], "_", " ")
 'CORREZIONE PER FIX RELOADLANG************************************      
       If txtCommand.Visible = False Then
          Btncommand.Text = Replace(ss$BTN[7], "_", " ")  
@@ -379,8 +403,48 @@ Else
       Next
 '  
    flBTN.Close      
-'********************************************************************************
-   
+'ICONE**************************************************************************
+    BTNAUTOREMOVE.Picture = Picture.Load("/usr/share/dnfdrake/trash.png")
+    PICEXCLUDE.Picture = Picture.Load("/usr/share/dnfdrake/lock.png")
+    BTNRESIZE.Picture = Picture.Load("/usr/share/dnfdrake/restore.png")
+    BTNFULLSCREEN.Picture = Picture.Load("/usr/share/dnfdrake/fullscreen.png")
+    Btncleartxtpkg.Picture = Picture.Load("/usr/share/dnfdrake/clear.png")
+    Btnpathfile.Picture = Picture.Load("/usr/share/dnfdrake/open-folder.png")
+    Btnpathpkglist.Picture = Picture.Load("/usr/share/dnfdrake/save-as.png")
+    PICBTNDISTUPDATE.Picture = Picture.Load("/usr/share/dnfdrake/updatesync.png")
+    BTNVIEWLOG.Picture = Picture.Load("/usr/share/dnfdrake/open-folder.png")
+    Btnclear.Picture = Picture.Load("/usr/share/dnfdrake/clear.png")
+    BTNREPLAY.Picture = Picture.Load("/usr/share/dnfdrake/view-log.png")
+    BTNSELECTALL.Picture = Picture.Load("/usr/share/dnfdrake/add.png")
+    BTNUNSELECTALL.Picture = Picture.Load("/usr/share/dnfdrake/remove.png")
+    BTNTABINSTALLED.Picture = Picture.Load("/usr/share/dnfdrake/installed.png")
+    BTNTABAVIABLE.Picture = Picture.Load("/usr/share/dnfdrake/install.png")
+    BTNTABUPDATE.Picture = Picture.Load("/usr/share/dnfdrake/update.png")
+    BTNPKGLISTCLEAN.Picture = Picture.Load("/usr/share/dnfdrake/trash.png")
+    BTNADDPKGLIST.Picture = Picture.Load("/usr/share/dnfdrake/insert-text.png")
+    BTNPKGLISTVIEW.Picture = Picture.Load("/usr/share/dnfdrake/view-log.png")
+    PCTCONNECT.Picture = Picture.Load("/usr/share/dnfdrake/online.png")
+    PCTDISCONNECT.Picture = Picture.Load("/usr/share/dnfdrake/offline.png")
+    PICSUSPEND.Picture = Picture.Load("/usr/share/dnfdrake/suspend.png")
+    PICSUSPENDLOCK.Picture = Picture.Load("/usr/share/dnfdrake/lock.png")
+    BTNCUSTOM.Picture = Picture.Load("/usr/share/dnfdrake/bacchetta.png")
+    Btnclose.Picture = Picture.Load("/usr/share/dnfdrake/esci.png")
+    BTNABOUT.Picture = Picture.Load("/usr/share/dnfdrake/info.png")
+    btninstall.Picture = Picture.Load("/usr/share/dnfdrake/add.png")
+    btnremove.Picture = Picture.Load("/usr/share/dnfdrake/remove.png")
+    btncerca.Picture = Picture.Load("/usr/share/dnfdrake/search.png")
+    BtnCFG.Picture = Picture.Load("/usr/share/dnfdrake/config.png")
+    Btndownload.Picture = Picture.Load("/usr/share/dnfdrake/download.png")
+    Btncrono.Picture = Picture.Load("/usr/share/dnfdrake/chronometer.png")
+    Btncommand.Picture = Picture.Load("/usr/share/dnfdrake/console.png")
+    btnstop.Picture = Picture.Load("/usr/share/dnfdrake/stop.png")
+    BTNMYREPO.Picture = Picture.Load("/usr/share/dnfdrake/repository.png")
+    btninfo.Picture = Picture.Load("/usr/share/dnfdrake/details.png")
+    BTNDOWNDGRADE.Picture = Picture.Load("/usr/share/dnfdrake/undo.png")
+    BTNPKGUPDATE.Picture = Picture.Load("/usr/share/dnfdrake/redo.png")
+    BTNREINSTALL.Picture = Picture.Load("/usr/share/dnfdrake/refresh.png")
+    BTNEXTRA.Picture = Picture.Load("/usr/share/dnfdrake/extra.png")
+    PICNODEPS.Picture = Picture.Load("/usr/share/dnfdrake/task-attention.png")
 'PAROLE CHIAVE*******************************************************************
  
   flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & $LANG For Read   ' ...oppure "Input"
@@ -521,6 +585,11 @@ Else
       $SUSPENDOFFTTP = Replace(ss$TTP[82], "_", " ") 
       BTNMYREPO.Tooltip = Replace(ss$TTP[83], "_", " ")
       $ASKEXIT = Replace(ss$TTP[85], "_", " ")
+      $MSGAVVIOMULTIPLO = Replace(ss$TTP[86], "_", " ")
+      $MSGUPDATESASK = Replace(ss$TTP[87], "_", " ")
+      $MSGTRAYREMOVE = Replace(ss$TTP[88], "_", " ")
+      CHKNODEPS.Tooltip = Replace(ss$TTP[92], "_", " ")
+      $NODEPSINFO = Replace(ss$TTP[93], "_", " ")      
      Next
 '  
    flTTP.Close
@@ -549,7 +618,15 @@ Else
 ' BTNTABINSTALLED.Tooltip = Cmbtipo[1].Text
 ' BTNTABAVIABLE.Tooltip = Cmbtipo[2].Text
 ' BTNTABUPDATE.Tooltip = Cmbtipo[3].Text
-
+'VERIFICA CHE DNFDRAKE NON SIA GIA IN ESECUZIONE
+ Dim $LOCK As String
+ Dim $LOCKVAL As Integer
+  Shell "ps aux | grep gbr3 | grep -w dnfdrake.gambas | wc -l" Wait To $LOCK 
+  $LOCKVAL = CInteger(Val(Right(Left($LOCK))))
+  If $LOCKVAL > 2 Then
+  Message.Info($MSGAVVIOMULTIPLO, "OK")
+    Quit 
+  Endif 
 
 'Azzera le variabili***************************************************************************
    $ListpkgWR = 0
@@ -569,6 +646,7 @@ Else
    $KILL = 0
    $CLOSEPASS = 0
    TXTINFOBOX.Text = "Loading..."
+   $CLEARTXTPKG = 0
    
 'PULISCE LE LISTE PROVVISORIE DI INSTALLAZIONE/RIMOZIONE
   TMPLISTCLEAN
@@ -582,8 +660,8 @@ Else
  
 'Controlla se sono presenti pacchetti esclusi dagli aggiornamenti*********************************
   EXCLUDETEST
-  
-'Creale liste*************************************************************************************
+    
+'Crea le liste*************************************************************************************
     If $OFFLINE = 1 Then
        TimerUPLISTE.Enabled = True
     Endif 
@@ -597,12 +675,23 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
   Else 
     BTNVIEWLOG.Visible = False
   Endif
-  
-  'VERIFICA SE IMPOSTATO IGNORE CASE  ******************
+'FUNZIONE DA MODIFICARE PER RENDERE IGNORECASE ATTIVO DI DEFAULT**************************  
+  'VERIFICA SE IMPOSTATO IGNORE CASE E GESTISCE ATTIVAZIONE DI DEFAULT DELLA FUNZIONE  ***
   If Exist(User.Home &/ ".config/dnfdrake/ignorecase") Then
-    $CASE = 1
+    If File.Load(User.Home &/ ".config/dnfdrake/ignorecase") = "" Then
+       'Message.Info("VUOTO", "ok")
+       File.Save(User.Home &/ "/.config/dnfdrake/ignorecase", "1") 
+    Endif
+  Else
+    File.Save(User.Home &/ "/.config/dnfdrake/ignorecase", "1")  
+  Endif
+  
+  If File.Load(User.Home &/ ".config/dnfdrake/ignorecase") = "1" Then
+     $CASE = 1
+     'Message.Info("1", "ok")
   Else  
-    $CASE = 0
+     $CASE = 0 
+     'Message.Info("no 1", "ok")
   Endif  
   'MOSTRA IL PULSANTE OM-PICKER IN OMA*******************
     Shell "lsb_release -d" To $DISTRO
@@ -651,7 +740,10 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
       '     Stop Event
       '  Endif 
    Endif
-  '************************************************************  
+'COMANDI CON OPZIONE NODEPS**********************************************************************
+$INSTALLNODEPS = "sudo rpm -ivh --nodeps "
+$UNINSTALLNODEPS = "sudo rpm -evh --nodeps "
+$UPDATENODEPS = "sudo rpm -Uvh --nodeps "
 End
 
 Public Sub EXCLUDETEST()
@@ -782,15 +874,47 @@ Public Sub Process_Read()
        Endif
   'MEMOCOMMAND PULISCI SUSPEND ********************************************
        If $MEMOCOMMAND = "CLEARSUSPEND" Then
-          $MEMOCOMMAND = ""
           VERIFYSUSPEND
           Btnclear_Click
-       Endif     
+          ' Wait 0.1
+          ' $MEMOCOMMAND = "QUITRESTORESUSPEND"
+          ' Wait 0.1
+          ' Print #Fmain.$hProcess, "" & gb.NewLine;
+          ' Wait 0.1  
+
+       Endif
+ 'MEMOCOMMAND CHIUDI DOPO RIPRISTINO SUSPEND*******************************
+        If $MEMOCOMMAND = "QUITRESTORESUSPEND" And If $CLOSEPASS = 1 Then
+           $MEMOCOMMAND = ""
+           Btnclose_Click
+        Endif
+        If $MEMOCOMMAND = "QUITRESTORESUSPEND" And If $CLOSEPASS = 0 Then
+           $MEMOCOMMAND = ""
+        Endif
+            
  'MEMOCOMMAND MOUSEDEFAULT*************************************************
        If $MEMOCOMMAND = "MOUSEDEFAULT" Then
          Me.Mouse = Mouse.Default
          $MEMOCOMMAND = ""
        Endif
+ 'INSTALLNODEPS************************************************************
+      If $MEMOCOMMAND = "INSTALLNODEPS" Then
+         Dim RI As String
+         Print #$hProcess, "cd " & User.Home & gb.NewLine;
+         Shell ("find  " & User.Home &/ ".config/dnfdrake/tmp/ |grep .rpm") To RI
+         Print #$hProcess, $INSTALLNODEPS & Left(RI, -1) & Right($VERBOSE, -1) & gb.NewLine;
+         '$MEMOCOMMAND = "CLEARNODEPSPKG"
+         $MEMOCOMMAND = ""
+      Endif
+ 'UPDATENODEPS************************************************************
+      If $MEMOCOMMAND = "UPDATESNODEPS" Then
+         Dim RU As String
+         Print #$hProcess, "cd " & User.Home & gb.NewLine;
+         Shell ("find  " & User.Home &/ ".config/dnfdrake/tmp/ |grep .rpm") To RU
+         Print #$hProcess, $UPDATENODEPS & Left(RU, -1) & Right($VERBOSE, -1) & gb.NewLine;
+         '$MEMOCOMMAND = "CLEARNODEPSPKG"
+         $MEMOCOMMAND = ""
+      Endif      
 '**************************************************************************
        If $MEMOCOMMAND = "DISTROSYNCWAIT" Then
          $MEMOCOMMAND = ""
@@ -838,7 +962,7 @@ Public Sub Process_Read()
        '    $MEMOCOMMAND = ""
        ' Endif
 '**************************************************************************
-       If $ListpkgWR = 0 And $CHKERROR > 0 Then
+       If $ListpkgWR = 0 And If $CHKERROR > 0 And If CHKNODEPS.Value = False Then
           Try Message.Info("N°" & $CHKERROR & " ERRORS HAVE BEEN DETECTED, PLEASE IMPROVE THE SEARCH CRITERIA", "OK")
           $CHKERROR = 0
        Endif
@@ -881,6 +1005,7 @@ Private Sub UpdateConsole()
   Dim sok As String
   ' Dim smid As String[]   'da elimiare se dopo 10 versioni se non presenta errori di ricerca 1.9.6
   Dim p As Integer
+  Dim x As Integer
 
   While Len($sText)
     iPos = InStr($sText, "\n")
@@ -888,6 +1013,7 @@ Private Sub UpdateConsole()
       sStr = Normalize(Left$($sText, iPos))
  ' pulizia stringa per lista pacchetti in listpkg********************************************************
      ' questo codice serve a levare gli spazi prima e dopo il nome del pacchetto  " RTrim$(LTrim$(txtpkg.Text)))  "
+  
      If InStr($sText, RTrim$(LTrim$(txtpkg.Text))) > 0 Then       
      If InStr($sText, ".x86_64") Or InStr($sText, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr($sText, ".i686") Then
        Try s = Scan($sText, "*[    ]*")[0]
@@ -904,32 +1030,41 @@ Private Sub UpdateConsole()
         If $ListpkgWR = 3 Then
           p = 1 + ListpkgINSTALLATI.Count
           ListpkgINSTALLATI.Add(p, s)
+          ListpkgNODEPS.Add(p, s)
         Endif
         If $ListpkgWR = 2 Then
           p = 1 + ListpkgAVAILABLE.Count
           ListpkgAVAILABLE.Add(p, s)
+
         Endif
         If $ListpkgWR = 1 Then
           p = 1 + ListpkgUPGRADE.Count       
           ListpkgUPGRADE.Add(p, s)
+
         Endif
         If $ListpkgWR = 0 
            p = 1 + Listpkg.Count
            Listpkg.Add(p, s) 
+
         Endif
        ' Listpkg.Add(p, s)
+
 '************************************************************
         sok = s
         Endif
         Endif
       ' Next   'da elimiare se dopo 10 versioni se non presenta errori di ricerca
 
+        
      Endif
      Endif
 '******************************************************************************************
     $sText = Mid$($sText, iPos + 1)
     txtConsole.Pos = txtConsole.Length
     txtConsole.Insert(sStr)
+    
+    
+ 
 '*****SERVE PER NON MOSTRARE IL ^C DI ANNULLA*****************
    ' If InStr(txtConsole.text, "^C") > 0 Then
     '   Btnclear_Click
@@ -939,12 +1074,17 @@ Private Sub UpdateConsole()
 'INVIA L'ULTIMA RIGA ALLA FINESTRA FRUN E CONTROLLA GLI ERRORI************************    
     If FRUN.Visible = True   
        FRUN.MONITORVIEW.Text = sStr
+       
+       If PICLOGODISTRO.Visible = True Then
+          PICLOGODISTRO.Visible = False
+       Endif
+       
     Endif    
     If FPROGRESSWAIT.Visible = True Then
        FPROGRESSWAIT.MONITORVIEW.Text = sStr
     Endif
-'verifica se l'operazione ha errori*************************** CORREGGERE QUESTO!!!!  
-    If sStr = $DNFDRAKEASK And FRUN.ProgressBar1.Pulse = True Then 
+'verifica se l'operazione ha errori****ESCLUSO CON NODEPS ATTIVO***********************   
+    If sStr = $DNFDRAKEASK And If FRUN.ProgressBar1.Pulse = True And If CHKNODEPS.Value = False Then 
       FRUN.ProgressBar1.Pulse = False    
       FRUN.ProgressBar1.Value = 1
       FRUN.BTNSTOP.Text = Fmain.Btnclose.Text
@@ -955,13 +1095,21 @@ Private Sub UpdateConsole()
       FERROR.TextArea1.Text = txtConsole.Text
     Endif
 
+   If sStr = $DNFDRAKEASK And If FRUN.ProgressBar1.Pulse = True And If CHKNODEPS.Value = True Then 
+
+      FRUN.ProgressBar1.Pulse = False    
+      FRUN.ProgressBar1.Value = 1
+      FRUN.BTNSTOP.Text = $OK
+      FRUN.BTNSTOP.Picture = Picture.Load("/usr/share/dnfdrake/ok.png") 
+      FRUN.MONITORVIEW.Visible = False
+      FRUN.Text = "DnfDrake,  " & $FATTO
+   Endif
 
 'CHIUSURA FPROGRESSWAIT **************************************************************
       If sStr = $DNFDRAKEASK And FPROGRESSWAIT.Visible = True Then
          FPROGRESSWAIT.Close
-      Endif
+      Endif      
 '*************************************************************************************
-
   Wend
 End
 
@@ -1023,7 +1171,7 @@ Public Sub txtCommand_Activate()
            Endif  
       '*****************************************************************
         Else  
-      ' ESEGUE I COMANDI NORMALI**************************************** 
+ ' ESEGUE I COMANDI NORMALI**************************************** 
             Dim sLig As String
             sLig = txtCommand.Text & gb.NewLine
             txtCommand.Clear
@@ -1052,12 +1200,14 @@ Private Sub TABHIDE()
     ListpkgINSTALLATI.Visible = False
     ListpkgAVAILABLE.Visible = False
     ListpkgUPGRADE.Visible = False
+    ListpkgNODEPS.Visible = False
 End 
 Private Sub EXITROUTIN()
       Dim $PID As String
       If Exist(User.Home & "/.config/dnfdrake/repolist.tmp") Then
          Shell "rm -f " & User.Home & "/.config/dnfdrake/repolist.tmp " Wait 
       Endif
+      
       $hProcess.Kill
     ' PARTE CHE SERVE A KILLARE IL PROCESSO DI DNFDRAKE SE È STATO LANCIATO DNFDRAKETRAY ********** 
       If $KILL = 1 Then
@@ -1065,6 +1215,25 @@ Private Sub EXITROUTIN()
         $PID = Right(Left($PID, 16), 8)
         Shell "kill " & $PID
       Endif  
+      If $KILL = 2 Then
+        Shell "ps aux | grep gbr3 | grep -w draketray.gambas" Wait To $PID
+        $PID = Right(Left($PID, 16), 8)
+        Shell "kill " & $PID
+        Shell ("rm -f " & User.Home &/ ".config/draketray/locktray") Wait 
+      Endif  
+'PULIZIA DEI LOG***********************************************************
+      If $CLEARLOG = 0 Then
+      Else
+       Dim s As String
+       Dim i As Integer
+       i = 0
+       For Each s In Dir(User.Home &/ ".config/dnfdrake/log", "*.log*", gb.File)
+          i = i + 1
+       Next 
+        If i > 11 And If $CLEARLOG <> 0 Then
+           Shell ("find " & User.Home &/ ".config/dnfdrake/log -type f  -name '*.log' -not -name 'last.log' -mtime +" & $CLEARLOG & " -exec rm {} " & Chr$(92) & Chr$(59)) Wait
+        Endif
+      Endif
 End
 
 
@@ -1091,8 +1260,9 @@ Public Sub Btnclose_Click()
     txtConsole.Visible = False
     Wait 0.1
     FPW.BTNANNULLA_Click
-    Me.Close
-  Endif
+    Try Me.Close
+  Endif 
+    
 End
 
 Public Sub btnupdate_Click()
@@ -1142,6 +1312,7 @@ Public Sub btninstall_Click()
                Else
                   If Right(txtpkg.Text, 4) = ".txt" Then '*************Verifica se esiste un elenco di pacchetti da installare 
                   Print #$hProcess, $INSTALL & "$(cat " & txtpkg.Text & " )" & $VERBOSE & gb.NewLine;
+                  FRUNSHOW
                       Else                                  '*************Se non c'è elenco fa la solita installazione
                      Btnclear_Click
                         If Btnexp2.Text = "EXP2" Then
@@ -1149,7 +1320,11 @@ Public Sub btninstall_Click()
                         Endif   
                       txtConsole.Text = ""
                       Me.Mouse = Mouse.Wait 
-                      Print #$hProcess, $INSTALL & txtpkg.Text & $VERBOSE & gb.NewLine;
+                      If CHKNODEPS.Value = True And InStr(txtpkg.Text, "/") Then
+                        Print #$hProcess, $INSTALLNODEPS & txtpkg.Text & $VERBOSE & gb.NewLine;
+                      Else   
+                         Print #$hProcess, $INSTALL & txtpkg.Text & $VERBOSE & gb.NewLine;
+                      Endif
                       FRUNSHOW
                    Endif      
                Endif
@@ -1158,7 +1333,7 @@ Public Sub btninstall_Click()
          If ListpkgINSTALLATI.Visible = True Or If ListpkgUPGRADE.Visible = True Then
             Message.Info($SELECTPKG, "OK")
          Else
-         
+              
                   If ListpkgAVAILABLE.Visible = True 
                       For Each a In ListpkgAVAILABLE.Selection
                         s = ListpkgAVAILABLE[a].Text
@@ -1175,11 +1350,21 @@ Public Sub btninstall_Click()
                             Btnexp2_Click  
                             Endif
                             Me.Mouse = Mouse.Wait 
-                            Print #$hProcess, $INSTALL & spkg & $VERBOSE & gb.NewLine;
+                            If CHKNODEPS.Value = False Then
+                               Print #$hProcess, $INSTALL & spkg & $VERBOSE & gb.NewLine;
+                            Else   
+                                PICLOGODISTRO.Visible = False 
+                                $FRUNPW = 1
+                                Wait 0.1
+                                Print #$hProcess, "cd " & User.Home &/ ".config/dnfdrake/tmp/" & gb.NewLine;
+                                Wait 0.1
+                                Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine;
+                                $MEMOCOMMAND = "INSTALLNODEPS"
+                            Endif
                             FRUNSHOW
                       Endif
                   Endif
-                  
+                 
                If $OFFLINE = 0 Then   
                  If Listpkg.Visible = True Then
                    If Cmbtipo.index = 2 Or If Cmbtipo.index = 0
@@ -1198,7 +1383,18 @@ Public Sub btninstall_Click()
                         Btnexp2_Click  
                         Endif
                         Me.Mouse = Mouse.Wait 
-                        Print #$hProcess, $INSTALL & spkg & $VERBOSE & gb.NewLine;
+                        If CHKNODEPS.Value = False Then
+                           Print #$hProcess, $INSTALL & spkg & $VERBOSE & gb.NewLine;
+                        Else 
+                           'Message.Info("NoDeps work only in offline mode!", "Ok")  
+                           PICLOGODISTRO.Visible = False
+                           $FRUNPW = 1
+                           Wait 0.1
+                           Print #$hProcess, "cd " & User.Home &/ ".config/dnfdrake/tmp/" & gb.NewLine;
+                           Wait 0.1
+                           Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine; 
+                           $MEMOCOMMAND = "INSTALLNODEPS"    
+                        Endif
                         FRUNSHOW
                      Endif
                    Endif   
@@ -1221,6 +1417,7 @@ Public Sub btnremove_Click()
     Dim s As String
     Dim spkg As String
     spkg = ""
+ 
 'VERIFICA NUMERO DI PACCHETTI SELEZIONATI*************************************    
     If Val(Str(ListpkgINSTALLATI.Selection.Count)) > 10 Then
           Message.Info("It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for uninstallation! ", "OK")
@@ -1238,6 +1435,7 @@ Public Sub btnremove_Click()
            Else
                If Right(txtpkg.Text, 4) = ".txt" Then '*************Verifica se esiste un elenco di pacchetti da installare 
                   Print #$hProcess, $UNINSTALL & "$(cat " & txtpkg.Text & " )" & $VERBOSE & gb.NewLine;
+                  FRUNSHOW
                       Else                                  '*************Se non c'è elenco fa la solita installazione          
                   Btnclear_Click
                      If Btnexp2.Text = "EXP2" Then
@@ -1245,7 +1443,12 @@ Public Sub btnremove_Click()
                      Endif  
                  txtConsole.Text = ""
                  Me.Mouse = Mouse.Wait 
-                 Print #$hProcess, $UNINSTALL & txtpkg.Text & $VERBOSE & gb.NewLine;
+                  If CHKNODEPS.Value = False Then
+                    Print #$hProcess, $UNINSTALL & txtpkg.Text & $VERBOSE & gb.NewLine;
+                  Else 
+                    Print #$hProcess, $UNINSTALLNODEPS & txtpkg.Text & $VERBOSE & gb.NewLine;
+                    'Print #$hProcess, "sudo rpm -evh " & txtpkg.Text & " --nodeps " & $VERBOSE & gb.NewLine;
+                  Endif
                  FRUNSHOW
               Endif    
             Endif
@@ -1271,7 +1474,14 @@ Public Sub btnremove_Click()
                                 Btnexp2_Click  
                               Endif
                             Me.Mouse = Mouse.Wait 
-                            Print #$hProcess, $UNINSTALL & spkg & $VERBOSE & gb.NewLine;
+                            If CHKNODEPS.Value = False Then
+                               Print #$hProcess, $UNINSTALL & spkg & $VERBOSE & gb.NewLine;
+                            Else 
+                              Print #$hProcess, $UNINSTALLNODEPS & spkg & $VERBOSE & gb.NewLine;
+                              ' Print #$hProcess, "sudo rpm -evh " & spkg & " --nodeps " & $VERBOSE & gb.NewLine;
+
+                            Endif
+                            
                             FRUNSHOW
                         Endif
                   Endif
@@ -1293,14 +1503,25 @@ Public Sub btnremove_Click()
                                   Btnexp2_Click  
                                 Endif
                             Me.Mouse = Mouse.Wait 
-                            Print #$hProcess, $UNINSTALL & spkg & $VERBOSE & gb.NewLine;
+                            
+                            If CHKNODEPS.Value = False Then
+                                Print #$hProcess, $UNINSTALL & spkg & $VERBOSE & gb.NewLine;
+                            Else 
+                                Print #$hProcess, $UNINSTALLNODEPS & spkg & $VERBOSE & gb.NewLine;
+                                ' Print #$hProcess, "sudo rpm -evh " & spkg & " --nodeps " & $VERBOSE & gb.NewLine;
+                            Endif
+                           
                             FRUNSHOW
                           Endif
                      Endif   
                  Endif
              Endif
          Endif
-    Endif  
+    Endif
+  ' Endif 
+  If $SECUREMODE <> "SECURE" Then
+    Me.Mouse = Mouse.default
+  Endif
 End
 
 Public Sub BTNPKGUPDATE_Click()
@@ -1325,6 +1546,7 @@ Public Sub BTNPKGUPDATE_Click()
             Else
                If Right(txtpkg.Text, 4) = ".txt" Then '*************Verifica se esiste un elenco di pacchetti da installare 
                   Print #$hProcess, $PKGUPDATE & "$(cat " & txtpkg.Text & " )" & $VERBOSE & gb.NewLine;
+                  FRUNSHOW
                       Else                                  '*************Se non c'è elenco fa la solita installazione
                     Btnclear_Click
                      If Btnexp2.Text = "EXP2" Then
@@ -1332,7 +1554,11 @@ Public Sub BTNPKGUPDATE_Click()
                      Endif   
                    txtConsole.Text = ""
                    Me.Mouse = Mouse.Wait  
-                    Print #$hProcess, $PKGUPDATE & txtpkg.Text & $VERBOSE & gb.NewLine;
+                    If CHKNODEPS.Value = True And InStr(txtpkg.Text, "/") > 1 Then
+                       Print #$hProcess, $UPDATENODEPS & txtpkg.Text & $VERBOSE & gb.NewLine;
+                    Else   
+                         Print #$hProcess, $PKGUPDATE & txtpkg.Text & $VERBOSE & gb.NewLine;
+                    Endif 
                     FRUNSHOW
               Endif 
             Endif
@@ -1358,7 +1584,16 @@ Public Sub BTNPKGUPDATE_Click()
                             Btnexp2_Click  
                           Endif
                            Me.Mouse = Mouse.Wait 
-                           Print #$hProcess, $PKGUPDATE & spkg & $VERBOSE & gb.NewLine;
+                           If CHKNODEPS.Value = False Then
+                              Print #$hProcess, $PKGUPDATE & spkg & $VERBOSE & gb.NewLine;
+                           Else 
+                              PICLOGODISTRO.Visible = False 
+                              $FRUNPW = 1 
+                              Print #$hProcess, "cd " & User.Home &/ ".config/dnfdrake/tmp/" & gb.NewLine;
+                              Wait 0.1
+                              Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine; 
+                              $MEMOCOMMAND = "UPDATESNODEPS" 
+                           Endif
                            FRUNSHOW
                         Endif
                   Endif
@@ -1381,7 +1616,17 @@ Public Sub BTNPKGUPDATE_Click()
                                   Btnexp2_Click  
                               Endif
                           Me.Mouse = Mouse.Wait 
-                          Print #$hProcess, $PKGUPDATE & spkg & $VERBOSE & gb.NewLine; 
+                          If CHKNODEPS.Value = False Then
+                             Print #$hProcess, $PKGUPDATE & spkg & $VERBOSE & gb.NewLine; 
+                          Else 
+                             'Message.Info("NoDeps work only in offline mode!", "Ok")  
+                              PICLOGODISTRO.Visible = False
+                              $FRUNPW = 1  
+                              Print #$hProcess, "cd " & User.Home &/ ".config/dnfdrake/tmp/" & gb.NewLine;
+                              Wait 0.1
+                              Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine; 
+                              $MEMOCOMMAND = "UPDATESNODEPS" 
+                          Endif
                           FRUNSHOW
                       Endif
                    Endif   
@@ -1559,13 +1804,13 @@ Public Sub btncerca_Click()
           txtConsole.Text = ""
           Me.Mouse = Mouse.Wait  
           Print #$hProcess, "dnf list " & gb.NewLine; 
-           PICLOGODISTRO.Visible = False  
+          ' PICLOGODISTRO.Visible = False  
           If Btnexp2.Text = "EXP2" Then
-          Btnexp2_Click 
+             Btnexp2_Click 
           Endif
        Else
           If Btnexp1.Text = "EXP1" Then
-          Btnexp1_Click 
+             Btnexp1_Click 
           Endif
           If $ListpkgWR = 0 And $ListpkgCK = 0
           Btnclear_Click
@@ -1573,46 +1818,11 @@ Public Sub btncerca_Click()
 '****************************************************************
           Me.Mouse = Mouse.Wait  
           Print #$hProcess, "dnf " & $SEARCH & " list | grep " & txtpkg.Text & gb.NewLine;
-          PICLOGODISTRO.Visible = False  
+          PICLOGODISTRO.Visible = False 
           ' $MEMOEXEC = "txtpkgclear"
         Endif
         Endif
 '**********************************************************          
-          
-          
-          
-' 'MODIFICA PER NUOVA RICERCA PACCHETTI online forse da eliminare*****************************************************
-'         BTNTABINSTALLED.Visible = True
-'         BTNTABAVIABLE.Visible = True
-'         BTNTABUPDATE.Visible = True
-' 
-'         $ListpkgWR = $ListpkgWR + 1
-'  
-'           If $ListpkgWR = 1 Then
-'            Print #$hProcess, "dnf list upgrades  |grep " & txtpkg.Text & gb.NewLine;
-'            BTNTABUPDATE.SetFocus
-'            BTNTABUPDATE_Click
-'           Endif
-'    
-'             If $ListpkgWR = 2 Then
-'               Print #$hProcess, "dnf " & $SEARCH & " list available | grep " & txtpkg.Text & gb.NewLine;
-'               BTNTABAVIABLE.SetFocus
-'               BTNTABAVIABLE_Click
-'             Endif
-'    
-'             If $ListpkgWR = 3 Then
-'                Print #$hProcess, "dnf list installed| grep " & txtpkg.Text & gb.NewLine; 
-'                BTNTABINSTALLED.SetFocus
-'                BTNTABINSTALLED_Click   
-'                ' $MEMOEXEC = "txtpkgclear"
-'             Endif
-'   
-'    ' Print #$hProcess, "dnf " & $SEARCH & " list | grep " & txtpkg.Text & gb.NewLine;
-'    ' $MEMOEXEC = "txtpkgclear"
-'    
-'      Endif
-   
-   
  'RICERCA OFFLINE*********************************************************************
     $MEMOCOMMAND = "MOUSEDEFAULT"
     Else
@@ -1640,6 +1850,15 @@ Public Sub btncerca_Click()
    '****************************************************************************
    
    If Cmbtipo.index = 1 Then 
+     
+'PARTE IN MODIFICA PER NODEPS************************************************************
+
+    ' If CHKNODEPS.Value = True Then
+    '    CERCANODEPS
+    ' Else   
+
+'ENDIF IN CODA **************************************************************************
+
      If $OFFLINE = 0                        'INSTALLATI
         TABHIDE
           If txtpkg.Text = "" Then
@@ -1649,6 +1868,7 @@ Public Sub btncerca_Click()
              txtConsole.Text = ""  
             Me.Mouse = Mouse.Wait  
             Print #$hProcess, "dnf list installed" & gb.NewLine;
+             PICLOGODISTRO.Visible = False 
           Else
               If Btnexp1.Text = "EXP1" Then
                  Btnexp1_Click 
@@ -1656,6 +1876,7 @@ Public Sub btncerca_Click()
                 Btnclear_Click
                 Me.Mouse = Mouse.Wait  
                 Print #$hProcess, "dnf list installed| grep " & txtpkg.Text & gb.NewLine;
+                 PICLOGODISTRO.Visible = False 
                 ' $MEMOEXEC = "txtpkgclear"
           Endif
      $MEMOCOMMAND = "MOUSEDEFAULT"
@@ -1663,18 +1884,20 @@ Public Sub btncerca_Click()
      Else
          TABHIDE
          Btnclear_Click
-          
+
           If Btnexp1.Text = "EXP1" Then
               Btnexp1_Click 
           Endif
-          
-         ' BTNTABINSTALLED.Visible = True
-         ' BTNTABAVIABLE.Visible = False
-         ' BTNTABUPDATE.Visible = False
          Me.Mouse = Mouse.Wait  
          CERCAINSTALLED
          BTNINSTALVIEW
-     Endif
+
+'************************************************
+     ' Endif
+'************************************************
+
+
+    Endif  
   Endif  
 '***********************************************************************************   
    
@@ -1688,13 +1911,15 @@ Public Sub btncerca_Click()
               txtConsole.Text = ""
               Me.Mouse = Mouse.Wait  
               Print #$hProcess, "dnf list available" & gb.NewLine; 
+               PICLOGODISTRO.Visible = False 
             Else
                 If Btnexp1.Text = "EXP1" Then
                    Btnexp1_Click 
                 Endif
                 Btnclear_Click
                 Me.Mouse = Mouse.Wait  
-                Print #$hProcess, "dnf " & $SEARCH & " list available | grep " & txtpkg.Text & gb.NewLine;  
+                Print #$hProcess, "dnf " & $SEARCH & " list available | grep " & txtpkg.Text & gb.NewLine;
+                 PICLOGODISTRO.Visible = False   
                 ' $MEMOEXEC = "txtpkgclear"
             Endif
      $MEMOCOMMAND = "MOUSEDEFAULT"
@@ -1727,14 +1952,16 @@ Public Sub btncerca_Click()
                 Endif
                txtConsole.Text = ""
                Me.Mouse = Mouse.Wait  
-               Print #$hProcess, "dnf list upgrades" & gb.NewLine; 
+               Print #$hProcess, "dnf list upgrades" & gb.NewLine;
+                PICLOGODISTRO.Visible = False  
             Else
                 If Btnexp1.Text = "EXP1" Then
                   Btnexp1_Click 
                 Endif
                 Btnclear_Click
                 Me.Mouse = Mouse.Wait  
-                Print #$hProcess, "dnf list upgrades  |grep " & txtpkg.Text & gb.NewLine;  
+                Print #$hProcess, "dnf list upgrades  |grep " & txtpkg.Text & gb.NewLine;
+                 PICLOGODISTRO.Visible = False  
                 ' $MEMOEXEC = "txtpkgclear"
             Endif
      $MEMOCOMMAND = "MOUSEDEFAULT"
@@ -1764,9 +1991,11 @@ If Cmbtipo.index = 4 Then                     'AUTOREMOVE
       If $LOG = "LOG" Then
           Me.Mouse = Mouse.Wait  
           Print #$hProcess, "dnf list autoremove" & $VERBOSE & gb.NewLine;
+           PICLOGODISTRO.Visible = False 
         Else 
           Me.Mouse = Mouse.Wait  
           Print #$hProcess, "dnf list autoremove" & gb.NewLine;
+           PICLOGODISTRO.Visible = False 
       Endif
     $MEMOCOMMAND = "MOUSEDEFAULT" 
    Else 
@@ -1791,12 +2020,26 @@ If Cmbtipo.index = 4 Then                     'AUTOREMOVE
   '*************************************************
      Me.Mouse = Mouse.Wait  
      Print #$hProcess, "dnf list autoremove" & $VERBOSE & gb.NewLine;
+      PICLOGODISTRO.Visible = False 
      Me.Mouse = Mouse.Wait  
      $MEMOCOMMAND = "AUTOREMOVE"
    Endif    
 Endif
 '********************************************************************************************
+If Cmbtipo.index = 5 Then 
+        CERCANODEPS
+    ' Else   
+Endif     
 'Me.Mouse = Mouse.Default 
+End
+
+Public Sub NODEPSTMPCLEAR()
+  Dim R As String
+  Shell ("find  " & User.Home &/ ".config/dnfdrake/tmp/ |grep .rpm") To R
+  If R <> "" Then
+     Shell ("rm -f " & User.Home &/ ".config/dnfdrake/tmp/*.rpm")
+  Endif
+  
 End
 
 Public Sub VERIFYSUSPEND()
@@ -1840,6 +2083,8 @@ If BTNFULLSCREEN.Visible = True
   ListpkgAVAILABLE.Height = ListpkgAVAILABLE.Height + ($RISOLUZIONEY - 768)
   ListpkgUPGRADE.Width = ListpkgUPGRADE.Width + ($RISOLUZIONEX - 1366)
   ListpkgUPGRADE.Height = ListpkgUPGRADE.Height + ($RISOLUZIONEY - 768)
+  ListpkgNODEPS.Width = ListpkgNODEPS.Width + ($RISOLUZIONEX - 1366)
+  ListpkgNODEPS.Height = ListpkgNODEPS.Height + ($RISOLUZIONEY - 768)
   TXTINFOBOX.Width = TXTINFOBOX.Width + ($RISOLUZIONEX - 1366)
   TXTINFOBOX.Height = TXTINFOBOX.Height + ($RISOLUZIONEY - 768)
   HBox1.Y = HBox1.Y + ($RISOLUZIONEY - 768)
@@ -1892,6 +2137,8 @@ Else
   ListpkgAVAILABLE.Height = 476
   ListpkgUPGRADE.Width = 1332 - 8
   ListpkgUPGRADE.Height = 476
+  ListpkgNODEPS.Width = 1332 - 8
+  ListpkgNODEPS.Height = 476
   TXTINFOBOX.Width = 770
   TXTINFOBOX.Height = 476
   HBox1.Y = 662
@@ -2101,11 +2348,78 @@ Private Sub CERCAINSTALLED()
        Endif
        ListpkgINSTALLATI.Enabled = False
      Endif
-     t.Close
+     t.Close  
      Me.Mouse = Mouse.Default
 
   
 End
+
+Private Sub CERCANODEPS()
+Dim s As String
+Dim t As Stream
+Dim p As Integer
+Btnclear_Click
+If ListpkgNODEPS.Count > 0 Then
+    ListpkgNODEPS.SelectAll
+    ListpkgNODEPS.Clear
+    ListpkgNODEPS.UnSelectAll
+Endif
+PICLOGODISTRO.Visible = False
+Me.Mouse = Mouse.Wait  
+Wait 0.05
+Shell ("rpm -qa >" & User.Home & "/.config/dnfdrake/nodeps.txt") Wait 
+ListpkgNODEPS.Mode = 1
+ListpkgNODEPS.Enabled = True
+ListpkgNODEPS.Visible = True 
+CORNICE.Background = &aa0000&
+BTNINSTALVIEW
+ListpkgINSTALLATI.Visible = False
+ListpkgAVAILABLE.Visible = False
+ListpkgUPGRADE.Visible = False 
+ListpkgNODEPS.Visible = True
+t = Open User.Home & "/.config/dnfdrake/nodeps.txt"
+
+ For Each s In t.Lines 
+            If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
+               p = p + ListpkgNODEPS.Count
+               ListpkgNODEPS.add(p, s)
+                  If $COLORTEXT = "color"
+                    ListpkgNODEPS[p].Foreground = &H0038D079
+                  Endif
+            Else
+               If $CASE = 1 Then
+                  If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If InStr(s, RTrim$(LTrim$(txtpkg.Text)), 0, gb.IgnoreCase) Then
+                     p = p + ListpkgNODEPS.Count
+                     ListpkgNODEPS.add(p, s)
+                        If $COLORTEXT = "color"
+                           ListpkgNODEPS[p].Foreground = &H0038D079
+                        Endif 
+                  Endif                     
+               Else  
+                  If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If InStr(s, RTrim$(LTrim$(txtpkg.Text))) Then
+                     p = p + ListpkgNODEPS.Count
+                     ListpkgNODEPS.add(p, s)
+                        If $COLORTEXT = "color"
+                           ListpkgNODEPS[p].Foreground = &H0038D079
+                        Endif
+                  Endif
+               Endif     
+            Endif
+     Next
+      If ListpkgNODEPS.Count = 0 Then
+       ListpkgNODEPS.Mode = 0
+       ListpkgNODEPS.Add(1, $NOTPACKAGES)
+       If $COLORTEXT = "color"
+       ListpkgNODEPS[1].Foreground = &H0038D079
+       Endif
+       ListpkgNODEPS.Enabled = False
+     Endif
+     t.Close  
+
+
+Me.Mouse = Mouse.default  
+End
+
 
 Private Sub CERCAAUTOREMOVE()
   
@@ -2139,6 +2453,7 @@ Private Sub CERCAAUTOREMOVE()
      Endif
      t.Close
      Me.Mouse = Mouse.Default
+     
 
 End
 
@@ -2146,15 +2461,21 @@ End
 Private Sub BTNINSTALVIEW()
   If $SECUREMODE = "SECURE" Then
       btninstall.Enabled = False
-      BTNREINSTALL.Enabled = True
-      BTNDOWNDGRADE.Enabled = True
+      If CHKNODEPS.Value = False Then
+         BTNREINSTALL.Enabled = True
+         BTNDOWNDGRADE.Enabled = True
+      Else      
+        BTNREINSTALL.Enabled = False
+        BTNDOWNDGRADE.Enabled = False
+      Endif
       btnremove.Enabled = True
       BTNPKGUPDATE.Enabled = False 
       If TXTPKGLISTNOME.Text = "None" Then
         Else 
           TXTPKGLISTNOME.Text = "Remove Package List"
       Endif
-  Endif     
+  Endif
+     
 End
 
 Private Sub BTNAVAILABLEVIEW()
@@ -2169,6 +2490,7 @@ Private Sub BTNAVAILABLEVIEW()
           TXTPKGLISTNOME.Text = "Install Package List"
       Endif
   Endif 
+  
 End
 
 Private Sub BTNUPDATEVIEW()
@@ -2182,7 +2504,8 @@ Private Sub BTNUPDATEVIEW()
         Else 
           TXTPKGLISTNOME.Text = "Update Package List"
       Endif
-  Endif   
+  Endif
+    
 End
 
 Private Sub BTNALLVIEW()
@@ -2270,8 +2593,56 @@ Private Sub DSTUPDATE()
   Endif 
 End
 
+Public Sub DRAKETRAYUPDATE()
+  ' VERIFICA SE È ABILITATA LA NOTIFICA AGGIORNAMENTI CON DRAKETRAY
+    If Not Exist(User.Home &/ ".config/autostart/draketray.desktop") And If Not Exist(User.Home &/ ".config/dnfdrake/noautostart") Then
+       Dim iAnswer As Integer = Message.Question($MSGUPDATESASK, $SI, $NO)
+       If (iAnswer = 1) Then
+         If Not Exist(User.Home &/ ".config/autostart") Then
+            Shell ("mkdir " & User.Home &/ ".config/autostart")
+         Endif
+         If Not Exist(User.Home &/ "/.config/draketray/locktray") Then
+            Shell ("/usr/bin/draketray.gambas") 
+            Sleep 1.1
+            $KILL = 2
+         Endif
+         Shell ("cp /usr/share/draketray/draketray.desktop  " & User.Home &/ ".config/autostart/")
+         Dim $CONFIGDRAKETRAY As Integer
+         $CONFIGDRAKETRAY = Val(File.Load(User.Home &/ "/.config/draketray/config")) 
+         If $CONFIGDRAKETRAY = 0 Then
+            File.Save(User.Home &/ "/.config/draketray/config", "1") 
+         Endif
+         If $CONFIGDRAKETRAY = 2 Then
+            File.Save(User.Home &/ "/.config/draketray/config", "3") 
+         Endif
+         'FEXTRA.Show
+        Else
+          File.Save(User.Home &/ ".config/dnfdrake/noautostart", "") 
+          'Stop Event
+       Endif 
+    Endif
+' ESEGUE LA PULIZIA DI RESIDUI DI DNFDRAKETRAY*****************
+If Exist("/usr/bin/dnfdraketray.gambas") And If Exist("/usr/bin/draketray.gambas") Then
+   Message.Info($MSGTRAYREMOVE, $SI)
+   If Exist(User.Home &/ ".config/autostart/dnfdraketray.desktop") Then
+      Shell ("rm -f " & User.Home &/ ".config/autostart/dnfdraketray.desktop")
+   Endif
+   Dim $PID As String
+   Shell "ps aux | grep gbr3 | grep -w dnfdraketray.gambas" Wait To $PID
+   $PID = Right(Left($PID, 16), 8)
+   Shell "kill " & $PID
+   Shell ("rm -f " & User.Home &/ ".config/dnfdrake/locktray") Wait 
+   Shell ("rmdir " & User.Home &/ ".config/dnfdraketray/") Wait 
+   txtpkg.Text = "dnfdraketray"
+   btnremove_Click
+Endif
+    
+    
+End
+
 
 Public Sub TMPLISTCLEAN()
+
   If Exist(User.Home &/ ".config/dnfdrake/log/rempkglist.txt") Then
     Shell "echo  > " & User.Home &/ ".config/dnfdrake/log/rempkglist.txt" Wait
   Endif
@@ -2283,16 +2654,107 @@ Public Sub TMPLISTCLEAN()
   Endif
   TXTPKGLISTNOME.Text = "None"
 End
+' Public Sub INSTALLNODEPS()
+'   Dim a As String
+'   Dim s As String
+'   Dim spkg As String
+'   spkg = ""
+'   
+'    Print #$hProcess, "cd " & User.Home &/ ".config/dnfdrake/tmp/"
+' '************************************************************* 
+'         If ListpkgINSTALLATI.Visible = False And ListpkgAVAILABLE.Visible = False And ListpkgUPGRADE.Visible = False And If Listpkg.Visible = False Then
+'         Else   
+'                  If ListpkgAVAILABLE.Visible = True 
+'                          For Each a In ListpkgAVAILABLE.Selection
+'                            s = ListpkgAVAILABLE[a].Text
+'                            s = Scan(s, "* * *")[0]
+'                            spkg = spkg & " " & s 
+'                             ListpkgAVAILABLE.Remove(a)
+'                          Next
+'                            ListpkgAVAILABLE.UnSelectAll
+'                            Btnclear_Click
+'                            If Btnexp2.Text = "EXP2" Then
+'                               Btnexp2_Click  
+'                            Endif
+'                            If spkg = "" Then
+'                                Message.Info($SELECTPKG, "OK")
+'                            Else
+'                               Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine;
+'                               PICLOGODISTRO.Visible = False  
+'                               If $SECUREMODE = "SECURE" Then
+'                                  FPROGRESSWAIT.Show
+'                               Endif
+'                            Endif
+'                  Endif   
+'                   If ListpkgUPGRADE.Visible = True 
+'                          For Each a In ListpkgUPGRADE.Selection
+'                            s = ListpkgUPGRADE[a].Text
+'                            s = Scan(s, "* * *")[0]
+'                            spkg = spkg & " " & s 
+'                             ListpkgUPGRADE.Remove(a) 
+'                          Next
+'                            ListpkgUPGRADE.UnSelectAll
+'                            Btnclear_Click
+'                            If Btnexp2.Text = "EXP2" Then
+'                                Btnexp2_Click  
+'                            Endif
+'                            If spkg = "" Then
+'                                Message.Info($SELECTPKG, "OK")
+'                            Else
+'                               Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine;
+'                               PICLOGODISTRO.Visible = False  
+'                               If $SECUREMODE = "SECURE" Then
+'                                  FPROGRESSWAIT.Show
+'                               Endif
+'                            Endif
+'                   Endif
+'           Else
+'                   If Listpkg.Visible = True Then
+'                       For Each a In Listpkg.Selection
+'                         s = Listpkg[a].Text
+'                        ' s = Scan(s, "* * *")[0]
+'                         spkg = spkg & " " & s 
+'                         Listpkg.Remove(a)
+'                       Next
+'                         Listpkg.UnSelectAll
+'                       Btnclear_Click
+'                         If Btnexp2.Text = "EXP2" Then
+'                           Btnexp2_Click  
+'                         Endif
+'                         If spkg = "" Then
+'                            Message.Info($SELECTPKG, "OK")
+'                         Else
+'                           Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine;
+'                           PICLOGODISTRO.Visible = False  
+'                           If $SECUREMODE = "SECURE" Then
+'                              FPROGRESSWAIT.Show
+'                           Endif
+'                         Endif 
+'                   Endif
+'           Endif    
+'       Endif
+'                   Btnclear_Click
+'                   If Btnexp2.Text = "EXP2" Then
+'                      Btnexp2_Click  
+'                   Endif
+'   Endif 
+'   
+' End
+
 
 Public Sub Cmbtipo_Click()
 If Cmbtipo.Text = "Autoremove" Then
   txtpkg.Text = $AUTOREMOVETEXT
   Cmbtipo.Tooltip = $AUTOREMOVETEXT
   txtpkg.Enabled = False
+  $CLEARTXTPKG = 1
 Else 
   txtpkg.Enabled = True  
   Cmbtipo.Tooltip = $CMBTOOLTIP
-  txtpkg.Text = ""
+  If $CLEARTXTPKG = 1
+    txtpkg.Text = ""
+    $CLEARTXTPKG = 0
+  Endif 
   txtpkg.SetFocus
 Endif
 End
@@ -2360,10 +2822,12 @@ Public Sub Btnclear_Click()
     ListpkgUPGRADE.SelectAll
     ListpkgUPGRADE.Clear
     ListpkgUPGRADE.UnselectAll
+    
+    ListpkgNODEPS.SelectAll
+    ListpkgNODEPS.Clear
+    ListpkgNODEPS.UnSelectAll
 
     txtConsole.text = ""
-       
-    
 'GESTIONE PER POTER INSTALLARE DA TXTPKG SE PRESENTI AGGIONAMENTI
       If $OFFLINE = 1 Then
         If Btncommand.Text = Btncommand.Text Then
@@ -2381,10 +2845,10 @@ Public Sub Btnclear_Click()
                Endif
           Endif
       Endif
-      If $COLORTEXT = "color"
+      'If $COLORTEXT = "color"
         CORNICE.Background = True
-      Endif 
-      BTNALLVIEW
+     ' Endif 
+     BTNALLVIEW
       Me.Mouse = Mouse.Default
       $PROGRESSBARFORCESUSPEND = 0
       If txtCommand.Visible = False Then
@@ -2537,7 +3001,6 @@ End
 
 Public Sub ListpkgUPGRADE_DblClick()
 
-
   Dim s As String
    txtpkg.Text = ""
    If ListpkgUPGRADE.Count > 0 Then
@@ -2608,6 +3071,7 @@ End
 
 Public Sub ListpkgUPGRADE_Menu()
 
+
  Dim s As String
 
    If ListpkgUPGRADE.Count > 0 Then
@@ -2632,6 +3096,46 @@ Public Sub ListpkgUPGRADE_Menu()
      Endif      
   Endif
 End
+Public Sub ListpkgNODEPS_Menu()
+
+  
+ Dim s As String
+
+   If ListpkgNODEPS.Count > 0 Then
+      ListpkgNODEPS.MoveCurrent
+      Try ListpkgNODEPS.Item.Selected = True
+        If Error Then
+        Else
+            s = ListpkgNODEPS.Item.Text
+            ListpkgNODEPS.Item.Selected = False
+        Endif
+   Endif
+   
+  If $INFOENABLED = 0 Then
+     If s = ""
+       Else       
+          TXTINFOBOX.Visible = True
+          Wait 0.5
+          Shell "dnf info " & s Wait To $INFOTEXT
+          TXTINFOBOX.Text = $INFOTEXT    
+          TXTINFOBOX.SetFocus
+          $INFOENABLED = 1
+     Endif      
+  Endif
+  
+End
+
+Public Sub ListpkgNODEPS_Select()
+  Dim s As String
+   If ListpkgNODEPS.Count > 0 Then
+      txtpkg.Text = ""
+      ListpkgNODEPS.MoveCurrent
+      ListpkgNODEPS.Item.Selected = True
+      S = ListpkgNODEPS.Item.Text
+      txtpkg.Text = s
+   Endif
+End
+
 Public Sub TXTINFOBOX_LostFocus()
 
   TXTINFOBOX.Text = "Loading..."
@@ -2643,13 +3147,13 @@ Public Sub TXTINFOBOX_LostFocus()
 End
 
 Public Sub btnstop_Click()
-
 $ListpkgCK = 0
 $ListpkgWR = 0
 $CHKERROR = 0
+If $MEMOCOMMAND = "UPDATESNODEPS" Or If $MEMOCOMMAND = "INSTALLNODEPS" Then
+   $MEMOCOMMAND = ""
+Endif
 Print #$hProcess, Chr$(3);
-' Wait 0.1
-' Print #$hProcess, Chr$(3);
 Me.Mouse = Mouse.Default
 End
 
@@ -2938,6 +3442,7 @@ Public Sub BTNDOWNDGRADE_Click()
                Else
                  If Right(txtpkg.Text, 4) = ".txt" Then '*************Verifica se esiste un elenco di pacchetti da installare 
                     Print #$hProcess, $DOWNGRADE & "$(cat " & txtpkg.Text & " )" & $VERBOSE & gb.NewLine;
+                    FRUNSHOW
                         Else    
                      Btnclear_Click
                         If Btnexp2.Text = "EXP2" Then
@@ -3026,20 +3531,36 @@ Public Sub BTNTABINSTALLED_Click()
 ListpkgINSTALLATI.Visible = True
 ListpkgAVAILABLE.Visible = False
 ListpkgUPGRADE.Visible = False 
-  If $COLORTEXT = "color"
+ ' If $COLORTEXT = "color"
     CORNICE.Background = &H2A9A4F&
-  Endif  
+ 'Endif  
   BTNINSTALVIEW
+If ListpkgINSTALLATI.mode <> 0 Then  
+   If CHKNODEPS.Value = True Then
+      ListpkgINSTALLATI.Mode = 1
+   Else    
+      ListpkgINSTALLATI.Mode = 2
+   Endif
+Endif
+
 End
 
 Public Sub BTNTABAVIABLE_Click()
 ListpkgINSTALLATI.Visible = False
 ListpkgAVAILABLE.Visible = True
 ListpkgUPGRADE.Visible = False
-  If $COLORTEXT = "color"
+ ' If $COLORTEXT = "color"
     CORNICE.Background = &HE0703F&
-  Endif  
+ ' Endif  
   BTNAVAILABLEVIEW
+If ListpkgAVAILABLE.Mode <> 0 Then
+   If CHKNODEPS.Value = True Then
+      ListpkgAVAILABLE.Mode = 1
+   Else    
+      ListpkgAVAILABLE.Mode = 2
+   Endif
+Endif
+
 End
 
 
@@ -3047,10 +3568,17 @@ Public Sub BTNTABUPDATE_Click()
 ListpkgINSTALLATI.Visible = False
 ListpkgAVAILABLE.Visible = False
 ListpkgUPGRADE.Visible = True
-  If $COLORTEXT = "color"
+  'If $COLORTEXT = "color"
     CORNICE.Background = &H257ED0&
-  Endif 
+  'Endif 
   BTNUPDATEVIEW
+If ListpkgUPGRADE.Mode <> 0 Then  
+   If CHKNODEPS.Value = True Then
+      ListpkgUPGRADE.Mode = 1
+   Else    
+      ListpkgUPGRADE.Mode = 2
+   Endif
+Endif
 End
 
 
@@ -3409,6 +3937,7 @@ Public Sub BTNREINSTALL_Click()
                Else
                   If Right(txtpkg.Text, 4) = ".txt" Then '*************Verifica se esiste un elenco di pacchetti da installare 
                     Print #$hProcess, $REINSTALL & "$(cat " & txtpkg.Text & " )" & $VERBOSE & gb.NewLine;
+                    FRUNSHOW
                         Else                                  '*************Se non c'è elenco fa la solita installazione
                      Btnclear_Click
                         If Btnexp2.Text = "EXP2" Then
@@ -3848,8 +4377,47 @@ Public Sub PICEXCLUDE_MouseDown()
   BTNEXCLUDE_Click
 End
 
-Public Sub PICLOGODISTRO_MouseDown()
 
+Public Sub CHKNODEPS_Click()
+If ListpkgINSTALLATI.Visible = True Then
+  BTNTABINSTALLED_Click
+Endif
+If ListpkgAVAILABLE.Visible = True Then
+  BTNTABAVIABLE_Click
+Endif
+If ListpkgUPGRADE.Visible = True Then
+  BTNTABUPDATE_Click
+Endif
+
+If Listpkg.Mode <> 0 Then
+   If CHKNODEPS.Value = True Then
+      Listpkg.Mode = 1
+   Else    
+      Listpkg.Mode = 2
+   Endif
+Endif
+
+ If CHKNODEPS.Value = True Then
+       Cmbtipo.Add(Cmbtipo[1].Text & " (NoDeps)", 5)
+    Else    
+       Cmbtipo.Remove(5)
+       If ListpkgNODEPS.Visible = True
+          Btnclear_Click
+       Endif   
+       Cmbtipo.Index = 0
+    Endif
+
+If PICLOGODISTRO.Visible = True And If CHKNODEPS.Value = True Then
+  Cmbtipo.Index = 5
+Endif
+
+
+End
+Public Sub CHKNODEPS_Menu()
   
+  Message.Info($NODEPSINFO, "Ok")
+  
+End
 
+Public Sub PICLOGODISTRO_MouseDown()
 End

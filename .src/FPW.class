@@ -1,5 +1,6 @@
 ' Gambas class file
 
+' Gambas class file
  Public $SECURE As Integer
  Public $MYREPOPEN As Integer
 
@@ -46,6 +47,8 @@ Public Sub Form_Open()
       FPW.Text = Replace(ss$TTP[21], "_", " ")
        Next
    flTTP.Close
+   BTNANNULLA.Picture = Picture.Load("/usr/share/dnfdrake/stop.png")
+   Btnok.Picture = Picture.Load("/usr/share/dnfdrake/ok.png")
 '************************************************************************************
 If Fmain.$SECUREMODE = "SECURE" Then
    Fmain.Enabled = False  
@@ -70,6 +73,9 @@ If FRUN.Visible = True Then
   
 TXTPW.SetFocus
 $SECURE = 0
+' If Fmain.PICLOGODISTRO.Visible = True Then
+'    Fmain.PICLOGODISTRO.Visible = False
+' Endif
 End
 
 Public Sub TXTPW_Activate()
@@ -96,6 +102,9 @@ Public Sub Btnok_Click()
 End
 
 Public Sub BTNANNULLA_Click()
+'PULIZIA PACCHETTI INSTALLAZIONI NODEPS**********************************************
+  Fmain.NODEPSTMPCLEAR
+'************************************************************************************
   If FEXCLUDELIST.Visible = True Then
     FEXCLUDELIST.BTNREFRESH_click
   Endif
@@ -176,6 +185,7 @@ If $MYREPOPEN = 1 Then
   FMYREPO.Timer1.Delay = 3000
   FMYREPO.Timer1.Enabled = True
   Fmain.Enabled = False
+  
 Endif 
 
 

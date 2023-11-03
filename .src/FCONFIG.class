@@ -12,11 +12,21 @@ Public Sub Form_Open()
         TXTDOWNGRADECMD.Text = Fmain.$DOWNGRADE
         TXTREINSTALLCMD.Text = Fmain.$REINSTALL
         TXTCUSTOMCMD.Text = Fmain.$CUSTOMCMD
+        BTNCLOSE.Picture = Picture.Load("/usr/share/dnfdrake/close.png")
+        BTNOK.Picture = Picture.Load("/usr/share/dnfdrake/ok.png")
+        BTNDEFAULT.Picture = Picture.Load("/usr/share/dnfdrake/default.png")
         
         If Fmain.$COLORTEXT = "color" Then
           CHKCOLORTEXT.Value = True
           Else
             CHKCOLORTEXT.Value = False
+        Endif
+        If Fmain.$CLEARLOG <> 0 Then
+          CHKCLEARLOG.Value = True
+          CMBDAYSLOG.Text = Fmain.$CLEARLOG
+        Else 
+          CHKCLEARLOG.Value = False
+          CHKCLEARLOG_Click  
         Endif
         
         If Exist(User.Home &/ ".config/dnfdrake/distrosync") Then
@@ -88,6 +98,13 @@ Public Sub BTNOK_Click()
      Else 
        Print #fl, "NOSECURE"
    Endif
+   If CHKCLEARLOG.Value = True Then
+      Print #fl, CMBDAYSLOG.Text
+      Fmain.$CLEARLOG = CMBDAYSLOG.Text
+   Else    
+     Print #fl, 0
+     Fmain.$CLEARLOG = 0
+   Endif
   fl.Close
 
   Message.Info("Restart DnfDrake for the changes to be applied", "OK")
@@ -130,5 +147,16 @@ If CHKLOG.Value = False Then
     FCONFIG.Show
   Endif
 Endif
+
+End
+
+Public Sub CHKCLEARLOG_Click()
+
+  If CHKCLEARLOG.Value = False Then
+    CMBDAYSLOG.Text = 0
+    CMBDAYSLOG.Enabled = False
+  Else   
+    CMBDAYSLOG.Enabled = True
+  Endif
 
 End

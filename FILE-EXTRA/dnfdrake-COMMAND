@@ -4,7 +4,8 @@ sudo_dnf_clean_all;_dnf_repolist;_sudo_dnf_--refresh_upgrade
 sudo_dnf_upgrade_
 sudo_dnf_downgrade_
 echo_SET_YOUR_COMMAND
-color
+nero
 sudo_dnf_reinstall_
 LOG
 SECURE
+365

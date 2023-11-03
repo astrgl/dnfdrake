@@ -67,10 +67,12 @@
   }
   { CHKDNFDRAKETRAY CheckBox
     MoveScaled(3,62,24,4)
-    Text = ("DnfDrakeTray")
+    Enabled = False
+    Text = ("Check Updates")
   }
   { CHKDNFDRAKETRAYLAUNCH CheckBox
-    MoveScaled(35,62,24,4)
+    MoveScaled(36,62,24,4)
+    Enabled = False
     Text = ("Run on Startup")
   }
   { Label8 Label
@@ -78,10 +80,11 @@
     Alignment = Align.Center
     Border = Border.Plain
     BorderRadius = 10
-    Text = ("  Launch DnfDrakeTray")
+    Text = ("DrakeTray Config")
   }
   { Button1 Button
-    MoveScaled(24,67,16,4)
+    MoveScaled(3,68,16,4)
+    Visible = False
     Text = ("Reset")
   }
   { CHKOFFLINE CheckBox
@@ -90,7 +93,7 @@
     Value = CheckBox.True
   }
   { CHKBTNVERSIONLOCK CheckBox
-    MoveScaled(37,51,24,4)
+    MoveScaled(36,51,24,4)
     Visible = False
     Text = ("Versionlock")
   }
@@ -103,7 +106,7 @@
     MoveScaled(45,75,16,4)
   }
   { CHKBTNREINSTALL CheckBox
-    MoveScaled(37,30,24,4)
+    MoveScaled(23,36,24,4)
     Visible = False
     Text = ("Reinstall")
   }
@@ -112,7 +115,7 @@
     Text = ("Verbose Mode")
   }
   { CHKBTNDNFCLEAN CheckBox
-    MoveScaled(37,36,24,4)
+    MoveScaled(36,36,24,4)
     Visible = False
     Text = ("Dnf Clean Cache")
   }
@@ -123,5 +126,15 @@
   { CHKAUTOSUSPEND CheckBox
     MoveScaled(3,47,31,4)
     Text = ("Disable suspend during updates")
+  }
+  { LBLDRAKETRAYSTATUS Label
+    MoveScaled(20,68,24,3)
+    Alignment = Align.Center
+    Border = Border.Plain
+    BorderRadius = 15
+  }
+  { CHKNODEPS CheckBox
+    MoveScaled(36,30,24,4)
+    Text = ("NoDeps")
   }
 }

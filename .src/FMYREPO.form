@@ -30,14 +30,12 @@
   }
   { Btnpathfile Button
     MoveScaled(55.5714,60,4.4286,4)
-    Picture = Picture["icon:/16/directory"]
   }
   { BTNREMOVE Button
     MoveScaled(45,78,5,4)
   }
   { BTNNOMECLEAR Button
     MoveScaled(51.2857,53,4.4286,4)
-    Picture = Picture["icon:/16/clear"]
   }
   { LabelName Label
     MoveScaled(3,50,56.8571,3)
@@ -86,11 +84,9 @@
   }
   { BTNPATHGPG Button
     MoveScaled(55.7143,67,4.4286,4)
-    Picture = Picture["icon:/16/directory"]
   }
   { BTNPULISCI Button
     MoveScaled(55.5714,53,4.4286,4)
-    Picture = Picture["icon:/16/wizard"]
   }
   { LSTREPO ListView
     MoveScaled(3,8,57,38)

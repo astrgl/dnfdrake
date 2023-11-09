@@ -47,6 +47,10 @@ Public Sub Form_Open()
    BTNBUILDREPO.Picture = Picture.Load("/usr/share/dnfdrake/run-build.png")
    BTNCHECKALL.Picture = Picture.Load("/usr/share/dnfdrake/checkall.png")
    BTNUNCHECKALL.Picture = Picture.Load("/usr/share/dnfdrake/uncheckall.png")
+   BTNNOMECLEAR.Picture = Picture.Load("/usr/share/dnfdrake/clear.png")
+   BTNPULISCI.Picture = Picture.Load("/usr/share/dnfdrake/bacchetta.png")
+   Btnpathfile.Picture = Picture.Load("/usr/share/dnfdrake/open-folder.png")
+   BTNPATHGPG.Picture = Picture.Load("/usr/share/dnfdrake/open-folder.png")
 '*************************************************************************************
   If Fmain.$SECUREMODE = "SECURE" Then
       Fmain.Enabled = False 
@@ -444,12 +448,12 @@ Public Sub CHKREMOTE_Click()
     Btnpathfile.enabled = False
     BTNPATHGPG.Enabled = False
     BTNBUILDREPO.Enabled = False
-    TXTPATH.Text = "http://"
+    ' TXTPATH.Text = "http://"
   Else 
     Btnpathfile.Enabled = True  
     BTNPATHGPG.Enabled = True
     BTNBUILDREPO.Enabled = True
-    TXTPATH.Text = ""
+    ' TXTPATH.Text = ""
   Endif
   TXTPATHGPG.Text = ""
 End

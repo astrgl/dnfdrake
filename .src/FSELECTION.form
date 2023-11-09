@@ -5,7 +5,6 @@
   Text = ("Selection")
   Icon = Picture["dnfdrake.svg"]
   Resizable = False
-  Border = False
   { TXTSELECTION TextBox
     MoveScaled(1,2,36,4)
   }

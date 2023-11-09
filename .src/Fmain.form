@@ -342,7 +342,7 @@
     Alignment = Align.Center
   }
   { PICLOGODISTRO PictureBox
-    Move(14,147,1323,476)
+    Move(21,154,1323,476)
     Picture = Picture.Load("OMA.png")
     Alignment = Align.Center
   }
@@ -366,5 +366,36 @@
     Move(553,7,28,28)
     Visible = False
     Alignment = Align.Center
+  }
+  { LBLSELECTION Label
+    Move(1120,154,203,119)
+    Visible = False
+    Font = Font["+1"]
+    Alignment = Align.Top
+    Border = Border.Plain
+    BorderRadius = 20
+  }
+  { TXTSELECTION TextBox
+    Move(1141,189,161,28)
+    Visible = False
+  }
+  { BTNOKSELECTION Button
+    Move(1141,224,63,28)
+    Visible = False
+    Text = ("Ok")
+  }
+  { BTNANNULLASELECTION Button
+    Move(1239,224,63,28)
+    Visible = False
+    Text = ("Close")
+  }
+  { LBLTXTSELECTION Label
+    Move(1141,161,161,25)
+    Visible = False
+    Font = Font["+1"]
+    Alignment = Align.Center
+    Border = Border.Plain
+    BorderRadius = 10
+    Text = ("Type your choice!")
   }
 }

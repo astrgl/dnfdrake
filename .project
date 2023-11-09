@@ -2,7 +2,7 @@
 Title=DnfDrake
 Startup=Fmain
 Icon=dnfdrake.svg
-Version=3.6.47
+Version=3.6.48
 Component=gb.image
 Component=gb.gui
 Component=gb.form

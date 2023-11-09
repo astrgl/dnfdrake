@@ -445,6 +445,8 @@ Else
     BTNREINSTALL.Picture = Picture.Load("/usr/share/dnfdrake/refresh.png")
     BTNEXTRA.Picture = Picture.Load("/usr/share/dnfdrake/extra.png")
     PICNODEPS.Picture = Picture.Load("/usr/share/dnfdrake/task-attention.png")
+    BTNOKSELECTION.Picture = Picture.Load("/usr/share/dnfdrake/ok.png")
+    BTNANNULLASELECTION.Picture = Picture.Load("/usr/share/dnfdrake/stop.png")
 'PAROLE CHIAVE*******************************************************************
  
   flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & $LANG For Read   ' ...oppure "Input"
@@ -802,7 +804,9 @@ Public Sub Process_Read()
       Endif
     '****************************************************************************************
       If InStr($sText, "Your choice:") > 0 Then                   'DOMANDA DI SELEZIONE 
-        FSELECTION.Show
+        'FSELECTION.Show
+        SELECTIONVIEW
+        
        Endif
     '****************************************************************************************
       If InStr($sText, $FATTO) > 0 Then                           ' OPERAZIONE TERMINATA (FATTO)"
@@ -2111,6 +2115,11 @@ If BTNFULLSCREEN.Visible = True
   BTNRESIZE.Visible = True
   PICLOGODISTRO.Width = PICLOGODISTRO.Width + ($RISOLUZIONEX - 1366)
   PICLOGODISTRO.Height = PICLOGODISTRO.Height + ($RISOLUZIONEY - 768)
+  LBLSELECTION.X = LBLSELECTION.X + ($RISOLUZIONEX - 1366)
+  LBLTXTSELECTION.X = LBLTXTSELECTION.X + ($RISOLUZIONEX - 1366)
+  TXTSELECTION.X = TXTSELECTION.X + ($RISOLUZIONEX - 1366)
+  BTNOKSELECTION.X = BTNOKSELECTION.X + ($RISOLUZIONEX - 1366)
+  BTNANNULLASELECTION.X = BTNANNULLASELECTION.X + ($RISOLUZIONEX - 1366)
 
 Else 
   Fmain.X = 0
@@ -2165,6 +2174,11 @@ Else
   BTNFULLSCREEN.Visible = True
   PICLOGODISTRO.Width = 1332 - 8
   PICLOGODISTRO.Height = 476
+  LBLSELECTION.X = 1120
+  LBLTXTSELECTION.X = 1141
+  TXTSELECTION.X = 1141
+  BTNOKSELECTION.X = 1141
+  BTNANNULLASELECTION.X = 1239
 Endif 
 End
 
@@ -2740,6 +2754,32 @@ End
 '   Endif 
 '   
 ' End
+
+Public Sub SELECTIONVIEW()
+  TXTSELECTION.Text = ""
+  If LBLSELECTION.Visible = False Then
+     LBLTXTSELECTION.Visible = True
+     TXTSELECTION.Visible = True
+     LBLSELECTION.Visible = True
+     BTNOKSELECTION.Visible = True
+     BTNANNULLASELECTION.Visible = True
+     If BTNOKSELECTION.Enabled = False Then
+        BTNOKSELECTION.Enabled = True
+     Endif
+     If BTNANNULLASELECTION.Enabled = False Then
+        BTNANNULLASELECTION.Enabled = True
+     Endif
+     TXTSELECTION.SetFocus
+  Else 
+     TXTSELECTION.Visible = False
+     LBLTXTSELECTION.Visible = False
+     LBLSELECTION.Visible = False
+     BTNOKSELECTION.Visible = False
+     BTNANNULLASELECTION.Visible = False
+  Endif
+  
+  
+End
 
 
 Public Sub Cmbtipo_Click()
@@ -4420,4 +4460,43 @@ Public Sub CHKNODEPS_Menu()
 End
 
 Public Sub PICLOGODISTRO_MouseDown()
+End
+
+Public Sub BTNOKSELECTION_Click()
+ BTNOKSELECTION.Enabled = False
+ Print #$hProcess, TXTSELECTION.Text & gb.NewLine;
+ Wait 0.2
+ SELECTIONVIEW
+End
+
+Public Sub BTNANNULLASELECTION_Click()
+  BTNANNULLASELECTION.Enabled = False
+  Fmain.Mouse = Mouse.Default
+  btnCtrlC_click
+  Sleep 0.1
+  btnCtrlC_click 
+  SELECTIONVIEW
+
+End
+
+Public Sub TXTSELECTION_KeyPress()
+
+End
+
+Public Sub TXTSELECTION_Activate()
+  
+  Dim s As String
+  s = TXTSELECTION.Text & gb.NewLine
+  TXTSELECTION.Clear
+  s = Conv$(s, Desktop.Charset, System.Charset)
+  Print #Fmain.$hProcess, s;
+  
+  SELECTIONVIEW
+  
+End 
+
+Public Sub LBLSELECTION_MouseDown()
+
+  
+
 End

@@ -19,7 +19,7 @@
       MoveScaled(0,0,51,5)
       Font = Font["+7"]
       Alignment = Align.Center
-      Text = ("DNFDRAKE 3.6.47")
+      Text = ("DNFDRAKE 3.6.48")
     }
   }
 }

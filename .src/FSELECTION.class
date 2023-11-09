@@ -47,3 +47,8 @@ End
 
 
 
+
+Public Sub LBLBORDO_MouseDown()
+
+End
+

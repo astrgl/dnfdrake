@@ -382,12 +382,10 @@
   { BTNOKSELECTION Button
     Move(1141,224,63,28)
     Visible = False
-    Text = ("Ok")
   }
   { BTNANNULLASELECTION Button
     Move(1239,224,63,28)
     Visible = False
-    Text = ("Close")
   }
   { LBLTXTSELECTION Label
     Move(1141,161,161,25)

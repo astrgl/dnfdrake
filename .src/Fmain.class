@@ -591,7 +591,8 @@ Else
       $MSGUPDATESASK = Replace(ss$TTP[87], "_", " ")
       $MSGTRAYREMOVE = Replace(ss$TTP[88], "_", " ")
       CHKNODEPS.Tooltip = Replace(ss$TTP[92], "_", " ")
-      $NODEPSINFO = Replace(ss$TTP[93], "_", " ")      
+      $NODEPSINFO = Replace(ss$TTP[93], "_", " ")   
+      LBLTXTSELECTION.Text = Replace(ss$TTP[94], "_", " ")
      Next
 '  
    flTTP.Close

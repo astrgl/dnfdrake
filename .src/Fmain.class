@@ -423,8 +423,8 @@ Else
     BTNPKGLISTCLEAN.Picture = Picture.Load("/usr/share/dnfdrake/trash.png")
     BTNADDPKGLIST.Picture = Picture.Load("/usr/share/dnfdrake/insert-text.png")
     BTNPKGLISTVIEW.Picture = Picture.Load("/usr/share/dnfdrake/view-log.png")
-    PCTCONNECT.Picture = Picture.Load("/usr/share/dnfdrake/online.png")
-    PCTDISCONNECT.Picture = Picture.Load("/usr/share/dnfdrake/offline.png")
+    PCTCONNECT.Picture = Picture.Load("/usr/share/dnfdrake/offline.png")
+    PCTDISCONNECT.Picture = Picture.Load("/usr/share/dnfdrake/online.png")
     PICSUSPEND.Picture = Picture.Load("/usr/share/dnfdrake/suspend.png")
     PICSUSPENDLOCK.Picture = Picture.Load("/usr/share/dnfdrake/lock.png")
     BTNCUSTOM.Picture = Picture.Load("/usr/share/dnfdrake/bacchetta.png")
@@ -4497,6 +4497,12 @@ Public Sub TXTSELECTION_Activate()
 End 
 
 Public Sub LBLSELECTION_MouseDown()
+
+  
+
+End
+
+Public Sub BORDOCONNECT_MouseDown()
 
   
 

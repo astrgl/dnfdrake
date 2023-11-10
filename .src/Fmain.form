@@ -12,6 +12,19 @@
     Border = Border.Plain
     BorderRadius = 8
   }
+  { BORDOCONNECT Label
+    Move(546,112,28,27)
+    Alignment = Align.Center
+    Border = Border.Plain
+    BorderRadius = 14
+  }
+  { Label1 Label
+    Move(574,112,196,27)
+    Alignment = Align.Center
+    Border = Border.Plain
+    BorderRadius = 12
+    Text = ("MONITOR")
+  }
   { PCTDISCONNECT PictureBox
     Move(546,112,28,27)
     Visible = False
@@ -86,13 +99,6 @@
   { Cmbtipo ComboBox
     Move(7,42,191,28)
     ReadOnly = True
-  }
-  { Label1 Label
-    Move(574,112,196,27)
-    Alignment = Align.Center
-    Border = Border.Plain
-    BorderRadius = 12
-    Text = ("MONITOR")
   }
   { Btncommand Button
     Move(7,662,110,28)
@@ -345,12 +351,6 @@
     Move(21,154,1323,476)
     Picture = Picture.Load("OMA.png")
     Alignment = Align.Center
-  }
-  { BORDOCONNECT Label
-    Move(546,112,28,27)
-    Alignment = Align.Center
-    Border = Border.Plain
-    BorderRadius = 14
   }
   { LBLNODEPS Label
     Move(553,7,110,28)

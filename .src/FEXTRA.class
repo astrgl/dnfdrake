@@ -138,15 +138,18 @@ Public Sub BTNCLOSE_Click()
    Else
    Fmain.$SEARCH = ""
    Endif
-   
+
     If CHKBTNDISTROUPDATE.Value = True And Fmain.BTNDISTUPDATE.Visible = True Then
     Else        
         If CHKBTNDISTROUPDATE.Value = True And Fmain.BTNDISTUPDATE.Visible = False Then
          Fmain.BTNDISTUPDATE.Visible = True
          Fmain.PICBTNDISTUPDATE.Visible = True
          Shell "echo 1 > " & User.Home &/ ".config/dnfdrake/distrosync" Wait
-        Else  
-          If Not Exist(User.Home &/ ".config/dnfdrake/distrosync") Then
+        Else 
+          Dim dstsync As String
+          Shell "cat " & User.Home &/ ".config/dnfdrake/distrosync" To dstsync
+          dstsync = Left(dstsync, 1)
+          If Not Exist(User.Home &/ ".config/dnfdrake/distrosync") Or If dstsync = "0" Then
             Else 
               Fmain.BTNDISTUPDATE.Visible = False
               Fmain.PICBTNDISTUPDATE.Visible = False
@@ -157,7 +160,7 @@ Public Sub BTNCLOSE_Click()
           Endif     
         Endif
     Endif    
-    
+
    If CHKDNFDRAKETRAY.VALUE = True Then
 '      If Not Exist(User.Home &/ "/.config/draketray/locktray") Then
       If Right(Left($LOCK)) <> "2" Then

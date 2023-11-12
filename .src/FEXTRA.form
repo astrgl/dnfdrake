@@ -44,7 +44,7 @@
     Text = ("  Search")
   }
   { Label6 Label
-    MoveScaled(20,24.5714,24,3)
+    MoveScaled(20,25,24,3)
     Alignment = Align.Center
     Border = Border.Plain
     BorderRadius = 10

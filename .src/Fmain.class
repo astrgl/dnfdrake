@@ -411,7 +411,7 @@ Else
     Btncleartxtpkg.Picture = Picture.Load("/usr/share/dnfdrake/clear.png")
     Btnpathfile.Picture = Picture.Load("/usr/share/dnfdrake/open-folder.png")
     Btnpathpkglist.Picture = Picture.Load("/usr/share/dnfdrake/save-as.png")
-    PICBTNDISTUPDATE.Picture = Picture.Load("/usr/share/dnfdrake/updatesync.png")
+    PICBTNDISTUPDATE.Picture = Picture.Load("/usr/share/dnfdrake/updatesyncR.png")
     btnupdate.Picture = Picture.Load("/usr/share/dnfdrake/updatesync.png")
     BTNVIEWLOG.Picture = Picture.Load("/usr/share/dnfdrake/open-folder.png")
     Btnclear.Picture = Picture.Load("/usr/share/dnfdrake/clear.png")

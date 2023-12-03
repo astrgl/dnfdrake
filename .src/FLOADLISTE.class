@@ -27,7 +27,7 @@ Public Sub Form_Open()
       $LOADAGG = Replace(ss$TTP[36], "_", " ")
   Next
   flTTP.Close
-  BTNSKIP.Picture = Picture.Load("/usr/share/dnfdrake/skip.png")
+  BTNSKIP.Picture = Picture.Load(FMAIN.$PATHICONS & "skip" & FMain.$THEMESSUFFIX)
  '*********************************************************************************
 TXTSTATO.Text = $LOADLIST
 If Fmain.$SECUREMODE = "SECURE" Then

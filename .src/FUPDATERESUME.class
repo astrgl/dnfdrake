@@ -14,9 +14,9 @@ Public Sub Form_Open()
       FUPDATERESUME.Text = "DnfDrake Distro Update"
   Endif
   $SECURE = 0
-  BTNRESUME.Picture = Picture.Load("/usr/share/dnfdrake/redo.png")
-  BTNREUPADTE.Picture = Picture.Load("/usr/share/dnfdrake/refresh.png")
-  BTNANNULLA.Picture = Picture.Load("/usr/share/dnfdrake/stop.png")
+  BTNRESUME.Picture = Picture.Load(FMAIN.$PATHICONS & "redo" & FMain.$THEMESSUFFIX)
+  BTNREUPADTE.Picture = Picture.Load(FMAIN.$PATHICONS & "refresh" & FMain.$THEMESSUFFIX)
+  BTNANNULLA.Picture = Picture.Load(FMAIN.$PATHICONS & "stop" & FMain.$THEMESSUFFIX)
 End
 
 Private Sub FRUNSHOW()

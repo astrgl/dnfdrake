@@ -25,8 +25,8 @@ If Fmain.Width > 1366 Then
   BTNCLOSE.Y = BTNCLOSE.Y + (FERROR.Height - 518)
 Endif
 '***************************************************
-BTNRETRY.Picture = Picture.Load("/usr/share/dnfdrake/refresh.png")
-BTNCLOSE.Picture = Picture.Load("/usr/share/dnfdrake/close.png")
+BTNRETRY.Picture = Picture.Load(FMAIN.$PATHICONS & "refresh" & FMain.$THEMESSUFFIX)
+BTNCLOSE.Picture = Picture.Load(FMAIN.$PATHICONS & "close" & FMain.$THEMESSUFFIX)
 
 End 
 Public Sub Form_Close()

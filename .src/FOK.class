@@ -41,14 +41,14 @@ Public Sub Form_Open()
       FOK.Text = Replace(ss$TTP[22], "_", " ")
        Next
    flTTP.Close 
-   Btnclose.Picture = Picture.Load("/usr/share/dnfdrake/ok.png")
+   Btnclose.Picture = Picture.Load(FMAIN.$PATHICONS & "ok" & FMain.$THEMESSUFFIX)
 '*************************************************************************************
   Btnclose.SetFocus
 If FRUN.Visible = True Then
   FRUN.ProgressBar1.Pulse = False    
   FRUN.ProgressBar1.Value = 1
   FRUN.BTNSTOP.Text = Btnclose.Text
-  FRUN.BTNSTOP.Picture = Picture.Load("/usr/share/dnfdrake/ok.png")
+  FRUN.BTNSTOP.Picture = Picture.Load(FMAIN.$PATHICONS & "ok" & FMain.$THEMESSUFFIX)
   FRUN.MONITORVIEW.Visible = False
   FRUN.Text = "DnfDrake,  " & Fmain.$FATTO
   Me.Close 

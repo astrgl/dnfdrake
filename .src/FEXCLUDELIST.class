@@ -32,10 +32,10 @@ Public Sub Form_Open()
          LTITOLO.Text = Replace(ss$TTP[64], "_", " ") 
      Next
      flTTP.Close
-     BTNREMOVE.Picture = Picture.Load("/usr/share/dnfdrake/remove.png")
-     BTNREFRESH.Picture = Picture.Load("/usr/share/dnfdrake/refresh.png")
-     BTNSAVEAS.Picture = Picture.Load("/usr/share/dnfdrake/save-as.png")
-     BTNCLOSE.Picture = Picture.Load("/usr/share/dnfdrake/close.png")
+     BTNREMOVE.Picture = Picture.Load(FMAIN.$PATHICONS & "remove" & FMain.$THEMESSUFFIX)
+     BTNREFRESH.Picture = Picture.Load(FMAIN.$PATHICONS & "refresh" & FMain.$THEMESSUFFIX)
+     BTNSAVEAS.Picture = Picture.Load(FMAIN.$PATHICONS & "save-as" & FMain.$THEMESSUFFIX)
+     BTNCLOSE.Picture = Picture.Load(FMAIN.$PATHICONS & "close" & FMain.$THEMESSUFFIX)
  '*********************************************************************************
   Me.Mouse = Mouse.Wait  
     t = Open "/etc/dnf/dnf.conf"

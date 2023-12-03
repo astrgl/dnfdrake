@@ -39,8 +39,8 @@ Public Sub Form_Open()
      Next
 '  
    flTTP.Close
-   BTNEXIT.Picture = Picture.Load("/usr/share/dnfdrake/close.png")
-   BTNCLOSE.Picture = Picture.Load("/usr/share/dnfdrake/ok.png")
+   BTNEXIT.Picture = Picture.Load(FMAIN.$PATHICONS & "close" & FMain.$THEMESSUFFIX)
+   BTNCLOSE.Picture = Picture.Load(FMAIN.$PATHICONS & "ok" & FMain.$THEMESSUFFIX)
  '*********************************************************************************
  
  If Fmain.$SECUREMODE = "SECURE" Then
@@ -121,6 +121,14 @@ Public Sub Form_Open()
  If Fmain.CHKNODEPS.Visible = True Then
     CHKNODEPS.Value = True
  Endif
+ 
+ If FMain.$THEMES = "Oxygen" Then
+     CMBTHEMES.Index = 0
+  Else If FMain.$THEMES = "Breeze" Then 
+     CMBTHEMES.Index = 1
+  Else If FMain.$THEMES = "BreezeDark" Then
+     CMBTHEMES.Index = 2   
+  Endif
 End
 
 
@@ -161,7 +169,7 @@ Public Sub BTNCLOSE_Click()
         Endif
     Endif    
 
-   If CHKDNFDRAKETRAY.VALUE = True Then
+   If CHKDNFDRAKETRAY.VALUE = True And If LBLDRAKETRAYSTATUS.Text = "Draketray is not running" Then
 '      If Not Exist(User.Home &/ "/.config/draketray/locktray") Then
       If Right(Left($LOCK)) <> "2" Then
           Fmain.$KILL = 2
@@ -280,6 +288,23 @@ Else
    Fmain.LBLNODEPS.Visible = False
    Fmain.PICNODEPS.Visible = False
 Endif
+'*******************************************************************************************
+ If CMBTHEMES.Index = 0 Then
+      File.Save(User.Home &/ "/.config/dnfdrake/themes", "Oxygen")
+      FMain.$THEMES = "Oxygen"
+      FMain.$THEMESSUFFIX = ".png"
+      FMain.LOADICONS
+   Else If CMBTHEMES.Index = 1 Then
+      File.Save(User.Home &/ "/.config/dnfdrake/themes", "Breeze")
+      FMain.$THEMES = "Breeze"
+      FMain.$THEMESSUFFIX = "-B.svg"
+      FMain.LOADICONS
+   Else If CMBTHEMES.Index = 2 Then
+      File.Save(User.Home &/ "/.config/dnfdrake/themes", "BreezeDark")   
+      FMain.$THEMES = "BreezeDark"  
+      FMain.$THEMESSUFFIX = "-BD.svg"  
+      FMain.LOADICONS
+   Endif
   Me.Close
 End
 

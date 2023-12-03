@@ -5,7 +5,7 @@ Public Sub Form_Open()
 BTNCLOSE.Text = Fmain.Btnclose.Text
 TextArea1.Text = File.Load("/usr/share/dnfdrake/dnfdrake-ABOUT-" & Fmain.$LANG)
 Fmain.Enabled = False
-BTNCLOSE.Picture = Picture.Load("/usr/share/dnfdrake/close.png")
+BTNCLOSE.Picture = Picture.Load(FMAIN.$PATHICONS & "close" & FMain.$THEMESSUFFIX)
 End
 
 

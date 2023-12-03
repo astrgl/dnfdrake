@@ -1,5 +1,6 @@
 ' Gambas class file
 
+'Gambas class file
 'VARIABILI DI SISTEMA********************************************************************************
 Public $hProcess As Process
 Public $sText As String
@@ -62,6 +63,10 @@ Public $ASKEXIT As String
 Public $FLATDRAKESEARCH As String
 Public $CLEARLOG As Integer
 Public $CLEARTXTPKG As Integer
+Public $THEMES As String            'TEMA DELLE ICONE
+Public $THEMESSUFFIX As String      'CODA DEL NOME DELL'ICONA
+Public $PATHICONS As String         'PATH DELLE ICONE
+Public $TEMAASK As String           'TRADUZIONE DOMANDA TEMA
 'VARIABILI EXTRA OPTIONS*****************************************************************************
 Public $SEARCH As String
 'PAROLE CHIAVE LETTURA STRINGA E MESSAGGI************************************************************
@@ -403,51 +408,32 @@ Else
       Next
 '  
    flBTN.Close      
-'ICONE**************************************************************************
-    BTNAUTOREMOVE.Picture = Picture.Load("/usr/share/dnfdrake/trash.png")
-    PICEXCLUDE.Picture = Picture.Load("/usr/share/dnfdrake/lock.png")
-    BTNRESIZE.Picture = Picture.Load("/usr/share/dnfdrake/restore.png")
-    BTNFULLSCREEN.Picture = Picture.Load("/usr/share/dnfdrake/fullscreen.png")
-    Btncleartxtpkg.Picture = Picture.Load("/usr/share/dnfdrake/clear.png")
-    Btnpathfile.Picture = Picture.Load("/usr/share/dnfdrake/open-folder.png")
-    Btnpathpkglist.Picture = Picture.Load("/usr/share/dnfdrake/save-as.png")
-    PICBTNDISTUPDATE.Picture = Picture.Load("/usr/share/dnfdrake/updatesyncR.png")
-    btnupdate.Picture = Picture.Load("/usr/share/dnfdrake/updatesync.png")
-    BTNVIEWLOG.Picture = Picture.Load("/usr/share/dnfdrake/open-folder.png")
-    Btnclear.Picture = Picture.Load("/usr/share/dnfdrake/clear.png")
-    BTNREPLAY.Picture = Picture.Load("/usr/share/dnfdrake/view-log.png")
-    BTNSELECTALL.Picture = Picture.Load("/usr/share/dnfdrake/add.png")
-    BTNUNSELECTALL.Picture = Picture.Load("/usr/share/dnfdrake/remove.png")
-    BTNTABINSTALLED.Picture = Picture.Load("/usr/share/dnfdrake/installed.png")
-    BTNTABAVIABLE.Picture = Picture.Load("/usr/share/dnfdrake/install.png")
-    BTNTABUPDATE.Picture = Picture.Load("/usr/share/dnfdrake/update.png")
-    BTNPKGLISTCLEAN.Picture = Picture.Load("/usr/share/dnfdrake/trash.png")
-    BTNADDPKGLIST.Picture = Picture.Load("/usr/share/dnfdrake/insert-text.png")
-    BTNPKGLISTVIEW.Picture = Picture.Load("/usr/share/dnfdrake/view-log.png")
-    PCTCONNECT.Picture = Picture.Load("/usr/share/dnfdrake/offline.png")
-    PCTDISCONNECT.Picture = Picture.Load("/usr/share/dnfdrake/online.png")
-    PICSUSPEND.Picture = Picture.Load("/usr/share/dnfdrake/suspend.png")
-    PICSUSPENDLOCK.Picture = Picture.Load("/usr/share/dnfdrake/lock.png")
-    BTNCUSTOM.Picture = Picture.Load("/usr/share/dnfdrake/bacchetta.png")
-    Btnclose.Picture = Picture.Load("/usr/share/dnfdrake/esci.png")
-    BTNABOUT.Picture = Picture.Load("/usr/share/dnfdrake/info.png")
-    btninstall.Picture = Picture.Load("/usr/share/dnfdrake/add.png")
-    btnremove.Picture = Picture.Load("/usr/share/dnfdrake/remove.png")
-    btncerca.Picture = Picture.Load("/usr/share/dnfdrake/search.png")
-    BtnCFG.Picture = Picture.Load("/usr/share/dnfdrake/config.png")
-    Btndownload.Picture = Picture.Load("/usr/share/dnfdrake/download.png")
-    Btncrono.Picture = Picture.Load("/usr/share/dnfdrake/chronometer.png")
-    Btncommand.Picture = Picture.Load("/usr/share/dnfdrake/console.png")
-    btnstop.Picture = Picture.Load("/usr/share/dnfdrake/stop.png")
-    BTNMYREPO.Picture = Picture.Load("/usr/share/dnfdrake/repository.png")
-    btninfo.Picture = Picture.Load("/usr/share/dnfdrake/details.png")
-    BTNDOWNDGRADE.Picture = Picture.Load("/usr/share/dnfdrake/undo.png")
-    BTNPKGUPDATE.Picture = Picture.Load("/usr/share/dnfdrake/redo.png")
-    BTNREINSTALL.Picture = Picture.Load("/usr/share/dnfdrake/refresh.png")
-    BTNEXTRA.Picture = Picture.Load("/usr/share/dnfdrake/extra.png")
-    PICNODEPS.Picture = Picture.Load("/usr/share/dnfdrake/task-attention.png")
-    BTNOKSELECTION.Picture = Picture.Load("/usr/share/dnfdrake/ok.png")
-    BTNANNULLASELECTION.Picture = Picture.Load("/usr/share/dnfdrake/stop.png")
+' 'TEMA DELLE ICONE**************************************************************      
+'   If Not Exist(User.Home &/ "/.config/dnfdrake/themes") Then 
+'      Dim iTEMA As Integer = Message.Question("What theme do you want to use?", "Oxygen", "Breeze", "Breeze Dark")
+'       If (iTEMA = 1) Then
+'          File.Save(User.Home &/ "/.config/dnfdrake/themes", "Oxygen")
+'       Else If (iTEMA = 2)
+'          File.Save(User.Home &/ "/.config/dnfdrake/themes", "Breeze")
+'       Else If (iTEMA = 3)
+'          File.Save(User.Home &/ "/.config/dnfdrake/themes", "BreezeDark")   
+'       Endif 
+'   Endif
+'   $THEMES = File.Load(User.Home &/ "/.config/dnfdrake/themes")
+'   $THEMES = Replace($THEMES, " ", "")
+'   If $THEMES = "Oxygen" Then
+'      $THEMESSUFFIX = ".png"
+'   Else If $THEMES = "Breeze"
+'      $THEMESSUFFIX = "-B.svg"
+'   Else If $THEMES = "BreezeDark"
+'      $THEMESSUFFIX = "-BD.svg"    
+'   Endif
+'   If Exist("/usr/share/dnfdrake/icons") Then
+'        $PATHICONS = "/usr/share/dnfdrake/icons/"
+'   Else   
+'        $PATHICONS = "/usr/share/dnfdrake/"       
+'   Endif
+'   LOADICONS
 'PAROLE CHIAVE*******************************************************************
  
   flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & $LANG For Read   ' ...oppure "Input"
@@ -594,9 +580,36 @@ Else
       CHKNODEPS.Tooltip = Replace(ss$TTP[92], "_", " ")
       $NODEPSINFO = Replace(ss$TTP[93], "_", " ")   
       LBLTXTSELECTION.Text = Replace(ss$TTP[94], "_", " ")
+      $TEMAASK = Replace(ss$TTP[95], "_", " ")
      Next
 '  
    flTTP.Close
+'TEMA DELLE ICONE**************************************************************      
+  If Not Exist(User.Home &/ "/.config/dnfdrake/themes") Then 
+     Dim iTEMA As Integer = Message.Question($TEMAASK, "Oxygen", "Breeze", "Breeze Dark")
+      If (iTEMA = 1) Then
+         File.Save(User.Home &/ "/.config/dnfdrake/themes", "Oxygen")
+      Else If (iTEMA = 2)
+         File.Save(User.Home &/ "/.config/dnfdrake/themes", "Breeze")
+      Else If (iTEMA = 3)
+         File.Save(User.Home &/ "/.config/dnfdrake/themes", "BreezeDark")   
+      Endif 
+  Endif
+  $THEMES = File.Load(User.Home &/ "/.config/dnfdrake/themes")
+  $THEMES = Replace($THEMES, " ", "")
+  If $THEMES = "Oxygen" Then
+     $THEMESSUFFIX = ".png"
+  Else If $THEMES = "Breeze"
+     $THEMESSUFFIX = "-B.svg"
+  Else If $THEMES = "BreezeDark"
+     $THEMESSUFFIX = "-BD.svg"    
+  Endif
+  If Exist("/usr/share/dnfdrake/icons") Then
+       $PATHICONS = "/usr/share/dnfdrake/icons/"
+  Else   
+       $PATHICONS = "/usr/share/dnfdrake/"       
+  Endif
+  LOADICONS
   'COMBOINFO************************************************************************
   flCMBI = Open "/usr/share/dnfdrake/dnfdrake-CMBI-" & $LANG For Read   ' ...oppure "Input"
  While Not Eof(flCMBI)
@@ -1106,7 +1119,7 @@ Private Sub UpdateConsole()
       FRUN.ProgressBar1.Pulse = False    
       FRUN.ProgressBar1.Value = 1
       FRUN.BTNSTOP.Text = $OK
-      FRUN.BTNSTOP.Picture = Picture.Load("/usr/share/dnfdrake/ok.png") 
+      FRUN.BTNSTOP.Picture = Picture.Load($PATHICONS & "ok" & FMain.$THEMESSUFFIX)
       FRUN.MONITORVIEW.Visible = False
       FRUN.Text = "DnfDrake,  " & $FATTO
    Endif
@@ -2608,6 +2621,56 @@ Private Sub DSTUPDATE()
     Endif
   Endif 
 End
+
+Public Sub LOADICONS()
+
+    BTNAUTOREMOVE.Picture = Picture.Load($PATHICONS & "trash" & $THEMESSUFFIX)
+    PICEXCLUDE.Picture = Picture.Load($PATHICONS & "lock" & $THEMESSUFFIX)
+    BTNRESIZE.Picture = Picture.Load($PATHICONS & "restore" & $THEMESSUFFIX)
+    BTNFULLSCREEN.Picture = Picture.Load($PATHICONS & "fullscreen" & $THEMESSUFFIX)
+    Btncleartxtpkg.Picture = Picture.Load($PATHICONS & "clear" & $THEMESSUFFIX)
+    Btnpathfile.Picture = Picture.Load($PATHICONS & "open-folder" & $THEMESSUFFIX)
+    Btnpathpkglist.Picture = Picture.Load($PATHICONS & "save-as" & $THEMESSUFFIX)
+    PICBTNDISTUPDATE.Picture = Picture.Load($PATHICONS & "updatesync" & $THEMESSUFFIX)
+    btnupdate.Picture = Picture.Load($PATHICONS & "updatesys" & $THEMESSUFFIX)
+    BTNVIEWLOG.Picture = Picture.Load($PATHICONS & "open-folder" & $THEMESSUFFIX)
+    Btnclear.Picture = Picture.Load($PATHICONS & "clear" & $THEMESSUFFIX)
+    BTNREPLAY.Picture = Picture.Load($PATHICONS & "view-log" & $THEMESSUFFIX)
+    BTNSELECTALL.Picture = Picture.Load($PATHICONS & "add" & $THEMESSUFFIX)
+    BTNUNSELECTALL.Picture = Picture.Load($PATHICONS & "remove" & $THEMESSUFFIX)
+    BTNTABINSTALLED.Picture = Picture.Load($PATHICONS & "installed.png")
+    BTNTABAVIABLE.Picture = Picture.Load($PATHICONS & "install.png")
+    BTNTABUPDATE.Picture = Picture.Load($PATHICONS & "update.png")
+    BTNPKGLISTCLEAN.Picture = Picture.Load($PATHICONS & "trash" & $THEMESSUFFIX)
+    BTNADDPKGLIST.Picture = Picture.Load($PATHICONS & "insert-text" & $THEMESSUFFIX)
+    BTNPKGLISTVIEW.Picture = Picture.Load($PATHICONS & "view-log" & $THEMESSUFFIX)
+    PCTCONNECT.Picture = Picture.Load($PATHICONS & "offline.png")
+    PCTDISCONNECT.Picture = Picture.Load($PATHICONS & "online.png")
+    PICSUSPEND.Picture = Picture.Load($PATHICONS & "suspend" & $THEMESSUFFIX)
+    PICSUSPENDLOCK.Picture = Picture.Load($PATHICONS & "lock" & $THEMESSUFFIX)
+    BTNCUSTOM.Picture = Picture.Load($PATHICONS & "bacchetta" & $THEMESSUFFIX)
+    Btnclose.Picture = Picture.Load($PATHICONS & "esci" & $THEMESSUFFIX)
+    BTNABOUT.Picture = Picture.Load($PATHICONS & "info" & $THEMESSUFFIX)
+    btninstall.Picture = Picture.Load($PATHICONS & "add" & $THEMESSUFFIX)
+    btnremove.Picture = Picture.Load($PATHICONS & "remove" & $THEMESSUFFIX)
+    btncerca.Picture = Picture.Load($PATHICONS & "search" & $THEMESSUFFIX)
+    BtnCFG.Picture = Picture.Load($PATHICONS & "config" & $THEMESSUFFIX)
+    Btndownload.Picture = Picture.Load($PATHICONS & "download" & $THEMESSUFFIX)
+    Btncrono.Picture = Picture.Load($PATHICONS & "chronometer" & $THEMESSUFFIX)
+    Btncommand.Picture = Picture.Load($PATHICONS & "console" & $THEMESSUFFIX)
+    btnstop.Picture = Picture.Load($PATHICONS & "stop" & $THEMESSUFFIX)
+    BTNMYREPO.Picture = Picture.Load($PATHICONS & "repository" & $THEMESSUFFIX)
+    btninfo.Picture = Picture.Load($PATHICONS & "details" & $THEMESSUFFIX)
+    BTNDOWNDGRADE.Picture = Picture.Load($PATHICONS & "undo" & $THEMESSUFFIX)
+    BTNPKGUPDATE.Picture = Picture.Load($PATHICONS & "redo" & $THEMESSUFFIX)
+    BTNREINSTALL.Picture = Picture.Load($PATHICONS & "refresh" & $THEMESSUFFIX)
+    BTNEXTRA.Picture = Picture.Load($PATHICONS & "extra" & $THEMESSUFFIX)
+    PICNODEPS.Picture = Picture.Load($PATHICONS & "task-attention" & $THEMESSUFFIX)
+    BTNOKSELECTION.Picture = Picture.Load($PATHICONS & "ok" & $THEMESSUFFIX)
+    BTNANNULLASELECTION.Picture = Picture.Load($PATHICONS & "stop" & $THEMESSUFFIX)
+    btnpkg.Picture = Picture.Load($PATHICONS & "textlink" & $THEMESSUFFIX)
+End
+
 
 Public Sub DRAKETRAYUPDATE()
   ' VERIFICA SE È ABILITATA LA NOTIFICA AGGIORNAMENTI CON DRAKETRAY

@@ -1,11 +1,11 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,64,81)
+  MoveScaled(0,0,64,86)
   Icon = Picture["dnfdrake.svg"]
   Resizable = False
   { Label5 Label
-    MoveScaled(2,60,60,13)
+    MoveScaled(2,65.4286,60,13)
     Border = Border.Plain
     BorderRadius = 10
   }
@@ -28,7 +28,7 @@
     BorderRadius = 10
   }
   { Label4 Label
-    MoveScaled(2,46,60,10)
+    MoveScaled(2,46,60,6)
     Border = Border.Plain
     BorderRadius = 10
   }
@@ -44,7 +44,7 @@
     Text = ("  Search")
   }
   { Label6 Label
-    MoveScaled(20,25,24,3)
+    MoveScaled(20,24.7143,24,3)
     Alignment = Align.Center
     Border = Border.Plain
     BorderRadius = 10
@@ -58,32 +58,27 @@
     Text = ("  Extra Option")
   }
   { BTNCLOSE Button
-    MoveScaled(3,75,16,4)
-  }
-  { CHKBTNDOWNGRADE CheckBox
-    MoveScaled(3,51,24,4)
-    Visible = False
-    Text = ("Downgrade")
+    MoveScaled(3,80.4286,16,4)
   }
   { CHKDNFDRAKETRAY CheckBox
-    MoveScaled(3,62,24,4)
+    MoveScaled(3,67.4286,24,4)
     Enabled = False
     Text = ("Check Updates")
   }
   { CHKDNFDRAKETRAYLAUNCH CheckBox
-    MoveScaled(36,62,24,4)
+    MoveScaled(36,67.4286,24,4)
     Enabled = False
     Text = ("Run on Startup")
   }
   { Label8 Label
-    MoveScaled(20,56.5714,24,3)
+    MoveScaled(20,62,24,3)
     Alignment = Align.Center
     Border = Border.Plain
     BorderRadius = 10
     Text = ("DrakeTray Config")
   }
   { Button1 Button
-    MoveScaled(3,68,16,4)
+    MoveScaled(3,73.4286,16,4)
     Visible = False
     Text = ("Reset")
   }
@@ -92,18 +87,13 @@
     Text = ("Search Offline")
     Value = CheckBox.True
   }
-  { CHKBTNVERSIONLOCK CheckBox
-    MoveScaled(36,51,24,4)
-    Visible = False
-    Text = ("Versionlock")
-  }
   { CHKBTNDISTROUPDATE CheckBox
     MoveScaled(3,30,32,4)
     ToolTip = ("Use for Rolling - Cooker")
     Text = ("Distro Update (Rolling -Cooker)")
   }
   { BTNEXIT Button
-    MoveScaled(45,75,16,4)
+    MoveScaled(45,80.4286,16,4)
   }
   { CHKBTNREINSTALL CheckBox
     MoveScaled(23,36,24,4)
@@ -128,7 +118,7 @@
     Text = ("Disable suspend during updates")
   }
   { LBLDRAKETRAYSTATUS Label
-    MoveScaled(20,68,24,3)
+    MoveScaled(20,73.4286,24,3)
     Alignment = Align.Center
     Border = Border.Plain
     BorderRadius = 15
@@ -136,5 +126,24 @@
   { CHKNODEPS CheckBox
     MoveScaled(36,30,24,4)
     Text = ("NoDeps")
+  }
+  { Label9 Label
+    MoveScaled(2,56,60,5)
+    Border = Border.Plain
+    BorderRadius = 10
+    Text = ("Themes: ")
+  }
+  { CMBTHEMES ComboBox
+    MoveScaled(11,56.7143,16,3.5714)
+    Background = Color.Transparent
+    List = [("Oxygen"), ("Breeze"), ("Breeze Dark")]
+    Border = False
+  }
+  { Label10 Label
+    MoveScaled(20,52.7143,24,3)
+    Alignment = Align.Center
+    Border = Border.Plain
+    BorderRadius = 10
+    Text = ("Interface")
   }
 }

@@ -28,10 +28,10 @@ Public Sub Form_Open()
          BTNCLOSE.Tooltip = Replace(ss$TTP[4], "_", " ") 
      Next
      flTTP.Close
-     BTNAPPLY.Picture = Picture.Load("/usr/share/dnfdrake/ok.png")
-     BTNREFRESH.Picture = Picture.Load("/usr/share/dnfdrake/refresh.png")
-     BTNSAVEAS.Picture = Picture.Load("/usr/share/dnfdrake/save-as.png")
-     BTNCLOSE.Picture = Picture.Load("/usr/share/dnfdrake/close.png")
+     BTNAPPLY.Picture = Picture.Load(FMAIN.$PATHICONS & "ok" & FMain.$THEMESSUFFIX)
+     BTNREFRESH.Picture = Picture.Load(FMAIN.$PATHICONS & "refresh" & FMain.$THEMESSUFFIX)
+     BTNSAVEAS.Picture = Picture.Load(FMAIN.$PATHICONS & "save-as" & FMain.$THEMESSUFFIX)
+     BTNCLOSE.Picture = Picture.Load(FMAIN.$PATHICONS & "close" & FMain.$THEMESSUFFIX)
  '*********************************************************************************
   Me.Mouse = Mouse.Wait  
   If Fmain.TXTPKGLISTNOME.Text = "Remove Package List" Then

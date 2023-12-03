@@ -41,16 +41,16 @@ Public Sub Form_Open()
       BTNUNCHECKALL.Tooltip = Replace(ss$TTP[90], "_", " ")
   Next
    flTTP.Close 
-   BTNCLOSE.Picture = Picture.Load("/usr/share/dnfdrake/close.png")
-   BTNREMOVE.Picture = Picture.Load("/usr/share/dnfdrake/remove.png")
-   BTNADDREPO.Picture = Picture.Load("/usr/share/dnfdrake/ok.png")
-   BTNBUILDREPO.Picture = Picture.Load("/usr/share/dnfdrake/run-build.png")
-   BTNCHECKALL.Picture = Picture.Load("/usr/share/dnfdrake/checkall.png")
-   BTNUNCHECKALL.Picture = Picture.Load("/usr/share/dnfdrake/uncheckall.png")
-   BTNNOMECLEAR.Picture = Picture.Load("/usr/share/dnfdrake/clear.png")
-   BTNPULISCI.Picture = Picture.Load("/usr/share/dnfdrake/bacchetta.png")
-   Btnpathfile.Picture = Picture.Load("/usr/share/dnfdrake/open-folder.png")
-   BTNPATHGPG.Picture = Picture.Load("/usr/share/dnfdrake/open-folder.png")
+   BTNCLOSE.Picture = Picture.Load(FMAIN.$PATHICONS & "close" & FMain.$THEMESSUFFIX)
+   BTNREMOVE.Picture = Picture.Load(FMAIN.$PATHICONS & "remove" & FMain.$THEMESSUFFIX)
+   BTNADDREPO.Picture = Picture.Load(FMAIN.$PATHICONS & "ok" & FMain.$THEMESSUFFIX)
+   BTNBUILDREPO.Picture = Picture.Load(FMAIN.$PATHICONS & "run-build" & FMain.$THEMESSUFFIX)
+   BTNCHECKALL.Picture = Picture.Load(FMAIN.$PATHICONS & "checkall" & FMain.$THEMESSUFFIX)
+   BTNUNCHECKALL.Picture = Picture.Load(FMAIN.$PATHICONS & "uncheckall" & FMain.$THEMESSUFFIX)
+   BTNNOMECLEAR.Picture = Picture.Load(FMAIN.$PATHICONS & "clear" & FMain.$THEMESSUFFIX)
+   BTNPULISCI.Picture = Picture.Load(FMAIN.$PATHICONS & "bacchetta" & FMain.$THEMESSUFFIX)
+   Btnpathfile.Picture = Picture.Load(FMAIN.$PATHICONS & "open-folder" & FMain.$THEMESSUFFIX)
+   BTNPATHGPG.Picture = Picture.Load(FMAIN.$PATHICONS & "open-folder" & FMain.$THEMESSUFFIX)
 '*************************************************************************************
   If Fmain.$SECUREMODE = "SECURE" Then
       Fmain.Enabled = False 

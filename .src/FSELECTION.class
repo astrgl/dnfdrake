@@ -5,8 +5,8 @@ Public Sub Form_Open()
 
   FSELECTION.X = 1073
   FSELECTION.Y = 179
-  BTNOK.Picture = Picture.Load("/usr/share/dnfdrake/ok.png")
-  BTNANNULLA.Picture = Picture.Load("/usr/share/dnfdrake/stop.png")
+  BTNOK.Picture = Picture.Load(FMAIN.$PATHICONS & "ok" & FMain.$THEMESSUFFIX)
+  BTNANNULLA.Picture = Picture.Load(FMAIN.$PATHICONS & "stop" & FMain.$THEMESSUFFIX)
 End
 
 Public Sub BTNANNULLA_Click()

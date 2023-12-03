@@ -32,7 +32,7 @@ Public Sub Form_Open()
      Fmain.txtconsole.Enabled = True
      BTNSTOP.Text = Fmain.btnstop.Text 
   Endif 
-  BTNSTOP.Picture = Picture.Load("/usr/share/dnfdrake/stop.png")
+  BTNSTOP.Picture = Picture.Load(FMAIN.$PATHICONS & "stop" & FMain.$THEMESSUFFIX)
      $CLOSEPASS = 0    
  
   Wait 0.2

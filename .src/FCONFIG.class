@@ -12,9 +12,9 @@ Public Sub Form_Open()
         TXTDOWNGRADECMD.Text = Fmain.$DOWNGRADE
         TXTREINSTALLCMD.Text = Fmain.$REINSTALL
         TXTCUSTOMCMD.Text = Fmain.$CUSTOMCMD
-        BTNCLOSE.Picture = Picture.Load("/usr/share/dnfdrake/close.png")
-        BTNOK.Picture = Picture.Load("/usr/share/dnfdrake/ok.png")
-        BTNDEFAULT.Picture = Picture.Load("/usr/share/dnfdrake/default.png")
+        BTNCLOSE.Picture = Picture.Load(FMAIN.$PATHICONS & "close" & FMain.$THEMESSUFFIX)
+        BTNOK.Picture = Picture.Load(FMAIN.$PATHICONS & "ok" & FMain.$THEMESSUFFIX)
+        BTNDEFAULT.Picture = Picture.Load(FMAIN.$PATHICONS & "default" & FMain.$THEMESSUFFIX)
         
         If Fmain.$COLORTEXT = "color" Then
           CHKCOLORTEXT.Value = True

@@ -23,7 +23,7 @@ Public Sub Form_Open()
    flTTP.Close 
    
    BTNSTOP.Text = Fmain.btnstop.Text 
-   BTNSTOP.Picture = Picture.Load("/usr/share/dnfdrake/stop.png")
+   BTNSTOP.Picture = Picture.Load(FMAIN.$PATHICONS & "stop" & FMain.$THEMESSUFFIX)
    
    If Fmain.$SECUREMODE = "SECURE" Then
       Fmain.Enabled = False

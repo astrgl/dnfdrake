@@ -288,6 +288,7 @@
   { PICBTNDISTUPDATE PictureBox
     Move(679,48,21,17)
     Visible = False
+    Alignment = Align.Center
   }
   { BTNPKGLISTVIEW Button
     Move(864,630,28,28)

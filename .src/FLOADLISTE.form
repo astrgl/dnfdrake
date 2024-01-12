@@ -15,7 +15,7 @@
     Move(231,17,364,14)
   }
   { Timer1 #Timer
-    #Move(497,0)
+    #Move(497,7)
     Enabled = True
     Delay = 3000
   }

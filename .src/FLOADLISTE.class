@@ -5,7 +5,8 @@ Public $LOADINST As String
 Public $LOADNONINST As String
 Public $LOADAGG As String
 Public $UPDATEDIPS As String
-
+Public $CONNECTION As Integer       'STATO CONNESSIONE INTERNET 0=DISCONNESSO 1=CONNESSO
+Public $MSGCONNECTION As String     'MESSAGGIO DI CONNESSIONE NON DISPONIBILE
 
 Public Sub Form_Open()
  Dim flTTP As File  
@@ -25,6 +26,7 @@ Public Sub Form_Open()
       $LOADINST = Replace(ss$TTP[34], "_", " ")
       $LOADNONINST = Replace(ss$TTP[35], "_", " ")
       $LOADAGG = Replace(ss$TTP[36], "_", " ")
+      $MSGCONNECTION = Replace(ss$TTP[36], "_", " ")
   Next
   flTTP.Close
   BTNSKIP.Picture = Picture.Load(FMAIN.$PATHICONS & "skip" & FMain.$THEMESSUFFIX)
@@ -43,6 +45,7 @@ If Fmain.$RPMPATH = "" Then
       'Fmain.$RPMPATH = ""      ELIMINATA PER GESTIONE CON FINSTALL
       Me.Close 
 Endif
+CHECKCONNECTION
 
 End
 
@@ -56,7 +59,7 @@ Public Sub ProgressBar1_MouseDown()
 End
 
 Public Sub Timer1_Timer()
-
+If $CONNECTION = 1 Then 
 Dim b As Byte
     For b = 1 To 10
        ProgressBar1.Value = b / 100
@@ -87,9 +90,12 @@ Dim b As Byte
        Me.Close
      Endif
      Timer1.Enabled = False
-     
-CHECKUPDATES
- 
+  CHECKUPDATES
+Else 
+  Message.Info($MSGCONNECTION, "Ok")
+  BTNSKIP_Click
+Endif
+  
 End
 Private Sub CHECKUPDATES()
 'VERIFICA SE PRESENTI AGGIORNAMENTI
@@ -118,9 +124,21 @@ Dim ss$UPD As New String[]
       Fmain.btncerca_CLICK
    Endif
  Endif
+End 
+Private Sub CHECKCONNECTION()
+Dim sOutput As String
+Dim sTemp As String = "8.8.8.8"  
+   Shell "ping -c1 -w1 8.8.8.8" To sOutput
+  ' Exec ["ping ", "-c1 " "-w1 ", sTemp] To sOutput                                    'Ping the target and store the output in sOutput"
+    If InStr(sOutput, "64 bytes from") Then                                               'If '64 bytes from' exists in sOutput then..
+      $CONNECTION = 1
+     ' Message.Info("CONNESSIONE=" & $CONNECTION, "ok")   
+    Else 
+      $CONNECTION = 0
+     ' Message.Info("CONNESSIONE=" & $CONNECTION, "ok")                                                  
+    End If 
+    
 End
-
-
 Public Sub BTNSKIP_Click()
    BTNSKIP.Enabled = False
    Timer1.Enabled = False

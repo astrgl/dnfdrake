@@ -169,13 +169,17 @@ Public Sub BTNCLOSE_Click()
         Endif
     Endif    
 
-   If CHKDNFDRAKETRAY.VALUE = True And If LBLDRAKETRAYSTATUS.Text = "Draketray is not running" Then
+   ' If CHKDNFDRAKETRAY.VALUE = True And If LBLDRAKETRAYSTATUS.Text = "Draketray is not running" Then
+   If CHKDNFDRAKETRAY.VALUE = True Then
+     
 '      If Not Exist(User.Home &/ "/.config/draketray/locktray") Then
+    If LBLDRAKETRAYSTATUS.Text = "Draketray is not running" Then
       If Right(Left($LOCK)) <> "2" Then
           Fmain.$KILL = 2
           Shell ("/usr/bin/draketray.gambas")
           Sleep 1.1
         Endif
+      Endif   
       ' Shell "ps aux | grep gbr3 | grep draketray | wc -l" Wait To $LOCK  
       '  If Right(Left($LOCK)) = "2" Then 
       '     'CHKDNFDRAKETRAY.Value = True

@@ -26,7 +26,7 @@ Public Sub Form_Open()
       $LOADINST = Replace(ss$TTP[34], "_", " ")
       $LOADNONINST = Replace(ss$TTP[35], "_", " ")
       $LOADAGG = Replace(ss$TTP[36], "_", " ")
-      $MSGCONNECTION = Replace(ss$TTP[36], "_", " ")
+      $MSGCONNECTION = Replace(ss$TTP[96], "_", " ")
   Next
   flTTP.Close
   BTNSKIP.Picture = Picture.Load(FMAIN.$PATHICONS & "skip" & FMain.$THEMESSUFFIX)

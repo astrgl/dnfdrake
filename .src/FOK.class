@@ -51,6 +51,7 @@ If FRUN.Visible = True Then
   FRUN.BTNSTOP.Picture = Picture.Load(FMAIN.$PATHICONS & "ok" & FMain.$THEMESSUFFIX)
   FRUN.MONITORVIEW.Visible = False
   FRUN.Text = "DnfDrake,  " & Fmain.$FATTO
+  FRUN.BTNSTOP.SetFocus
   Me.Close 
 Endif
 $SECURE = 0

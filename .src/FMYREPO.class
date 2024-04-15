@@ -173,7 +173,7 @@ Endif
 End
 Public Sub REPOINDEXDEFAULT()
   
-  If LSTREPO.Count > -1 Then
+  If LSTREPO.Count > 0 Then
    Fmain.Btnclear_click 
    LSTREPO.Key = 0
    CMBREPO.Index = 0

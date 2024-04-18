@@ -2828,12 +2828,15 @@ Public Sub SELECTIONVIEW()
      LBLSELECTION.Visible = True
      BTNOKSELECTION.Visible = True
      BTNANNULLASELECTION.Visible = True
-     If BTNOKSELECTION.Enabled = False Then
-        BTNOKSELECTION.Enabled = True
+     If Fmain.Enabled = False Then
+       Fmain.Enabled = True
      Endif
-     If BTNANNULLASELECTION.Enabled = False Then
-        BTNANNULLASELECTION.Enabled = True
-     Endif
+     ' If BTNOKSELECTION.Enabled = False Then
+     '    BTNOKSELECTION.Enabled = True
+     ' Endif
+     ' If BTNANNULLASELECTION.Enabled = False Then
+     '    BTNANNULLASELECTION.Enabled = True
+     ' Endif
      TXTSELECTION.SetFocus
   Else 
      TXTSELECTION.Visible = False
@@ -2841,6 +2844,9 @@ Public Sub SELECTIONVIEW()
      LBLSELECTION.Visible = False
      BTNOKSELECTION.Visible = False
      BTNANNULLASELECTION.Visible = False
+     If Fmain.Enabled = True And If FRUN.Visible = True Then
+       Fmain.Enabled = False
+     Endif
   Endif
   
   

@@ -2623,8 +2623,14 @@ Private Sub DSTUPDATE()
 End
 
 Public Sub LOADICONS()
-
-    BTNAUTOREMOVE.Picture = Picture.Load($PATHICONS & "trash" & $THEMESSUFFIX)
+'GESTIONE ERRORE PER ASSENZA ICONE A CAUSA DI SPEC ERRATO IN  OPENMANDRIVA ***********
+   Try BTNAUTOREMOVE.Picture = Picture.Load($PATHICONS & "trash" & $THEMESSUFFIX)
+   If Error Then
+     $PATHICONS = "/usr/share/dnfdrake/"
+     BTNAUTOREMOVE.Picture = Picture.Load($PATHICONS & "trash" & $THEMESSUFFIX)
+   Endif
+'**************************************************************************************
+    'BTNAUTOREMOVE.Picture = Picture.Load($PATHICONS & "trash" & $THEMESSUFFIX)
     PICEXCLUDE.Picture = Picture.Load($PATHICONS & "lock" & $THEMESSUFFIX)
     BTNRESIZE.Picture = Picture.Load($PATHICONS & "restore" & $THEMESSUFFIX)
     BTNFULLSCREEN.Picture = Picture.Load($PATHICONS & "fullscreen" & $THEMESSUFFIX)

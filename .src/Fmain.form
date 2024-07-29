@@ -32,7 +32,7 @@
     Alignment = Align.Center
   }
   { !txtpkg TextBox
-    Move(7,7,565,28)
+    Move(7,7,564,28)
     #Public = True
     Expand = True
     Alignment = Align.Left
@@ -356,7 +356,7 @@
   { LBLNODEPS Label
     Move(553,7,110,28)
     Visible = False
-    Border = Border.Sunken
+    Border = Border.Plain
   }
   { CHKNODEPS CheckBox
     Move(581,7,77,28)

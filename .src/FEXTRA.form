@@ -146,4 +146,8 @@
     BorderRadius = 10
     Text = ("Interface")
   }
+  { CHKEASYPASSWORD CheckBox
+    MoveScaled(36,47,24,4)
+    Text = ("Easy Password")
+  }
 }

@@ -3,7 +3,10 @@
 ' Gambas class file
  Public $SECURE As Integer
  Public $MYREPOPEN As Integer
-
+ Public $CHECKPW As String         'VARIABILE PER VERIFICA PASSWORD CORRETTA 
+ 'Public $MEMOPW As String          '
+ Public $PWERROR As Integer        'CONTATORE PER PASSWORD INSERITA ERRATA A 3 CHIUDE LA FINESTRA
+ Public $PWERRORMSG As String     'MESSAGGIO DI PASSWORD ERRATA
 Public Sub Form_Open()
  
  Dim flBTN As File  
@@ -17,6 +20,7 @@ Public Sub Form_Open()
  Dim ss$TTP As New String[]
  
  $MYREPOPEN = 0
+ $PWERROR = 0
 
  flBTN = Open "/usr/share/dnfdrake/dnfdrake-BTN-" & Fmain.$LANG For Read   ' ...oppure "Input"
  While Not Eof(flBTN)
@@ -45,6 +49,7 @@ Public Sub Form_Open()
 ' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
   For jTTP = 0 To ss$TTP.Max
       FPW.Text = Replace(ss$TTP[21], "_", " ")
+      $PWERRORMSG = Replace(ss$TTP[97], "_", " ")
        Next
    flTTP.Close
    BTNANNULLA.Picture = Picture.Load(FMAIN.$PATHICONS & "stop" & FMain.$THEMESSUFFIX)
@@ -76,29 +81,49 @@ $SECURE = 0
 ' If Fmain.PICLOGODISTRO.Visible = True Then
 '    Fmain.PICLOGODISTRO.Visible = False
 ' Endif
+$CHECKPW = "ko"
+If Fmain.$MEMOPW = "NOPW" Then
+Else 
+  Btnok_Click  
+Endif
 End
 
 Public Sub TXTPW_Activate()
-
+If Fmain.$EASYPASSWORD = 1 Then
+   Btnok_Click
+Else    
    Dim sLig As String
-  
-  sLig = TXTPW.Text & gb.NewLine
-  TXTPW.Clear
-  sLig = Conv$(sLig, Desktop.Charset, System.Charset)
-  Print #Fmain.$hProcess, sLig;
-  FRUNSHOW
-  $SECURE = 1
-  Me.Close
-  
-   
+   sLig = TXTPW.Text & gb.NewLine
+   TXTPW.Clear
+   sLig = Conv$(sLig, Desktop.Charset, System.Charset)
+   Print #Fmain.$hProcess, sLig;
+   FRUNSHOW
+   $SECURE = 1
+   Me.Close
+Endif
+
 End
 
 Public Sub Btnok_Click()
- Btnok.Enabled = False
- Print #Fmain.$hProcess, TXTPW.Text & gb.NewLine; 
- FRUNSHOW
- $SECURE = 1
- Me.Close  
+'NUOVO CODICE PULSANTE OK SIGLE PASSWORD**********************
+If FMAIN.$EASYPASSWORD = 1 Then
+  If Fmain.$MEMOPW = "NOPW" Then
+       SIGLEPASSWORD  
+  Else   
+       Btnok.Enabled = False
+       Print #Fmain.$hProcess, FMAIN.$MEMOPW & gb.NewLine; 
+       FRUNSHOW
+       $SECURE = 1
+       Me.Close 
+  Endif      
+ Else 
+'VECCHIO CODICE PULSANTE OK***********************************
+    Btnok.Enabled = False
+    Print #Fmain.$hProcess, TXTPW.Text & gb.NewLine; 
+    FRUNSHOW
+    $SECURE = 1
+    Me.Close  
+ Endif
 End
 
 Public Sub BTNANNULLA_Click()
@@ -143,8 +168,23 @@ Public Sub BTNVIEWPW_MouseUp()
 End
 
 
-Public Sub TXTPW_KeyPress()
+Public Sub TXTPW_MouseDown()
+  
+  If TXTPW.Text = $PWERRORMSG
+     TXTPW.Text = ""  
+  Endif  
+  TXTPW.Password = True
+    
 End
+
+Public Sub TXTPW_KeyPress()
+  If TXTPW.Text = $PWERRORMSG
+     TXTPW.Text = ""  
+  Endif  
+  TXTPW.Password = True
+End
+
+
 
 Private Sub FRUNSHOW()
   
@@ -159,6 +199,28 @@ Private Sub FRUNSHOW()
   Endif   
 '************************************************* 
   
+End
+Private Sub SIGLEPASSWORD()
+
+  Shell "echo " & TXTPW.Text & " |sudo -S echo " & Chr$(34) & "ok" & Chr$(34) Wait To $CHECKPW
+  $CHECKPW = RTrim(LTrim$($CHECKPW))
+  If $CHECKPW = "ok" Then
+     Fmain.$MEMOPW = TXTPW.Text
+     If Fmain.txtConsole.Text = "" Then
+        Me.Close
+     Else 
+       Btnok_Click
+     Endif  
+  Else 
+    TXTPW.Text = ""
+    TXTPW.SetFocus
+    $PWERROR = $PWERROR + 1
+    TXTPW.Text = $PWERRORMSG
+    TXTPW.Password = False
+    If $PWERROR = 3 Then
+      BTNANNULLA_Click
+    Endif
+  Endif
 End
 
 Public Sub Form_Close()
@@ -190,6 +252,8 @@ Endif
 
 
 End
+
+
 
 Public Sub Timer1_Timer()
 If FRUN.Visible = True Then

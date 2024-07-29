@@ -127,7 +127,7 @@ Dim ss$UPD As New String[]
 End 
 Private Sub CHECKCONNECTION()
 Dim sOutput As String
-Dim sTemp As String = "8.8.8.8"  
+'Dim sTemp As String = "8.8.8.8"  
    Shell "ping -c1 -w1 8.8.8.8" To sOutput
   ' Exec ["ping ", "-c1 " "-w1 ", sTemp] To sOutput                                    'Ping the target and store the output in sOutput"
     If InStr(sOutput, "64 bytes from") Then                                               'If '64 bytes from' exists in sOutput then..
@@ -157,4 +157,8 @@ If FINSTALL.Visible = False Then
   Fmain.Enabled = True
 Endif
 Fmain.DRAKETRAYUPDATE
+'SERVE PER CHIEDERE LA PASSWORD ALL'AVVIO PER ORA NON USATO
+' If Fmain.$EASYPASSWORD = 1 And If Fmain.$MEMOPW = "NOPW" Then
+'   FPW.Show
+' Endif
 End

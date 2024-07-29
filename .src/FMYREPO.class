@@ -67,8 +67,11 @@ Public Sub Form_Open()
  Endif
 'RICHIESTA PASSWORD PREVENTIVA  ******************************* 
  Wait 0.1
- Print #Fmain.$hProcess, "sudo echo Enable My Repo Tool" & gb.NewLine;
-
+If FMAIN.$MEMOPW = "NOPW"
+    Print #Fmain.$hProcess, "sudo echo Enable My Repo Tool" & gb.NewLine;
+ Else 
+    Timer1.Delay = 0
+ Endif    
 End
 
 Public Sub Form_Close()
@@ -446,16 +449,16 @@ Public Sub CHKREMOTE_Click()
 
   If CHKREMOTE.Value = True Then
     Btnpathfile.enabled = False
-    BTNPATHGPG.Enabled = False
+    'BTNPATHGPG.Enabled = False
     BTNBUILDREPO.Enabled = False
     ' TXTPATH.Text = "http://"
   Else 
     Btnpathfile.Enabled = True  
-    BTNPATHGPG.Enabled = True
+    'BTNPATHGPG.Enabled = True
     BTNBUILDREPO.Enabled = True
     ' TXTPATH.Text = ""
   Endif
-  TXTPATHGPG.Text = ""
+  ' TXTPATHGPG.Text = ""
 End
 Public Sub LSTREPO_Click()
 CMBREPO.ReadOnly = True

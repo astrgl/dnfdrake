@@ -86,6 +86,8 @@ Public $MSGUPDATESASK As String
 Public $MSGTRAYREMOVE As String
 Public $OK As String
 Public $NODEPSINFO As String
+Public $EASYPASSWORD As Integer      'FUNZIONE CHE CONSENTE DI INSERIRE LA PASSWORD SOLO UNA VOLTA CON VALORE 1 È ATTIVA 
+Public $MEMOPW As String             'VARIABILE DOVE VIENE MEMORIZZATA LA PASSWORD PER TUTTA LA SESSIONE
 
 Public Sub Form_Open()
 'COMANDI
@@ -664,6 +666,7 @@ Else
    $CLOSEPASS = 0
    TXTINFOBOX.Text = "Loading..."
    $CLEARTXTPKG = 0
+   $MEMOPW = "NOPW"
    
 'PULISCE LE LISTE PROVVISORIE DI INSTALLAZIONE/RIMOZIONE
   TMPLISTCLEAN
@@ -741,6 +744,12 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
   Else  
     $AUTOSUSPEND = 0
   Endif  
+  'ABILITA EASYPASSWORD
+  If Exist(User.Home &/ ".config/dnfdrake/easypassword") Then
+    $EASYPASSWORD = 1
+  Else  
+    $EASYPASSWORD = 0
+  Endif  
   
   'VERIFICA SE DNFDRAKE È LANCIATO DAL FLATDRAKE E ADATTA LA RICERCA******* IN TEST**************
    If Exist(User.Home &/ ".config/flatdrake/flatsearchtmp") Then
@@ -808,7 +817,9 @@ Public Sub Process_Read()
       Endif
       If InStr($sText, $RQSTPASSWORD) > 0 Then                      'operazione annullata se è richiesta password
        FPW.Close
-       Print #$hProcess, Chr$(3);
+       
+      'Print #$hProcess, Chr$(3); '25/7/24 DISATTIVATO PERCHÈ CREA UN ERRORE SE SI ANNULLA LA PASSWORD DURANTE IL RESETSUSPEND VERIFICARE SE SERVE RIATTIVARLO
+      
       Endif 
       If InStr($sText, $PROCEDERE) > 0 Then                        'PROCEDERE AD INSTALLARE
           If $SECUREMODE = "SECURE" Then
@@ -895,12 +906,9 @@ Public Sub Process_Read()
        If $MEMOCOMMAND = "CLEARSUSPEND" Then
           VERIFYSUSPEND
           Btnclear_Click
-          ' Wait 0.1
-          ' $MEMOCOMMAND = "QUITRESTORESUSPEND"
-          ' Wait 0.1
-          ' Print #Fmain.$hProcess, "" & gb.NewLine;
-          ' Wait 0.1  
-
+          If $EASYPASSWORD = 1 And If $MEMOPW <> "NOPW" Then
+             $MEMOCOMMAND = "QUITRESTORESUSPEND"
+          Endif   
        Endif
  'MEMOCOMMAND CHIUDI DOPO RIPRISTINO SUSPEND*******************************
         If $MEMOCOMMAND = "QUITRESTORESUSPEND" And If $CLOSEPASS = 1 Then
@@ -1024,7 +1032,7 @@ Private Sub UpdateConsole()
   Dim sok As String
   ' Dim smid As String[]   'da elimiare se dopo 10 versioni se non presenta errori di ricerca 1.9.6
   Dim p As Integer
-  Dim x As Integer
+  'Dim x As Integer
 
   While Len($sText)
     iPos = InStr($sText, "\n")
@@ -1270,7 +1278,12 @@ Public Sub Btnclose_Click()
   $CLOSEPASS = 1
   Btnclose.Enabled = False
   If PICSUSPENDLOCK.Visible = True And If $COUNTBTNCLOSE = 0 Then
-    FRESETSUSPEND.Show
+    If $EASYPASSWORD = 1 And If $MEMOPW <> "NOPW" Then
+       Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
+    Else       
+      FRESETSUSPEND.Show
+      
+    Endif
     $COUNTBTNCLOSE = 1
     $MEMOCOMMAND = "CLEARSUSPEND"
     Btnclose.Enabled = True
@@ -4573,13 +4586,7 @@ Public Sub TXTSELECTION_Activate()
 End 
 
 Public Sub LBLSELECTION_MouseDown()
-
-  
-
 End
 
 Public Sub BORDOCONNECT_MouseDown()
-
-  
-
 End

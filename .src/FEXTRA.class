@@ -36,6 +36,7 @@ Public Sub Form_Open()
      $SHOWDUPLICATE = Replace(ss$TTP[47], "_", " ")
      CHKDNFDRAKETRAYLAUNCH.Tooltip = Replace(ss$TTP[91], "_", " ")
      CHKNODEPS.Tooltip = Fmain.CHKNODEPS.Tooltip
+     CHKEASYPASSWORD.Tooltip = Replace(ss$TTP[98], "_", " ")
      Next
 '  
    flTTP.Close
@@ -129,6 +130,10 @@ Public Sub Form_Open()
   Else If FMain.$THEMES = "BreezeDark" Then
      CMBTHEMES.Index = 2   
   Endif
+  
+  If Fmain.$EASYPASSWORD = 1 Then
+   CHKEASYPASSWORD.VALUE = True
+ Endif
 End
 
 
@@ -309,6 +314,16 @@ Endif
       FMain.$THEMESSUFFIX = "-BD.svg"  
       FMain.LOADICONS
    Endif
+'********************************************************************************************
+If CHKEASYPASSWORD.Value = True Then
+      Fmain.$EASYPASSWORD = 1
+      Shell "> " & User.Home &/ ".config/dnfdrake/easypassword" Wait
+      
+    Else 
+      Fmain.$EASYPASSWORD = 0
+      Fmain.$MEMOPW = "NOPW"
+      Shell ("rm -f " & User.Home &/ ".config/dnfdrake/easypassword") Wait 
+    Endif    
   Me.Close
 End
 

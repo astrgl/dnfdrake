@@ -62,6 +62,12 @@ Fmain.$WAITSUSPEND = 0
 '   Else 
 '     $FOKSTATE = 0    
 ' Endif 
+' If Fmain.$EASYPASSWORD = 1 And If Fmain.$MEMOPW <> "NOPW" Then
+'    Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
+'    Wait 3
+'    'FRESETSUSPEND.Close
+'    BTNSI_Click
+' Endif
 End
 
 Public Sub Form_Close()
@@ -96,7 +102,8 @@ Public Sub BTNSI_Click()
 BTNSI.Enabled = False
 Fmain.Enabled = True
 Wait 0.1
-Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
+Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target";
+'Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
 Wait 0.1
 Fmain.$PROGRESSBARFORCESUSPEND = 1
 'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA

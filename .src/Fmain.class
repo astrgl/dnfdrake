@@ -724,8 +724,13 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
   If InStr($DISTRO, "OpenMandriva", 0, gb.IgnoreCase) Then
     PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/OMA.png")
   Else 
-      If InStr($DISTRO, "ROSA", 0, gb.IgnoreCase) Then  
-         PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/ROSA.png")
+      If InStr($DISTRO, "ROSA", 0, gb.IgnoreCase) Then 
+         If $THEMES = "Oxygen" Or If $THEMES = "Breeze" Then
+            PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/ROSA.png")   
+         Else If $THEMES = "BreezeDark"
+            PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/ROSA-BD.png")   
+         Endif
+         
          'PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/OMA.png")
       Else 
          PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/LINUX.png")

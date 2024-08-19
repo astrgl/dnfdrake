@@ -3,6 +3,8 @@
 'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
 ' $FRUNSTATE As Integer
 ' $FOKSTATE As Integer
+$SICLICK As Boolean
+
 
 Public Sub Form_Open()
 
@@ -81,6 +83,7 @@ Public Sub Form_Close()
    Fmain.Enabled = True
  Endif
  Fmain.$ABORT = 0
+ $SICLICK = False
  'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
  ' If $FRUNSTATE = 1 Or If $FOKSTATE = 1 Then
  '    Fmain.Enabled = False   
@@ -102,12 +105,18 @@ Public Sub BTNSI_Click()
 BTNSI.Enabled = False
 Fmain.Enabled = True
 Wait 0.1
-Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target";
-'Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
+If Fmain.$MEMOPW = "NOPW" Then
+  Fmain.BTNSUSPEND_click
+  'Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
+Else 
+  Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target";  
+Endif
+
 Wait 0.1
 Fmain.$PROGRESSBARFORCESUSPEND = 1
 'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
 ' PRIORITA
+$SICLICK = True
 FRESETSUSPEND.Close
 End
 
@@ -116,7 +125,10 @@ Public Sub BTNNO_Click()
  Fmain.Enabled = True
  If Fmain.$CLOSEPASS = 1 Then
     Wait 0.1
-    Print #Fmain.$hProcess, "" & gb.NewLine;
+    If $SICLICK = False Then
+       Print #Fmain.$hProcess, "" & gb.NewLine;     
+    Endif
+
     Wait 0.1  
  Endif
  'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA

@@ -97,14 +97,14 @@
     Move(196,42,110,28)
   }
   { Cmbtipo ComboBox
-    Move(7,42,191,28)
+    Move(7,42,190,28)
     ReadOnly = True
   }
   { Btncommand Button
     Move(7,662,110,28)
   }
   { Cmbtipoinfo ComboBox
-    Move(7,77,191,28)
+    Move(7,77,190,28)
     ReadOnly = True
   }
   { Btncrono Button
@@ -295,7 +295,7 @@
     Visible = False
   }
   { TXTPKGLISTLABEL TextBox
-    Move(602,630,98,28)
+    Move(604,630,94,28)
     Visible = False
     Enabled = False
     Foreground = Color.TextForeground
@@ -303,14 +303,14 @@
     Alignment = Align.Right
   }
   { TXTPKGLISTNOME TextBox
-    Move(698,630,168,28)
+    Move(696,630,168,28)
     Visible = False
     Enabled = False
     Foreground = Color.TextForeground
     Text = ("None")
   }
   { BTNPKGLISTCLEAN Button
-    Move(889,630,28,28)
+    Move(892,630,28,28)
     Visible = False
   }
   { BTNEXCLUDE Button
@@ -336,7 +336,7 @@
     Move(7,112,35,28)
   }
   { BTNSUSPEND Button
-    Move(42,112,80,28)
+    Move(42,112,91,28)
     Text = ("     Suspend")
   }
   { PICSUSPENDLOCK PictureBox

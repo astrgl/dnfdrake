@@ -303,16 +303,19 @@ Endif
       FMain.$THEMES = "Oxygen"
       FMain.$THEMESSUFFIX = ".png"
       FMain.LOADICONS
+      FMAIN.LOADLOGO
    Else If CMBTHEMES.Index = 1 Then
       File.Save(User.Home &/ "/.config/dnfdrake/themes", "Breeze")
       FMain.$THEMES = "Breeze"
       FMain.$THEMESSUFFIX = "-B.svg"
       FMain.LOADICONS
+      FMAIN.LOADLOGO
    Else If CMBTHEMES.Index = 2 Then
       File.Save(User.Home &/ "/.config/dnfdrake/themes", "BreezeDark")   
       FMain.$THEMES = "BreezeDark"  
       FMain.$THEMESSUFFIX = "-BD.svg"  
       FMain.LOADICONS
+      FMAIN.LOADLOGO
    Endif
 '********************************************************************************************
 If CHKEASYPASSWORD.Value = True Then

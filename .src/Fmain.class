@@ -67,6 +67,7 @@ Public $THEMES As String            'TEMA DELLE ICONE
 Public $THEMESSUFFIX As String      'CODA DEL NOME DELL'ICONA
 Public $PATHICONS As String         'PATH DELLE ICONE
 Public $TEMAASK As String           'TRADUZIONE DOMANDA TEMA
+Public $DISTRO As String            'VERIFICA DISTRO IN ESECUZIONE
 'VARIABILI EXTRA OPTIONS*****************************************************************************
 Public $SEARCH As String
 'PAROLE CHIAVE LETTURA STRINGA E MESSAGGI************************************************************
@@ -133,7 +134,7 @@ Public Sub Form_Open()
   RESOLUTION
   
 'VERIFICA SU QUALE SISTEMA È IN ESECUZIONE 
-  Dim $DISTRO As String
+  'Dim $DISTRO As String
   
 '**********************************************************************************
  'SERVE PER CHIUDERE TUTTE LE FINESTRE DEL PROGRAMMA APERTE ALL'USCITA**************
@@ -721,21 +722,7 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
       BTNPICKER.Visible = False
     Endif
   'CARICA L'IMMAGINE DI PICLOGODISTRO
-  If InStr($DISTRO, "OpenMandriva", 0, gb.IgnoreCase) Then
-    PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/OMA.png")
-  Else 
-      If InStr($DISTRO, "ROSA", 0, gb.IgnoreCase) Then 
-         If $THEMES = "Oxygen" Or If $THEMES = "Breeze" Then
-            PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/ROSA.png")   
-         Else If $THEMES = "BreezeDark"
-            PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/ROSA-BD.png")   
-         Endif
-         
-         'PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/OMA.png")
-      Else 
-         PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/LINUX.png")
-      Endif
-  Endif     
+  LOADLOGO
   'VERIFICA SE IL SUSPEND È ABILITATO E ALTRE FUNZIONI*********
   VERIFYSUSPEND
   $WAITSUSPEND = 0
@@ -2872,6 +2859,29 @@ Public Sub SELECTIONVIEW()
        Fmain.Enabled = False
      Endif
   Endif
+  
+  
+End 
+Public Sub LOADLOGO()
+   If InStr($DISTRO, "OpenMandriva", 0, gb.IgnoreCase) Then
+    If $THEMES = "Oxygen" Or If $THEMES = "Breeze" Then
+            PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/OMA.png")
+         Else If $THEMES = "BreezeDark"
+            PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/OMA-BD.png")   
+         Endif
+  Else 
+      If InStr($DISTRO, "ROSA", 0, gb.IgnoreCase) Then 
+         If $THEMES = "Oxygen" Or If $THEMES = "Breeze" Then
+            PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/ROSA.png")   
+         Else If $THEMES = "BreezeDark"
+            PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/ROSA-BD.png")   
+         Endif
+         
+         'PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/OMA.png")
+      Else 
+         PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/LINUX.png")
+      Endif
+  Endif     
   
   
 End

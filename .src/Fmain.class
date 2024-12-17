@@ -1785,40 +1785,37 @@ Public Sub btninfo_Click()
    Endif
    If Cmbtipoinfo.index = 0                                         'GENERALE
       txtConsole.Text = ""
-      Print #$hProcess, "dnf info " & txtpkg.Text & gb.NewLine;
+      Print #$hProcess, "dnf info " & txtpkg.Text & $VERBOSE & gb.NewLine;
       PICLOGODISTRO.Visible = False  
    Endif
    If Cmbtipoinfo.Index = 3                                         'CHANGELOG
      txtConsole.Text = ""
-     Print #$hProcess, "dnf provides " & txtpkg.Text & gb.NewLine;
+     Print #$hProcess, "dnf provides " & txtpkg.Text & $VERBOSE & gb.NewLine;
      PICLOGODISTRO.Visible = False  
    Endif
    If Cmbtipoinfo.Index = 1                                         'DIPENDENZE
       txtConsole.Text = ""
-      Print #$hProcess, "dnf deplist " & txtpkg.Text & " | grep dependency" & gb.NewLine;
+      Print #$hProcess, "dnf deplist " & txtpkg.Text & " | grep dependency" & $VERBOSE & gb.NewLine;
       PICLOGODISTRO.Visible = False  
    Endif
    If Cmbtipoinfo.Index = 2                                            'FILE
      txtConsole.Text = ""
       If Cmbtipo.Index = 1
-         Print #$hProcess, "rpm -ql " & txtpkg.Text & gb.NewLine;
+         Print #$hProcess, "rpm -ql " & txtpkg.Text & $VERBOSE & gb.NewLine;
          PICLOGODISTRO.Visible = False  
       Else
-         Print #$hProcess, "repoquery -l " & txtpkg.Text & gb.NewLine;
+         Print #$hProcess, "repoquery -l " & txtpkg.Text & $VERBOSE & gb.NewLine;
          PICLOGODISTRO.Visible = False  
       Endif
    Endif
    If Cmbtipoinfo.index = 4                                             'HOMEPAGE                                              
       txtConsole.Text = ""
-      Print #$hProcess, "dnf info " & txtpkg.Text & " | grep URL" & gb.NewLine;
+      Print #$hProcess, "dnf info " & txtpkg.Text & " | grep URL" & $VERBOSE & gb.NewLine;
       PICLOGODISTRO.Visible = False  
    Endif
   Endif
  Endif
-   
-End
-
-
+End 
 
 Public Sub btncerca_Click()
      $STATUS = 1                                  ' AGGIUNTA A VERSIONE 1.17.32 PER LA GESTIONE DEL TASTO PULISCI

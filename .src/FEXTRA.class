@@ -168,7 +168,7 @@ Public Sub BTNCLOSE_Click()
               Fmain.PICBTNDISTUPDATE.Visible = False
               Shell ("rm -f " & User.Home &/ ".config/dnfdrake/distrosync") Wait 
               Shell "echo 0 > " & User.Home &/ ".config/dnfdrake/distrosync" Wait
-              Fmain.$UPDATE = "sudo dnf clean all; dnf repolist; sudo dnf --refresh upgrade"
+              Fmain.$UPDATE = "pkexec -sh c 'dnf clean all; dnf repolist; dnf --refresh upgrade'"
               Message.Info("The default command update had to be restored. If you have a custom command restart DnfDrake!", "OK")
           Endif     
         Endif

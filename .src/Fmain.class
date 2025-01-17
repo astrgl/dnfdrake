@@ -71,8 +71,8 @@ Public $DISTRO As String            'VERIFICA DISTRO IN ESECUZIONE
 'VARIABILI EXTRA OPTIONS*****************************************************************************
 Public $SEARCH As String
 'PAROLE CHIAVE LETTURA STRINGA E MESSAGGI************************************************************
-Public $PASSWORD As String
-Public $RQSTPASSWORD As String
+'Public $PASSWORD As String
+'Public $RQSTPASSWORD As String
 Public $PROCEDERE As String
 'Public $RIMOSSI As String
 Public $FATTO As String
@@ -455,11 +455,11 @@ Else
   For jKEY = 0 To ss$KEY.Max
 
 'richiesta password
-      $PASSWORD = ss$KEY[0] 
-      $PASSWORD = Replace($PASSWORD, "_", " ")
+      '$PASSWORD = ss$KEY[0] 
+      '$PASSWORD = Replace($PASSWORD, "_", " ")
 'operazione annullata se è richiesta password
-      $RQSTPASSWORD = ss$KEY[1]
-      $RQSTPASSWORD = Replace($RQSTPASSWORD, "_", " ")
+      '$RQSTPASSWORD = ss$KEY[1]
+      '$RQSTPASSWORD = Replace($RQSTPASSWORD, "_", " ")
 'PROCEDERE AD INSTALLARE
       $PROCEDERE = ss$KEY[2]
       $PROCEDERE = Replace($PROCEDERE, "_", " ") 
@@ -759,9 +759,9 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
       '  Endif 
    Endif
 'COMANDI CON OPZIONE NODEPS**********************************************************************
-$INSTALLNODEPS = "sudo rpm -ivh --nodeps "
-$UNINSTALLNODEPS = "sudo rpm -evh --nodeps "
-$UPDATENODEPS = "sudo rpm -Uvh --nodeps "
+$INSTALLNODEPS = "pkexec rpm -ivh --nodeps "
+$UNINSTALLNODEPS = "pkexec rpm -evh --nodeps "
+$UPDATENODEPS = "pkexec rpm -Uvh --nodeps "
 End
 
 Public Sub EXCLUDETEST()
@@ -804,15 +804,15 @@ Public Sub Process_Read()
   Read #$hProcess, sStr, -2560 '-2560 sembra risolvere i problemi in listpkg e i blocchi durante i comandi
   $sText = $sText & sStr
  If $PRINTLOG = 0 Then  
-      If InStr($sText, $PASSWORD) > 0 Then                           'RICHIESTA INSERIMENTO PASSWORD
-        FPW.Show
-      Endif
-      If InStr($sText, $RQSTPASSWORD) > 0 Then                      'operazione annullata se è richiesta password
-       FPW.Close
+      'If InStr($sText, $PASSWORD) > 0 Then                           'RICHIESTA INSERIMENTO PASSWORD
+      '  FPW.Show
+      'Endif
+      'If InStr($sText, $RQSTPASSWORD) > 0 Then                      'operazione annullata se è richiesta password
+      'FPW.Close
        
       'Print #$hProcess, Chr$(3); '25/7/24 DISATTIVATO PERCHÈ CREA UN ERRORE SE SI ANNULLA LA PASSWORD DURANTE IL RESETSUSPEND VERIFICARE SE SERVE RIATTIVARLO
       
-      Endif 
+      'Endif 
       If InStr($sText, $PROCEDERE) > 0 Then                        'PROCEDERE AD INSTALLARE
           If $SECUREMODE = "SECURE" Then
             FSINOSECURE.Show
@@ -1271,7 +1271,7 @@ Public Sub Btnclose_Click()
   Btnclose.Enabled = False
   If PICSUSPENDLOCK.Visible = True And If $COUNTBTNCLOSE = 0 Then
     If $EASYPASSWORD = 1 And If $MEMOPW <> "NOPW" Then
-       Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
+       Print #Fmain.$hProcess, "pkexec systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
     Else       
       FRESETSUSPEND.Show
       
@@ -1300,7 +1300,7 @@ Public Sub btnupdate_Click()
           Endif 
           $MEMOCOMMAND = "DISTROSYNCWAIT"
           $WAITSUSPEND = 1
-          Print #$hProcess, "sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;  
+          Print #$hProcess, "pkexec systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;  
         Else 
           DSTUPDATE
         Endif   
@@ -2578,14 +2578,14 @@ Private Sub DSTRSYNC()
     Me.Mouse = Mouse.Wait 
     ' $MEMOCOMMAND = "RECOVERSUSPEND" ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
     If $LOG = "NOLOG"
-    Print #$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync" & $VERBOSE & gb.NewLine;
+    Print #$hProcess, "dnf clean all; pkexec sh -c 'dnf clean all; dnf repolist; dnf --refresh --allowerasing distro-sync'" & $VERBOSE & gb.NewLine;
     FRUNSHOW
     Wait 2
     '$MEMOCOMMAND = "RECOVERSUSPEND" ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
     Endif 
     If $LOG = "LOG" Then
     DATATIME
-    Print #$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+    Print #$hProcess, "dnf clean all; pkexec sh -c 'dnf clean all; dnf repolist; dnf --refresh --allowerasing distro-sync' | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
     FRUNSHOW
     'Wait 2
     Endif
@@ -3789,7 +3789,7 @@ If CMBVERSLOCK.index = 1 Then                      'Add
           spkg = txtpkg.Text
           txtpkg.Text = ""
            Btnclear_Click
-           Print #$hProcess, "sudo dnf versionlock add " & spkg & $VERBOSE & gb.NewLine;
+           Print #$hProcess, "pkexec dnf versionlock add " & spkg & $VERBOSE & gb.NewLine;
            PICLOGODISTRO.Visible = False   
       Endif
  Else   
@@ -3811,7 +3811,7 @@ If CMBVERSLOCK.index = 1 Then                      'Add
                       Btnclear_Click
                       TABHIDE
                       Listpkg.Visible = False
-                    Print #$hProcess, "sudo dnf versionlock add " & spkg & $VERBOSE & gb.NewLine; 
+                    Print #$hProcess, "pkexec dnf versionlock add " & spkg & $VERBOSE & gb.NewLine; 
                     PICLOGODISTRO.Visible = False  
                 Endif
           Endif
@@ -3833,7 +3833,7 @@ If CMBVERSLOCK.index = 1 Then                      'Add
                       Btnclear_Click
                       TABHIDE
                       Listpkg.Visible = False
-                    Print #$hProcess, "sudo dnf versionlock add " & spkg & $VERBOSE & gb.NewLine; 
+                    Print #$hProcess, "pkexec dnf versionlock add " & spkg & $VERBOSE & gb.NewLine; 
                     PICLOGODISTRO.Visible = False   
                 Endif
           Endif
@@ -3855,7 +3855,7 @@ If CMBVERSLOCK.index = 1 Then                      'Add
                       Btnclear_Click
                       TABHIDE
                       Listpkg.Visible = False
-                    Print #$hProcess, "sudo dnf versionlock add " & spkg & $VERBOSE & gb.NewLine; 
+                    Print #$hProcess, "pkexec dnf versionlock add " & spkg & $VERBOSE & gb.NewLine; 
                     PICLOGODISTRO.Visible = False   
                 Endif
           Endif
@@ -3877,7 +3877,7 @@ If CMBVERSLOCK.index = 1 Then                      'Add
                       Btnclear_Click
                       TABHIDE
                       Listpkg.Visible = False
-                    Print #$hProcess, "sudo dnf versionlock add " & spkg & $VERBOSE & gb.NewLine; 
+                    Print #$hProcess, "pkexec dnf versionlock add " & spkg & $VERBOSE & gb.NewLine; 
                     PICLOGODISTRO.Visible = False   
           Endif
       Endif
@@ -3901,7 +3901,7 @@ If CMBVERSLOCK.index = 2 Then                      'Delete
           spkg = txtpkg.Text
           txtpkg.Text = ""
            Btnclear_Click
-           Print #$hProcess, "sudo dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine;
+           Print #$hProcess, "pkexec dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine;
            PICLOGODISTRO.Visible = False    
       Endif
  Else   
@@ -3923,7 +3923,7 @@ If CMBVERSLOCK.index = 2 Then                      'Delete
                       Btnclear_Click
                       TABHIDE
                       Listpkg.Visible = False
-                    Print #$hProcess, "sudo dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine; 
+                    Print #$hProcess, "pkexec dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine; 
                     PICLOGODISTRO.Visible = False   
                 Endif
           Endif
@@ -3945,7 +3945,7 @@ If CMBVERSLOCK.index = 2 Then                      'Delete
                       Btnclear_Click
                       TABHIDE
                       Listpkg.Visible = False
-                    Print #$hProcess, "sudo dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine; 
+                    Print #$hProcess, "pkexec dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine; 
                     PICLOGODISTRO.Visible = False   
                 Endif
           Endif
@@ -3967,7 +3967,7 @@ If CMBVERSLOCK.index = 2 Then                      'Delete
                       Btnclear_Click
                       TABHIDE
                       Listpkg.Visible = False
-                    Print #$hProcess, "sudo dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine; 
+                    Print #$hProcess, "pkexec dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine; 
                     PICLOGODISTRO.Visible = False  
                 Endif
           Endif
@@ -3989,7 +3989,7 @@ If CMBVERSLOCK.index = 2 Then                      'Delete
                       Btnclear_Click
                       TABHIDE
                       Listpkg.Visible = False
-                    Print #$hProcess, "sudo dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine; 
+                    Print #$hProcess, "pkexec dnf versionlock delete " & spkg & $VERBOSE & gb.NewLine; 
                     PICLOGODISTRO.Visible = False   
           Endif
       Endif
@@ -4006,7 +4006,7 @@ Endif
           If Btnexp2.Text = "EXP2" Then
           Btnexp2_Click 
           Endif
-          Print #$hProcess, "sudo dnf versionlock clear " & $VERBOSE & gb.NewLine; 
+          Print #$hProcess, "pkexec dnf versionlock clear " & $VERBOSE & gb.NewLine; 
           PICLOGODISTRO.Visible = False   
   Endif
  
@@ -4029,7 +4029,7 @@ Public Sub BTNDISTUPDATE_Click()
           Endif 
           $MEMOCOMMAND = "DISTROSYNCWAIT"
           $WAITSUSPEND = 1
-          Print #$hProcess, "sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;  
+          Print #$hProcess, "pkexec systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;  
         Else 
           DSTRSYNC
         Endif   
@@ -4221,7 +4221,7 @@ Public Sub BTNDNFCLEAN_Click()
 
   txtConsole.Text = ""
   $MEMOCOMMAND = "dnf repolist"
-  Print #$hProcess, "sudo dnf clean all; dnf clean all;" & gb.NewLine; 
+  Print #$hProcess, "pkexec dnf clean all; dnf clean all;" & gb.NewLine; 
    PICLOGODISTRO.Visible = False  
   
 End
@@ -4280,9 +4280,9 @@ If CMBVERSLOCK.index = 1 Then                      'Add
           txtpkg.Text = ""
            Btnclear_Click
            If $EXCLUDE = "" Then
-              Print #$hProcess, "sudo su -c " & "'echo exclude=" & spkg & " >> /etc/dnf/dnf.conf' " & gb.NewLine;             
+              Print #$hProcess, "pkexec su -c " & "'echo exclude=" & spkg & " >> /etc/dnf/dnf.conf' " & gb.NewLine;             
            Else 
-               Print #$hProcess, "sudo sed -i 's/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & "/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & " " & Replace(spkg, " ", "") & "/g' /etc/dnf/dnf.conf" 
+               Print #$hProcess, "pkexec sed -i 's/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & "/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & " " & Replace(spkg, " ", "") & "/g' /etc/dnf/dnf.conf" 
            Endif  
       Endif
  Else   
@@ -4305,9 +4305,9 @@ If CMBVERSLOCK.index = 1 Then                      'Add
                       TABHIDE
                       Listpkg.Visible = False
                       If $EXCLUDE = "" Then
-                         Print #$hProcess, "sudo su -c " & "'echo exclude=" & spkg & " >> /etc/dnf/dnf.conf' " & gb.NewLine;             
+                         Print #$hProcess, "pkexec su -c " & "'echo exclude=" & spkg & " >> /etc/dnf/dnf.conf' " & gb.NewLine;             
                       Else 
-                         Print #$hProcess, "sudo sed -i 's/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & "/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & " " & Right(spkg, String.Len(spkg) - 1) & "/g' /etc/dnf/dnf.conf" 
+                         Print #$hProcess, "pkexec sed -i 's/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & "/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & " " & Right(spkg, String.Len(spkg) - 1) & "/g' /etc/dnf/dnf.conf" 
                       Endif  
                 Endif
           Endif
@@ -4330,9 +4330,9 @@ If CMBVERSLOCK.index = 1 Then                      'Add
                       TABHIDE
                       Listpkg.Visible = False
                       If $EXCLUDE = "" Then
-                         Print #$hProcess, "sudo su -c " & "'echo exclude=" & spkg & " >> /etc/dnf/dnf.conf' " & gb.NewLine;             
+                         Print #$hProcess, "pkexec su -c " & "'echo exclude=" & spkg & " >> /etc/dnf/dnf.conf' " & gb.NewLine;             
                       Else 
-                         Print #$hProcess, "sudo sed -i 's/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & "/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & " " & Right(spkg, String.Len(spkg) - 1) & "/g' /etc/dnf/dnf.conf" 
+                         Print #$hProcess, "pkexec sed -i 's/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & "/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & " " & Right(spkg, String.Len(spkg) - 1) & "/g' /etc/dnf/dnf.conf" 
                       Endif  
                 Endif
           Endif
@@ -4355,9 +4355,9 @@ If CMBVERSLOCK.index = 1 Then                      'Add
                       TABHIDE
                       Listpkg.Visible = False
                       If $EXCLUDE = "" Then
-                          Print #$hProcess, "sudo su -c " & "'echo exclude=" & spkg & " >> /etc/dnf/dnf.conf' " & gb.NewLine;             
+                          Print #$hProcess, "pkexec su -c " & "'echo exclude=" & spkg & " >> /etc/dnf/dnf.conf' " & gb.NewLine;             
                       Else 
-                          Print #$hProcess, "sudo sed -i 's/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & "/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & " " & Right(spkg, String.Len(spkg) - 1) & "/g' /etc/dnf/dnf.conf" 
+                          Print #$hProcess, "pkexec sed -i 's/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & "/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & " " & Right(spkg, String.Len(spkg) - 1) & "/g' /etc/dnf/dnf.conf" 
                       Endif  
                 Endif
           Endif
@@ -4380,9 +4380,9 @@ If CMBVERSLOCK.index = 1 Then                      'Add
                       TABHIDE
                       Listpkg.Visible = False
                       If $EXCLUDE = "" Then
-                         Print #$hProcess, "sudo su -c " & "'echo exclude=" & spkg & " >> /etc/dnf/dnf.conf' " & gb.NewLine;             
+                         Print #$hProcess, "pkexec su -c " & "'echo exclude=" & spkg & " >> /etc/dnf/dnf.conf' " & gb.NewLine;             
                       Else 
-                         Print #$hProcess, "sudo sed -i 's/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & "/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & " " & Right(spkg, String.Len(spkg) - 1) & "/g' /etc/dnf/dnf.conf" 
+                         Print #$hProcess, "pkexec sed -i 's/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & "/" & Left($EXCLUDE, String.Len($EXCLUDE) - 1) & " " & Right(spkg, String.Len(spkg) - 1) & "/g' /etc/dnf/dnf.conf" 
                       Endif  
                 Endif
            Endif
@@ -4403,7 +4403,7 @@ If CMBVERSLOCK.index = 2 Then                      'Delete
           spkg = txtpkg.Text
           txtpkg.Text = ""
            Btnclear_Click
-           Print #$hProcess, "sudo " & "sed -i 's/ " & spkg & "//g' " & " /etc/dnf/dnf.conf " & gb.NewLine; 
+           Print #$hProcess, "pkexec " & "sed -i 's/ " & spkg & "//g' " & " /etc/dnf/dnf.conf " & gb.NewLine; 
            $MEMOCOMMAND = "LISTUPDTEXCL"
       Endif
   Else
@@ -4419,7 +4419,7 @@ Endif
           If Btnexp2.Text = "EXP2" Then
           Btnexp2_Click 
           Endif
-          Print #$hProcess, "sudo sed -i '/exclude/d' /etc/dnf/dnf.conf " & gb.NewLine;
+          Print #$hProcess, "pkexec sed -i '/exclude/d' /etc/dnf/dnf.conf " & gb.NewLine;
   Endif
   CMBVERSLOCK.index = 0
 End
@@ -4437,13 +4437,13 @@ Public Sub BTNAUTOREMOVE_Click()
    Endif
    Me.Mouse = Mouse.Wait 
    If $LOG = "NOLOG"
-       Print #$hProcess, "sudo dnf autoremove" & $VERBOSE & gb.NewLine;
+       Print #$hProcess, "pkexec dnf autoremove" & $VERBOSE & gb.NewLine;
        PICLOGODISTRO.Visible = False  
        FRUNSHOW
    Endif 
    If $LOG = "LOG" Then
       DATATIME
-      Print #$hProcess, "sudo dnf autoremove | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-autoremove.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+      Print #$hProcess, "pkexec dnf autoremove | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-autoremove.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
        PICLOGODISTRO.Visible = False  
       FRUNSHOW
    Endif
@@ -4495,10 +4495,10 @@ Public Sub BTNSUSPEND_Click()
       Btnclear_Click  
       ' If BTNSUSPEND.Text = "    Suspend On" Then
       If PICSUSPEND.Visible = True
-         Print #$hProcess, "sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine; 
+         Print #$hProcess, "pkexec systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine; 
           PICLOGODISTRO.Visible = False   
       Else 
-         Print #$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
+         Print #$hProcess, "pkexec systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
           PICLOGODISTRO.Visible = False  
       Endif
       $MEMOCOMMAND = "CLEARSUSPEND"

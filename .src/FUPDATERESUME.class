@@ -37,22 +37,22 @@ Public Sub BTNRESUME_Click()
   Fmain.Mouse = Mouse.Wait 
   If Fmain.BTNDISTUPDATE.Visible = True
     If Fmain.$LOG = "NOLOG"
-    Print #Fmain.$hProcess, "sudo  dnf --refresh --allowerasing distro-sync" & Fmain.$VERBOSE & gb.NewLine;
+    Print #Fmain.$hProcess, "pkexec  dnf --refresh --allowerasing distro-sync" & Fmain.$VERBOSE & gb.NewLine;
     FRUNSHOW
     Endif 
     If Fmain.$LOG = "LOG" Then
     Fmain.DATATIME
-    Print #Fmain.$hProcess, "sudo  dnf --refresh --allowerasing distro-sync | tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+    Print #Fmain.$hProcess, "pkexec  dnf --refresh --allowerasing distro-sync | tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
     FRUNSHOW
     Endif
   Else 
      If Fmain.$LOG = "NOLOG"
-     Print #Fmain.$hProcess, "sudo dnf --refresh upgrade" & Fmain.$VERBOSE & gb.NewLine;
+     Print #Fmain.$hProcess, "pkexec dnf --refresh upgrade" & Fmain.$VERBOSE & gb.NewLine;
      FRUNSHOW
     Endif 
     If Fmain.$LOG = "LOG" Then
       Fmain.DATATIME
-      Print #Fmain.$hProcess, "sudo dnf --refresh upgrade " & "| tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-update.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+      Print #Fmain.$hProcess, "pkexec dnf --refresh upgrade " & "| tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-update.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
       FRUNSHOW
     Endif
   
@@ -66,12 +66,12 @@ Public Sub BTNREUPADTE_Click()
   Fmain.Mouse = Mouse.Wait 
   If Fmain.BTNDISTUPDATE.Visible = True
     If Fmain.$LOG = "NOLOG"
-    Print #Fmain.$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync" & Fmain.$VERBOSE & gb.NewLine;
+    Print #Fmain.$hProcess, "dnf clean all; pkexec sh -c 'dnf clean all; dnf repolist; dnf --refresh --allowerasing distro-sync'" & Fmain.$VERBOSE & gb.NewLine;
     FRUNSHOW
     Endif 
     If Fmain.$LOG = "LOG" Then
     Fmain.DATATIME
-    Print #Fmain.$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync | tee " & User.Home & "/.config/dnfdrake/log/last.log" & Fmain.$DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+    Print #Fmain.$hProcess, "dnf clean all; pkexec sh -c 'dnf clean all; dnf repolist; dnf --refresh --allowerasing distro-sync' | tee " & User.Home & "/.config/dnfdrake/log/last.log" & Fmain.$DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
     FRUNSHOW
     Endif
   Else 

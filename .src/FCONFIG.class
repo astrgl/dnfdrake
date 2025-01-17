@@ -31,7 +31,7 @@ Public Sub Form_Open()
         
         If Exist(User.Home &/ ".config/dnfdrake/distrosync") Then
            TXTUPDATE.Text = "DistroSync command"
-           TXTUPDATECMD.Text = "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync"
+           TXTUPDATECMD.Text = " dnf clean all; pkexec -sh c 'dnf clean all; dnf repolist; dnf --refresh --allowerasing distro-sync'"
            TXTUPDATECMD.Enabled = False
         Else  
            TXTUPDATECMD.Enabled = True

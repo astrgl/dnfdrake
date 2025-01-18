@@ -77,13 +77,13 @@ Public Sub BTNREMOVE_Click()
     If LSTPKG.Selection.Count = LSTPKG.Count Then
       LSTPKG.UnSelectAll
       LSTPKG.Clear
-      Print #Fmain.$hProcess, "sudo sed -i '/exclude/d' /etc/dnf/dnf.conf " & gb.NewLine;
+      Print #Fmain.$hProcess, "pkexec sed -i '/exclude/d' /etc/dnf/dnf.conf " & gb.NewLine;
     Else     
       For Each a In LSTPKG.Selection
       s = s & " " & LSTPKG[a].Text  
       LSTPKG[a].Delete
       Next
-        Print #Fmain.$hProcess, "sudo " & "sed -i 's/" & s & "//g' " & " /etc/dnf/dnf.conf " & gb.NewLine; 
+        Print #Fmain.$hProcess, "pkexec " & "sed -i 's/" & s & "//g' " & " /etc/dnf/dnf.conf " & gb.NewLine; 
         'TextBox1.Text = "sudo " & "sed -i 's/" & s & "//g' " & " /etc/dnf/dnf.conf "
     Endif
      Wait 0.1

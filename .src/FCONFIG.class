@@ -31,7 +31,7 @@ Public Sub Form_Open()
         
         If Exist(User.Home &/ ".config/dnfdrake/distrosync") Then
            TXTUPDATE.Text = "DistroSync command"
-           TXTUPDATECMD.Text = "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync"
+           TXTUPDATECMD.Text = " dnf clean all; pkexec -sh c 'dnf clean all; dnf repolist; dnf --refresh --allowerasing distro-sync'"
            TXTUPDATECMD.Enabled = False
         Else  
            TXTUPDATECMD.Enabled = True
@@ -109,18 +109,6 @@ Public Sub BTNOK_Click()
 
   Message.Info("Restart DnfDrake for the changes to be applied", "OK")
   Me.Close
-End
-
-Public Sub TXTUPDATEPKGCMD_KeyPress()
-End
-
-Public Sub CHKCOLORTEXT_Click()
-End
-
-Public Sub TXTREINSTALLCMD_KeyPress()
-End
-
-Public Sub TXTINSTALLCMD_KeyPress()
 End
 
 Public Sub Form_Close()

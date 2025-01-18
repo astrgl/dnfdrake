@@ -109,7 +109,7 @@ If Fmain.$MEMOPW = "NOPW" Then
   Fmain.BTNSUSPEND_click
   'Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
 Else 
-  Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target";  
+  Print #Fmain.$hProcess, "pkexec systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target";  
 Endif
 
 Wait 0.1

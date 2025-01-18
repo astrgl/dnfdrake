@@ -111,18 +111,6 @@ Public Sub BTNOK_Click()
   Me.Close
 End
 
-Public Sub TXTUPDATEPKGCMD_KeyPress()
-End
-
-Public Sub CHKCOLORTEXT_Click()
-End
-
-Public Sub TXTREINSTALLCMD_KeyPress()
-End
-
-Public Sub TXTINSTALLCMD_KeyPress()
-End
-
 Public Sub Form_Close()
 
   Fmain.Enabled = True

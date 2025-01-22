@@ -107,11 +107,15 @@ End
 Public Sub Btnok_Click()
 'NUOVO CODICE PULSANTE OK SIGLE PASSWORD**********************
 If FMAIN.$EASYPASSWORD = 1 Then
-  Btnok.Enabled = False
-  Print #Fmain.$hProcess, FMAIN.$MEMOPW & gb.NewLine; 
-  FRUNSHOW
-  $SECURE = 1
-  Me.Close 
+  If Fmain.$MEMOPW = "NOPW" Then
+       SIGLEPASSWORD  
+  Else   
+       Btnok.Enabled = False
+       Print #Fmain.$hProcess, FMAIN.$MEMOPW & gb.NewLine; 
+       FRUNSHOW
+       $SECURE = 1
+       Me.Close 
+  Endif      
  Else 
 'VECCHIO CODICE PULSANTE OK***********************************
     Btnok.Enabled = False
@@ -196,28 +200,28 @@ Private Sub FRUNSHOW()
 '************************************************* 
   
 End
-'Private Sub SIGLEPASSWORD()
+Private Sub SIGLEPASSWORD()
 
-'  Shell "echo " & TXTPW.Text & " |sudo -S echo " & Chr$(34) & "ok" & Chr$(34) Wait To $CHECKPW
-'  $CHECKPW = RTrim(LTrim$($CHECKPW))
-'  If $CHECKPW = "ok" Then
-'     Fmain.$MEMOPW = TXTPW.Text
-'     If Fmain.txtConsole.Text = "" Then
-'        Me.Close
-'     Else 
-'       Btnok_Click
-'     Endif  
-'  Else 
-'    TXTPW.Text = ""
-'    TXTPW.SetFocus
-'    $PWERROR = $PWERROR + 1
-'    TXTPW.Text = $PWERRORMSG
-'    TXTPW.Password = False
-'    If $PWERROR = 3 Then
-'      BTNANNULLA_Click
-'    Endif
-'  Endif
-'End
+  Shell "echo " & TXTPW.Text & " |sudo -S echo " & Chr$(34) & "ok" & Chr$(34) Wait To $CHECKPW
+  $CHECKPW = RTrim(LTrim$($CHECKPW))
+  If $CHECKPW = "ok" Then
+     Fmain.$MEMOPW = TXTPW.Text
+     If Fmain.txtConsole.Text = "" Then
+        Me.Close
+     Else 
+       Btnok_Click
+     Endif  
+  Else 
+    TXTPW.Text = ""
+    TXTPW.SetFocus
+    $PWERROR = $PWERROR + 1
+    TXTPW.Text = $PWERRORMSG
+    TXTPW.Password = False
+    If $PWERROR = 3 Then
+      BTNANNULLA_Click
+    Endif
+  Endif
+End
 
 Public Sub Form_Close()
 If $SECURE = 1 Then

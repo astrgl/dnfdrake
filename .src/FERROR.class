@@ -54,7 +54,7 @@ Fmain.txtpkg.Text = ""
 Fmain.Btnclear_click
 Fmain.Mouse = Mouse.Default
 'Fmain.BTNDNFCLEAN_Click
-Print #Fmain.$hProcess, "pkexec dnf clean packages" & gb.NewLine;
+Print #Fmain.$hProcess, "sudo dnf clean packages" & gb.NewLine;
 Fmain.Enabled = True  
 $SECURE = 1
 Me.Close
@@ -73,9 +73,9 @@ Dim i As Integer
       Fmain.Btnclear_click
       FRUNSHOW
           If InStr($RETRY, " --refresh upgrade") > 0 Then
-              Print #Fmain.$hProcess, "dnf repolist; pkexec dnf --refresh upgrade" & "| tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-update.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+              Print #Fmain.$hProcess, "dnf repolist; sudo dnf --refresh upgrade" & "| tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-update.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
           Else If InStr($RETRY, "distro-sync") > 0
-              Print #Fmain.$hProcess, "dnf repolist; pkexec dnf --refresh --allowerasing distro-sync | tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine; 
+              Print #Fmain.$hProcess, "dnf repolist; sudo dnf --refresh --allowerasing distro-sync | tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine; 
           Else 
             Print #Fmain.$hProcess, $RETRY  
           Endif

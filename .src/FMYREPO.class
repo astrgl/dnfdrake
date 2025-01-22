@@ -68,7 +68,7 @@ Public Sub Form_Open()
 'RICHIESTA PASSWORD PREVENTIVA  ******************************* 
  Wait 0.1
 If FMAIN.$MEMOPW = "NOPW"
-    Print #Fmain.$hProcess, "pkexec echo Enable My Repo Tool" & gb.NewLine;
+    Print #Fmain.$hProcess, "sudo echo Enable My Repo Tool" & gb.NewLine;
  Else 
     Timer1.Delay = 0
  Endif    
@@ -254,7 +254,7 @@ Fmain.$MEMOCOMMAND = ""
                   'Wait 0.05
                   Print #Fmain.$hProcess, "echo 'gpgkey=" & TXTPATHGPG.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
                   Wait 0.1
-                  Print #Fmain.$hProcess, "pkexec cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & " /etc/yum.repos.d/" & gb.NewLine;
+                  Print #Fmain.$hProcess, "sudo cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & " /etc/yum.repos.d/" & gb.NewLine;
                   Fmain.$MEMOCOMMAND = "TMPREPOCLEAR"
 'CREAZIONE NUOVO REPO*********************************************************  
                Else 
@@ -280,7 +280,7 @@ Fmain.$MEMOCOMMAND = ""
                   'Wait 0.05
                   Print #Fmain.$hProcess, "echo 'gpgkey=" & TXTPATHGPG.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
                   Wait 0.1
-                  Print #Fmain.$hProcess, "pkexec cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & "/etc/yum.repos.d/" & gb.NewLine;
+                  Print #Fmain.$hProcess, "sudo cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & "/etc/yum.repos.d/" & gb.NewLine;
                   Fmain.$MEMOCOMMAND = "TMPREPOCLEAR"
                Endif
             Endif  
@@ -320,7 +320,7 @@ Fmain.$MEMOCOMMAND = ""
                    'Wait 0.05
                    Print #Fmain.$hProcess, "echo 'gpgkey=" & TXTPATHGPG.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
                    Wait 0.1
-                   Print #Fmain.$hProcess, "pkexec cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & " /etc/yum.repos.d/" & gb.NewLine;
+                   Print #Fmain.$hProcess, "sudo cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & " /etc/yum.repos.d/" & gb.NewLine;
                    Fmain.$MEMOCOMMAND = "TMPREPOCLEAR"
 'CREAZIONE NUOVO REPO*********************************************************  
                 Else 
@@ -346,7 +346,7 @@ Fmain.$MEMOCOMMAND = ""
                    'Wait 0.05
                    Print #Fmain.$hProcess, "echo 'gpgkey=" & TXTPATHGPG.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
                    Wait 0.1
-                   Print #Fmain.$hProcess, "pkexec cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & "/etc/yum.repos.d/" & gb.NewLine;
+                   Print #Fmain.$hProcess, "sudo cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & "/etc/yum.repos.d/" & gb.NewLine;
                    Fmain.$MEMOCOMMAND = "TMPREPOCLEAR"
                 Endif
             Endif     
@@ -408,7 +408,7 @@ End
 
 Public Sub BTNREMOVE_Click()
 $MODIFICHE = 1
-Print #Fmain.$hProcess, "pkexec rm  /etc/yum.repos.d/" & CMBREPO.Text & gb.NewLine;
+Print #Fmain.$hProcess, "sudo rm  /etc/yum.repos.d/" & CMBREPO.Text & gb.NewLine;
 Fmain.$MEMOCOMMAND = "TMPREPOCLEAR"
 Wait 0.5
 REPOINDEXDEFAULT
@@ -540,13 +540,13 @@ For I = 0 To X.Max
     'Wait 0.05
     Print #Fmain.$hProcess, "echo 'gpgkey=" & TXTPATHGPG.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
     Wait 0.1
-    Print #Fmain.$hProcess, "pkexec cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & " /etc/yum.repos.d/" & gb.NewLine;
+    Print #Fmain.$hProcess, "sudo cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & " /etc/yum.repos.d/" & gb.NewLine;
     Wait 0.1
     If FPW.Visible Then
        FPW.BTNANNULLA_Click
        Timer1.Delay = 50
        $MEMOCOMMAND = "UNCHECKALL"
-       Print #Fmain.$hProcess, "pkexec echo Enable My Repo Tool" & gb.NewLine;
+       Print #Fmain.$hProcess, "sudo echo Enable My Repo Tool" & gb.NewLine;
        Break 
     Endif
     Wait 0.1
@@ -598,13 +598,13 @@ For I = 0 To X.Max
     'Wait 0.05
     Print #Fmain.$hProcess, "echo 'gpgkey=" & TXTPATHGPG.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
     Wait 0.1
-    Print #Fmain.$hProcess, "pkexec cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & " /etc/yum.repos.d/" & gb.NewLine;
+    Print #Fmain.$hProcess, "sudo cp " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & " /etc/yum.repos.d/" & gb.NewLine;
     Wait 0.1
     If FPW.Visible Then
        FPW.BTNANNULLA_Click
        Timer1.Delay = 50
        $MEMOCOMMAND = "CHECKALL"
-       Print #Fmain.$hProcess, "pkexec echo Enable My Repo Tool" & gb.NewLine;
+       Print #Fmain.$hProcess, "sudo echo Enable My Repo Tool" & gb.NewLine;
        Break 
     Endif
     Wait 0.1

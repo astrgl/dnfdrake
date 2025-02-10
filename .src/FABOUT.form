@@ -15,11 +15,10 @@
   }
   { Panel1 Panel
     MoveScaled(6,2,51,5)
-    { Label1 Label
+    { LBLTITOLO Label
       MoveScaled(0,0,51,5)
       Font = Font["+7"]
       Alignment = Align.Center
-      Text = ("DnfDrake 4.3.0")
     }
   }
 }

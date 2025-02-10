@@ -762,6 +762,8 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
 $INSTALLNODEPS = "sudo rpm -ivh --nodeps "
 $UNINSTALLNODEPS = "sudo rpm -evh --nodeps "
 $UPDATENODEPS = "sudo rpm -Uvh --nodeps "
+'AVVIO PROGRAMMA CON RISOLUZIONE STAMDARD
+BTNFULLSCREEN_Click
 End
 
 Public Sub EXCLUDETEST()

@@ -9,7 +9,7 @@ Public Sub Form_Open()
   Dim ss$BTN As New String[]
 
   If Fmain.$PROGRESSBARFORCESUSPEND = 1 Then
-     FRUN.ProgressBar1.Pulse = False    
+     FRUN.ProgressBar1.Pulse = False   
      FRUN.ProgressBar1.Value = 1
 'TESTI E TOOLTIP********************************************
    flBTN = Open "/usr/share/dnfdrake/dnfdrake-BTN-" & Fmain.$LANG For Read 
@@ -100,11 +100,6 @@ If ProgressBar1.Value = 1 Then
     Me.Close
 Endif
 End
-
-Public Sub ProgressBar1_MouseDown()
-
-End
-
 
 Public Sub Timer1_Timer()
   BTNSTOP.Enabled = True

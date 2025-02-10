@@ -6,6 +6,7 @@ BTNCLOSE.Text = Fmain.Btnclose.Text
 TextArea1.Text = File.Load("/usr/share/dnfdrake/dnfdrake-ABOUT-" & Fmain.$LANG)
 Fmain.Enabled = False
 BTNCLOSE.Picture = Picture.Load(FMAIN.$PATHICONS & "close" & FMain.$THEMESSUFFIX)
+LBLTITOLO.Text = "DnfDrake " & Application.Version
 End
 
 
@@ -15,7 +16,7 @@ Public Sub BTNCLOSE_Click()
 
 End
 
-Public Sub Label1_MouseDown()
+Public Sub LBLTITOLO_MouseDown()
 End
 
 Public Sub TextArea1_KeyPress()

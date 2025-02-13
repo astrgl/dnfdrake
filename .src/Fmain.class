@@ -766,6 +766,11 @@ $UNINSTALLNODEPS = "sudo rpm -evh --nodeps "
 $UPDATENODEPS = "sudo rpm -Uvh --nodeps "
 'AVVIO PROGRAMMA CON RISOLUZIONE STAMDARD
 BTNFULLSCREEN_Click
+
+'TEST OM-DNFDRAKE***************************************
+$FRUNMAIN = 1
+$FRUNPW = 1
+'*******************************************************
 End
 
 Public Sub EXCLUDETEST()
@@ -1117,9 +1122,8 @@ Private Sub UpdateConsole()
       Wait 0.2
       FERROR.TextArea1.Text = txtConsole.Text
     Endif
-
+  
    If sStr = $DNFDRAKEASK And If FRUN.ProgressBar1.Pulse = True And If CHKNODEPS.Value = True Then 
-
       FRUN.ProgressBar1.Pulse = False    
       FRUN.ProgressBar1.Value = 1
       FRUN.BTNSTOP.Text = $OK
@@ -1127,7 +1131,6 @@ Private Sub UpdateConsole()
       FRUN.MONITORVIEW.Visible = False
       FRUN.Text = "DnfDrake,  " & $FATTO
    Endif
-
 'CHIUSURA FPROGRESSWAIT **************************************************************
       If sStr = $DNFDRAKEASK And FPROGRESSWAIT.Visible = True Then
          FPROGRESSWAIT.Close
@@ -1430,6 +1433,9 @@ Public Sub btninstall_Click()
                Endif  
         Endif
     Endif
+    'TEST OM-DNFDRAKE*****************
+     FRUNSHOW
+     '*********************************
 End
 
 Public Sub txtpkg_KeyPress()
@@ -1550,6 +1556,9 @@ Public Sub btnremove_Click()
   If $SECUREMODE <> "SECURE" Then
     Me.Mouse = Mouse.default
   Endif
+  'TEST OM-DNFDRAKE*****************
+  FRUNSHOW
+  '*********************************
 End
 
 Public Sub BTNPKGUPDATE_Click()
@@ -1661,7 +1670,10 @@ Public Sub BTNPKGUPDATE_Click()
                  Endif
              Endif
         Endif
-    Endif     
+    Endif 
+'TEST OM-DNFDRAKE*****************
+ FRUNSHOW
+'*********************************      
 End
 
 Public Sub txtCommand_KeyPress()
@@ -2598,6 +2610,9 @@ Private Sub DSTRSYNC()
     '   '$MEMOCOMMAND = "RECOVERSUSPEND"
     'Endif
   Endif 
+  'TEST OM-DNFDRAKE*****************
+  FRUNSHOW
+  '*********************************
 End
 
 Private Sub DSTUPDATE()
@@ -2626,6 +2641,9 @@ Private Sub DSTUPDATE()
       $MEMOCOMMAND = "RECOVERSUSPEND"
     Endif
   Endif 
+  'TEST OM-DNFDRAKE*****************
+  FRUNSHOW
+  '*********************************
 End
 
 Public Sub LOADICONS()
@@ -3426,6 +3444,9 @@ Public Sub Btndownload_Click()
                      Btnexp2_Click  
                   Endif
   Endif 
+  'TEST OM-DNFDRAKE*****************
+  ' FRUNSHOW
+  '*********************************
 End
 
 Public Sub BtnCFG_Click()
@@ -3648,7 +3669,10 @@ Public Sub BTNDOWNDGRADE_Click()
                    Endif
              Endif
         Endif
-   Endif   
+   Endif 
+  'TEST OM-DNFDRAKE*****************
+  FRUNSHOW
+  '********************************* 
 End
 
 Public Sub BTNCUSTOM_Click()
@@ -4147,7 +4171,10 @@ Public Sub BTNREINSTALL_Click()
                    Endif
              Endif
         Endif
-    Endif        
+    Endif
+     'TEST OM-DNFDRAKE*****************
+     FRUNSHOW
+     '*********************************          
 End
 
 Public Sub BTNVIEWLOG_Click()

@@ -90,7 +90,7 @@ GenericName[zh_CN]=安装 & 移除软件
 GenericName[zh_HK]=安裝與移除軟體
 GenericName[zh_TW]=安裝與移除軟體
 Icon=dnfdrake.svg
-Exec=pkexec dnfdrake.gambas
+Exec=pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY dnfdrake.gambas
 Comment=A graphical front end for installing, removing and updating packages
 Comment[af]=’n Grafiese program vir die installasie, verwydering en bywerking van pakkette
 Comment[ar]=واجهة رسومية لتثبيت الحزم وإزالتها وتحديثها

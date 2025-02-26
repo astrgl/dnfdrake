@@ -2,10 +2,11 @@
 Title=DnfDrake
 Startup=Fmain
 Icon=dnfdrake.svg
-Version=4.4.0
+Version=4.4.1
 Component=gb.image
 Component=gb.qt6
 Component=gb.form
+Component=gb.form.dialog
 Description="DnfDrake è un frontend a Dnf.\n\nTutto è iniziato partendo dalla base del programma di esempio Console per Gambas di Princeton"
 Authors="Autore: Mauro Carbini aka Astragalo\nMail: mauro.carbini@gmail.com"
 TabSize=2

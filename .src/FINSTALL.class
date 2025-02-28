@@ -60,7 +60,7 @@ Private Sub CHECKINSTALL()
    Dim CHK As Integer
    CHK = 0
 
-     t = Open User.Home & "/.config/dnfdrake/installati.txt"
+     t = Open "/tmp/dnfdrake/installati.txt"
      For Each s In t.Lines 
        If InStr(s, RTrim$(LTrim$($NAMEPGK)), 0, gb.IgnoreCase) Then
           'Message.Info("installato", "ok")

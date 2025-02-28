@@ -111,7 +111,7 @@
     Move(434,42,110,28)
   }
   { Btnclear Button
-    Move(1232,662,112,28)
+    Move(1232,665,112,28)
   }
   { BTNABOUT Button
     Move(1232,42,110,28)
@@ -282,7 +282,7 @@
     ToolTip = ("Replay Last Log or view package list")
   }
   { BTNADDPKGLIST Button
-    Move(576,630,28,28)
+    Move(574,630,28,28)
     Visible = False
   }
   { PICBTNDISTUPDATE PictureBox

@@ -68,29 +68,29 @@ Public Sub Form_Open()
  Endif
  
   If Right(Left($LOCK)) = "2" Then 
-  'CHKDNFDRAKETRAY.Value = True
      LBLDRAKETRAYSTATUS.Text = "Draketray is running"
   Else 
      LBLDRAKETRAYSTATUS.Text = "Draketray is not running"
   Endif
   
-
- If Exist("/usr/bin/draketray.gambas") Then
-    CHKDNFDRAKETRAY.Enabled = True
-    CHKDNFDRAKETRAYLAUNCH.Enabled = True
-    If Exist(User.Home &/ "/.config/draketray/config")
-       $CONFIGDRAKETRAY = Val(File.Load(User.Home &/ "/.config/draketray/config")) 
-       If $CONFIGDRAKETRAY = 1 Or If $CONFIGDRAKETRAY = 3 Then
-         CHKDNFDRAKETRAY.Value = True
-       Else 
-         CHKDNFDRAKETRAY.Value = False  
-       Endif
-    Endif  
-    If Exist(User.Home &/ ".config/autostart/draketray.desktop") Then
-       CHKDNFDRAKETRAYLAUNCH.Value = True
-    Endif
- Endif
-  
+ If Fmain.$ROOTMODE = 0 Then    
+   If Exist("/usr/bin/draketray.gambas") Then
+      CHKDNFDRAKETRAY.Enabled = True
+      CHKDNFDRAKETRAYLAUNCH.Enabled = True
+      If Exist(User.Home &/ "/.config/draketray/config")
+         $CONFIGDRAKETRAY = Val(File.Load(User.Home &/ "/.config/draketray/config")) 
+         If $CONFIGDRAKETRAY = 1 Or If $CONFIGDRAKETRAY = 3 Then
+           CHKDNFDRAKETRAY.Value = True
+         Else 
+           CHKDNFDRAKETRAY.Value = False  
+         Endif
+      Endif  
+      If Exist(User.Home &/ ".config/autostart/draketray.desktop") Then
+         CHKDNFDRAKETRAYLAUNCH.Value = True
+      Endif
+   Endif
+ Endif 
+ 
   flDSTSYNC = Open User.Home &/ ".config/dnfdrake/distrosync" For Read   ' ...oppure "Input"
    While Not Eof(flDSTSYNC)
     Input #flDSTSYNC, s$DSTSYNC
@@ -131,13 +131,14 @@ Public Sub Form_Open()
      CMBTHEMES.Index = 2   
   Endif
   
-  If Fmain.$EASYPASSWORD = 1 Then
-   CHKEASYPASSWORD.VALUE = True
- Endif
-End
-
-
-Public Sub Label1_MouseDown()
+  If Fmain.$ROOTMODE = 0 Then    
+    If Fmain.$EASYPASSWORD = 1 Then
+       CHKEASYPASSWORD.VALUE = True
+    Endif
+  Else 
+    CHKEASYPASSWORD.Enabled = False
+  Endif 
+  
 End
 
 Public Sub BTNCLOSE_Click()
@@ -327,63 +328,17 @@ If CHKEASYPASSWORD.Value = True Then
       Fmain.$MEMOPW = "NOPW"
       Shell ("rm -f " & User.Home &/ ".config/dnfdrake/easypassword") Wait 
     Endif    
+
   Me.Close
 End
 
-Public Sub CHKDUPLICATE_Click()
-End
-
-Public Sub TXTSEARCH_MouseDown()
-End
-
-
-Public Sub Label5_MouseDown()
-End
-
-Public Sub CHKDNFDRAKETRAYLAUNCH_Click()
-End
-
-' Public Sub Button1_Click()
-' 
-'   CHKDNFDRAKETRAY.Value = False
-'   CHKDNFDRAKETRAYLAUNCH.Value = False
-'   Shell ("rm -f " & User.Home &/ ".config/dnfdrake/locktray")
-'   Shell ("rm -f " & User.Home &/ ".config/autostart/dnfdraketray.gambas.desktop")
-' 
-' End
-
-Public Sub CHKOFFLINE_Click()
-End
-
-
-' Public Sub CHKBTNVERSIONLOCK_Click()
-' 
-'   
-' 
-' End
-
-Public Sub CHKBTNDISTROUPDATE_Click()
-End
 
 Public Sub BTNEXIT_Click()
   BTNEXIT.Enabled = False
   Me.Close
 End
-Public Sub CHKBTNVERBOSE_Click()
 
-End
 
-Public Sub CHKIGNORECASE_Click()
-
-End
-Public Sub CHKAUTOSUSPEND_Click()
-
-  
-
-End
-
-Public Sub CHKNODEPS_Click()
-End
 Public Sub CHKNODEPS_Menu()
   
   Message.Info(Fmain.$NODEPSINFO, "Ok")
@@ -395,4 +350,3 @@ Public Sub Form_Close()
   Fmain.Enabled = True
 
 End
-

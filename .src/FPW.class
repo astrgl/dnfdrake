@@ -30,7 +30,7 @@ Public Sub Form_Open()
    ss$BTN.Add(s$BTN)
   Wend
    Close #flBTN
-' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
+' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta In ciascun elemento della variabile - array ss$:
   For jBTN = 0 To ss$BTN.Max
       BTNANNULLA.Text = ss$BTN[14]
       Btnok.Text = ss$BTN[15]
@@ -74,7 +74,6 @@ If FRUN.Visible = True Then
    Else 
      Timer1.Enabled = True
  Endif
- 
   
 TXTPW.SetFocus
 $SECURE = 0

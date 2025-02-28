@@ -77,11 +77,6 @@
     BorderRadius = 10
     Text = ("DrakeTray Config")
   }
-  { Button1 Button
-    MoveScaled(3,73.4286,16,4)
-    Visible = False
-    Text = ("Reset")
-  }
   { CHKOFFLINE CheckBox
     MoveScaled(36,10,24,4)
     Text = ("Search Offline")
@@ -95,19 +90,9 @@
   { BTNEXIT Button
     MoveScaled(45,80.4286,16,4)
   }
-  { CHKBTNREINSTALL CheckBox
-    MoveScaled(23,36,24,4)
-    Visible = False
-    Text = ("Reinstall")
-  }
   { CHKBTNVERBOSE CheckBox
     MoveScaled(3,36,24,4)
     Text = ("Verbose Mode")
-  }
-  { CHKBTNDNFCLEAN CheckBox
-    MoveScaled(36,36,24,4)
-    Visible = False
-    Text = ("Dnf Clean Cache")
   }
   { CHKIGNORECASE CheckBox
     MoveScaled(4,18,24,4)

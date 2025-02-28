@@ -67,19 +67,19 @@ Dim b As Byte
        Wait 0.01
      Next
     TXTSTATO.Text = $LOADINST
-    Shell "dnf list installed >" & User.Home &/ ".config/dnfdrake/installati.txt" Wait
+    Shell "dnf list installed > /tmp/dnfdrake/installati.txt" Wait
      For b = 10 To 40
        ProgressBar1.Value = b / 100
        Wait 0.01
      Next
      TXTSTATO.Text = $LOADNONINST
-     Shell "dnf list available >" & User.Home &/ ".config/dnfdrake/noninstallati.txt" Wait
+     Shell "dnf list available > /tmp/dnfdrake/noninstallati.txt" Wait
      For b = 40 To 80
        ProgressBar1.Value = b / 100
        Wait 0.01
      Next
      TXTSTATO.Text = $LOADAGG
-     Shell "dnf list upgrades >" & User.Home &/ ".config/dnfdrake/updates.txt" Wait
+     Shell "dnf list upgrades > /tmp/dnfdrake/updates.txt " Wait
      For b = 80 To 100
        ProgressBar1.Value = b / 100
        Wait 0.01
@@ -104,8 +104,8 @@ Dim jUPD As Byte
 Dim s$UPD As String
 Dim ss$UPD As New String[]
 
- If Exist(User.Home &/ ".config/draketray/locktray") Then
-    flUPD = Open User.Home &/ ".config/draketray/locktray" For Read 
+ If Exist("/tmp/draketray/locktray") Then
+    flUPD = Open "/tmp/draketray/locktray" For Read 
     While Not Eof(flUPD)
       Input #flUPD, s$UPD
       ss$UPD.Add(s$UPD)
@@ -119,7 +119,7 @@ Dim ss$UPD As New String[]
    flUPD.Close
    
    If $UPDATEDIPS = 1 Then
-      File.Save(User.Home &/ "/.config/draketray/locktray", "0")
+      File.Save("/tmp/draketray/locktray", "0")
       Fmain.Cmbtipo.index = 3
       Fmain.btncerca_CLICK
    Endif
@@ -157,8 +157,4 @@ If FINSTALL.Visible = False Then
   Fmain.Enabled = True
 Endif
 Fmain.DRAKETRAYUPDATE
-'SERVE PER CHIEDERE LA PASSWORD ALL'AVVIO PER ORA NON USATO
-' If Fmain.$EASYPASSWORD = 1 And If Fmain.$MEMOPW = "NOPW" Then
-'   FPW.Show
-' Endif
 End

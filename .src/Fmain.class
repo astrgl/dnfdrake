@@ -5,14 +5,14 @@
 Public $hProcess As Process
 Public $sText As String
 Public $STATUS As Integer
-Public $MEMOCOMMAND As String
+Public $MEMOCOMMAND As String                 'VARIABILE COMANDI POSTUMI
 Public $MEMOEXEC As String
-Public $INSTALL As String
-Public $UNINSTALL As String
-Public $UPDATE As String
-Public $INSTALLNODEPS As String
-Public $UNINSTALLNODEPS As String
-Public $UPDATENODEPS As String
+Public $INSTALL As String                     'STRINGA CONANDI PER INSTALLAZIONE PACCHETTO
+Public $UNINSTALL As String                   'STRINGA CONANDI PER DISINSTALLAZIONE PACCHETTO
+Public $UPDATE As String                      'STRINGA CONANDI PER AGGIORNAMENTO SISTEMA
+Public $INSTALLNODEPS As String               'STRINGA CONANDI PER INSTALLAZIONE NODEPS PACCHETTO
+Public $UNINSTALLNODEPS As String             'STRINGA CONANDI PER DISINSTALLAZIONE NODEPS PACCHETTO
+Public $UPDATENODEPS As String                'STRINGA CONANDI PER DISINSTALLAZIONE NODEPS PACCHETTO
 Public $PKGUPDATE As String
 Public $DOWNGRADE As String
 Public $REINSTALL As String
@@ -55,6 +55,7 @@ Public $ABORT As Integer
 Public $AUTOSUSPEND As Integer
 Public $CLEARLOGSUSPEND As Integer 
 Public $PROGRESSBARFORCESUSPEND As Integer 
+Public $SUSPENDSTARTUP As Integer                 'REGISTRA SE LA SOSPENSIONE È ABILITATA ALL'AVVIO DEL PROGRAMMA
 Public $COUNTBTNCLOSE As Integer
 Public $CLOSEPASS As Integer
 Public $SI As String
@@ -87,8 +88,9 @@ Public $MSGUPDATESASK As String
 Public $MSGTRAYREMOVE As String
 Public $OK As String
 Public $NODEPSINFO As String
-Public $EASYPASSWORD As Integer      'FUNZIONE CHE CONSENTE DI INSERIRE LA PASSWORD SOLO UNA VOLTA CON VALORE 1 È ATTIVA 
+Public $EASYPASSWORD As Integer      'USERMODE CONSENTE DI INSERIRE LA PASSWORD SOLO UNA VOLTA - CON VALORE 1 È ATTIVA 
 Public $MEMOPW As String             'VARIABILE DOVE VIENE MEMORIZZATA LA PASSWORD PER TUTTA LA SESSIONE
+Public $ROOTMODE As Integer          'VARIABILE CHE MEMORIZZA SE IL PROGRAMMA È AVVIATO COME ROOT
 
 Public Sub Form_Open()
 'COMANDI
@@ -158,6 +160,9 @@ Public Sub Form_Open()
    Endif
    If Not Exist(User.Home &/ ".config/dnfdrake/tmp") Then
       Mkdir User.Home &/ "/.config/dnfdrake/tmp"
+   Endif
+   If Not Exist("/tmp/dnfdrake/") Then
+      Mkdir "/tmp/dnfdrake/"
    Endif
  '***********************************************************************************************
   
@@ -684,10 +689,10 @@ Else
 'Controlla se sono presenti pacchetti esclusi dagli aggiornamenti*********************************
   EXCLUDETEST
     
-'Crea le liste*************************************************************************************
-    If $OFFLINE = 1 Then
-       TimerUPLISTE.Enabled = True
-    Endif 
+'Crea le liste**** SPOSTATO***********************************************************************
+    ' If $OFFLINE = 1 Then
+    '    TimerUPLISTE.Enabled = True
+    ' Endif 
 
 ' ABILITAZIONE / DISABILITAZIONE NODO VERBOSE
 $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
@@ -745,7 +750,7 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
     $EASYPASSWORD = 0
   Endif  
   
-  'VERIFICA SE DNFDRAKE È LANCIATO DAL FLATDRAKE E ADATTA LA RICERCA******* IN TEST**************
+  'VERIFICA SE DNFDRAKE È LANCIATO DAL FLATDRAKE E ADATTA LA RICERCA** IN TEST MODIFICARE PATH PER VERSIONE ROOT****
    If Exist(User.Home &/ ".config/flatdrake/flatsearchtmp") Then
       TimerUPLISTE.Enabled = False
       Shell "cat " & User.Home &/ ".config/flatdrake/flatsearchtmp" To $FLATDRAKESEARCH
@@ -764,13 +769,49 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
 $INSTALLNODEPS = "sudo rpm -ivh --nodeps "
 $UNINSTALLNODEPS = "sudo rpm -evh --nodeps "
 $UPDATENODEPS = "sudo rpm -Uvh --nodeps "
-'AVVIO PROGRAMMA CON RISOLUZIONE STAMDARD
+
+'AVVIO PROGRAMMA CON RISOLUZIONE STAMDARD***************************************
 BTNFULLSCREEN_Click
 
-'TEST OM-DNFDRAKE***************************************
-$FRUNMAIN = 1
-$FRUNPW = 1
+'TEST OM-DNFDRAKE***************************************************************
+If PICSUSPENDLOCK.Visible = True Then
+   $SUSPENDSTARTUP = 1
+Else   
+   $SUSPENDSTARTUP = 0
+Endif
+If User.Home = "/root" Then
+  $ROOTMODE = 1
+  $FRUNMAIN = 1
+  $FRUNPW = 1
+Else 
+  $ROOTMODE = 0 
+  Dim iAnswer As Integer = Message.Question("DnfDrake è avviato in modalià utente, procedere!", $SI, $NO)
+       If (iAnswer = 1) Then
+       Else           
+         Stop Event
+         EXITROUTIN
+        Endif 
+  'Message.Info("DnfDrake è avviato in modalià utente! ", "Ok")
+Endif
+'COPIA E PULISCE  LE LISTE PRECARICATE DA DRAKETRAY*****************************
+If Exist("/tmp/draketray/installati.txt") Then
+   Copy "/tmp/draketray/installati.txt" To "/tmp/dnfdrake/installati.txt"
+   Kill "/tmp/draketray/installati.txt" 
+Endif
+If Exist("/tmp/draketray/noninstallati.txt") Then
+   Copy "/tmp/draketray/noninstallati.txt" To "/tmp/dnfdrake/noninstallati.txt"
+   Kill "/tmp/draketray/noninstallati.txt"
+Endif
+If Exist("/tmp/draketray/updates.txt") Then
+   Copy "/tmp/draketray/updates.txt" To "/tmp/dnfdrake/updates.txt"
+   Kill "/tmp/draketray/updates.txt"
+Endif
 '*******************************************************
+'Crea le liste**** SPOSTATO***********************************************************************
+    If $OFFLINE = 1 Then
+       TimerUPLISTE.Enabled = True
+    Endif 
+
 End
 
 Public Sub EXCLUDETEST()
@@ -907,7 +948,11 @@ Public Sub Process_Read()
        If $MEMOCOMMAND = "CLEARSUSPEND" Then
           VERIFYSUSPEND
           Btnclear_Click
-          If $EASYPASSWORD = 1 And If $MEMOPW <> "NOPW" Then
+      'TEST OM-DNFDRAKE***************************************************
+'          If $EASYPASSWORD = 1 And If $MEMOPW <> "NOPW" Then
+          'If $EASYPASSWORD = 1 And If $MEMOPW = "NOPW" Then 
+          If ($EASYPASSWORD = 1 And $MEMOPW <> "NOPW") Or If ($ROOTMODE = 1 And $SUSPENDSTARTUP = 0) Then
+      '*******************************************************************     
              $MEMOCOMMAND = "QUITRESTORESUSPEND"
           Endif   
        Endif
@@ -918,6 +963,10 @@ Public Sub Process_Read()
         Endif
         If $MEMOCOMMAND = "QUITRESTORESUSPEND" And If $CLOSEPASS = 0 Then
            $MEMOCOMMAND = ""
+           
+ 'TEST************************************          
+           'Btnclose_Click
+ '****************************************          
         Endif
             
  'MEMOCOMMAND MOUSEDEFAULT*************************************************
@@ -1245,7 +1294,7 @@ Private Sub EXITROUTIN()
         Shell "ps aux | grep gbr3 | grep -w draketray.gambas" Wait To $PID
         $PID = Right(Left($PID, 16), 8)
         Shell "kill " & $PID
-        Shell ("rm -f " & User.Home &/ ".config/draketray/locktray") Wait 
+        Shell ("rm -f /tmp/draketray/locktray") Wait 
       Endif  
 'PULIZIA DEI LOG***********************************************************
       If $CLEARLOG = 0 Then
@@ -1277,7 +1326,10 @@ Public Sub Btnclose_Click()
   $CLOSEPASS = 1
   Btnclose.Enabled = False
   If PICSUSPENDLOCK.Visible = True And If $COUNTBTNCLOSE = 0 Then
-    If $EASYPASSWORD = 1 And If $MEMOPW <> "NOPW" Then
+    'TEST OM-DNFDRAKE***************************************************************   
+    If ($EASYPASSWORD = 1 And $MEMOPW <> "NOPW") Or If ($ROOTMODE = 1 And $SUSPENDSTARTUP = 0) Then
+    'If $EASYPASSWORD = 1 And If $MEMOPW = "NOPW" Or If $SUSPENDSTARTUP = 0Then
+    '*******************************************************************************  
        Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
     Else       
       FRESETSUSPEND.Show
@@ -2080,6 +2132,7 @@ Public Sub NODEPSTMPCLEAR()
 End
 
 Public Sub VERIFYSUSPEND()
+
   If Exist("/etc/systemd/system/sleep.target") And If Exist("/etc/systemd/system/suspend.target") And If Exist("/etc/systemd/system/hibernate.target") And If Exist("/etc/systemd/system/hybrid-sleep.target") Then
    ' BTNSUSPEND.Text = "    Suspend Off"
     BTNSUSPEND.Tooltip = $SUSPENDOFFTTP
@@ -2226,7 +2279,7 @@ Private Sub CERCAUPDATE()
      ListpkgUPGRADE.Enabled = True
      BTNTABUPDATE.SetFocus
      BTNTABUPDATE_Click
-     t = Open User.Home & "/.config/dnfdrake/updates.txt"
+     t = Open "/tmp/dnfdrake/updates.txt"
      For Each s In t.Lines
         If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
             p = p + ListpkgUPGRADE.Count
@@ -2308,7 +2361,7 @@ Private Sub CERCAAVAILABLE()
       ListpkgAVAILABLE.Enabled = True
      BTNTABAVIABLE.SetFocus
      BTNTABAVIABLE_Click
-     t = Open User.Home & "/.config/dnfdrake/noninstallati.txt"
+     t = Open "/tmp/dnfdrake/noninstallati.txt"
      For Each s In t.Lines
         If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
             p = p + ListpkgAVAILABLE.Count
@@ -2359,7 +2412,7 @@ Private Sub CERCAINSTALLED()
      ListpkgINSTALLATI.Enabled = True
      BTNTABINSTALLED.SetFocus
      BTNTABINSTALLED_Click
-     t = Open User.Home & "/.config/dnfdrake/installati.txt"
+     t = Open "/tmp/dnfdrake/installati.txt"
      For Each s In t.Lines 
             If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
                p = p + ListpkgINSTALLATI.Count
@@ -2710,7 +2763,7 @@ Public Sub DRAKETRAYUPDATE()
          If Not Exist(User.Home &/ ".config/autostart") Then
             Shell ("mkdir " & User.Home &/ ".config/autostart")
          Endif
-         If Not Exist(User.Home &/ "/.config/draketray/locktray") Then
+         If Not Exist("/tmp/draketray/locktray ") Then
             Shell ("/usr/bin/draketray.gambas") 
             Sleep 1.1
             $KILL = 2
@@ -2740,7 +2793,7 @@ If Exist("/usr/bin/dnfdraketray.gambas") And If Exist("/usr/bin/draketray.gambas
    Shell "ps aux | grep gbr3 | grep -w dnfdraketray.gambas" Wait To $PID
    $PID = Right(Left($PID, 16), 8)
    Shell "kill " & $PID
-   Shell ("rm -f " & User.Home &/ ".config/dnfdrake/locktray") Wait 
+   Shell ("rm -f /tmp/dnfdrake/locktray") Wait 
    Shell ("rmdir " & User.Home &/ ".config/dnfdraketray/") Wait 
    txtpkg.Text = "dnfdraketray"
    btnremove_Click
@@ -4510,13 +4563,6 @@ Public Sub BTNRESIZE_Click()
   Endif
 End
 
-' 
-' Public Sub CHKSUSPEND_Click()
-' 
-' #$hProcess, "sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target"
-'   
-' 
-' End
 Public Sub TXTINFOBOX_KeyPress()
 End
 

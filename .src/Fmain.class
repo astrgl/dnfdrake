@@ -787,7 +787,7 @@ If User.Home = "/root" Then
   
 Else 
   $ROOTMODE = 0 
-  Dim iAnswer As Integer = Message.Question("DnfDrake è avviato in modalià utente, procedere!", $SI, $NO)
+  Dim iAnswer As Integer = Message.Question("DnfDrake was started in user mode. To work correctly it should be started as superuser. Continue anyway?", $SI, $NO)
        If (iAnswer = 1) Then
        Else           
          Stop Event
@@ -2761,7 +2761,7 @@ End
 
 
 Public Sub DRAKETRAYUPDATE()
-  ' VERIFICA SE È ABILITATA LA NOTIFICA AGGIORNAMENTI CON DRAKETRAY
+  ' VERIFICA SE È ABILITATA LA NOTIFICA AGGIORNAMENTI CON DRAKETRAY***ESCLUSA IN ROOTMODE*****
     If Not Exist(User.Home &/ ".config/autostart/draketray.desktop") And If Not Exist(User.Home &/ ".config/dnfdrake/noautostart") Then
        Dim iAnswer As Integer = Message.Question($MSGUPDATESASK, $SI, $NO)
        If (iAnswer = 1) Then

@@ -157,6 +157,8 @@ If FINSTALL.Visible = False Then
   Fmain.Enabled = True
 Endif
 'TEMPORANEAMENTE DISATTIVATO PER IL PASSAGGIO A ROOTMODE*****************************
-Fmain.DRAKETRAYUPDATE
+If FMAIN.$ROOTMODE = 0 Then
+   Fmain.DRAKETRAYUPDATE  
+Endif
 '************************************************************************************
 End

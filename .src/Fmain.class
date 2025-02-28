@@ -91,6 +91,7 @@ Public $NODEPSINFO As String
 Public $EASYPASSWORD As Integer      'USERMODE CONSENTE DI INSERIRE LA PASSWORD SOLO UNA VOLTA - CON VALORE 1 È ATTIVA 
 Public $MEMOPW As String             'VARIABILE DOVE VIENE MEMORIZZATA LA PASSWORD PER TUTTA LA SESSIONE
 Public $ROOTMODE As Integer          'VARIABILE CHE MEMORIZZA SE IL PROGRAMMA È AVVIATO COME ROOT
+Public $USERHOME As String           
 
 Public Sub Form_Open()
 'COMANDI
@@ -783,6 +784,7 @@ If User.Home = "/root" Then
   $ROOTMODE = 1
   $FRUNMAIN = 1
   $FRUNPW = 1
+  
 Else 
   $ROOTMODE = 0 
   Dim iAnswer As Integer = Message.Question("DnfDrake è avviato in modalià utente, procedere!", $SI, $NO)
@@ -795,14 +797,17 @@ Else
 Endif
 'COPIA E PULISCE  LE LISTE PRECARICATE DA DRAKETRAY*****************************
 If Exist("/tmp/draketray/installati.txt") Then
+   Kill "/tmp/dnfdrake/installati.txt"
    Copy "/tmp/draketray/installati.txt" To "/tmp/dnfdrake/installati.txt"
    Kill "/tmp/draketray/installati.txt" 
 Endif
 If Exist("/tmp/draketray/noninstallati.txt") Then
+   Kill "/tmp/dnfdrake/noninstallati.txt"
    Copy "/tmp/draketray/noninstallati.txt" To "/tmp/dnfdrake/noninstallati.txt"
    Kill "/tmp/draketray/noninstallati.txt"
 Endif
 If Exist("/tmp/draketray/updates.txt") Then
+   Kill "/tmp/dnfdrake/updates.txt"
    Copy "/tmp/draketray/updates.txt" To "/tmp/dnfdrake/updates.txt"
    Kill "/tmp/draketray/updates.txt"
 Endif

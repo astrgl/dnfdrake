@@ -156,5 +156,7 @@ Fmain.EXCLUDETEST
 If FINSTALL.Visible = False Then
   Fmain.Enabled = True
 Endif
+'TEMPORANEAMENTE DISATTIVATO PER IL PASSAGGIO A ROOTMODE*****************************
 Fmain.DRAKETRAYUPDATE
+'************************************************************************************
 End

@@ -175,6 +175,7 @@ Public Sub BTNCLOSE_Click()
         Endif
     Endif    
 
+If Fmain.$ROOTMODE = 0 Then
    ' If CHKDNFDRAKETRAY.VALUE = True And If LBLDRAKETRAYSTATUS.Text = "Draketray is not running" Then
    If CHKDNFDRAKETRAY.VALUE = True Then
      
@@ -231,7 +232,8 @@ Public Sub BTNCLOSE_Click()
    If CHKDNFDRAKETRAYLAUNCH.VALUE = False And If Exist(User.Home &/ ".config/autostart/draketray.desktop") Then
      Shell ("rm -f " & User.Home &/ ".config/autostart/draketray.desktop")
    Endif
-    
+Endif   
+  
    If CHKOFFLINE.Value = True Then
       Fmain.$OFFLINE = 1
       Fmain.PCTCONNECT.Visible = False
@@ -319,15 +321,16 @@ Endif
       FMAIN.LOADLOGO
    Endif
 '********************************************************************************************
-If CHKEASYPASSWORD.Value = True Then
-      Fmain.$EASYPASSWORD = 1
-      Shell "> " & User.Home &/ ".config/dnfdrake/easypassword" Wait
-      
-    Else 
-      Fmain.$EASYPASSWORD = 0
-      Fmain.$MEMOPW = "NOPW"
-      Shell ("rm -f " & User.Home &/ ".config/dnfdrake/easypassword") Wait 
-    Endif    
+If Fmain.$ROOTMODE = 0 Then
+  If CHKEASYPASSWORD.Value = True Then
+        Fmain.$EASYPASSWORD = 1
+        Shell "> " & User.Home &/ ".config/dnfdrake/easypassword" Wait
+  Else 
+        Fmain.$EASYPASSWORD = 0
+        Fmain.$MEMOPW = "NOPW"
+        Shell ("rm -f " & User.Home &/ ".config/dnfdrake/easypassword") Wait 
+  Endif    
+Endif
 
   Me.Close
 End

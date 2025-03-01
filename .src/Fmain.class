@@ -784,7 +784,6 @@ If User.Home = "/root" Then
   $ROOTMODE = 1
   $FRUNMAIN = 1
   $FRUNPW = 1
-  
 Else 
   $ROOTMODE = 0 
   Dim iAnswer As Integer = Message.Question("DnfDrake was started in user mode. To work correctly it should be started as superuser. Continue anyway?", $SI, $NO)
@@ -804,14 +803,14 @@ If Exist("/tmp/draketray/installati.txt") Then
    Kill "/tmp/draketray/installati.txt" 
 Endif
 If Exist("/tmp/draketray/noninstallati.txt") Then
-   If Exist("/tmp/dnfdrake/installati.txt") Then
+   If Exist("/tmp/dnfdrake/noninstallati.txt") Then
       Kill "/tmp/dnfdrake/noninstallati.txt"
    Endif
    Copy "/tmp/draketray/noninstallati.txt" To "/tmp/dnfdrake/noninstallati.txt"
    Kill "/tmp/draketray/noninstallati.txt"
 Endif
 If Exist("/tmp/draketray/updates.txt") Then
-   If Exist("/tmp/dnfdrake/installati.txt") Then
+   If Exist("/tmp/dnfdrake/updates.txt") Then
       Kill "/tmp/dnfdrake/updates.txt"
    Endif
    Copy "/tmp/draketray/updates.txt" To "/tmp/dnfdrake/updates.txt"

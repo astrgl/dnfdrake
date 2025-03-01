@@ -797,17 +797,23 @@ Else
 Endif
 'COPIA E PULISCE  LE LISTE PRECARICATE DA DRAKETRAY*****************************
 If Exist("/tmp/draketray/installati.txt") Then
-   Kill "/tmp/dnfdrake/installati.txt"
+   If Exist("/tmp/dnfdrake/installati.txt") Then
+      Kill "/tmp/dnfdrake/installati.txt"     
+   Endif
    Copy "/tmp/draketray/installati.txt" To "/tmp/dnfdrake/installati.txt"
    Kill "/tmp/draketray/installati.txt" 
 Endif
 If Exist("/tmp/draketray/noninstallati.txt") Then
-   Kill "/tmp/dnfdrake/noninstallati.txt"
+   If Exist("/tmp/dnfdrake/installati.txt") Then
+      Kill "/tmp/dnfdrake/noninstallati.txt"
+   Endif
    Copy "/tmp/draketray/noninstallati.txt" To "/tmp/dnfdrake/noninstallati.txt"
    Kill "/tmp/draketray/noninstallati.txt"
 Endif
 If Exist("/tmp/draketray/updates.txt") Then
-   Kill "/tmp/dnfdrake/updates.txt"
+   If Exist("/tmp/dnfdrake/installati.txt") Then
+      Kill "/tmp/dnfdrake/updates.txt"
+   Endif
    Copy "/tmp/draketray/updates.txt" To "/tmp/dnfdrake/updates.txt"
    Kill "/tmp/draketray/updates.txt"
 Endif

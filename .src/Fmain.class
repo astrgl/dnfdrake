@@ -164,6 +164,7 @@ Public Sub Form_Open()
    Endif
    If Not Exist("/tmp/dnfdrake/") Then
       Mkdir "/tmp/dnfdrake/"
+      Wait 0.2
    Endif
  '***********************************************************************************************
   

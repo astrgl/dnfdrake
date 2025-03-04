@@ -681,20 +681,13 @@ Else
 'PULISCE LE LISTE PROVVISORIE DI INSTALLAZIONE/RIMOZIONE
   TMPLISTCLEAN
 'Carica il pront**********************************************************************************
-
  Print #$hProcess, "PS1=" & Chr$(34) & $DNFDRAKEASK & Chr$(34) & gb.NewLine;
  
 'Scrive il path in $RPMPATH se dnfdrake avviato con doppio click su rpm***************************
-
  $RPMPATH = Replace$(Application.Args[1], " ", Chr$(92) & " ")
  
 'Controlla se sono presenti pacchetti esclusi dagli aggiornamenti*********************************
   EXCLUDETEST
-    
-'Crea le liste**** SPOSTATO***********************************************************************
-    ' If $OFFLINE = 1 Then
-    '    TimerUPLISTE.Enabled = True
-    ' Endif 
 
 ' ABILITAZIONE / DISABILITAZIONE NODO VERBOSE
 $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
@@ -705,6 +698,7 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
   Else 
     BTNVIEWLOG.Visible = False
   Endif
+  
 'FUNZIONE DA MODIFICARE PER RENDERE IGNORECASE ATTIVO DI DEFAULT**************************  
   'VERIFICA SE IMPOSTATO IGNORE CASE E GESTISCE ATTIVAZIONE DI DEFAULT DELLA FUNZIONE  ***
   If Exist(User.Home &/ ".config/dnfdrake/ignorecase") Then
@@ -723,6 +717,7 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
      $CASE = 0 
      'Message.Info("no 1", "ok")
   Endif  
+  
   'MOSTRA IL PULSANTE OM-PICKER IN OMA*******************
     Shell "lsb_release -d" To $DISTRO
     If InStr($DISTRO, "OpenMandriva", 0, gb.IgnoreCase) Then
@@ -730,8 +725,10 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
       Else 
       BTNPICKER.Visible = False
     Endif
+    
   'CARICA L'IMMAGINE DI PICLOGODISTRO
   LOADLOGO
+  
   'VERIFICA SE IL SUSPEND È ABILITATO E ALTRE FUNZIONI*********
   VERIFYSUSPEND
   $WAITSUSPEND = 0
@@ -739,6 +736,7 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
   $CLEARLOGSUSPEND = 1 
   $PROGRESSBARFORCESUSPEND = 0 
   $COUNTBTNCLOSE = 0
+  
   'ABILITA AUTOSUSPEND****************************************
   If Exist(User.Home &/ ".config/dnfdrake/autosuspend") Then
     $AUTOSUSPEND = 1
@@ -767,6 +765,7 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
       '     Stop Event
       '  Endif 
    Endif
+   
 'COMANDI CON OPZIONE NODEPS**********************************************************************
 $INSTALLNODEPS = "sudo rpm -ivh --nodeps "
 $UNINSTALLNODEPS = "sudo rpm -evh --nodeps "
@@ -793,28 +792,19 @@ Else
          Stop Event
          EXITROUTIN
         Endif 
-  'Message.Info("DnfDrake è avviato in modalià utente! ", "Ok")
 Endif
+
 'COPIA E PULISCE  LE LISTE PRECARICATE DA DRAKETRAY*****************************
 If Exist("/tmp/draketray/installati.txt") Then
-   If Exist("/tmp/dnfdrake/installati.txt") Then
-      Kill "/tmp/dnfdrake/installati.txt"     
-   Endif
-   Copy "/tmp/draketray/installati.txt" To "/tmp/dnfdrake/installati.txt"
+   Shell ("cp -f /tmp/draketray/installati.txt " & User.Home & "/.config/dnfdrake")
    Kill "/tmp/draketray/installati.txt" 
 Endif
 If Exist("/tmp/draketray/noninstallati.txt") Then
-   If Exist("/tmp/dnfdrake/noninstallati.txt") Then
-      Kill "/tmp/dnfdrake/noninstallati.txt"
-   Endif
-   Copy "/tmp/draketray/noninstallati.txt" To "/tmp/dnfdrake/noninstallati.txt"
+   Shell ("cp -f /tmp/draketray/noninstallati.txt " & User.Home & "/.config/dnfdrake")
    Kill "/tmp/draketray/noninstallati.txt"
 Endif
 If Exist("/tmp/draketray/updates.txt") Then
-   If Exist("/tmp/dnfdrake/updates.txt") Then
-      Kill "/tmp/dnfdrake/updates.txt"
-   Endif
-   Copy "/tmp/draketray/updates.txt" To "/tmp/dnfdrake/updates.txt"
+   Shell ("cp -f /tmp/draketray/updates.txt " & User.Home & "/.config/dnfdrake")
    Kill "/tmp/draketray/updates.txt"
 Endif
 '*******************************************************
@@ -2290,7 +2280,7 @@ Private Sub CERCAUPDATE()
      ListpkgUPGRADE.Enabled = True
      BTNTABUPDATE.SetFocus
      BTNTABUPDATE_Click
-     t = Open "/tmp/dnfdrake/updates.txt"
+     t = Open User.Home & "/.config/dnfdrake/updates.txt"
      For Each s In t.Lines
         If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
             p = p + ListpkgUPGRADE.Count
@@ -2372,7 +2362,7 @@ Private Sub CERCAAVAILABLE()
       ListpkgAVAILABLE.Enabled = True
      BTNTABAVIABLE.SetFocus
      BTNTABAVIABLE_Click
-     t = Open "/tmp/dnfdrake/noninstallati.txt"
+     t = Open User.Home & "/.config/dnfdrake/noninstallati.txt"
      For Each s In t.Lines
         If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
             p = p + ListpkgAVAILABLE.Count
@@ -2423,7 +2413,7 @@ Private Sub CERCAINSTALLED()
      ListpkgINSTALLATI.Enabled = True
      BTNTABINSTALLED.SetFocus
      BTNTABINSTALLED_Click
-     t = Open "/tmp/dnfdrake/installati.txt"
+     t = Open User.Home & "/.config/dnfdrake/installati.txt"
      For Each s In t.Lines 
             If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
                p = p + ListpkgINSTALLATI.Count

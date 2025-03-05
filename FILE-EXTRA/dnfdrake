@@ -1,0 +1,19 @@
+#!/bin/sh
+#  Name:  dnfdrake
+#
+# Copyright (C) 2025 Mauro Carbini
+#
+# This file is part of DnfDrake.
+#
+#  DnfDrake is a frontend for DNF package manager
+#  Powerful like a terminal and simple like a GUI!
+#
+#  DnfDrake is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with DnfDrake.  If not, see <http://www.gnu.org/licenses/>.
+
+pkexec /usr/bin/dnfdrake.gambas

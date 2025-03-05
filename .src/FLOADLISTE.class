@@ -41,9 +41,12 @@ If Fmain.$RPMPATH = "" Then
       Fmain.Btnclear_click
       Fmain.Btncleartxtpkg_click
       Fmain.txtpkg.Text = Fmain.$RPMPATH
-      FINSTALL.Show
-      'Fmain.$RPMPATH = ""      ELIMINATA PER GESTIONE CON FINSTALL
-      Me.Close 
+      If Exist(User.Home & "/.config/dnfdrake/installati.txt") And If Exist(User.Home & "/.config/dnfdrake/noninstallati.txt") And If Exist(User.Home & "/.config/dnfdrake/updates.txt") Then
+        FINSTALL.Show
+        Me.Close 
+      Else 
+      Timer1.Enabled = True  
+      Endif      
 Endif
 If Not Exist(User.Home & "/.config/dnfdrake/installati.txt") Or If Not Exist(User.Home & "/.config/dnfdrake/noninstallati.txt") Or If Not Exist(User.Home & "/.config/dnfdrake/updates.txt") Then
   BTNSKIP.Enabled = False
@@ -158,6 +161,11 @@ Fmain.TMPLISTCLEAN
 Fmain.EXCLUDETEST
 If FINSTALL.Visible = False Then
   Fmain.Enabled = True
+Endif
+If Fmain.$RPMPATH = "" Then
+Else 
+  Fmain.txtpkg.Text = Fmain.$RPMPATH  
+  Fmain.$RPMPATH = ""
 Endif
 'TEMPORANEAMENTE DISATTIVATO PER IL PASSAGGIO A ROOTMODE*****************************
 If FMAIN.$ROOTMODE = 0 Then

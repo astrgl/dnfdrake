@@ -54,12 +54,10 @@ Private Sub CLEARNAME()
 End
 
 Private Sub CHECKINSTALL()
-  
    Dim s As String
    Dim t As Stream
    Dim CHK As Integer
    CHK = 0
-
      t = Open User.Home & "/.config/dnfdrake/installati.txt"
      For Each s In t.Lines 
        If InStr(s, RTrim$(LTrim$($NAMEPGK)), 0, gb.IgnoreCase) Then

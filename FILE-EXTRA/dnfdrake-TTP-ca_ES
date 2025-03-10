@@ -44,7 +44,7 @@ Paquets_instal·lats
 Paquets_no_instal·lats
 Paquets_actualitzables
 Activa_la_cerca_a_les_llistes_locals_(Recomanat)
-Si_s'habilita,_el_DrakeTray_està_actiu.
+Enable_update_search_with_DrakeTray
 Aquesta_funció_només_s'aplica_en_línia._El_mode_en_línia_està_activat!
 No_s'ha_trobat_cap_paquet!
 [El_Dnfdrake_treballa_per_a_vós]_

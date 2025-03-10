@@ -1,13 +1,15 @@
 ' Gambas class file
 
 Public Sub Form_Open()
+        Dim $userdefault As String
+        Dim i As Integer
+        
         If Fmain.$SECUREMODE = "SECURE" Then
            Fmain.Enabled = False   
         Endif
         TXTINSTALLCMD.Text = Fmain.$INSTALL
         TXTUNINSTALLCMD.Text = Fmain.$UNINSTALL
         TXTUPDATECMD.Text = Fmain.$UPDATE
-        'TXTUPDATECMD.Text = Fmain.$UPDATE
         TXTUPDATEPKGCMD.Text = Fmain.$PKGUPDATE
         TXTDOWNGRADECMD.Text = Fmain.$DOWNGRADE
         TXTREINSTALLCMD.Text = Fmain.$REINSTALL
@@ -36,7 +38,33 @@ Public Sub Form_Open()
         Else  
            TXTUPDATECMD.Enabled = True
         Endif
-        
+    '********************************************************************************
+        If Fmain.$ROOTMODE = 1 Then
+           USERDEFAULTCHECK  
+           If Exist(User.Home &/ ".config/dnfdrake/userdefault") Then
+             $userdefault = File.Load(User.Home &/ ".config/dnfdrake/userdefault")
+             $userdefault = RTrim(Replace($userdefault, "\n", " "))
+             i = 0
+              While CMBUSERDEFAULT.Text <> $userdefault
+                CMBUSERDEFAULT.Index = i
+                 i = i + 1
+              Wend
+           Else 
+              If CMBUSERDEFAULT.Count = 1 Then
+                 CMBUSERDEFAULT.Index = 0
+                 CMBUSERDEFAULT_Click
+                 CMBUSERDEFAULT.Enabled = False
+              Else 
+                 CMBUSERDEFAULT.Index = 0
+                 CMBUSERDEFAULT_Click  
+              Endif   
+           Endif
+        Else 
+          LBLUSER.Text = "Function Disable in UserMode"
+          CMBUSERDEFAULT.Enabled = False  
+          CMBUSERDEFAULT.Visible = False 
+        Endif
+    '********************************************************************************    
         If Fmain.$LOG = "LOG" Then
           CHKLOG.Value = True
           Else 
@@ -106,6 +134,8 @@ Public Sub BTNOK_Click()
      Fmain.$CLEARLOG = 0
    Endif
   fl.Close
+  
+  File.save(User.Home & "/.config/dnfdrake/userdefault", CMBUSERDEFAULT.Text)
 
   Message.Info("Restart DnfDrake for the changes to be applied", "OK")
   Me.Close
@@ -158,5 +188,23 @@ Public Sub CHKCLEARLOG_Click()
   Else   
     CMBDAYSLOG.Enabled = True
   Endif
+
+End
+Public Sub USERDEFAULTCHECK()
+  Dim s As String    'STRINGA UTENTI
+  Dim u As String[]  'ARRAY UTENTI
+  Dim i As Byte      'CONTATORE
+  Shell ("cat /etc/passwd | grep /home | cut -d: -f1") To S
+   s = Replace(s, "\n", " ")
+   u = Split(s, " ", "", True)
+  For i = 0 To u.Max
+    CMBUSERDEFAULT.Add(u[i])
+  Next
+  'CMBUSERDEFAULT.Index = 0
+End
+
+Public Sub CMBUSERDEFAULT_Click()
+
+  LBLUSER.Text = "Default user of system:                                     User home dir: " & "/home/" & CMBUSERDEFAULT.Text
 
 End

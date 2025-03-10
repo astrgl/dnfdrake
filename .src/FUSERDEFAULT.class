@@ -1,0 +1,28 @@
+' Gambas class file
+
+
+Public Sub Form_Open()
+  Dim i As Integer
+  Fmain.Enabled = False
+  LBLMESSAGE.Text = "Quale utente usi di solito?"
+  For i = 0 To Fmain.$USEARRAY.Max
+     CMBUSERDEFAULT.Add(Fmain.$USEARRAY[i])
+  Next
+      CMBUSERDEFAULT.Index = 0
+End
+
+Public Sub BTNOK_Click()
+
+  BTNOK.Enabled = False
+  File.save(User.Home & "/.config/dnfdrake/userdefault", CMBUSERDEFAULT.Text)
+  Fmain.$USERDEFAULT = CMBUSERDEFAULT.Text
+  Fmain.$pathdir = "/home/" & CMBUSERDEFAULT.Text & "/"
+  Me.Close
+
+End
+Public Sub Form_Close()
+  Fmain.Enabled = True
+  Fmain.TimerUPLISTE.Delay = 1000
+  Fmain.TimerUPLISTE.Enabled = True
+  
+End

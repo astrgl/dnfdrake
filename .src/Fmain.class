@@ -91,7 +91,8 @@ Public $NODEPSINFO As String
 Public $EASYPASSWORD As Integer      'USERMODE CONSENTE DI INSERIRE LA PASSWORD SOLO UNA VOLTA - CON VALORE 1 È ATTIVA 
 Public $MEMOPW As String             'VARIABILE DOVE VIENE MEMORIZZATA LA PASSWORD PER TUTTA LA SESSIONE
 Public $ROOTMODE As Integer          'VARIABILE CHE MEMORIZZA SE IL PROGRAMMA È AVVIATO COME ROOT
-Public $USERHOME As String           
+Public $USEARRAY As String[]         'ARRAY CONTENETE GLI UTENTI DEL SISTEMA
+Public $USERDEFAULT As String        'UTENTE DI SISTEMA DI DEFAULT    
 
 Public Sub Form_Open()
 'COMANDI
@@ -156,11 +157,11 @@ Public Sub Form_Open()
    If Not Exist(User.Home &/ ".config/dnfdrake/") Then
       Mkdir User.Home &/ "/.config/dnfdrake/"
    Endif
-   If Not Exist(User.Home &/ ".config/dnfdrake/log") Then
-      Mkdir User.Home &/ "/.config/dnfdrake/log"
-   Endif
    If Not Exist(User.Home &/ ".config/dnfdrake/tmp") Then
       Mkdir User.Home &/ "/.config/dnfdrake/tmp"
+   Endif
+   If Not Exist(User.Home &/ ".config/dnfdrake/log") Then
+      Mkdir User.Home &/ "/.config/dnfdrake/log"
    Endif
    If Not Exist("/tmp/dnfdrake/") Then
       Mkdir "/tmp/dnfdrake/"
@@ -780,12 +781,18 @@ If PICSUSPENDLOCK.Visible = True Then
 Else   
    $SUSPENDSTARTUP = 0
 Endif
+
+'FUNZIONI ROOTMODE**************************************************************
 If User.Home = "/root" Then
   $ROOTMODE = 1
   $FRUNMAIN = 1
   $FRUNPW = 1
+  USERDEFAULTCHECK
+  Wait 0.2
+  $pathdir = "/home/" & $USERDEFAULT & "/"
 Else 
   $ROOTMODE = 0 
+  $pathdir = User.home & "/"
   Dim iAnswer As Integer = Message.Question("DnfDrake was started in user mode. To work correctly it should be started as superuser. Continue anyway?", $SI, $NO)
        If (iAnswer = 1) Then
        Else           
@@ -809,10 +816,9 @@ If Exist("/tmp/draketray/updates.txt") Then
 Endif
 '*******************************************************
 'Crea le liste**** SPOSTATO***********************************************************************
-    If $OFFLINE = 1 Then
+    If $OFFLINE = 1 And If FUSERDEFAULT.Visible = False Then
        TimerUPLISTE.Enabled = True
     Endif 
-
 End
 
 Public Sub EXCLUDETEST()
@@ -2757,7 +2763,7 @@ End
 
 
 Public Sub DRAKETRAYUPDATE()
-  ' VERIFICA SE È ABILITATA LA NOTIFICA AGGIORNAMENTI CON DRAKETRAY***ESCLUSA IN ROOTMODE*****
+ If $ROOTMODE = 0 Then
     If Not Exist(User.Home &/ ".config/autostart/draketray.desktop") And If Not Exist(User.Home &/ ".config/dnfdrake/noautostart") Then
        Dim iAnswer As Integer = Message.Question($MSGUPDATESASK, $SI, $NO)
        If (iAnswer = 1) Then
@@ -2784,6 +2790,39 @@ Public Sub DRAKETRAYUPDATE()
           'Stop Event
        Endif 
     Endif
+  Else 
+    If Not Exist("/home/" & $USERDEFAULT & "/.config/autostart/draketray.desktop") And If Not Exist(User.Home & "/.config/dnfdrake/noautostart") Then
+       Dim iAnswer2 As Integer = Message.Question($MSGUPDATESASK, $SI, $NO)
+       If (iAnswer2 = 1) Then
+         If Not Exist("/home/" & $USERDEFAULT & "/.config/autostart") Then
+            Shell ("mkdir " & "/home/" & $USERDEFAULT & "/.config/autostart")
+         Endif
+         ' If Not Exist("/tmp/draketray/locktray ") Then
+         '    Shell ("/usr/bin/draketray.gambas") 
+         '    Sleep 1.1
+         '    $KILL = 2
+         ' Endif
+         Shell ("cp /usr/share/draketray/draketray.desktop  " & "/home/" & $USERDEFAULT & "/.config/autostart/")
+        '  Dim $CONFIGDRAKETRAY2 As Integer
+        '  If Not Exist("/home/" & $USERDEFAULT & "/.config/draketray/config") Then
+        '     $CONFIGDRAKETRAY2 = 0
+        '  Else 
+        '  $CONFIGDRAKETRAY2 = Val(File.Load("/home/" & $USERDEFAULT & "/.config/draketray/config")) 
+        '    If $CONFIGDRAKETRAY2 = 0 Then
+        '       File.Save("/home/" & $USERDEFAULT & "/.config/draketray/config", "1") 
+        '    Endif
+        '    If $CONFIGDRAKETRAY2 = 2 Then
+        '       File.Save("/home/" & $USERDEFAULT & "/.config/draketray/config", "3") 
+        '    Endif
+        ' Endif    
+        '  'FEXTRA.Show
+       Else
+          File.Save(User.Home & "/.config/dnfdrake/noautostart", "") 
+          'Stop Event
+       Endif 
+    Endif
+  Endif   
+    
 ' ESEGUE LA PULIZIA DI RESIDUI DI DNFDRAKETRAY*****************
 If Exist("/usr/bin/dnfdraketray.gambas") And If Exist("/usr/bin/draketray.gambas") Then
    Message.Info($MSGTRAYREMOVE, $SI)
@@ -2936,6 +2975,8 @@ Public Sub SELECTIONVIEW()
   
 End 
 Public Sub LOADLOGO()
+
+
    If InStr($DISTRO, "OpenMandriva", 0, gb.IgnoreCase) Then
     If $THEMES = "Oxygen" Or If $THEMES = "Breeze" Then
             PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/OMA.png")
@@ -2955,9 +2996,38 @@ Public Sub LOADLOGO()
          PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/LINUX.png")
       Endif
   Endif     
+   
+End
+Public Sub USERDEFAULTCHECK()
   
+  If Fmain.$ROOTMODE = 1 Then
+     If Exist(User.Home &/ ".config/dnfdrake/userdefault") Then
+       $USERDEFAULT = File.Load(User.Home &/ ".config/dnfdrake/userdefault")
+       $USERDEFAULT = RTrim(Replace($userdefault, "\n", " "))
+     Else 
+       Dim s As String    'STRINGA UTENTI
+       Shell ("cat /etc/passwd | grep /home | cut -d: -f1") To S
+       s = Replace(s, "\n", " ")
+       $USEARRAY = Split(s, " ", "", True)
+       If $USEARRAY.Count = 1 Then
+          $USERDEFAULT = $USEARRAY[0]
+          File.save(User.Home & "/.config/dnfdrake/userdefault", $USERDEFAULT)
+       Else
+          TimerUPLISTE.Delay = 500
+          TimerUPLISTE.Enabled = True
+       Endif
+     Endif     
+  Endif
   
 End
+' Public Sub SELECTUSER()
+'  ' If Not Exist() Then
+'      Shell ("cat /etc/passwd | grep /home | cut -d: -f1") To $USER
+'      TXTPKG.Text = $USER 
+'   'Endif
+'   
+'   
+' End
 
 
 Public Sub Cmbtipo_Click()
@@ -3825,7 +3895,12 @@ Public Sub CHKoffline_Click()
 End
 
 Public Sub TimerUPLISTE_Timer()
- FLOADLISTE.Show
+If Not Exist(User.Home &/ ".config/dnfdrake/userdefault") Then
+   FUSERDEFAULT.Show
+Else   
+   FLOADLISTE.Show
+Endif
+
 'GESTIONE BLOCCHI SPERIMENTALE DA PROVARE 
  'If $SECUREMODE = "SECURE" Then
    ' TimerSECUREDOG.Enabled = True
@@ -4680,3 +4755,4 @@ End
 
 Public Sub BORDOCONNECT_MouseDown()
 End
+

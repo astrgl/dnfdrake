@@ -66,13 +66,13 @@ Public Sub Form_Open()
    Else
      CHKBTNDISTROUPDATE.Value = False
  Endif
- 
+'GESTIONE DRAKETRAY****************************************************************
   If Right(Left($LOCK)) = "2" Then 
      LBLDRAKETRAYSTATUS.Text = "Draketray is running"
   Else 
      LBLDRAKETRAYSTATUS.Text = "Draketray is not running"
   Endif
-  
+
  If Fmain.$ROOTMODE = 0 Then    
    If Exist("/usr/bin/draketray.gambas") Then
       CHKDNFDRAKETRAY.Enabled = True
@@ -81,7 +81,7 @@ Public Sub Form_Open()
          $CONFIGDRAKETRAY = Val(File.Load(User.Home &/ "/.config/draketray/config")) 
          If $CONFIGDRAKETRAY = 1 Or If $CONFIGDRAKETRAY = 3 Then
            CHKDNFDRAKETRAY.Value = True
-         Else 
+         Else  
            CHKDNFDRAKETRAY.Value = False  
          Endif
       Endif  
@@ -89,8 +89,25 @@ Public Sub Form_Open()
          CHKDNFDRAKETRAYLAUNCH.Value = True
       Endif
    Endif
+  Else 
+   If Exist("/usr/bin/draketray.gambas") Then
+      CHKDNFDRAKETRAY.Enabled = True
+      CHKDNFDRAKETRAYLAUNCH.Enabled = True
+      If Exist("/home/" & Fmain.$USERDEFAULT & "/.config/draketray/config")
+         $CONFIGDRAKETRAY = Val(File.Load("/home/" & Fmain.$USERDEFAULT & "/.config/draketray/config")) 
+         If $CONFIGDRAKETRAY = 1 Or If $CONFIGDRAKETRAY = 3 Then
+           CHKDNFDRAKETRAY.Value = True
+         Else  
+           CHKDNFDRAKETRAY.Value = False  
+         Endif
+      Endif  
+      If Exist("/home/" & Fmain.$USERDEFAULT & "/.config/autostart/draketray.desktop") Then
+         CHKDNFDRAKETRAYLAUNCH.Value = True
+      Endif
+   Endif 
  Endif 
  
+'****************************************************************************************** 
   flDSTSYNC = Open User.Home &/ ".config/dnfdrake/distrosync" For Read   ' ...oppure "Input"
    While Not Eof(flDSTSYNC)
     Input #flDSTSYNC, s$DSTSYNC
@@ -174,37 +191,26 @@ Public Sub BTNCLOSE_Click()
           Endif     
         Endif
     Endif    
-
+'GESTIONE DRAKETRAY*********************************************************
 If Fmain.$ROOTMODE = 0 Then
-   ' If CHKDNFDRAKETRAY.VALUE = True And If LBLDRAKETRAYSTATUS.Text = "Draketray is not running" Then
    If CHKDNFDRAKETRAY.VALUE = True Then
-     
-'      If Not Exist(User.Home &/ "/.config/draketray/locktray") Then
-    If LBLDRAKETRAYSTATUS.Text = "Draketray is not running" Then
-      If Right(Left($LOCK)) <> "2" Then
-          Fmain.$KILL = 2
-          Shell ("/usr/bin/draketray.gambas")
-          Sleep 1.1
-        Endif
-      Endif   
-      ' Shell "ps aux | grep gbr3 | grep draketray | wc -l" Wait To $LOCK  
-      '  If Right(Left($LOCK)) = "2" Then 
-      '     'CHKDNFDRAKETRAY.Value = True
-      '      LBLDRAKETRAYSTATUS.Text = "Draketray is running"
-      '  Else 
-      '      LBLDRAKETRAYSTATUS.Text = "Draketray is not running"
-      '  Endif
+      If LBLDRAKETRAYSTATUS.Text = "Draketray is not running" Then
+           If Right(Left($LOCK)) <> "2" Then
+           Fmain.$KILL = 2
+           Exec ["/usr/bin/draketray.gambas"]
+           Sleep 1.1
+      Endif
+   Endif   
       If $CONFIGDRAKETRAY = 0 Then
          File.Save(User.Home &/ "/.config/draketray/config", "1") 
       Endif
       If $CONFIGDRAKETRAY = 2 Then
          File.Save(User.Home &/ "/.config/draketray/config", "3") 
       Endif
-        If Not Exist(User.Home &/ "/.config/draketray/locktray") Then
-          Fmain.$KILL = 2
-          Shell ("/usr/bin/draketray.gambas")
-        Endif
-        
+      If Not Exist(User.Home &/ "/.config/draketray/locktray") Then
+         Fmain.$KILL = 2
+         Exec ["/usr/bin/draketray.gambas"]
+      Endif
    Else    
       If $CONFIGDRAKETRAY = 1 Then
          File.Save(User.Home &/ "/.config/draketray/config", "0") 
@@ -212,17 +218,7 @@ If Fmain.$ROOTMODE = 0 Then
       If $CONFIGDRAKETRAY = 3 Then
          File.Save(User.Home &/ "/.config/draketray/config", "2") 
       Endif
- 'VECCHIA GESTIONE DI DNFDRAKETRAY***********************************     
-   ' Shell ("/usr/bin/draketray.gambas")
-   ' Fmain.$KILL = 1
-   ' Else
-   '   Shell "ps aux | grep gbr3 | grep draketray" Wait To $PID
-   '   $PID = Right(Left($PID, 16), 8)
-   '   Shell "kill " & $PID
-   '   Shell ("rm -f " & User.Home &/ ".config/draketray/locktray")
-   '   Fmain.$KILL = 0
    Endif
-   
    If CHKDNFDRAKETRAYLAUNCH.VALUE = True And If Not Exist(User.Home &/ ".config/autostart/draketray.desktop") Then
      If Not Exist(User.Home &/ ".config/autostart") Then
         Shell ("mkdir " & User.Home &/ ".config/autostart")
@@ -232,7 +228,46 @@ If Fmain.$ROOTMODE = 0 Then
    If CHKDNFDRAKETRAYLAUNCH.VALUE = False And If Exist(User.Home &/ ".config/autostart/draketray.desktop") Then
      Shell ("rm -f " & User.Home &/ ".config/autostart/draketray.desktop")
    Endif
-Endif   
+   
+Else  'SE ROORTMODE=1************************
+  
+  If CHKDNFDRAKETRAY.VALUE = True Then
+      If LBLDRAKETRAYSTATUS.Text = "Draketray is not running" Then
+           If Right(Left($LOCK)) <> "2" Then
+           Fmain.$KILL = 2
+           'Shell ("sudo -u " & Fmain.$USERDEFAULT & " /usr/bin/draketray.gambas") NON AVVIABILE A ROOT
+           Sleep 1.1
+      Endif
+   Endif   
+      If $CONFIGDRAKETRAY = 0 Then
+         File.Save("/home/" & Fmain.$USERDEFAULT & "/.config/draketray/config", "1") 
+      Endif
+      If $CONFIGDRAKETRAY = 2 Then
+         File.Save("/home/" & Fmain.$USERDEFAULT & "/.config/draketray/config", "3") 
+      Endif
+      If Not Exist("/home/" & Fmain.$USERDEFAULT & "/.config/draketray/locktray") Then
+         Fmain.$KILL = 2
+         'Shell ("sudo -u " & Fmain.$USERDEFAULT & " /usr/bin/draketray.gambas")  NON AVVIABILE A ROOT
+      Endif
+   Else    
+      If $CONFIGDRAKETRAY = 1 Then
+         File.Save("/home/" & Fmain.$USERDEFAULT & "/.config/draketray/config", "0") 
+      Endif
+      If $CONFIGDRAKETRAY = 3 Then
+         File.Save("/home/" & Fmain.$USERDEFAULT & "/.config/draketray/config", "2") 
+      Endif
+   Endif
+   If CHKDNFDRAKETRAYLAUNCH.VALUE = True And If Not Exist("/home/" & Fmain.$USERDEFAULT & "/.config/autostart/draketray.desktop") Then
+     If Not Exist("/home/" & Fmain.$USERDEFAULT & "/.config/autostart") Then
+        Shell ("mkdir " & "/home/" & Fmain.$USERDEFAULT & "/.config/autostart")
+     Endif
+     Shell ("cp /usr/share/draketray/draketray.desktop  " & "/home/" & Fmain.$USERDEFAULT & "/.config/autostart/")
+   Endif
+   If CHKDNFDRAKETRAYLAUNCH.VALUE = False And If Exist("/home/" & Fmain.$USERDEFAULT & "/.config/autostart/draketray.desktop") Then
+     Shell ("rm -f " & "/home/" & Fmain.$USERDEFAULT & "/.config/autostart/draketray.desktop")
+   Endif
+Endif 
+'******************************************************************  
   
    If CHKOFFLINE.Value = True Then
       Fmain.$OFFLINE = 1

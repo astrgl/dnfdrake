@@ -168,8 +168,8 @@ Else
   Fmain.$RPMPATH = ""
 Endif
 'TEMPORANEAMENTE DISATTIVATO PER IL PASSAGGIO A ROOTMODE*****************************
-If FMAIN.$ROOTMODE = 0 Then
-   Fmain.DRAKETRAYUPDATE  
-Endif
+'If FMAIN.$ROOTMODE = 0 Then
+Fmain.DRAKETRAYUPDATE  
+'Endif
 '************************************************************************************
 End

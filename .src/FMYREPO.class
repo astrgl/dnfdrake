@@ -67,11 +67,15 @@ Public Sub Form_Open()
  Endif
 'RICHIESTA PASSWORD PREVENTIVA  ******************************* 
  Wait 0.1
-If FMAIN.$MEMOPW = "NOPW"
-    Print #Fmain.$hProcess, "sudo echo Enable My Repo Tool" & gb.NewLine;
- Else 
-    Timer1.Delay = 0
- Endif    
+If Fmain.$ROOTMODE = 0 Then
+  If FMAIN.$MEMOPW = "NOPW"
+      Print #Fmain.$hProcess, "sudo echo Enable My Repo Tool" & gb.NewLine;
+  Else 
+      Timer1.Delay = 0
+  Endif
+Else 
+  Timer1.Delay = 0
+Endif      
 End
 
 Public Sub Form_Close()

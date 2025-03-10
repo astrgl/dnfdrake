@@ -44,7 +44,7 @@ Packages_Installed
 Packages_Not_Installed
 Packages_Upgradeable
 Activate_search_on_local_lists_(RECOMMENDED)
-If_enabled_DrakeTray_is_active
+Enable_update_search_with_DrakeTray
 This_function_works_only_in_online_mode._Online_mode_activated!
 Packages_not_Found!
 [Dnfdrake_Works_For_You]_

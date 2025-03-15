@@ -130,7 +130,7 @@ Dim sOutput As String
 'Dim sTemp As String = "8.8.8.8"  
    Shell "ping -c1 -w1 8.8.8.8" To sOutput
   ' Exec ["ping ", "-c1 " "-w1 ", sTemp] To sOutput                                    'Ping the target and store the output in sOutput"
-    If InStr(sOutput, "64 bytes from") Then                                               'If '64 bytes from' exists in sOutput then..
+    If InStr(sOutput, "64") Then                                               'If '64 bytes from' exists in sOutput then..
       $CONNECTION = 1
      ' Message.Info("CONNESSIONE=" & $CONNECTION, "ok")   
     Else 

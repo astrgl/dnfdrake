@@ -4807,7 +4807,6 @@ End
 Public Sub BORDOCONNECT_MouseDown()
 End
 
-
 Public Sub BTNGEOMETRY_Click()
 
   FGEOMETRY.Show

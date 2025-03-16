@@ -1,17 +1,15 @@
 ' Gambas class file
 
 Private $SESSION As String
-' Gambas class file
-
 
 Public Sub Form_Open()
   Dim $SESSION As String
   Fmain.Enabled = False
-  Shell "echo $XDG_SESSION_TYPE " To $SESSION
-  If RTrim(Replace($SESSION, "\n", " ")) = "x11" Then
+  'Shell "echo $XDG_SESSION_TYPE " To $SESSION
+  'If RTrim(Replace($SESSION, "\n", " ")) = "x11" Then
     SPBXX.Enabled = True
     SPBXY.Enabled = True  
-  Endif
+  'Endif
   BTNEXIT.Text = Fmain.Btnclose.Text
   BTNEXIT.Picture = Fmain.Btnclose.Picture
   BTNEXIT.Tooltip = Fmain.Btnclose.Tooltip

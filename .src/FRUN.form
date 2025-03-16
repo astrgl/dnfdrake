@@ -6,6 +6,7 @@
   Text = ("DnfDrake, Please  Wait.") & "..."
   Icon = Picture["dnfdrake.svg"]
   Resizable = False
+  Opacity = 95
   { BTNSTOP Button
     Move(490,18,105,28)
     Enabled = False

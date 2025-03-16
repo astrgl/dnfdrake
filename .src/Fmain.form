@@ -336,16 +336,16 @@
     Move(7,112,35,28)
   }
   { BTNSUSPEND Button
-    Move(42,112,91,28)
+    Move(77,112,91,28)
     Text = ("     Suspend")
   }
   { PICSUSPENDLOCK PictureBox
-    Move(45,116,20,20)
+    Move(80,116,20,20)
     Visible = False
     Alignment = Align.Center
   }
   { PICSUSPEND PictureBox
-    Move(45,116,20,20)
+    Move(80,116,20,20)
     Alignment = Align.Center
   }
   { PICLOGODISTRO PictureBox
@@ -396,5 +396,9 @@
     Border = Border.Plain
     BorderRadius = 10
     Text = ("Type your choice!")
+  }
+  { BTNGEOMETRY Button
+    Move(42,112,35,28)
+    ToolTip = ("Ridimensione e posiziona la finestra")
   }
 }

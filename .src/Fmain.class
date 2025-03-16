@@ -45,7 +45,10 @@ Public $AUTOREMOVETEXT As String
 Public $CMBTOOLTIP As String
 Public $RISOLUZIONE As String
 Public $RISOLUZIONEX As Integer
+Public $RISOLUZIONEXMAX As Integer
 Public $RISOLUZIONEY As Integer
+Public $RISOLUZIONEYMAX As Integer
+' Public $FULLSCREENENABLE As Integer
 Public $KILL As Integer
 Public $SUSPENDONTTP As String
 Public $SUSPENDOFFTTP As String
@@ -135,9 +138,11 @@ Public Sub Form_Open()
    Shell "xrandr --current |grep '*'" To $RISOLUZIONE
    $RISOLUZIONEX = Val(Str(Right(Left($risoluzione, 7), 4)))
    $RISOLUZIONEY = Val(Str(Right(Left($risoluzione, 12), 4)))
-   ' $RISOLUZIONEX = 1366
-   ' $RISOLUZIONEY = 768
+   $RISOLUZIONEXMAX = $RISOLUZIONEX
+   $RISOLUZIONEYMAX = $RISOLUZIONEY
+   LOADSIZE
    RESOLUTION
+ 
   
 'VERIFICA SU QUALE SISTEMA È IN ESECUZIONE 
   'Dim $DISTRO As String
@@ -594,6 +599,7 @@ Else
       $NODEPSINFO = Replace(ss$TTP[93], "_", " ")   
       LBLTXTSELECTION.Text = Replace(ss$TTP[94], "_", " ")
       $TEMAASK = Replace(ss$TTP[95], "_", " ")
+      BTNGEOMETRY.Tooltip = Replace(ss$TTP[99], "_", " ")
      Next
 '  
    flTTP.Close
@@ -678,6 +684,7 @@ Else
    TXTINFOBOX.Text = "Loading..."
    $CLEARTXTPKG = 0
    $MEMOPW = "NOPW"
+   '$FULLSCREENENABLE = 0
    
 'PULISCE LE LISTE PROVVISORIE DI INSTALLAZIONE/RIMOZIONE
   TMPLISTCLEAN
@@ -818,7 +825,7 @@ Endif
 'Crea le liste**** SPOSTATO***********************************************************************
     If $OFFLINE = 1 And If FUSERDEFAULT.Visible = False Then
        TimerUPLISTE.Enabled = True
-    Endif 
+    Endif
 End
 
 Public Sub EXCLUDETEST()
@@ -832,6 +839,7 @@ End
 
 
 Public Sub Form_Close()
+    SAVESIZE    
     If $CLOSEPASS = 0 Then
        Dim iAnswer As Integer = Message.Question($ASKEXIT, $SI, $NO)
        If (iAnswer = 1) Then
@@ -2156,8 +2164,11 @@ End
 Private Sub RESOLUTION()
 
 If BTNFULLSCREEN.Visible = True  
+ ' If Not Exist(User.Home &/ ".config/dnfdrake/memosize") Or If $FULLSCREENENABLE = 1 Then
+ If Not Exist(User.Home &/ ".config/dnfdrake/memosize") Then
   Fmain.X = 0
   Fmain.Y = 0
+ Endif
   Fmain.Height = ($RISOLUZIONEY - 70)
   Fmain.Width = ($RISOLUZIONEX)
   Btnclose.X = Btnclose.X + ($RISOLUZIONEX - 1366)
@@ -2215,8 +2226,10 @@ If BTNFULLSCREEN.Visible = True
   BTNANNULLASELECTION.X = BTNANNULLASELECTION.X + ($RISOLUZIONEX - 1366)
 
 Else 
+ If Not Exist(User.Home &/ ".config/dnfdrake/memosize") Then 
   Fmain.X = 0
   Fmain.Y = 0
+ Endif  
   Fmain.Height = 700
   Fmain.Width = 1366
   Btnclose.X = 1232
@@ -2273,6 +2286,7 @@ Else
   BTNOKSELECTION.X = 1141
   BTNANNULLASELECTION.X = 1239
 Endif 
+
 End
 
 Private Sub CERCAUPDATE()
@@ -2759,6 +2773,7 @@ Public Sub LOADICONS()
     BTNOKSELECTION.Picture = Picture.Load($PATHICONS & "ok" & $THEMESSUFFIX)
     BTNANNULLASELECTION.Picture = Picture.Load($PATHICONS & "stop" & $THEMESSUFFIX)
     btnpkg.Picture = Picture.Load($PATHICONS & "textlink" & $THEMESSUFFIX)
+    BTNGEOMETRY.Picture = Picture.Load($PATHICONS & "measure" & $THEMESSUFFIX)
 End
 
 
@@ -3020,14 +3035,60 @@ Public Sub USERDEFAULTCHECK()
   Endif
   
 End
-' Public Sub SELECTUSER()
-'  ' If Not Exist() Then
-'      Shell ("cat /etc/passwd | grep /home | cut -d: -f1") To $USER
-'      TXTPKG.Text = $USER 
-'   'Endif
-'   
-'   
-' End
+Public Sub SAVESIZE()
+   File.save(User.Home & "/.config/dnfdrake/memosize", Fmain.X & " " & Fmain.y & " " & Fmain.Width & " " & (Fmain.Height + 70))
+End
+Public Sub LOADSIZE()
+ Dim flSIZE As File 
+ Dim jSIZE As Byte 
+ Dim s$SIZE As String
+ Dim ss$SIZE As New String[]
+
+ flSIZE = Open User.Home &/ ".config/dnfdrake/memosize" For Read
+ While Not Eof(flSIZE)
+   Input #flSIZE, s$SIZE
+   ss$SIZE.Add(s$SIZE)
+  Wend
+  Close #flSIZE
+  For jSIZE = 0 To ss$SIZE.Max
+      Fmain.X = Replace(ss$SIZE[0], "_", " ")
+      If Fmain.X < 0 Then
+         Fmain.X = 0 
+      Endif
+      Fmain.Y = Replace(ss$SIZE[1], "_", " ")
+      ' If Fmain.Y > ($RISOLUZIONEXMAX - Fmain.Height) Then
+      '    Fmain.Y = 0
+      ' Endif   DA VERIFICARE
+      $RISOLUZIONEX = Replace(ss$SIZE[2], "_", " ")
+      If $RISOLUZIONEX < 1280 Then
+         $RISOLUZIONEX = 1280 
+      Endif
+      $RISOLUZIONEY = Replace(ss$SIZE[3], "_", " ")
+      If $RISOLUZIONEY < 500 Then
+         $RISOLUZIONEY = 500
+      Endif
+      If BTNFULLSCREEN.Visible = True
+         BTNFULLSCREEN_Click
+      Else 
+         BTNRESIZE_Click
+         BTNFULLSCREEN_Click
+       Endif       
+    
+      Next 
+   flSIZE.Close  
+   ' If $RISOLUZIONEX = $RISOLUZIONEXMAX And If $RISOLUZIONEY = $RISOLUZIONEYMAX Then
+   '   $FULLSCREENENABLE = 1
+   ' Else 
+   '   $FULLSCREENENABLE = 0  
+   ' Endif
+   If BTNFULLSCREEN.Visible = True
+         BTNFULLSCREEN_Click
+      Else 
+         BTNRESIZE_Click
+         BTNFULLSCREEN_Click
+       Endif 
+            
+End
 
 
 Public Sub Cmbtipo_Click()
@@ -3671,6 +3732,7 @@ End
 '   End
 
 Public Sub TXTSTATUS_MouseDown()
+
 End
 
 
@@ -3895,7 +3957,7 @@ Public Sub CHKoffline_Click()
 End
 
 Public Sub TimerUPLISTE_Timer()
-If Not Exist(User.Home &/ ".config/dnfdrake/userdefault") Then
+If Not Exist(User.Home &/ ".config/dnfdrake/userdefault") And If $ROOTMODE = 1 Then
    FUSERDEFAULT.Show
 Else   
    FLOADLISTE.Show
@@ -4344,18 +4406,6 @@ Public Sub BTNREPLAY_Click()
   Endif
 End
 Public Sub DATATIME()
- 
-  ' Dim $GIORNO As String
-  ' Dim $MESE As String
-  ' Dim $ANNO As String
-  ' Dim $TIME As String
-  ' $GIORNO = Day(Now)
-  ' $MESE = Month(Now)
-  ' $ANNO = Year(Now)
-  ' $DATATIME = Now
-  ' $DATATIME = Left($DATATIME, 16) 'Left(Now, 19)
-  ' $TIME = Replace(Right($DATATIME, 5), ":", "")
-  ' $DATATIME = $ANNO & $MESE & $GIORNO & "-" & $TIME
   $DATATIME = Replace$(Replace$(Replace$(Left(Str$(Now), 16), "/", ""), " ", "-"), ":", "")
   
 End
@@ -4756,3 +4806,9 @@ End
 Public Sub BORDOCONNECT_MouseDown()
 End
 
+
+Public Sub BTNGEOMETRY_Click()
+
+  FGEOMETRY.Show
+
+End

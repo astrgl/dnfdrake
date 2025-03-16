@@ -1,0 +1,77 @@
+' Gambas class file
+
+Private $SESSION As String
+' Gambas class file
+
+
+Public Sub Form_Open()
+  Dim $SESSION As String
+  Fmain.Enabled = False
+  Shell "echo $XDG_SESSION_TYPE " To $SESSION
+  If RTrim(Replace($SESSION, "\n", " ")) = "x11" Then
+    SPBXX.Enabled = True
+    SPBXY.Enabled = True  
+  Endif
+  BTNEXIT.Text = Fmain.Btnclose.Text
+  BTNEXIT.Picture = Fmain.Btnclose.Picture
+  BTNEXIT.Tooltip = Fmain.Btnclose.Tooltip
+  SPBXWIDTH.MaxValue = Fmain.$RISOLUZIONEXMAX
+  SPBXHEIGHT.MaxValue = Fmain.$RISOLUZIONEYMAX
+  SPBXWIDTH.Value = Fmain.Width
+  SPBXHEIGHT.Value = Fmain.Height + 70
+  SPBXX.MaxValue = Fmain.$RISOLUZIONEXMAX - SPBXWIDTH.Value
+  SPBXY.MaxValue = Fmain.$RISOLUZIONEYMAX - SPBXHEIGHT.Value
+  SPBXX.Value = Fmain.X
+  SPBXY.Value = Fmain.Y
+  Print Fmain.X
+  
+  
+End
+Public Sub FORM_Close()
+  
+  Fmain.Enabled = True
+    
+End
+
+Public Sub BTNEXIT_Click()
+  BTNEXIT.Enabled = False
+  Me.Close
+
+End
+
+Public Sub SPBXWIDTH_Change()
+
+  Fmain.$RISOLUZIONEX = SPBXWIDTH.Value
+  If Fmain.BTNFULLSCREEN.Visible = True
+     Fmain.BTNFULLSCREEN_Click
+  Else 
+     Fmain.BTNRESIZE_Click
+     Fmain.BTNFULLSCREEN_Click
+  Endif 
+  SPBXX.MaxValue = Fmain.$RISOLUZIONEXMAX - SPBXWIDTH.Value  
+  ' Fmain.X = SPBXX.Value
+  ' Fmain.Y = SPBXY.Value
+End
+
+Public Sub SPBXHEIGHT_Change()
+ 
+  Fmain.$RISOLUZIONEY = SPBXHEIGHT.Value
+  If Fmain.BTNFULLSCREEN.Visible = True
+     Fmain.BTNFULLSCREEN_Click
+  Else 
+     Fmain.BTNRESIZE_Click
+     Fmain.BTNFULLSCREEN_Click
+  Endif    
+  SPBXY.MaxValue = Fmain.$RISOLUZIONEYMAX - SPBXHEIGHT.Value
+End
+
+Public Sub SPBXX_Change()
+ Fmain.X = SPBXX.Value
+
+End
+
+Public Sub SPBXY_Change()
+Fmain.Y = SPBXY.Value
+  
+
+End

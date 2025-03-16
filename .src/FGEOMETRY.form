@@ -1,0 +1,42 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,50,24)
+  { LBLDESCRIZIONE Label
+    MoveScaled(1,3,47,6)
+    Border = Border.Plain
+    BorderRadius = 15
+    Text = ("Window size                                   X                     pixel")
+  }
+  { BTNEXIT Button
+    MoveScaled(17,18,16,4)
+  }
+  { SPBXWIDTH SpinBox
+    MoveScaled(22,4,8.5714,4)
+    MinValue = 1280
+    MaxValue = 1366
+    Value = 1280
+  }
+  { SPBXHEIGHT SpinBox
+    MoveScaled(33,4,8.5714,4)
+    MinValue = 500
+    MaxValue = 768
+    Value = 500
+  }
+  { LBLDESCRIZIONE2 Label
+    MoveScaled(1,11,47,6)
+    Border = Border.Plain
+    BorderRadius = 15
+    Text = ("Window position      X                    Y                    pixel")
+  }
+  { SPBXX SpinBox
+    MoveScaled(22,12,8.5714,4)
+    Enabled = False
+    MaxValue = 1366
+  }
+  { SPBXY SpinBox
+    MoveScaled(33,12,8.5714,4)
+    Enabled = False
+    MaxValue = 768
+  }
+}

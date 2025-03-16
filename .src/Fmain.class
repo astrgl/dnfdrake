@@ -140,7 +140,9 @@ Public Sub Form_Open()
    $RISOLUZIONEY = Val(Str(Right(Left($risoluzione, 12), 4)))
    $RISOLUZIONEXMAX = $RISOLUZIONEX
    $RISOLUZIONEYMAX = $RISOLUZIONEY
-   LOADSIZE
+   If Exist(User.Home &/ ".config/dnfdrake/memosize") Then
+      LOADSIZE     
+   Endif
    RESOLUTION
  
   
@@ -3043,7 +3045,6 @@ Public Sub LOADSIZE()
  Dim jSIZE As Byte 
  Dim s$SIZE As String
  Dim ss$SIZE As New String[]
-
  flSIZE = Open User.Home &/ ".config/dnfdrake/memosize" For Read
  While Not Eof(flSIZE)
    Input #flSIZE, s$SIZE

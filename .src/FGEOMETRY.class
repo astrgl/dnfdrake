@@ -6,13 +6,23 @@ Public Sub Form_Open()
   Dim $SESSION As String
   Fmain.Enabled = False
   'Shell "echo $XDG_SESSION_TYPE " To $SESSION
-  'If RTrim(Replace($SESSION, "\n", " ")) = "x11" Then
+  $SESSION = Desktop.Platform
+  If RTrim(Replace($SESSION, "\n", " ")) = "x11" Then
     SPBXX.Enabled = True
     SPBXY.Enabled = True  
-  'Endif
-  BTNEXIT.Text = Fmain.Btnclose.Text
+  Else 
+  LBLDESCRIZIONE2.Tooltip = "This function not work with wayland :-(" 
+  SPBXX.Tooltip = LBLDESCRIZIONE2.Tooltip
+  SPBXY.Tooltip = LBLDESCRIZIONE2.Tooltip
+  Endif
+  'BTNEXIT.Text = Fmain.Btnclose.Text
   BTNEXIT.Picture = Fmain.Btnclose.Picture
   BTNEXIT.Tooltip = Fmain.Btnclose.Tooltip
+  BTNMAXSCREEN.Picture = Fmain.BTNFULLSCREEN.Picture
+  'BTNMAXSCREEN.Tooltip = Fmain.BTNFULLSCREEN.Tooltip
+  BTNSTDSCREEN.Picture = Fmain.BTNRESIZE.Picture
+  'BTNSTDSCREEN.Tooltip = Fmain.BTNRESIZE.Tooltip
+  
   SPBXWIDTH.MaxValue = Fmain.$RISOLUZIONEXMAX
   SPBXHEIGHT.MaxValue = Fmain.$RISOLUZIONEYMAX
   SPBXWIDTH.Value = Fmain.Width
@@ -21,7 +31,7 @@ Public Sub Form_Open()
   SPBXY.MaxValue = Fmain.$RISOLUZIONEYMAX - SPBXHEIGHT.Value
   SPBXX.Value = Fmain.X
   SPBXY.Value = Fmain.Y
-  Print Fmain.X
+ 
   
   
 End
@@ -71,5 +81,47 @@ End
 Public Sub SPBXY_Change()
 Fmain.Y = SPBXY.Value
   
+
+End
+
+Public Sub BTNMAXSCREEN_Click()
+
+  Fmain.$RISOLUZIONEX = Fmain.$RISOLUZIONEXMAX
+  Fmain.$RISOLUZIONEY = Fmain.$RISOLUZIONEYMAX
+  Fmain.X = 0
+  Fmain.Y = 0
+  If Fmain.BTNFULLSCREEN.Visible = True
+     Fmain.BTNFULLSCREEN_Click
+  Else 
+     Fmain.BTNRESIZE_Click
+     Fmain.BTNFULLSCREEN_Click
+  Endif   
+  SPBXWIDTH.Value = Fmain.$RISOLUZIONEX
+  SPBXHEIGHT.Value = Fmain.$RISOLUZIONEY
+  SPBXX.Value = 0
+  SPBXY.Value = 0
+  SPBXX.MaxValue = Fmain.$RISOLUZIONEXMAX - SPBXWIDTH.Value  
+  SPBXY.MaxValue = Fmain.$RISOLUZIONEYMAX - SPBXHEIGHT.Value
+  
+End
+
+Public Sub BTNSTDSCREEN_Click()
+
+  Fmain.$RISOLUZIONEX = 1366
+  Fmain.$RISOLUZIONEY = 768
+  Fmain.X = 0
+  Fmain.Y = 0
+  If Fmain.BTNFULLSCREEN.Visible = True
+     Fmain.BTNFULLSCREEN_Click
+  Else 
+     Fmain.BTNRESIZE_Click
+     Fmain.BTNFULLSCREEN_Click
+  Endif    
+  SPBXWIDTH.Value = Fmain.$RISOLUZIONEX
+  SPBXHEIGHT.Value = Fmain.$RISOLUZIONEY
+  SPBXX.Value = 0
+  SPBXY.Value = 0
+  SPBXX.MaxValue = Fmain.$RISOLUZIONEXMAX - SPBXWIDTH.Value  
+  SPBXY.MaxValue = Fmain.$RISOLUZIONEYMAX - SPBXHEIGHT.Value
 
 End

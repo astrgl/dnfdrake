@@ -9,7 +9,7 @@
     Text = ("Window size                                   X                     pixel")
   }
   { BTNEXIT Button
-    MoveScaled(17,18,16,4)
+    MoveScaled(36,18,10,4)
   }
   { SPBXWIDTH SpinBox
     MoveScaled(22,4,8.5714,4)
@@ -38,5 +38,13 @@
     MoveScaled(33,12,8.5714,4)
     Enabled = False
     MaxValue = 768
+  }
+  { BTNMAXSCREEN Button
+    MoveScaled(20,18,10,4)
+    ToolTip = ("Max size window")
+  }
+  { BTNSTDSCREEN Button
+    MoveScaled(3,18,10,4)
+    ToolTip = ("Standard size window")
   }
 }

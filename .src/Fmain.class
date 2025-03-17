@@ -135,9 +135,11 @@ Public Sub Form_Open()
  Dim ss$DSTSYNC As New String[] 
  
 'IMPOSTA LA DIMENSIONE DELLA FINESTRA IN BASE ALLA RISOLUZIONE DELLO SCHERMO
-   Shell "xrandr --current |grep '*'" To $RISOLUZIONE
-   $RISOLUZIONEX = Val(Str(Right(Left($risoluzione, 7), 4)))
-   $RISOLUZIONEY = Val(Str(Right(Left($risoluzione, 12), 4)))
+   ' Shell "xrandr --current |grep '*'" To $RISOLUZIONE
+   ' $RISOLUZIONEX = Val(Str(Right(Left($risoluzione, 7), 4)))
+   ' $RISOLUZIONEY = Val(Str(Right(Left($risoluzione, 12), 4)))
+   $RISOLUZIONEX = Desktop.Width
+   $RISOLUZIONEY = Desktop.Height
    $RISOLUZIONEXMAX = $RISOLUZIONEX
    $RISOLUZIONEYMAX = $RISOLUZIONEY
    If Exist(User.Home &/ ".config/dnfdrake/memosize") Then

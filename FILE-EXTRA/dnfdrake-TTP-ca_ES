@@ -76,8 +76,8 @@ Add/Update_Repository
 The_dnf_cache_need_refresh
 Delete_unused_packages
 List_unused_package_to_remove
-Maximize
-Restore
+Maximum_or_custom_window_size
+Standard_window_size
 Please_Wait...
 Click_for_disable_suspend
 Click_for_enable_suspend

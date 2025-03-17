@@ -7,7 +7,9 @@ Public Sub Form_Open()
   Dim jBTN As Byte
   Dim s$BTN As String
   Dim ss$BTN As New String[]
-
+  If FUPDATERESUME.Visible = True Then
+    Me.Close
+  Else   
   If Fmain.$PROGRESSBARFORCESUSPEND = 1 Then
      FRUN.ProgressBar1.Pulse = False   
      FRUN.ProgressBar1.Value = 1
@@ -42,10 +44,15 @@ Public Sub Form_Open()
   If Fmain.PICLOGODISTRO.Visible = True Then
      Fmain.PICLOGODISTRO.Visible = False
   Endif
+Endif
+
+
 End
 
 
 Public Sub Form_Close()
+If FUPDATERESUME.Visible = True Then
+ Else   
  If $CLOSEPASS = 0 Then
    If FPW.Visible = False Then
       Dim iAnswer As Integer = Message.Question(Fmain.$ASKEXIT, Fmain.$SI, Fmain.$NO)
@@ -68,6 +75,9 @@ Public Sub Form_Close()
         '   Fmain.Enabled = False
        ' Endif
  Endif 
+Endif
+
+
 '*******************************************************************
 
   

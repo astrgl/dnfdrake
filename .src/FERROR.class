@@ -6,6 +6,9 @@ Public $SECURE As Integer
 Public Sub Form_Open()
   
   BTNCLOSE.Text = Fmain.Btnclose.Text
+  If FUPDATERESUME.Visible = True Then
+    Me.Close
+  Endif
   'BTNDNFCLEAN.Text = Fmain.BTNDNFCLEAN.Text
   FRUN.$CLOSEPASS = 1
   FRUN.Close 

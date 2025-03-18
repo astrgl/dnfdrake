@@ -1763,8 +1763,8 @@ Public Sub Btnexp1_Click()
       txtConsole.Height = 476 + ($RISOLUZIONEY - 768)
       txtConsole.X = listpkg.Width + listpkg.X
     Else 
-      txtConsole.Width = 1029
-      txtConsole.Height = 476
+      txtConsole.Width = 1029 - (1366 - $RISOLUZIONEX) 'MODIFICA*********************************
+      txtConsole.Height = 476 - (768 - $RISOLUZIONEY)  'MODIFICA*********************************
       txtConsole.X = 308
     Endif   
     txtConsole.Y = 147
@@ -1826,8 +1826,8 @@ Public Sub Btnexp2_Click()
        txtConsole.Width = 1330 + ($RISOLUZIONEX - 1366)
        txtConsole.Height = 476 + ($RISOLUZIONEY - 768)
     Else    
-      txtConsole.Width = 1330
-      txtConsole.Height = 476
+      txtConsole.Width = 1330 - (1366 - $RISOLUZIONEX) 'MODIFICA*********************************
+      txtConsole.Height = 476 - (768 - $RISOLUZIONEY)  'MODIFICA*********************************
     Endif
     txtConsole.X = 10  
     txtConsole.Y = 147
@@ -1841,8 +1841,8 @@ Public Sub Btnexp2_Click()
         txtConsole.Height = 476 + ($RISOLUZIONEY - 768)
         txtConsole.X = listpkg.Width + listpkg.X
       Else 
-        txtConsole.Width = 1330
-        txtConsole.Height = 476
+        txtConsole.Width = 1330 - (1366 - $RISOLUZIONEX) 'MODIFICA*********************************
+        txtConsole.Height = 476 - (768 - $RISOLUZIONEY)  'MODIFICA*********************************
         txtConsole.X = 308
       Endif   
       txtConsole.Y = 147
@@ -3126,9 +3126,16 @@ Public Sub Btncommand_Click()
     txtCommand.Visible = True
     btnCtrlC.Visible = True
     btnCtrlZ.Visible = True
-      If Btnexp2.Text = "EXP2" Then
-        Btnexp2_Click 
-      Endif
+    If Btnexp2.Text = "EXP2" Then
+       Btnexp2_Click 
+    Endif
+    If Fmain.Width > 1366 Then
+       txtConsole.Width = 1330 + (Fmain.Width - 1366)
+       txtConsole.Height = 476 + (Fmain.Height - 768) + 70
+    Else    
+      txtConsole.Width = 1330 - (1366 - Fmain.Width) 'MODIFICA*********************************
+      txtConsole.Height = 476 - (768 - Fmain.Height) + 70  'MODIFICA*********************************
+    Endif
     PICLOGODISTRO.Visible = False  
   Else
       Btncommand.Text = Left(Btncommand.Text, -2)
@@ -3139,6 +3146,7 @@ Public Sub Btncommand_Click()
       btnCtrlZ.Visible = False
       Btnexp2_Click 
       PICLOGODISTRO.Visible = True
+       
       
   Endif
 

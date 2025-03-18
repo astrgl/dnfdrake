@@ -86,7 +86,7 @@
     Move(791,7,110,28)
   }
   { Btnexp1 Button
-    Move(1141,7,42,28)
+    Move(917,70,42,28)
     Visible = False
     Text = ("EXP1")
   }
@@ -128,7 +128,7 @@
     ShowCheck = True
   }
   { Btnexp2 Button
-    Move(1141,35,42,28)
+    Move(917,98,42,28)
     Visible = False
     Text = ("EXP2")
   }
@@ -166,7 +166,7 @@
     Move(1232,112,112,28)
   }
   { TXTSTATUS Label
-    Move(1141,63,63,28)
+    Move(966,70,63,28)
     Visible = False
     Border = Border.Plain
   }

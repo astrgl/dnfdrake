@@ -1752,6 +1752,10 @@ Public Sub txtCommand_KeyPress()
 End
 
 Public Sub Btnexp1_Click()
+      Dim $RESX As Integer
+      Dim $RESY As Integer
+      $RESX = Fmain.Width
+      $RESY = Fmain.Height + 70
     PICLOGODISTRO.Visible = False
     If Btnexp2.Text = "UEXP2" Then
     Btnexp2_Click
@@ -1759,12 +1763,12 @@ Public Sub Btnexp1_Click()
   If Btnexp1.Text = "EXP1" Then
     Btnexp1.Text = "UEXP1"
     If Fmain.Width > 1366 Then
-      txtConsole.Width = 1330 + ($RISOLUZIONEX - 1366) - Listpkg.Width - 5
-      txtConsole.Height = 476 + ($RISOLUZIONEY - 768)
+      txtConsole.Width = 1330 + ($RESX - 1366) - Listpkg.Width - 5
+      txtConsole.Height = 476 + ($RESY - 768)
       txtConsole.X = listpkg.Width + listpkg.X
     Else 
-      txtConsole.Width = 1029 - (1366 - $RISOLUZIONEX) 'MODIFICA*********************************
-      txtConsole.Height = 476 - (768 - $RISOLUZIONEY)  'MODIFICA*********************************
+      txtConsole.Width = 1029 - (1366 - $RESX)
+      txtConsole.Height = 476 - (768 - $RESY)
       txtConsole.X = 308
     Endif   
     txtConsole.Y = 147

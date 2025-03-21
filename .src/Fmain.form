@@ -4,7 +4,7 @@
   Move(0,0,1366,700)
   #Scaled = False
   Text = ("DnfDrake")
-  Icon = Picture["dnfdrake.svg"]
+  Icon = Picture["dnfdrake.png"]
   Resizable = False
   AutoResize = True
   { Label2 Label

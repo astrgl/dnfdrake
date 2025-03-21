@@ -103,7 +103,6 @@ Public Sub Form_Close()
 Else 
   BTNANNULLA_Click
 Endif
-  
-  
+
 End
 

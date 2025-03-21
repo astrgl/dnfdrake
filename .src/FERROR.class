@@ -56,7 +56,6 @@ BTNDNFCLEAN.Enabled = False
 Fmain.txtpkg.Text = ""
 Fmain.Btnclear_click
 Fmain.Mouse = Mouse.Default
-'Fmain.BTNDNFCLEAN_Click
 Print #Fmain.$hProcess, "sudo dnf clean packages" & gb.NewLine;
 Fmain.Enabled = True  
 $SECURE = 1

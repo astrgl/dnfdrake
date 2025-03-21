@@ -1,10 +1,6 @@
 ' Gambas class file
 
-'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
-' $FRUNSTATE As Integer
-' $FOKSTATE As Integer
 $SICLICK As Boolean
-
 
 Public Sub Form_Open()
 
@@ -41,9 +37,6 @@ Public Sub Form_Open()
        Next
    flTTP.Close 
 '*************************************************************************************    
-' 
-' TXTMSG.Text = "DnfDrake ha disabilitato la sospensione la vuoi ripristinare?"
-
 If Fmain.$SECUREMODE = "SECURE" Then
   Fmain.Enabled = False
 Endif
@@ -51,25 +44,7 @@ If Fmain.$AUTOSUSPEND = 0 Then
   Me.Close
 Endif
 Fmain.$WAITSUSPEND = 0
-'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
-' If FRUN.Visible = True Then
-'     FRUN.Visible = False
-'     $FRUNSTATE = 1
-'   Else 
-'     $FRUNSTATE = 0    
-' Endif
-' If FOK.Visible = True Then
-'     FOK.Visible = False
-'     $FOKSTATE = 1
-'   Else 
-'     $FOKSTATE = 0    
-' Endif 
-' If Fmain.$EASYPASSWORD = 1 And If Fmain.$MEMOPW <> "NOPW" Then
-'    Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
-'    Wait 3
-'    'FRESETSUSPEND.Close
-'    BTNSI_Click
-' Endif
+
 End
 
 Public Sub Form_Close()
@@ -84,22 +59,8 @@ Public Sub Form_Close()
  Endif
  Fmain.$ABORT = 0
  $SICLICK = False
- 'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
- ' If $FRUNSTATE = 1 Or If $FOKSTATE = 1 Then
- '    Fmain.Enabled = False   
- ' Endif 
+
 End
-
-'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
- ' Private Sub PRIORITA()
-' If $FRUNSTATE = 1 Then
-'   FRUN.Visible = True
-' Endif
-' If $FOKSTATE = 1 Then
-'   FOK.Visible = True
-' Endif 
- ' End
-
 
 Public Sub BTNSI_Click()
 BTNSI.Enabled = False
@@ -107,15 +68,12 @@ Fmain.Enabled = True
 Wait 0.1
 If Fmain.$MEMOPW = "NOPW" Then
   Fmain.BTNSUSPEND_click
-  'Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target" & gb.NewLine;
-Else 
+ Else 
   Print #Fmain.$hProcess, "sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target";  
 Endif
 
 Wait 0.1
 Fmain.$PROGRESSBARFORCESUSPEND = 1
-'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
-' PRIORITA
 $SICLICK = True
 FRESETSUSPEND.Close
 End
@@ -131,8 +89,6 @@ Public Sub BTNNO_Click()
 
     Wait 0.1  
  Endif
- 'ELIMINATO DOPO IL PASSAGGIO DEL RIPRISTINO ALL'USCITA
- 'PRIORITA
  FRESETSUSPEND.Close
 End
 

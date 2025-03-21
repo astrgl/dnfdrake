@@ -1,11 +1,8 @@
 ' Gambas class file
 
-Private $SESSION As String
-
 Public Sub Form_Open()
   Dim $SESSION As String
   Fmain.Enabled = False
-  'Shell "echo $XDG_SESSION_TYPE " To $SESSION
   $SESSION = Desktop.Platform
   If RTrim(Replace($SESSION, "\n", " ")) = "x11" Then
     SPBXX.Enabled = True
@@ -15,14 +12,10 @@ Public Sub Form_Open()
   SPBXX.Tooltip = LBLDESCRIZIONE2.Tooltip
   SPBXY.Tooltip = LBLDESCRIZIONE2.Tooltip
   Endif
-  'BTNEXIT.Text = Fmain.Btnclose.Text
   BTNEXIT.Picture = Fmain.Btnclose.Picture
   BTNEXIT.Tooltip = Fmain.Btnclose.Tooltip
   BTNMAXSCREEN.Picture = Fmain.BTNFULLSCREEN.Picture
-  'BTNMAXSCREEN.Tooltip = Fmain.BTNFULLSCREEN.Tooltip
   BTNSTDSCREEN.Picture = Fmain.BTNRESIZE.Picture
-  'BTNSTDSCREEN.Tooltip = Fmain.BTNRESIZE.Tooltip
-  
   SPBXWIDTH.MaxValue = Fmain.$RISOLUZIONEXMAX
   SPBXHEIGHT.MaxValue = Fmain.$RISOLUZIONEYMAX
   SPBXWIDTH.Value = Fmain.Width
@@ -32,8 +25,6 @@ Public Sub Form_Open()
   SPBXX.Value = Fmain.X
   SPBXY.Value = Fmain.Y
  
-  
-  
 End
 Public Sub FORM_Close()
   
@@ -57,8 +48,7 @@ Public Sub SPBXWIDTH_Change()
      Fmain.BTNFULLSCREEN_Click
   Endif 
   SPBXX.MaxValue = Fmain.$RISOLUZIONEXMAX - SPBXWIDTH.Value  
-  ' Fmain.X = SPBXX.Value
-  ' Fmain.Y = SPBXY.Value
+
 End
 
 Public Sub SPBXHEIGHT_Change()

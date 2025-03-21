@@ -17,12 +17,9 @@ Public Sub Form_Open()
  flBTN = Open "/usr/share/dnfdrake/dnfdrake-BTN-" & Fmain.$LANG For Read   ' ...oppure "Input"
  While Not Eof(flBTN)
    Input #flBTN, s$BTN
-' ' Poiché "Input" legge le stringhe in un File di testo fino all'interruzione dello spazio o al carattere di "nuova linea",
-' ' ogni parola del testo, delimitata da uno spazio, viene individuata e caricata in un nuovo elemento della variabile-array ss$:
    ss$BTN.Add(s$BTN)
   Wend
    Close #flBTN
-' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
   For jBTN = 0 To ss$BTN.Max
       Btnclose.Text = ss$BTN[15]
       Next
@@ -31,12 +28,9 @@ Public Sub Form_Open()
   flTTP = Open "/usr/share/dnfdrake/dnfdrake-TTP-" & Fmain.$LANG For Read   ' ...oppure "Input"
  While Not Eof(flTTP)
    Input #flTTP, s$TTP
-' ' Poiché "Input" legge le stringhe in un File di testo fino all'interruzione dello spazio o al carattere di "nuova linea",
-' ' ogni parola del testo, delimitata da uno spazio, viene individuata e caricata in un nuovo elemento della variabile-array ss$:
    ss$TTP.Add(s$TTP)
   Wend
    Close #flTTP
-' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
   For jTTP = 0 To ss$TTP.Max
       FOK.Text = Replace(ss$TTP[22], "_", " ")
        Next

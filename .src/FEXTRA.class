@@ -159,9 +159,7 @@ Public Sub Form_Open()
 End
 
 Public Sub BTNCLOSE_Click()
-   BTNCLOSE.Enabled = False
-   'Dim $PID As String
-   
+   BTNCLOSE.Enabled = False   
    If CHKDUPLICATE.VALUE = True Then
    Fmain.$SEARCH = Fmain.$SEARCH & " " & "--showduplicate"
    CHKOFFLINE.Value = False 
@@ -302,11 +300,9 @@ Endif
 'FUNZIONE DA MODIFICARE PER RENDERE IGNORECASE ATTIVO DI DEFAULT**************************
     If CHKIGNORECASE.Value = True Then
       Fmain.$CASE = 1
-      'Shell "> " & User.Home &/ ".config/dnfdrake/ignorecase" Wait
       File.Save(User.Home &/ "/.config/dnfdrake/ignorecase", "1") 
     Else 
       Fmain.$CASE = 0
-      'Shell ("rm -f " & User.Home &/ ".config/dnfdrake/ignorecase") Wait 
       File.Save(User.Home &/ "/.config/dnfdrake/ignorecase", "0") 
     Endif
 '******************************************************************************************    

@@ -26,12 +26,9 @@ Public Sub Form_Open()
  flBTN = Open "/usr/share/dnfdrake/dnfdrake-BTN-" & Fmain.$LANG For Read   ' ...oppure "Input"
  While Not Eof(flBTN)
    Input #flBTN, s$BTN
-' ' Poiché "Input" legge le stringhe in un File di testo fino all'interruzione dello spazio o al carattere di "nuova linea",
-' ' ogni parola del testo, delimitata da uno spazio, viene individuata e caricata in un nuovo elemento della variabile-array ss$:
    ss$BTN.Add(s$BTN)
   Wend
    Close #flBTN
-' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
   For jBTN = 0 To ss$BTN.Max
      BTNSI.Text = ss$BTN[16]
      BTNNO.Text = ss$BTN[17]
@@ -43,12 +40,9 @@ Public Sub Form_Open()
   flTTP = Open "/usr/share/dnfdrake/dnfdrake-TTP-" & Fmain.$LANG For Read   ' ...oppure "Input"
  While Not Eof(flTTP)
    Input #flTTP, s$TTP
-' ' Poiché "Input" legge le stringhe in un File di testo fino all'interruzione dello spazio o al carattere di "nuova linea",
-' ' ogni parola del testo, delimitata da uno spazio, viene individuata e caricata in un nuovo elemento della variabile-array ss$:
    ss$TTP.Add(s$TTP)
   Wend
    Close #flTTP
-' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
   For jTTP = 0 To ss$TTP.Max
       FSINO.Text = Replace(ss$TTP[23], "_", " ")
        Next
@@ -59,20 +53,14 @@ Public Sub Form_Open()
   flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & Fmain.$LANG For Read   ' ...oppure "Input"
  While Not Eof(flKEY)
    Input #flKEY, s$KEY
-' ' Poiché "Input" legge le stringhe in un File di testo fino all'interruzione dello spazio o al carattere di "nuova linea",
-' ' ogni parola del testo, delimitata da uno spazio, viene individuata e caricata in un nuovo elemento della variabile-array ss$:
    ss$KEY.Add(s$KEY)
   Wend
    Close #flKEY
-' ' Scrive i nomi dei pulsanti nella lingua di sistema usando ogni stringa contenuta in ciascun elemento della variabile-array ss$:
   For jKEY = 0 To ss$KEY.Max
-'risposta si
       $SI = Replace(ss$KEY[5], "_", " ")
-'risposta no
       $NO = Replace(ss$KEY[6], "_", " ")
     Next
    flKEY.Close
-   
 '********************************************************************************
 
   If Fmain.$SECUREMODE = "SECURE" Then

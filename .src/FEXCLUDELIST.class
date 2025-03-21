@@ -84,7 +84,6 @@ Public Sub BTNREMOVE_Click()
       LSTPKG[a].Delete
       Next
         Print #Fmain.$hProcess, "sudo " & "sed -i 's/" & s & "//g' " & " /etc/dnf/dnf.conf " & gb.NewLine; 
-        'TextBox1.Text = "sudo " & "sed -i 's/" & s & "//g' " & " /etc/dnf/dnf.conf "
     Endif
      Wait 0.1
      Fmain.Enabled = True
@@ -100,7 +99,6 @@ Public Sub BTNSAVEAS_Click()
   Dialog.Filter = ["*.txt", "Text Files"]
     If Dialog.SaveFile() Then Return
       Fmain.$pathdir = Replace(Dialog.Path, " ", Chr$(92) & " ")  ' serve agestire percorsi con gli spazi
-      'Print #Fmain.$hProcess, "echo > " & Dialog.Path & gb.NewLine; 
       LSTPKG.SelectAll
       For Each i In LSTPKG.Selection
         Print #Fmain.$hProcess, "echo " & LSTPKG[i].Text & " >>  " & Dialog.Path & gb.NewLine; 

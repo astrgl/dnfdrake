@@ -33,13 +33,9 @@ End
 Public Sub TXTSELECTION_Activate()
   
   Dim s As String
-  
   s = TXTSELECTION.Text & gb.NewLine
-  
   TXTSELECTION.Clear
-
   s = Conv$(s, Desktop.Charset, System.Charset)
-  
   Print #Fmain.$hProcess, s;
   Me.Close 
   

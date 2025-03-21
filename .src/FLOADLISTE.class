@@ -133,15 +133,11 @@ Dim ss$UPD As New String[]
 End 
 Private Sub CHECKCONNECTION()
 Dim sOutput As String
-'Dim sTemp As String = "8.8.8.8"  
    Shell "ping -c1 -w1 8.8.8.8" To sOutput
-  ' Exec ["ping ", "-c1 " "-w1 ", sTemp] To sOutput                                    'Ping the target and store the output in sOutput"
     If InStr(sOutput, "64") Then                                               'If '64 bytes from' exists in sOutput then..
       $CONNECTION = 1
-     ' Message.Info("CONNESSIONE=" & $CONNECTION, "ok")   
     Else 
       $CONNECTION = 0
-     ' Message.Info("CONNESSIONE=" & $CONNECTION, "ok")                                                  
     End If 
     
 End
@@ -167,10 +163,7 @@ Else
   Fmain.txtpkg.Text = Fmain.$RPMPATH  
   Fmain.$RPMPATH = ""
 Endif
-'TEMPORANEAMENTE DISATTIVATO PER IL PASSAGGIO A ROOTMODE*****************************
-'If FMAIN.$ROOTMODE = 0 Then
 Fmain.DRAKETRAYUPDATE  
-'Endif
 '************************************************************************************
 If Exist(User.Home &/ ".config/dnfdrake/memosize") Then
   If Fmain.BTNFULLSCREEN.Visible = True

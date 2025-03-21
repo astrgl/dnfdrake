@@ -84,33 +84,7 @@ End
 
 
 Public Sub BTNAPPLY_Click()
-'ELIMINATO PER UTILIZZARE IL REFRESH *******************************************************************
-  ' Dim a As String
-  ' Dim s As String
-  ' 
-  '   If FTEMPPKGLIST.Text = "Remove Package List" Then
-  '     Shell "echo  > " & User.Home &/ ".config/dnfdrake/log/rempkglist.txt" Wait
-  '       For Each a In LSTPKG.Selection
-  '         s = LSTPKG[a].Text
-  '         Shell "echo " & s & " >> " & User.Home &/ ".config/dnfdrake/log/rempkglist.txt" Wait
-  '       Next 
-  '   
-  '   Else If FTEMPPKGLIST.Text = "Install Package List"
-  '     Shell "echo  > " & User.Home &/ ".config/dnfdrake/log/addpkglist.txt" Wait
-  '       For Each a In LSTPKG.Selection
-  '         s = LSTPKG[a].Text
-  '         Shell "echo " & s & " >> " & User.Home &/ ".config/dnfdrake/log/addpkglist.txt" Wait
-  '       Next 
-  '       
-  '   Else If FTEMPPKGLIST.Text = "Update Package List"
-  '     Shell "echo  > " & User.Home &/ ".config/dnfdrake/log/updpkglist.txt" Wait
-  '       For Each a In LSTPKG.Selection
-  '         s = LSTPKG[a].Text
-  '         Shell "echo " & s & " >> " & User.Home &/ ".config/dnfdrake/log/addpkglist.txt" Wait
-  '       Next 
-  '       
-  '   Endif
-'*********************************************************************************************************
+
     BTNREFRESH_Click
     If LSTPKG.Count = 0 Then
       Fmain.TXTPKGLISTNOME.Text = "None"
@@ -121,10 +95,7 @@ End
 
 
 Public Sub BTNSAVEAS_Click()
-  '  Dialog.Title = Fmain.$DIALOGDIRTITLE
   Dialog.Path = Fmain.$pathdir                   'IMPOSTA LA FINESTRA IN CUI SALVARE LA LISTA
-  
-  
   Dialog.Filter = ["*.txt", "Text Files"]
     If Dialog.SaveFile() Then Return
       Fmain.$pathdir = Replace(Dialog.Path, " ", Chr$(92) & " ")                     ' serve agestire percorsi con gli spazi

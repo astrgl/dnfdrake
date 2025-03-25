@@ -3949,9 +3949,9 @@ Public Sub BTNVIEWLOG_Click()
    Dialog.Filter = ["*.log", "*", "All files"]
    If Dialog.OpenFile(True) Then Return
    For Each $PATHFILELOG In Dialog.Paths
-     $PRINTLOG = 1i
-   Print #$hProcess, "cat " & $PATHFILELOG 
-   PICLOGODISTRO.Visible = False  
+     $PRINTLOG = 1
+     Print #$hProcess, "cat " & $PATHFILELOG 
+     PICLOGODISTRO.Visible = False  
    Next
 Catch
   Message.Info(Error.Text)
@@ -3998,7 +3998,11 @@ Public Sub BTNDNFCLEAN_Click()
 
   txtConsole.Text = ""
   $MEMOCOMMAND = "dnf repolist"
-  Print #$hProcess, "sudo dnf clean all; dnf clean all;" & gb.NewLine; 
+  If $ROOTMODE = 1 Then
+   Print #$hProcess, "dnf clean all;" & gb.NewLine;     
+  Else  
+   Print #$hProcess, "sudo dnf clean all; dnf clean all;" & gb.NewLine; 
+  Endif
    PICLOGODISTRO.Visible = False  
   
 End

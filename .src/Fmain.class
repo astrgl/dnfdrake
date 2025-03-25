@@ -1230,27 +1230,27 @@ Public Sub btninstall_Click()
       FRUNSHOW
     Else  
         If Listpkg.Visible = False And If ListpkgAVAILABLE.Visible = False 'And If ListpkgUPGRADE.Visible = False  
-               If txtpkg.text = ""
-                 Message.Info($SELECTPKG, "OK")
-               Else
-                  If Right(txtpkg.Text, 4) = ".txt" Then '*************Verifica se esiste un elenco di pacchetti da installare 
+           If txtpkg.text = ""
+           Message.Info($SELECTPKG, "OK")
+        Else
+               If Right(txtpkg.Text, 4) = ".txt" Then '*************Verifica se esiste un elenco di pacchetti da installare 
                   Print #$hProcess, $INSTALL & "$(cat " & txtpkg.Text & " )" & $VERBOSE & gb.NewLine;
                   FRUNSHOW
-                      Else                                  '*************Se non c'è elenco fa la solita installazione
-                     Btnclear_Click
-                        If Btnexp2.Text = "EXP2" Then
-                           Btnexp2_Click  
-                        Endif   
-                      txtConsole.Text = ""
-                      Me.Mouse = Mouse.Wait 
-                      If CHKNODEPS.Value = True And InStr(txtpkg.Text, "/") Then
-                        Print #$hProcess, $INSTALLNODEPS & txtpkg.Text & $VERBOSE & gb.NewLine;
-                      Else   
-                         Print #$hProcess, $INSTALL & txtpkg.Text & $VERBOSE & gb.NewLine;
-                      Endif
-                      FRUNSHOW
-                   Endif      
-               Endif
+               Else                                  '*************Se non c'è elenco fa la solita installazione
+                  Btnclear_Click
+                    If Btnexp2.Text = "EXP2" Then
+                       Btnexp2_Click  
+                    Endif   
+                  txtConsole.Text = ""
+                  Me.Mouse = Mouse.Wait 
+                    If CHKNODEPS.Value = True And InStr(txtpkg.Text, "/") Then
+                       Print #$hProcess, $INSTALLNODEPS & txtpkg.Text & $VERBOSE & gb.NewLine;
+                    Else   
+                       Print #$hProcess, $INSTALL & txtpkg.Text & $VERBOSE & gb.NewLine;
+                    Endif
+                  FRUNSHOW
+               Endif      
+        Endif
         Endif
          
          If ListpkgINSTALLATI.Visible = True Or If ListpkgUPGRADE.Visible = True Then
@@ -1324,7 +1324,7 @@ Public Sub btninstall_Click()
         Endif
     Endif
     'TEST OM-DNFDRAKE*****************
-     FRUNSHOW
+     'FRUNSHOW
      '*********************************
 End
 
@@ -1439,7 +1439,7 @@ Public Sub btnremove_Click()
     Me.Mouse = Mouse.default
   Endif
   'TEST OM-DNFDRAKE*****************
-  FRUNSHOW
+  'FRUNSHOW
   '*********************************
 End
 
@@ -1552,7 +1552,7 @@ Public Sub BTNPKGUPDATE_Click()
         Endif
     Endif 
 'TEST OM-DNFDRAKE*****************
- FRUNSHOW
+ 'FRUNSHOW
 '*********************************      
 End
 
@@ -3448,7 +3448,7 @@ Public Sub BTNDOWNDGRADE_Click()
         Endif
    Endif 
   'TEST OM-DNFDRAKE*****************
-  FRUNSHOW
+  'FRUNSHOW
   '********************************* 
 End
 
@@ -3934,7 +3934,7 @@ Public Sub BTNREINSTALL_Click()
         Endif
     Endif
      'TEST OM-DNFDRAKE*****************
-     FRUNSHOW
+     'FRUNSHOW
      '*********************************          
 End
 

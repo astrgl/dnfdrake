@@ -1876,6 +1876,10 @@ Public Sub btncerca_Click()
   Endif
 'AUTORMOVE LIST*****************************************************************************  
 If Cmbtipo.index = 4 Then                     'AUTOREMOVE
+      Dim $RESX As Integer
+      Dim $RESY As Integer
+      $RESX = Fmain.Width
+      $RESY = Fmain.Height + 70
    If $OFFLINE = 0 
       TABHIDE
       Btnclear_Click
@@ -1900,11 +1904,11 @@ If Cmbtipo.index = 4 Then                     'AUTOREMOVE
      Endif
  'MODIFICHE RISPETTO A BTNEXP1
      If Fmain.Width > 1366 Then
-       txtConsole.Width = 1330 + ($RISOLUZIONEX - 1366)
-       txtConsole.Height = 476 + ($RISOLUZIONEY - 768)
+       txtConsole.Width = 1330 + ($RESX - 1366)
+       txtConsole.Height = 476 + ($RESY - 768)
     Else
-     txtConsole.Width = 1330
-     txtConsole.Height = 476
+     txtConsole.Width = 1330 - (1366 - $RESX)
+     txtConsole.Height = 476 - (768 - $RESY) 
     Endif
      txtConsole.X = 10
      txtConsole.Y = 147
@@ -2368,6 +2372,7 @@ Private Sub CERCAAUTOREMOVE()
      ListpkgINSTALLATI.Enabled = True
      BTNTABINSTALLED.SetFocus
      BTNTABINSTALLED_Click
+    ' LBLBTNINSTALLATI.Visible = False
      t = Open User.Home & "/.config/dnfdrake/log/last.log"
      For Each s In t.Lines 
             If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") Then
@@ -3512,7 +3517,9 @@ End
 Public Sub BTNTABINSTALLED_Click()
 ListpkgINSTALLATI.Visible = True
 '*****************************************************
-LBLBTNINSTALLATI.Visible = True
+If Cmbtipo.index = 0 Then
+   LBLBTNINSTALLATI.Visible = True  
+Endif
 '*****************************************************
 ListpkgAVAILABLE.Visible = False
 ListpkgUPGRADE.Visible = False 
@@ -3531,7 +3538,9 @@ End
 Public Sub BTNTABAVIABLE_Click()
 ListpkgINSTALLATI.Visible = False
 '*****************************************************
-LBLBTNAVAILABLE.Visible = True
+If Cmbtipo.index = 0 Then
+   LBLBTNAVAILABLE.Visible = True
+Endif    
 '*****************************************************
 ListpkgAVAILABLE.Visible = True
 ListpkgUPGRADE.Visible = False
@@ -3551,7 +3560,9 @@ End
 Public Sub BTNTABUPDATE_Click()
 ListpkgINSTALLATI.Visible = False
 '*****************************************************
-LBLBTNUPDATE.Visible = True
+If Cmbtipo.index = 0 Then  
+   LBLBTNUPDATE.Visible = True
+Endif    
 '*****************************************************
 ListpkgAVAILABLE.Visible = False
 ListpkgUPGRADE.Visible = True

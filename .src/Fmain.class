@@ -580,7 +580,7 @@ Else
    PCTCONNECT.Visible = False
    txtCommand.SetFocus
    $pathdir = User.home & "/"
-   $PATHLOG = User.Home & "/.config/dnfdrake/log"
+   $PATHLOG = User.Home & "/.config/dnfdrake/log/"
    $PRINTLOG = 0
    $INFOENABLED = 0
    $KILL = 0
@@ -1117,6 +1117,10 @@ Private Sub TABHIDE()
     ListpkgAVAILABLE.Visible = False
     ListpkgUPGRADE.Visible = False
     ListpkgNODEPS.Visible = False
+    LBLBTNINSTALLATI.Visible = False
+    LBLBTNAVAILABLE.Visible = False
+    LBLBTNUPDATE.Visible = False
+    
 End 
 Private Sub EXITROUTIN()
       Dim $PID As String
@@ -1985,17 +1989,31 @@ If BTNFULLSCREEN.Visible = True
   BTNVIEWLOG.Y = BTNVIEWLOG.Y + ($RISOLUZIONEY - 768)
   BTNREPLAY.X = BTNREPLAY.X + ($RISOLUZIONEX - 1366)
   BTNREPLAY.Y = BTNREPLAY.Y + ($RISOLUZIONEY - 768)
-  BTNSELECTALL.Y = BTNSELECTALL.Y + ($RISOLUZIONEY - 768)
-  BTNUNSELECTALL.Y = BTNUNSELECTALL.y + ($RISOLUZIONEY - 768)
-  btnpkg.Y = btnpkg.Y + ($RISOLUZIONEY - 768)
-  BTNTABINSTALLED.Y = BTNTABINSTALLED.Y + ($RISOLUZIONEY - 768)
-  BTNTABAVIABLE.Y = BTNTABAVIABLE.Y + ($RISOLUZIONEY - 768)
-  BTNTABUPDATE.Y = BTNTABUPDATE.Y + ($RISOLUZIONEY - 768)
-  BTNADDPKGLIST.Y = BTNADDPKGLIST.y + ($RISOLUZIONEY - 768)
-  TXTPKGLISTLABEL.Y = TXTPKGLISTLABEL.Y + ($RISOLUZIONEY - 768)
-  TXTPKGLISTNOME.Y = TXTPKGLISTNOME.Y + ($RISOLUZIONEY - 768)
-  BTNPKGLISTVIEW.Y = BTNPKGLISTVIEW.Y + ($RISOLUZIONEY - 768)
-  BTNPKGLISTCLEAN.Y = BTNPKGLISTCLEAN.Y + ($RISOLUZIONEY - 768)
+ 'MODIFICA********************************************************************************
+  BTNRESIZE.Y = BTNRESIZE.Y + ($RISOLUZIONEY - 768)
+  BTNFULLSCREEN.Y = BTNFULLSCREEN.Y + ($RISOLUZIONEY - 768)
+  BTNGEOMETRY.Y = BTNGEOMETRY.Y + ($RISOLUZIONEY - 768)
+  BTNSUSPEND.Y = BTNSUSPEND.Y + ($RISOLUZIONEY - 768)
+  PICSUSPEND.Y = PICSUSPEND.Y + ($RISOLUZIONEY - 768 + 4)
+  PICSUSPENDLOCK.Y = PICSUSPENDLOCK.Y + ($RISOLUZIONEY - 768 + 5)
+  PCTCONNECT.Y = PCTCONNECT.Y + ($RISOLUZIONEY - 768)
+  PCTDISCONNECT.Y = PCTDISCONNECT.Y + ($RISOLUZIONEY - 768)
+  BORDOCONNECT.Y = BORDOCONNECT.Y + ($RISOLUZIONEY - 768)
+  Label1.Y = Label1.Y + ($RISOLUZIONEY - 768)
+  txtlang.Y = txtlang.Y + ($RISOLUZIONEY - 768)
+  
+  ' BTNSELECTALL.Y = BTNSELECTALL.Y + ($RISOLUZIONEY - 768)
+  ' BTNUNSELECTALL.Y = BTNUNSELECTALL.y + ($RISOLUZIONEY - 768)
+  ' btnpkg.Y = btnpkg.Y + ($RISOLUZIONEY - 768)
+  ' BTNTABINSTALLED.Y = BTNTABINSTALLED.Y + ($RISOLUZIONEY - 768)
+  ' BTNTABAVIABLE.Y = BTNTABAVIABLE.Y + ($RISOLUZIONEY - 768)
+  ' BTNTABUPDATE.Y = BTNTABUPDATE.Y + ($RISOLUZIONEY - 768)
+  ' BTNADDPKGLIST.Y = BTNADDPKGLIST.y + ($RISOLUZIONEY - 768)
+  ' TXTPKGLISTLABEL.Y = TXTPKGLISTLABEL.Y + ($RISOLUZIONEY - 768)
+  ' TXTPKGLISTNOME.Y = TXTPKGLISTNOME.Y + ($RISOLUZIONEY - 768)
+  ' BTNPKGLISTVIEW.Y = BTNPKGLISTVIEW.Y + ($RISOLUZIONEY - 768)
+  ' BTNPKGLISTCLEAN.Y = BTNPKGLISTCLEAN.Y + ($RISOLUZIONEY - 768)
+ '***************************************************************************************
   BTNFULLSCREEN.Visible = False
   BTNRESIZE.Visible = True
   PICLOGODISTRO.Width = PICLOGODISTRO.Width + ($RISOLUZIONEX - 1366)
@@ -2046,17 +2064,33 @@ Else
   BTNVIEWLOG.Y = 630
   BTNREPLAY.X = 1162
   BTNREPLAY.Y = 630
-  BTNSELECTALL.Y = 630
-  BTNUNSELECTALL.Y = 630
-  btnpkg.Y = 630
-  BTNTABINSTALLED.Y = 630
-  BTNTABAVIABLE.Y = 630
-  BTNTABUPDATE.Y = 630
-  BTNADDPKGLIST.Y = 630
-  TXTPKGLISTLABEL.Y = 630
-  TXTPKGLISTNOME.Y = 630
-  BTNPKGLISTVIEW.Y = 630
-  BTNPKGLISTCLEAN.Y = 630
+ 'MODIFICA********************************************************************************
+  BTNRESIZE.Y = 630
+  BTNFULLSCREEN.Y = 630
+  BTNGEOMETRY.Y = 630
+  BTNSUSPEND.Y = 632
+  PICSUSPEND.Y = 632
+  PICSUSPENDLOCK.Y = 630
+  PCTCONNECT.Y = 630
+  PCTDISCONNECT.Y = 630
+  BORDOCONNECT.Y = 630
+  Label1.Y = 630
+  txtlang.Y = 630
+
+  
+  
+  ' BTNSELECTALL.Y = 630
+  ' BTNUNSELECTALL.Y = 630
+  ' btnpkg.Y = 630
+  ' BTNTABINSTALLED.Y = 630
+  ' BTNTABAVIABLE.Y = 630
+  ' BTNTABUPDATE.Y = 630
+  ' BTNADDPKGLIST.Y = 630
+  ' TXTPKGLISTLABEL.Y = 630
+  ' TXTPKGLISTNOME.Y = 630
+  ' BTNPKGLISTVIEW.Y = 630
+  ' BTNPKGLISTCLEAN.Y = 630
+ '*************************************************************************************** 
   BTNRESIZE.Visible = False
   BTNFULLSCREEN.Visible = True
   PICLOGODISTRO.Width = 1332 - 8
@@ -2145,6 +2179,7 @@ Private Sub CERCAUPDATE()
        ListpkgUPGRADE.Add(1, $NOTPACKAGES)
        If $COLORTEXT = "color"
        ListpkgUPGRADE[1].Foreground = &H0033A0D9
+       'LBLBTNINSTALLED.Foreground = &H0033A0D9
        Endif
        ListpkgUPGRADE.Enabled = False
      Endif
@@ -3476,6 +3511,9 @@ End
 
 Public Sub BTNTABINSTALLED_Click()
 ListpkgINSTALLATI.Visible = True
+'*****************************************************
+LBLBTNINSTALLATI.Visible = True
+'*****************************************************
 ListpkgAVAILABLE.Visible = False
 ListpkgUPGRADE.Visible = False 
     CORNICE.Background = &H2A9A4F&
@@ -3492,6 +3530,9 @@ End
 
 Public Sub BTNTABAVIABLE_Click()
 ListpkgINSTALLATI.Visible = False
+'*****************************************************
+LBLBTNAVAILABLE.Visible = True
+'*****************************************************
 ListpkgAVAILABLE.Visible = True
 ListpkgUPGRADE.Visible = False
     CORNICE.Background = &HE0703F&
@@ -3509,6 +3550,9 @@ End
 
 Public Sub BTNTABUPDATE_Click()
 ListpkgINSTALLATI.Visible = False
+'*****************************************************
+LBLBTNUPDATE.Visible = True
+'*****************************************************
 ListpkgAVAILABLE.Visible = False
 ListpkgUPGRADE.Visible = True
     CORNICE.Background = &H257ED0&

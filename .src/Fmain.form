@@ -13,20 +13,20 @@
     BorderRadius = 8
   }
   { BORDOCONNECT Label
-    Move(546,112,28,27)
+    Move(546,630,28,27)
     Alignment = Align.Center
     Border = Border.Plain
     BorderRadius = 14
   }
   { Label1 Label
-    Move(574,112,196,27)
+    Move(574,630,196,27)
     Alignment = Align.Center
     Border = Border.Plain
     BorderRadius = 12
     Text = ("MONITOR")
   }
   { PCTDISCONNECT PictureBox
-    Move(546,112,28,27)
+    Move(546,630,28,27)
     Visible = False
     Picture = Picture.Load("icon:/16/disconnect")
     Alignment = Align.Center
@@ -36,6 +36,30 @@
     #Public = True
     Expand = True
     Alignment = Align.Left
+  }
+  { LBLBTNINSTALLATI Label
+    Move(178,108,126,38)
+    Visible = False
+    Border = Border.Plain
+    BorderWidth = 2
+    BorderRadius = 5
+    BorderColor = &H28984D
+  }
+  { LBLBTNAVAILABLE Label
+    Move(305,108,126,38)
+    Visible = False
+    Border = Border.Plain
+    BorderWidth = 2
+    BorderRadius = 5
+    BorderColor = &HE0703E
+  }
+  { LBLBTNUPDATE Label
+    Move(432,108,126,38)
+    Visible = False
+    Border = Border.Plain
+    BorderWidth = 2
+    BorderRadius = 5
+    BorderColor = &H257DD0
   }
   { CORNICE Label
     Move(7,140,1337,490)
@@ -86,7 +110,7 @@
     Move(791,7,110,28)
   }
   { Btnexp1 Button
-    Move(917,70,42,28)
+    Move(966,70,42,28)
     Visible = False
     Text = ("EXP1")
   }
@@ -117,7 +141,7 @@
     Move(1232,42,110,28)
   }
   { btnpkg Button
-    Move(77,630,98,28)
+    Move(77,112,98,28)
     Visible = False
   }
   { Listpkg ListView
@@ -128,7 +152,7 @@
     ShowCheck = True
   }
   { Btnexp2 Button
-    Move(917,98,42,28)
+    Move(966,98,42,28)
     Visible = False
     Text = ("EXP2")
   }
@@ -136,7 +160,7 @@
     Move(672,77,110,28)
   }
   { txtlang Label
-    Move(770,112,28,27)
+    Move(770,630,28,27)
     Alignment = Align.Center
     Border = Border.Plain
     BorderRadius = 14
@@ -166,16 +190,16 @@
     Move(1232,112,112,28)
   }
   { TXTSTATUS Label
-    Move(966,70,63,28)
+    Move(1008,98,63,28)
     Visible = False
     Border = Border.Plain
   }
   { BTNSELECTALL Button
-    Move(7,630,35,28)
+    Move(7,112,35,28)
     Visible = False
   }
   { BTNUNSELECTALL Button
-    Move(42,630,35,28)
+    Move(42,112,35,28)
     Visible = False
   }
   { BTNPKGUPDATE Button
@@ -219,23 +243,26 @@
     ShowCheck = True
   }
   { BTNTABINSTALLED Button
-    Move(182,630,120,28)
+    Move(182,112,120,28)
     Visible = False
+    Border = False
   }
   { BTNTABAVIABLE Button
-    Move(308,630,120,28)
+    Move(308,112,120,28)
     Visible = False
+    Border = False
   }
   { BTNTABUPDATE Button
-    Move(434,630,120,28)
+    Move(434,112,120,28)
     Visible = False
+    Border = False
   }
   { TimerUPLISTE #Timer
     #Move(1183,7)
     Delay = 1500
   }
   { PCTCONNECT PictureBox
-    Move(546,112,28,27)
+    Move(546,630,28,27)
     Visible = False
     Picture = Picture.Load("icon:/16/connect")
     Alignment = Align.Center
@@ -282,7 +309,7 @@
     ToolTip = ("Replay Last Log or view package list")
   }
   { BTNADDPKGLIST Button
-    Move(574,630,28,28)
+    Move(574,112,28,28)
     Visible = False
   }
   { PICBTNDISTUPDATE PictureBox
@@ -291,11 +318,11 @@
     Alignment = Align.Center
   }
   { BTNPKGLISTVIEW Button
-    Move(864,630,28,28)
+    Move(864,112,28,28)
     Visible = False
   }
   { TXTPKGLISTLABEL TextBox
-    Move(604,630,94,28)
+    Move(604,112,94,28)
     Visible = False
     Enabled = False
     Foreground = Color.TextForeground
@@ -303,14 +330,14 @@
     Alignment = Align.Right
   }
   { TXTPKGLISTNOME TextBox
-    Move(696,630,168,28)
+    Move(696,112,168,28)
     Visible = False
     Enabled = False
     Foreground = Color.TextForeground
     Text = ("None")
   }
   { BTNPKGLISTCLEAN Button
-    Move(892,630,28,28)
+    Move(892,112,28,28)
     Visible = False
   }
   { BTNEXCLUDE Button
@@ -330,26 +357,26 @@
     Text = Shortcut(("Autoremove"), "v")
   }
   { BTNFULLSCREEN Button
-    Move(7,112,35,28)
+    Move(7,630,35,28)
   }
   { BTNRESIZE Button
-    Move(7,112,35,28)
+    Move(7,630,35,28)
   }
   { BTNSUSPEND Button
-    Move(77,112,91,28)
+    Move(77,630,91,28)
     Text = ("     Suspend")
   }
   { PICSUSPENDLOCK PictureBox
-    Move(80,116,20,20)
+    Move(80,634,20,20)
     Visible = False
     Alignment = Align.Center
   }
   { PICSUSPEND PictureBox
-    Move(80,116,20,20)
+    Move(80,634,20,20)
     Alignment = Align.Center
   }
   { PICLOGODISTRO PictureBox
-    Move(21,154,1323,476)
+    Move(28,147,1323,476)
     Picture = Picture.Load("OMA.png")
     Alignment = Align.Center
   }
@@ -398,7 +425,7 @@
     Text = ("Type your choice!")
   }
   { BTNGEOMETRY Button
-    Move(42,112,35,28)
+    Move(42,630,35,28)
     ToolTip = ("Ridimensione e posiziona la finestra")
   }
 }

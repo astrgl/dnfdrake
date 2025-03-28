@@ -164,13 +164,14 @@ Else
   Fmain.$RPMPATH = ""
 Endif
 Fmain.DRAKETRAYUPDATE  
-'************************************************************************************
-If Exist(User.Home &/ ".config/dnfdrake/memosize") Then
-  If Fmain.BTNFULLSCREEN.Visible = True
-     Fmain.BTNFULLSCREEN_Click
-  Else 
-     Fmain.BTNRESIZE_Click
-     Fmain.BTNFULLSCREEN_Click
-  Endif    
-Endif
+
+'*********************NON DOVREBBE SERVIRE PIÙ******************************************************
+' If Exist(User.Home &/ ".config/dnfdrake/memosize") Then
+'   If Fmain.BTNFULLSCREEN.Visible = True
+'      Fmain.BTNFULLSCREEN_Click
+'   Else 
+'      Fmain.BTNRESIZE_Click
+'      Fmain.BTNFULLSCREEN_Click
+'   Endif    
+' Endif
 End

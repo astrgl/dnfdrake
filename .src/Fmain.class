@@ -2481,7 +2481,27 @@ Private Sub DSTRSYNC()
   
   txtConsole.Text = ""
   Shell "ls -R /var/cache/dnf |grep rpm" Wait To $UPDATERETRY  'QUESTO COMANDO SOSTITUISCE QUELLO PRECEDENTE PER FIX DEL RESUMEUPDATA IN ROSALINUX 
-  
+If $ROOTMODE = 1 Then
+  If InStr($UPDATERETRY, "rpm") > 0 Then 
+     FUPDATERESUME.Show
+  Else 
+    Me.Mouse = Mouse.Wait 
+    ' $MEMOCOMMAND = "RECOVERSUSPEND" ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
+    If $LOG = "NOLOG"
+    Print #$hProcess, "su - " & $USERDEFAULT & " -c " & Chr$(34) & "dnf clean all" & Chr$(34) & "; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync" & $VERBOSE & gb.NewLine;
+    FRUNSHOW
+    Wait 2
+    '$MEMOCOMMAND = "RECOVERSUSPEND" ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
+    Endif 
+    If $LOG = "LOG" Then
+    DATATIME
+    Print #$hProcess, "su - " & $USERDEFAULT & " -c " & Chr$(34) & "dnf clean all" & Chr$(34) & "; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+    FRUNSHOW
+    'Wait 2
+    Endif
+  Endif 
+
+Else 
   If InStr($UPDATERETRY, "rpm") > 0 Then 
      FUPDATERESUME.Show
   Else 
@@ -2500,6 +2520,9 @@ Private Sub DSTRSYNC()
     'Wait 2
     Endif
   Endif 
+  
+Endif
+  
   'TEST OM-DNFDRAKE*****************
   FRUNSHOW
   '*********************************
@@ -4054,7 +4077,8 @@ Public Sub BTNDNFCLEAN_Click()
   txtConsole.Text = ""
   $MEMOCOMMAND = "dnf repolist"
   If $ROOTMODE = 1 Then
-   Print #$hProcess, "dnf clean all;" & gb.NewLine;     
+    Print #$hProcess, "su - " & $USERDEFAULT & " -c " & Chr$(34) & "dnf clean all; dnf clean all;" & Chr$(34) & gb.NewLine;  
+   ' Print #$hProcess, "dnf clean all;" & gb.NewLine;     
   Else  
    Print #$hProcess, "sudo dnf clean all; dnf clean all;" & gb.NewLine; 
   Endif

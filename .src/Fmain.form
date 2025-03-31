@@ -69,12 +69,13 @@
     BorderRadius = 10
   }
   { HBox1 HBox
-    Move(119,662,700,28)
+    Move(119,665,700,28)
     { !txtCommand TextBox
-      Move(0,0,161,28)
+      Move(7,0,161,28)
       #Public = True
       Visible = False
       Font = Font["Monospace,10"]
+      Foreground = &HFF0000
       Expand = True
     }
     { !btnCtrlC ToolButton

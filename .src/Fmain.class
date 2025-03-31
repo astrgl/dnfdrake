@@ -2826,6 +2826,7 @@ Public Sub Btncommand_Click()
   txtCommand.SetFocus
   If txtCommand.Visible = False Then
     Btncommand.Text = Btncommand.Text & " ^"
+    Message.Info("Warning, commands will be executed with root!", "Ok")
     HBox1.Visible = True
     HBox1.Tooltip = $HBOX1TOOLTIP
     txtCommand.Visible = True

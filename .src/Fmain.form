@@ -127,7 +127,7 @@
     ReadOnly = True
   }
   { Btncommand Button
-    Move(7,662,110,28)
+    Move(7,665,110,28)
   }
   { Cmbtipoinfo ComboBox
     Move(7,77,190,28)

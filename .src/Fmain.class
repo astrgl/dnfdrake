@@ -588,6 +588,7 @@ Else
    TXTINFOBOX.Text = "Loading..."
    $CLEARTXTPKG = 0
    $MEMOPW = "NOPW"
+   $FLATDRAKESEARCH = ""
 
    
 'PULISCE LE LISTE PROVVISORIE DI INSTALLAZIONE/RIMOZIONE
@@ -661,12 +662,13 @@ $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
   Endif  
   
   'VERIFICA SE DNFDRAKE È LANCIATO DAL FLATDRAKE E ADATTA LA RICERCA** IN TEST MODIFICARE PATH PER VERSIONE ROOT****
-   If Exist(User.Home &/ ".config/flatdrake/flatsearchtmp") Then
-      TimerUPLISTE.Enabled = False
-      Shell "cat " & User.Home &/ ".config/flatdrake/flatsearchtmp" To $FLATDRAKESEARCH
+   If Exist("/tmp/flatdrake/flatsearchtmp") Then
+      'TimerUPLISTE.Enabled = False
+      Shell "cat /tmp/flatdrake/flatsearchtmp" To $FLATDRAKESEARCH
       txtpkg.Text = $FLATDRAKESEARCH
       btncerca_Click
       BTNTABAVIABLE_Click
+      Shell "rm -f /tmp/flatdrake/flatsearchtmp"
    Endif
    
 'COMANDI CON OPZIONE NODEPS**********************************************************************
@@ -718,8 +720,12 @@ If Exist("/tmp/draketray/updates.txt") Then
 Endif
 '*******************************************************
 'Crea le liste**** SPOSTATO***********************************************************************
-    If $OFFLINE = 1 And If FUSERDEFAULT.Visible = False Then
+    If $OFFLINE = 1 And If FUSERDEFAULT.Visible = False And If $FLATDRAKESEARCH = "" Then
        TimerUPLISTE.Enabled = True
+    Else 
+       If $FLATDRAKESEARCH <> "" Then
+          $FLATDRAKESEARCH = ""
+       Endif 
     Endif
 End
 
@@ -2826,7 +2832,7 @@ Public Sub Btncommand_Click()
   txtCommand.SetFocus
   If txtCommand.Visible = False Then
     Btncommand.Text = Btncommand.Text & " ^"
-    Message.Info("Warning, commands will be executed with root!", "Ok")
+    Message.Info("Warning, commands will be executed as root!", "Ok")
     HBox1.Visible = True
     HBox1.Tooltip = $HBOX1TOOLTIP
     txtCommand.Visible = True

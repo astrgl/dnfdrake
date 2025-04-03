@@ -96,6 +96,7 @@ Public $MEMOPW As String             'VARIABILE DOVE VIENE MEMORIZZATA LA PASSWO
 Public $ROOTMODE As Integer          'VARIABILE CHE MEMORIZZA SE IL PROGRAMMA È AVVIATO COME ROOT
 Public $USEARRAY As String[]         'ARRAY CONTENETE GLI UTENTI DEL SISTEMA
 Public $USERDEFAULT As String        'UTENTE DI SISTEMA DI DEFAULT    
+Public $MSGBTNCOMMAND As String      'MESSAGGIO SUL PULSANTE COMMAND CHE I COMANDI VERRANNO ESEGUITI COME ROOT
 
 Public Sub Form_Open()
 'COMANDI
@@ -513,6 +514,7 @@ Else
       LBLTXTSELECTION.Text = Replace(ss$TTP[94], "_", " ")
       $TEMAASK = Replace(ss$TTP[95], "_", " ")
       BTNGEOMETRY.Tooltip = Replace(ss$TTP[99], "_", " ")
+      $MSGBTNCOMMAND = Replace(ss$TTP[100], "_", " ")
      Next
    flTTP.Close
 'TEMA DELLE ICONE**************************************************************      
@@ -2832,7 +2834,7 @@ Public Sub Btncommand_Click()
   txtCommand.SetFocus
   If txtCommand.Visible = False Then
     Btncommand.Text = Btncommand.Text & " ^"
-    Message.Info("Warning, commands will be executed as root!", "Ok")
+    Message.Info($MSGBTNCOMMAND, "Ok")
     HBox1.Visible = True
     HBox1.Tooltip = $HBOX1TOOLTIP
     txtCommand.Visible = True

@@ -99,3 +99,4 @@ The_connection_is_unavailable,_please_check_it!
 Incorrect_Password!
 Allows_you_to_enter_your_password_only_once_for_session
 Resize_and_position_the_window
+Warning,_commands_will_be_executed_as_root!

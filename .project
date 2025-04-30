@@ -2,7 +2,7 @@
 Title=DnfDrake
 Startup=Fmain
 Icon=dnfdrake.svg
-Version=5.0.0
+Version=5.0.80
 Component=gb.image
 Component=gb.qt6
 Component=gb.form
@@ -13,7 +13,6 @@ TabSize=2
 Translate=1
 Language=it
 ControlPublic=1
-SourcePath=/home/mauro/Scrivania/tmp
 Maintainer=Astragalo
 Vendor=Astragalo
 Address=mauro.carbini@gmail.com

@@ -73,19 +73,19 @@ Dim b As Byte
        Wait 0.01
      Next
     TXTSTATO.Text = $LOADINST
-    Shell "dnf list installed > " & User.Home & "/.config/dnfdrake/installati.txt " Wait
+    Shell "dnf list --installed > " & User.Home & "/.config/dnfdrake/installati.txt " Wait
      For b = 10 To 40
        ProgressBar1.Value = b / 100
        Wait 0.01
      Next
      TXTSTATO.Text = $LOADNONINST
-     Shell "dnf list available > " & User.Home & "/.config/dnfdrake/noninstallati.txt" Wait
+     Shell "dnf list --available > " & User.Home & "/.config/dnfdrake/noninstallati.txt" Wait
      For b = 40 To 80
        ProgressBar1.Value = b / 100
        Wait 0.01
      Next
      TXTSTATO.Text = $LOADAGG
-     Shell "dnf list upgrades > " & User.Home & "/.config/dnfdrake/updates.txt " Wait
+     Shell "dnf list --upgrades > " & User.Home & "/.config/dnfdrake/updates.txt " Wait
      For b = 80 To 100
        ProgressBar1.Value = b / 100
        Wait 0.01

@@ -392,7 +392,8 @@ Else
 
 'PAROLE CHIAVE*******************************************************************
  
-  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & $LANG For Read   ' ...oppure "Input"
+'MODIFICA PER DNF5  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & $LANG For Read   ' ...oppure "Input"
+  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-en_US" For Read 
  While Not Eof(flKEY)
    Input #flKEY, s$KEY
    ss$KEY.Add(s$KEY)

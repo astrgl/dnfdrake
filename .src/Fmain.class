@@ -441,8 +441,7 @@ Else
  '*********************************************************************************
  
 'TITOLI E TOOTIP*******************************************************************
-'  flTTP = Open "/usr/share/dnfdrake/dnfdrake-TTP-" & $LANG For Read   ' ...oppure "Input"
-   flTTP = Open "/usr/share/dnfdrake/dnfdrake-TTP-pl_PL" For Read   ' ...oppure "Input"
+  flTTP = Open "/usr/share/dnfdrake/dnfdrake-TTP-" & $LANG For Read   ' ...oppure "Input"
  While Not Eof(flTTP)
    Input #flTTP, s$TTP
    ss$TTP.Add(s$TTP)

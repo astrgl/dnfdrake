@@ -1774,6 +1774,7 @@ Public Sub btncerca_Click()
      Me.Mouse = Mouse.Wait  
      CERCAINSTALLED
      BTNINSTALVIEW
+     
     Endif
  Endif
    '****************************************************************************
@@ -2293,9 +2294,9 @@ Private Sub CERCAINSTALLED()
        ListpkgINSTALLATI.Mode = 0
        ListpkgINSTALLATI.Add(1, $NOTPACKAGES)
        If $COLORTEXT = "color"
-       ListpkgINSTALLATI[1].Foreground = &H0038D079
-       BTNTABAVIABLE_Click
+         ListpkgINSTALLATI[1].Foreground = &H0038D079
        Endif
+       BTNTABAVIABLE_Click
        ListpkgINSTALLATI.Enabled = False
      Endif
      t.Close  

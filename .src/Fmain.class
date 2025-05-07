@@ -332,6 +332,9 @@ Else
       Endif 
       
       Try $SECUREMODE = Replace(ss$CMD[9], "_", " ")
+      'MODIFICA PER DNF5************************************
+      $SECUREMODE = "NOSECURE"
+      '*****************************************************
       If Error Then
       If Exist(User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND")  
       Shell "rm -f " & User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND"
@@ -730,6 +733,8 @@ Endif
           $FLATDRAKESEARCH = ""
        Endif 
     Endif
+    
+    $LANG = "en_US" 'MODIFICA PER DNF5**************************
 End
 
 Public Sub EXCLUDETEST()
@@ -998,7 +1003,13 @@ Private Sub UpdateConsole()
 '******************************************************************************************
     $sText = Mid$($sText, iPos + 1)
     txtConsole.Pos = txtConsole.Length
-    txtConsole.Insert(sStr)
+ 'MODIFICA DNF5**********************
+ '   txtConsole.Insert(sStr)
+
+    If sStr = " " Then
+    Else   
+       txtConsole.Insert(sStr)
+    Endif
 '*****************************************AZIONI EXTRA ************************************************
 'INVIA L'ULTIMA RIGA ALLA FINESTRA FRUN E CONTROLLA GLI ERRORI************************    
     If FRUN.Visible = True   
@@ -2294,8 +2305,9 @@ Private Sub CERCAINSTALLED()
        ListpkgINSTALLATI.Mode = 0
        ListpkgINSTALLATI.Add(1, $NOTPACKAGES)
        If $COLORTEXT = "color"
-       ListpkgINSTALLATI[1].Foreground = &H0038D079
+          ListpkgINSTALLATI[1].Foreground = &H0038D079
        Endif
+       BTNTABAVIABLE_Click
        ListpkgINSTALLATI.Enabled = False
      Endif
      t.Close  

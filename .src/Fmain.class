@@ -734,7 +734,7 @@ Endif
        Endif 
     Endif
     
-    $LANG = "en_US" 'MODIFICA PER DNF5**************************
+    '$LANG = "en_US" 'MODIFICA PER DNF5**************************
 End
 
 Public Sub EXCLUDETEST()

@@ -58,7 +58,8 @@ Endif
    flTTP.Close  
    
 'PAROLE CHIAVE*******************************************************************
-  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & Fmain.$LANG For Read   ' ...oppure "Input"
+    'MODIFICA PER DNF5flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & Fmain.$LANG For Read   ' ...oppure "Input"
+  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-en_US" For Read    
  While Not Eof(flKEY)
    Input #flKEY, s$KEY
    ss$KEY.Add(s$KEY)

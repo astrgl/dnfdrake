@@ -333,7 +333,7 @@ Else
       
       Try $SECUREMODE = Replace(ss$CMD[9], "_", " ")
       'MODIFICA PER DNF5************************************
-      $SECUREMODE = "NOSECURE"
+      '$SECUREMODE = "NOSECURE"
       '*****************************************************
       If Error Then
       If Exist(User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND")  
@@ -1785,7 +1785,6 @@ Public Sub btncerca_Click()
      CERCAAVAILABLE
      Me.Mouse = Mouse.Wait  
      CERCAINSTALLED
-     BTNINSTALVIEW
     Endif
  Endif
    '****************************************************************************
@@ -2309,6 +2308,8 @@ Private Sub CERCAINSTALLED()
        Endif
        BTNTABAVIABLE_Click
        ListpkgINSTALLATI.Enabled = False
+     Else 
+       BTNINSTALVIEW  
      Endif
      t.Close  
      Me.Mouse = Mouse.Default

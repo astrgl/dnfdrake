@@ -129,7 +129,8 @@ End
 
 Public Sub LOADTEXT()
   Me.Mouse = Mouse.Wait
-  Shell "cat " & Fmain.$PATHLOG & "/last.log" & " | sed -n '/=/,/*/p'" To TextArea1.Text
+  'Shell "cat " & Fmain.$PATHLOG & "/last.log" & " | sed -n '/=/,/*/p'" To TextArea1.Text
+  Shell "cat " & Fmain.$PATHLOG & "/last.log" To TextArea1.Text
   Me.Mouse = Mouse.Default
   BTNSI.Enabled = True
   BTNNO.Enabled = True

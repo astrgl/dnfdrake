@@ -2509,14 +2509,14 @@ If $ROOTMODE = 1 Then
     Me.Mouse = Mouse.Wait 
     ' $MEMOCOMMAND = "RECOVERSUSPEND" ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
     If $LOG = "NOLOG"
-    Print #$hProcess, "su - " & $USERDEFAULT & " -c " & Chr$(34) & "dnf clean all" & Chr$(34) & "; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync" & $VERBOSE & gb.NewLine;
+    Print #$hProcess, "su - " & $USERDEFAULT & " -c " & Chr$(34) & "dnf clean all" & Chr$(34) & "; dnf clean all; dnf repolist; sudo dnf distro-sync --refresh --allowerasing" & $VERBOSE & gb.NewLine;
     FRUNSHOW
     Wait 2
     '$MEMOCOMMAND = "RECOVERSUSPEND" ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
     Endif 
     If $LOG = "LOG" Then
     DATATIME
-    Print #$hProcess, "su - " & $USERDEFAULT & " -c " & Chr$(34) & "dnf clean all" & Chr$(34) & "; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+    Print #$hProcess, "su - " & $USERDEFAULT & " -c " & Chr$(34) & "dnf clean all" & Chr$(34) & "; dnf clean all; dnf repolist; sudo dnf distro-sync --refresh --allowerasing | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
     FRUNSHOW
     'Wait 2
     Endif
@@ -2529,14 +2529,14 @@ Else
     Me.Mouse = Mouse.Wait 
     ' $MEMOCOMMAND = "RECOVERSUSPEND" ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
     If $LOG = "NOLOG"
-    Print #$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync" & $VERBOSE & gb.NewLine;
+    Print #$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf distro-sync --refresh --allowerasing" & $VERBOSE & gb.NewLine;
     FRUNSHOW
     Wait 2
     '$MEMOCOMMAND = "RECOVERSUSPEND" ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
     Endif 
     If $LOG = "LOG" Then
     DATATIME
-    Print #$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+    Print #$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf distro-sync --refresh --allowerasing | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
     FRUNSHOW
     'Wait 2
     Endif

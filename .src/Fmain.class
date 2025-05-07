@@ -78,6 +78,7 @@ Public $SEARCH As String
 Public $PASSWORD As String
 Public $RQSTPASSWORD As String
 Public $PROCEDERE As String
+Public $NULLADAFARE As String
 'Public $RIMOSSI As String
 Public $FATTO As String
 Public $NONRIUSCITO As String
@@ -193,7 +194,7 @@ Public Sub Form_Open()
 
 'MODIFICA LINGUA++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ' 
-  If $LANG = "it_IT" Or $LANG = "fr_FR" Or $LANG = "en_US" Or $LANG = "pl_PL" Or $LANG = "en_GB" Or $LANG = "br_BR" Or $LANG = "es_ES" Or $LANG = "de_DE" Or $LANG = "ca_ES" Or $LANG = $templang 
+  If $LANG = "it_IT" Or $LANG = "en_US" Or $LANG = "en_GB" Or $LANG = $templang ' Or $LANG = "fr_FR"Or $LANG = "pl_PL" Or $LANG = "br_BR" Or $LANG = "es_ES"Or $LANG = "de_DE" Or $LANG = "ca_ES"
     Else
         txtlang.Text = "US" 
         $LANG = "en_US"
@@ -332,9 +333,6 @@ Else
       Endif 
       
       Try $SECUREMODE = Replace(ss$CMD[9], "_", " ")
-      'MODIFICA PER DNF5************************************
-      '$SECUREMODE = "NOSECURE"
-      '*****************************************************
       If Error Then
       If Exist(User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND")  
       Shell "rm -f " & User.Home &/ ".config/dnfdrake/dnfdrake-COMMAND"
@@ -395,8 +393,8 @@ Else
 
 'PAROLE CHIAVE*******************************************************************
  
-'MODIFICA PER DNF5  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & $LANG For Read   ' ...oppure "Input"
-  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-en_US" For Read 
+ flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & $LANG For Read   ' ...oppure "Input"
+  'flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-en_US" For Read 
  While Not Eof(flKEY)
    Input #flKEY, s$KEY
    ss$KEY.Add(s$KEY)
@@ -419,7 +417,10 @@ Else
       $FATTO = Replace($FATTO, "_", " ")
 ' OPERAZIONE TERMINATA NON RIUSCITA (NON RIUSCITA)
       $NONRIUSCITO = ss$KEY[7]
-      $NONRIUSCITO = Replace($NONRIUSCITO, "_", " ")      
+      $NONRIUSCITO = Replace($NONRIUSCITO, "_", " ") 
+' NULLA DA FARE
+      $NULLADAFARE = ss$KEY[8]
+      $NULLADAFARE = Replace($NULLADAFARE, "_", " ")          
 
        Next
   flKEY.Close
@@ -1006,10 +1007,10 @@ Private Sub UpdateConsole()
  'MODIFICA DNF5**********************
  '   txtConsole.Insert(sStr)
 
-    If sStr = " " Then
-    Else   
+    ' If Left(sStr, 1) = " " Then
+    ' Else   
        txtConsole.Insert(sStr)
-    Endif
+    ' Endif
 '*****************************************AZIONI EXTRA ************************************************
 'INVIA L'ULTIMA RIGA ALLA FINESTRA FRUN E CONTROLLA GLI ERRORI************************    
     If FRUN.Visible = True   

@@ -796,10 +796,13 @@ Public Sub Process_Read()
         SELECTIONVIEW
        Endif
     '****************************************************************************************
-      If InStr($sText, $FATTO) > 0 Then                           ' OPERAZIONE TERMINATA (FATTO)"
+      If InStr($sText, $FATTO) > 0 Then                         ' OPERAZIONE TERMINATA (FATTO)"
         FOK.Show
       Endif
       If InStr($sText, $NONRIUSCITO) > 0 Then                   ' OPERAZIONE TERMINATA (NON RIUSCITO)"
+        FOK.Show
+      Endif
+      If InStr($sText, $NULLADAFARE) > 0 Then                   ' NULLA DA FARE"
         FOK.Show
       Endif
   Endif 

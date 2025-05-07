@@ -56,7 +56,7 @@ Public Sub BTNRESUME_Click()
       FRUNSHOW
     Endif
   
-  Endif   
+    Endif   
   $SECURE = 1
   Me.Close
 End

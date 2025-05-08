@@ -135,6 +135,7 @@
   }
   { Btncrono Button
     Move(434,42,110,28)
+    Enabled = False
   }
   { Btnclear Button
     Move(1232,665,112,28)

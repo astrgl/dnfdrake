@@ -194,7 +194,7 @@ Public Sub Form_Open()
 
 'MODIFICA LINGUA++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ' 
-  If $LANG = "it_IT" Or $LANG = "en_US" Or $LANG = "en_GB" Or $LANG = $templang ' Or $LANG = "fr_FR"Or $LANG = "pl_PL" Or $LANG = "br_BR" Or $LANG = "es_ES"Or $LANG = "de_DE" Or $LANG = "ca_ES"
+  If $LANG = "it_IT" Or $LANG = "en_US" Or $LANG = "en_GB" Or $LANG = "fr_FR" Or $LANG = "pl_PL" Or $LANG = "br_BR" Or $LANG = "es_ES" Or $LANG = "de_DE" Or $LANG = "ca_ES" Or $LANG = "ru_RU" Or $LANG = $templang 
     Else
         txtlang.Text = "US" 
         $LANG = "en_US"
@@ -1013,6 +1013,7 @@ Private Sub UpdateConsole()
     ' If Left(sStr, 1) = " " Then
     ' Else   
        txtConsole.Insert(sStr)
+       
     ' Endif
 '*****************************************AZIONI EXTRA ************************************************
 'INVIA L'ULTIMA RIGA ALLA FINESTRA FRUN E CONTROLLA GLI ERRORI************************    

@@ -30,6 +30,9 @@ Public $RPMPATH As String
 Public $LOG As String
 Public $VERBOSE As String
 Public $PRINTLOG As Integer
+'**************************************************
+Public $FILELOG As String
+'**************************************************
 Public $DATATIME As String
 Public $SECUREMODE As String
 Public $FRUNMAIN As Integer
@@ -147,17 +150,17 @@ Public Sub Form_Open()
    Endif
    RESOLUTION
 '**********************************************************************************
- 'SERVE PER CHIUDERE TUTTE LE FINESTRE DEL PROGRAMMA APERTE ALL'USCITA**************
+ 'SERVE PER CHIUDERE TUTTE LE FINESTRE DEL PROGRAMMA APERTE ALL'USCITA*************
  
  Application.MainWindow = Me
  
- 'Avvio il processo*****************************************************************
+ 'Avvio il processo****************************************************************
  
  $hProcess = Exec ["sh", "--noediting"] For Input Output As "Process"
   
 '**********************************************************************************
  
- 'controllo esistenza delle directory del programma***************************************************
+ 'controllo esistenza delle directory del programma********************************
    If Not Exist(User.Home &/ ".config/dnfdrake/") Then
       Mkdir User.Home &/ "/.config/dnfdrake/"
    Endif
@@ -171,10 +174,9 @@ Public Sub Form_Open()
       Mkdir "/tmp/dnfdrake/"
       Wait 0.2
    Endif
- '***********************************************************************************************
-  
-'lettura della lingua di sistema e gestione test nuove lingue************************
-'SE SI STA TESTANDO UNA LINGUA ESEGUE QUESTO*****************************************
+
+'lettura della lingua di sistema e gestione test nuove lingue**********************
+'SE SI STA TESTANDO UNA LINGUA ESEGUE QUESTO***************************************
  If txtlang.Text = "**"
        txtlang.Text = Right($LANG, 2)
        Print #$hProcess, "LANG=" & $templang & ".UTF-8" & gb.NewLine;
@@ -187,12 +189,12 @@ Public Sub Form_Open()
        Wait 0.5
        txtConsole.Text = ""   
  Else    
- ' SE NON CI SONO LINGUE IN TEST CARICA LA LINGUA DI SISTEMA DA USARE****************
+ ' SE NON CI SONO LINGUE IN TEST CARICA LA LINGUA DI SISTEMA DA USARE**************
     txtlang.Text = Left(Right(System.Language, -3), 2)
     $LANG = Left(System.Language, 5)
  Endif   
 
-'MODIFICA LINGUA++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'MODIFICA LINGUA*******************************************************************
 ' 
   If $LANG = "it_IT" Or $LANG = "en_US" Or $LANG = "en_GB" Or $LANG = "fr_FR" Or $LANG = "pl_PL" Or $LANG = "br_BR" Or $LANG = "es_ES" Or $LANG = "de_DE" Or $LANG = "ca_ES" Or $LANG = "ru_RU" Or $LANG = $templang 
     Else
@@ -208,7 +210,7 @@ Public Sub Form_Open()
         Message.Info("Your language is unavailable.The interface will change to fallback EN-US", "OK")
    
       Endif
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    
+'***********************************************************************************    
 
 'VERIFICA SE IMPOSTATO AGGIORNAMENTO ROCK O ROLLING******************
     'CONTROLLO PRESENZA ABILITAZIONE VECCHIO DISTROSYNC E CORREZIONE IN NUOVO FORMARTO  
@@ -575,6 +577,24 @@ Else
     Quit 
   Endif 
 
+'CREAZIONE FILE DI LOG - NUOVO LOG DNF5********************************************************************   
+ ' ABILITAZIONE TASTO LOG 
+  If $LOG = "LOG" Then
+    BTNVIEWLOG.Visible = True
+    DATATIME
+    File.Save(User.Home & "/.config/dnfdrake/log/dnfdrake-session-" & $DATATIME, "")
+    $FILELOG = User.Home & "/.config/dnfdrake/log/dnfdrake-session-" & $DATATIME
+  Else 
+    BTNVIEWLOG.Enabled = False
+  Endif
+ '*********************************************************************************
+  
+  
+  
+  
+  
+  
+
 'Azzera le variabili***************************************************************************
    $ListpkgWR = 0
    $ListpkgCK = 0
@@ -612,13 +632,7 @@ Else
 ' ABILITAZIONE / DISABILITAZIONE NODO VERBOSE
 $VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
 
-' ABILITAZIONE TASTO LOG 
-  If $LOG = "LOG" Then
-    BTNVIEWLOG.Visible = True
-  Else 
-    BTNVIEWLOG.Visible = False
-  Endif
-  
+
 'FUNZIONE DA MODIFICARE PER RENDERE IGNORECASE ATTIVO DI DEFAULT**************************  
   'VERIFICA SE IMPOSTATO IGNORE CASE E GESTISCE ATTIVAZIONE DI DEFAULT DELLA FUNZIONE  ***
   If Exist(User.Home &/ ".config/dnfdrake/ignorecase") Then
@@ -956,13 +970,13 @@ Public Sub Process_Error(sStr As String)
 End
 
 Private Sub UpdateConsole()
-
+ 
   Dim iPos As Integer
   Dim sStr As String
   Dim s As String
   Dim sok As String
   Dim p As Integer
-
+ 
   While Len($sText)
     iPos = InStr($sText, "\n")
     If iPos = 0 Then iPos = Len($sText)
@@ -1008,14 +1022,21 @@ Private Sub UpdateConsole()
     $sText = Mid$($sText, iPos + 1)
     txtConsole.Pos = txtConsole.Length
  'MODIFICA DNF5**********************
- '   txtConsole.Insert(sStr)
+     txtConsole.Insert(sStr)
 
-    ' If Left(sStr, 1) = " " Then
-    ' Else   
-       txtConsole.Insert(sStr)
-       
-    ' Endif
+
+
+
+'CREA UN FILE DI LOG DI TUTTA LA SESSIONE *************************************************     
+  If $LOG = "LOG" Then
+     File.Save($FILELOG, File.Load($FILELOG) & sStr)
+  Endif
+    
 '*****************************************AZIONI EXTRA ************************************************
+
+
+
+
 'INVIA L'ULTIMA RIGA ALLA FINESTRA FRUN E CONTROLLA GLI ERRORI************************    
     If FRUN.Visible = True   
        FRUN.MONITORVIEW.Text = sStr
@@ -2514,18 +2535,20 @@ If $ROOTMODE = 1 Then
   Else 
     Me.Mouse = Mouse.Wait 
     ' $MEMOCOMMAND = "RECOVERSUSPEND" ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
-    If $LOG = "NOLOG"
+    'RIGHE COMMENTATE PER NUOVO LOD DNF5*********************************************************************
+    'If $LOG = "NOLOG"
     Print #$hProcess, "su - " & $USERDEFAULT & " -c " & Chr$(34) & "dnf clean all" & Chr$(34) & "; dnf clean all; dnf repolist; sudo dnf distro-sync --refresh --allowerasing" & $VERBOSE & gb.NewLine;
     FRUNSHOW
     Wait 2
     '$MEMOCOMMAND = "RECOVERSUSPEND" ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
-    Endif 
-    If $LOG = "LOG" Then
-    DATATIME
-    Print #$hProcess, "su - " & $USERDEFAULT & " -c " & Chr$(34) & "dnf clean all" & Chr$(34) & "; dnf clean all; dnf repolist; sudo dnf distro-sync --refresh --allowerasing | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
-    FRUNSHOW
-    'Wait 2
-    Endif
+    'Endif 
+    ' If $LOG = "LOG" Then
+    ' DATATIME
+    ' Print #$hProcess, "su - " & $USERDEFAULT & " -c " & Chr$(34) & "dnf clean all" & Chr$(34) & "; dnf clean all; dnf repolist; sudo dnf distro-sync --refresh --allowerasing | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+    ' FRUNSHOW
+    ' 'Wait 2
+    ' Endif
+    '******************************************************************************************************
   Endif 
 
 Else 
@@ -2534,18 +2557,19 @@ Else
   Else 
     Me.Mouse = Mouse.Wait 
     ' $MEMOCOMMAND = "RECOVERSUSPEND" ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
-    If $LOG = "NOLOG"
+     'RIGHE COMMENTATE PER NUOVO LOD DNF5*********************************************************************
+'    If $LOG = "NOLOG"
     Print #$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf distro-sync --refresh --allowerasing" & $VERBOSE & gb.NewLine;
     FRUNSHOW
     Wait 2
     '$MEMOCOMMAND = "RECOVERSUSPEND" ' RIMOSSO IL RIPRISTINO DEL SUSPEND ORA AVVIENE SOLO ALLA CHIUSURA DI DNFDRAKE
-    Endif 
-    If $LOG = "LOG" Then
-    DATATIME
-    Print #$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf distro-sync --refresh --allowerasing | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
-    FRUNSHOW
-    'Wait 2
-    Endif
+    ' Endif 
+    ' If $LOG = "LOG" Then
+    ' DATATIME
+    ' Print #$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf distro-sync --refresh --allowerasing | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+    ' FRUNSHOW
+    ' 'Wait 2
+    ' Endif
   Endif 
   
 Endif
@@ -2567,18 +2591,18 @@ Private Sub DSTUPDATE()
   If InStr($UPDATERETRY, "rpm") > 0 Then 
      FUPDATERESUME.Show
   Else 
-    If $LOG = "NOLOG"
-      Print #$hProcess, $UPDATE & $VERBOSE & gb.NewLine;
-      FRUNSHOW
-    Endif 
-    If $LOG = "LOG" Then
-      DATATIME
-      Print #$hProcess, $UPDATE & "| tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-update.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
-      FRUNSHOW
-    Endif
-    If $AUTOSUSPEND = 1 Then
-      $MEMOCOMMAND = "RECOVERSUSPEND"
-    Endif
+    'If $LOG = "NOLOG"
+     Print #$hProcess, $UPDATE & $VERBOSE & gb.NewLine;
+     FRUNSHOW
+    ' Endif 
+    ' If $LOG = "LOG" Then
+    '   DATATIME
+    '   Print #$hProcess, $UPDATE & "| tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-update.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+    '   FRUNSHOW
+    'Endif
+  If $AUTOSUSPEND = 1 Then
+     $MEMOCOMMAND = "RECOVERSUSPEND"
+  Endif
   Endif 
   'TEST OM-DNFDRAKE*****************
   FRUNSHOW
@@ -4317,17 +4341,23 @@ Public Sub BTNAUTOREMOVE_Click()
       Btnexp2_Click  
    Endif
    Me.Mouse = Mouse.Wait 
-   If $LOG = "NOLOG"
-       Print #$hProcess, "sudo dnf autoremove" & $VERBOSE & gb.NewLine;
-       PICLOGODISTRO.Visible = False  
-       FRUNSHOW
-   Endif 
-   If $LOG = "LOG" Then
-      DATATIME
-      Print #$hProcess, "sudo dnf autoremove | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-autoremove.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
-       PICLOGODISTRO.Visible = False  
-      FRUNSHOW
-   Endif
+ 'AGGIUNTO DOPO NUOVO LOG***********************************************  
+   Print #$hProcess, "sudo dnf autoremove" & $VERBOSE & gb.NewLine;
+   PICLOGODISTRO.Visible = False  
+   FRUNSHOW
+  '*********************************************************************
+  'COMMENTATO DOPO NUOVO LOG******************************************** 
+   ' If $LOG = "NOLOG"
+   '     Print #$hProcess, "sudo dnf autoremove" & $VERBOSE & gb.NewLine;
+   '     PICLOGODISTRO.Visible = False  
+   '     FRUNSHOW
+   ' Endif 
+   ' If $LOG = "LOG" Then
+   '    DATATIME
+   '    Print #$hProcess, "sudo dnf autoremove | tee " & User.Home & "/.config/dnfdrake/log/" & $DATATIME & "-dnfdrakelog-autoremove.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+   '     PICLOGODISTRO.Visible = False  
+   '    FRUNSHOW
+   ' Endif
 
 End
 

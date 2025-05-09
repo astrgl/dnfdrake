@@ -582,8 +582,8 @@ Else
   If $LOG = "LOG" Then
     BTNVIEWLOG.Visible = True
     DATATIME
-    File.Save(User.Home & "/.config/dnfdrake/log/dnfdrake-session-" & $DATATIME, "")
-    $FILELOG = User.Home & "/.config/dnfdrake/log/dnfdrake-session-" & $DATATIME
+    File.Save(User.Home & "/.config/dnfdrake/log/dnfdrake-session-" & $DATATIME & ".log", "")
+    $FILELOG = User.Home & "/.config/dnfdrake/log/dnfdrake-session-" & $DATATIME & ".log"
   Else 
     BTNVIEWLOG.Enabled = False
   Endif
@@ -4080,7 +4080,9 @@ Public Sub BTNVIEWLOG_Click()
    If Dialog.OpenFile(True) Then Return
    For Each $PATHFILELOG In Dialog.Paths
      $PRINTLOG = 1
-     Print #$hProcess, "cat " & $PATHFILELOG 
+     ' Print #$hProcess, "cat " & $PATHFILELOG 
+     txtConsole.Text = File.Load($PATHFILELOG)
+     'Print #$hProcess, "kate " & $PATHFILELOG
      PICLOGODISTRO.Visible = False  
    Next
 Catch

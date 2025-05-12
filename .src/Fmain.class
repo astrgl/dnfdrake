@@ -1026,23 +1026,21 @@ Private Sub UpdateConsole()
         Endif
      Endif
      Endif
-'******************************************************************************************
+'*****************************************************************************************
     $sText = Mid$($sText, iPos + 1)
     txtConsole.Pos = txtConsole.Length
- 'MODIFICA DNF5**********************
+ 'MODIFICA DNF5*****************************************************************************************************
      txtConsole.Insert(sStr)
      
-'TEST******************************************************************
-     File.Save(User.Home & "/.config/dnfdrake/log/lasti.log", File.Load(User.Home & "/.config/dnfdrake/log/lasti.log") & sStr)
-
-
+'FILE DI LOG TEMPORANEO PER LE TRANSAZIONI ************************************************
+     File.Save(User.Home & "/.config/dnfdrake/log/tmp.log", File.Load(User.Home & "/.config/dnfdrake/log/tpm.log") & sStr)
 
 'CREA UN FILE DI LOG DI TUTTA LA SESSIONE *************************************************     
   If $LOG = "LOG" Then
      File.Save($FILELOG, File.Load($FILELOG) & sStr)
   Endif
     
-'*****************************************AZIONI EXTRA ************************************************
+'*****************************************AZIONI EXTRA ************************************
 
 
 

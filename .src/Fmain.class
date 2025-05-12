@@ -2552,7 +2552,7 @@ Private Sub DSTRSYNC()
    Endif
   
   txtConsole.Text = ""
-  Shell "ls -R /var/cache/dnf |grep rpm" Wait To $UPDATERETRY  'QUESTO COMANDO SOSTITUISCE QUELLO PRECEDENTE PER FIX DEL RESUMEUPDATA IN ROSALINUX 
+  Shell "ls -R  /var/cache/libdnf5 |grep rpm" Wait To $UPDATERETRY  'QUESTO COMANDO SOSTITUISCE QUELLO PRECEDENTE PER FIX DEL RESUMEUPDATA IN ROSALINUX 
 If $ROOTMODE = 1 Then
   If InStr($UPDATERETRY, "rpm") > 0 Then 
      FUPDATERESUME.Show
@@ -2613,7 +2613,7 @@ Private Sub DSTUPDATE()
  Endif
   Me.Mouse = Mouse.Wait 
   txtConsole.Text = ""
-  Shell "ls -R /var/cache/dnf |grep rpm " Wait To $UPDATERETRY   'QUESTO COMANDO SOSTITUISCE QUELLO PRECEDENTE PER FIX DEL RESUMEUPDATA IN ROSALINUX 
+  Shell "ls -R /var/cache/libdnf5 |grep rpm " Wait To $UPDATERETRY   'QUESTO COMANDO SOSTITUISCE QUELLO PRECEDENTE PER FIX DEL RESUMEUPDATA IN ROSALINUX 
   If InStr($UPDATERETRY, "rpm") > 0 Then 
      FUPDATERESUME.Show
   Else 

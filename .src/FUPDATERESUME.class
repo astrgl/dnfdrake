@@ -37,25 +37,25 @@ Public Sub BTNRESUME_Click()
   BTNRESUME.Enabled = False
   Fmain.Mouse = Mouse.Wait 
   If Fmain.BTNDISTUPDATE.Visible = True
-    If Fmain.$LOG = "NOLOG"
+    ' If Fmain.$LOG = "NOLOG"
     Print #Fmain.$hProcess, "sudo dnf distro-sync --refresh --allowerasing" & Fmain.$VERBOSE & gb.NewLine;
     FRUNSHOW
-    Endif 
-    If Fmain.$LOG = "LOG" Then
-    Fmain.DATATIME
-    Print #Fmain.$hProcess, "sudo dnf distro-sync --refresh --allowerasing | tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
-    FRUNSHOW
-    Endif
+    ' Endif 
+    ' If Fmain.$LOG = "LOG" Then
+    ' Fmain.DATATIME
+    ' Print #Fmain.$hProcess, "sudo dnf distro-sync --refresh --allowerasing | tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+    ' FRUNSHOW
+    ' Endif
   Else 
-     If Fmain.$LOG = "NOLOG"
+     ' If Fmain.$LOG = "NOLOG"
      Print #Fmain.$hProcess, "sudo dnf  upgrade --refresh" & Fmain.$VERBOSE & gb.NewLine;
      FRUNSHOW
-    Endif 
-    If Fmain.$LOG = "LOG" Then
-      Fmain.DATATIME
-      Print #Fmain.$hProcess, "sudo dnf  upgrade --refresh " & "| tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-update.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
-      FRUNSHOW
-    Endif
+    ' Endif 
+    ' If Fmain.$LOG = "LOG" Then
+    '   Fmain.DATATIME
+    '   Print #Fmain.$hProcess, "sudo dnf  upgrade --refresh " & "| tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-update.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+    '   FRUNSHOW
+    ' Endif
   
     Endif   
   $SECURE = 1
@@ -67,25 +67,25 @@ Public Sub BTNREUPADTE_Click()
   BTNREUPADTE.Enabled = False
   Fmain.Mouse = Mouse.Wait 
   If Fmain.BTNDISTUPDATE.Visible = True
-    If Fmain.$LOG = "NOLOG"
+    ' If Fmain.$LOG = "NOLOG"
     Print #Fmain.$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf distro-sync --refresh --allowerasing" & Fmain.$VERBOSE & gb.NewLine;
     FRUNSHOW
-    Endif 
-    If Fmain.$LOG = "LOG" Then
-    Fmain.DATATIME
-    Print #Fmain.$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf distro-sync --refresh --allowerasing | tee " & User.Home & "/.config/dnfdrake/log/last.log" & Fmain.$DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
-    FRUNSHOW
-    Endif
+    ' Endif 
+    ' If Fmain.$LOG = "LOG" Then
+    ' Fmain.DATATIME
+    ' Print #Fmain.$hProcess, "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf distro-sync --refresh --allowerasing | tee " & User.Home & "/.config/dnfdrake/log/last.log" & Fmain.$DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+    ' FRUNSHOW
+    ' Endif
   Else 
-    If Fmain.$LOG = "NOLOG"
+    ' If Fmain.$LOG = "NOLOG"
       Print #Fmain.$hProcess, Fmain.$UPDATE & Fmain.$VERBOSE & gb.NewLine;
       FRUNSHOW
-    Endif 
-    If Fmain.$LOG = "LOG" Then
-      Fmain.DATATIME
-      Print #Fmain.$hProcess, Fmain.$UPDATE & "| tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-update.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
-      FRUNSHOW
-    Endif
+    ' Endif 
+  '   If Fmain.$LOG = "LOG" Then
+  '     Fmain.DATATIME
+  '     Print #Fmain.$hProcess, Fmain.$UPDATE & "| tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-update.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
+  '     FRUNSHOW
+  '   Endif
   Endif 
   $SECURE = 1  
   Me.Close

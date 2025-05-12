@@ -577,13 +577,22 @@ Else
     Quit 
   Endif 
 
+
+
+
+
+
 'CREAZIONE FILE DI LOG - NUOVO LOG DNF5********************************************************************   
+  If Not Exist(User.Home & "/.config/dnfdrake/log/tmp.log") Then
+     File.Save(User.Home & "/.config/dnfdrake/log/tmp.log", "")
+  Endif
  ' ABILITAZIONE TASTO LOG 
   If $LOG = "LOG" Then
     BTNVIEWLOG.Visible = True
     DATATIME
     File.Save(User.Home & "/.config/dnfdrake/log/dnfdrake-session-" & $DATATIME & ".log", "")
     $FILELOG = User.Home & "/.config/dnfdrake/log/dnfdrake-session-" & $DATATIME & ".log"
+    
   Else 
     BTNVIEWLOG.Enabled = False
   Endif
@@ -629,8 +638,8 @@ Else
   EXCLUDETEST
 
 ' ABILITAZIONE / DISABILITAZIONE NODO VERBOSE
-$VERBOSE = " | tee /dev/null " & User.Home & "/.config/dnfdrake/log/last.log"
-
+$VERBOSE = " | tee /dev/null " '& User.Home & "/.config/dnfdrake/log/last.log"
+'$VERBOSE = " | tee " & User.Home & "/.config/dnfdrake/log/last.log"
 
 'FUNZIONE DA MODIFICARE PER RENDERE IGNORECASE ATTIVO DI DEFAULT**************************  
   'VERIFICA SE IMPOSTATO IGNORE CASE E GESTISCE ATTIVAZIONE DI DEFAULT DELLA FUNZIONE  ***
@@ -1022,7 +1031,9 @@ Private Sub UpdateConsole()
     txtConsole.Pos = txtConsole.Length
  'MODIFICA DNF5**********************
      txtConsole.Insert(sStr)
-
+     
+'TEST******************************************************************
+     File.Save(User.Home & "/.config/dnfdrake/log/lasti.log", File.Load(User.Home & "/.config/dnfdrake/log/lasti.log") & sStr)
 
 
 
@@ -1239,6 +1250,7 @@ End
 
 Public Sub btnupdate_Click()
    'DISABILITAZIONE SUSPEND***************************
+
    If $WAITSUSPEND = 0 Then
         If $AUTOSUSPEND = 1 Then 
           Btnclear_Click
@@ -1262,7 +1274,7 @@ Public Sub txtConsole_KeyPress()
 End
 
 Public Sub btninstall_Click()
-    
+    TMPLOGCLEAN
     Dim a As String
     Dim s As String
     Dim spkg As String
@@ -1386,6 +1398,7 @@ Public Sub txtpkg_Activate()
 End
 
 Public Sub btnremove_Click()
+    TMPLOGCLEAN
     Dim a As String
     Dim s As String
     Dim spkg As String
@@ -1493,6 +1506,7 @@ Public Sub btnremove_Click()
 End
 
 Public Sub BTNPKGUPDATE_Click()
+    TMPLOGCLEAN
     Dim a As String
     Dim s As String
     Dim spkg As String
@@ -2517,13 +2531,24 @@ Endif
 PICLOGODISTRO.Visible = False  
 '************************************************* 
 End 
-Private Sub DSTRSYNC()
+Public Sub TMPLOGCLEAN()
 
+  'PULISCE IL FILE DI LOG TEMPORANEO************************************************
+   If Exist(User.Home & "/.config/dnfdrake/log/tmp.log") Then
+      Kill (User.Home & "/.config/dnfdrake/log/tmp.log")
+   Endif
+   file.Save(User.Home & "/.config/dnfdrake/log/tmp.log", "")
+'*********************************************************************************   
+
+End
+
+Private Sub DSTRSYNC()
+   TMPLOGCLEAN
    Dim $UPDATERETRY As String
    $WAITSUSPEND = 0 
    Btnclear_Click
    If Btnexp2.Text = "EXP2" Then
-   Btnexp2_Click  
+      Btnexp2_Click  
    Endif
   
   txtConsole.Text = ""
@@ -2579,11 +2604,13 @@ Endif
 End
 
 Private Sub DSTUPDATE()
+ TMPLOGCLEAN
  Dim $UPDATERETRY As String
-   Btnclear_Click
-   If Btnexp2.Text = "EXP2" Then
-     Btnexp2_Click  
-   Endif
+ Btnclear_Click
+ 
+ If Btnexp2.Text = "EXP2" Then
+    Btnexp2_Click  
+ Endif
   Me.Mouse = Mouse.Wait 
   txtConsole.Text = ""
   Shell "ls -R /var/cache/dnf |grep rpm " Wait To $UPDATERETRY   'QUESTO COMANDO SOSTITUISCE QUELLO PRECEDENTE PER FIX DEL RESUMEUPDATA IN ROSALINUX 
@@ -3479,7 +3506,7 @@ End
 
 
 Public Sub BTNDOWNDGRADE_Click()
-
+    TMPLOGCLEAN
     Dim a As String
     Dim s As String
     Dim spkg As String
@@ -3977,7 +4004,7 @@ Public Sub BTNPICKER_Click()
 End
 
 Public Sub BTNREINSTALL_Click()
-
+    TMPLOGCLEAN
     Dim a As String
     Dim s As String
     Dim spkg As String
@@ -4099,7 +4126,8 @@ Public Sub BTNREPLAY_Click()
   Else 
       Btnclear_Click
       $PRINTLOG = 1
-      Print #$hProcess, "cat " & $PATHLOG & "/last.log"
+      'Print #$hProcess, "cat " & $PATHLOG & "/last.log"
+      txtConsole.Text = File.Load($FILELOG)
       PICLOGODISTRO.Visible = False  
   Endif
 End
@@ -4337,6 +4365,7 @@ Public Sub BTNMYREPO_Click()
 End
 
 Public Sub BTNAUTOREMOVE_Click()
+   TMPLOGCLEAN
    Btnclear_Click
    If Btnexp2.Text = "EXP2" Then
       Btnexp2_Click  

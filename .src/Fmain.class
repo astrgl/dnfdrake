@@ -32,6 +32,7 @@ Public $VERBOSE As String
 Public $PRINTLOG As Integer
 '**************************************************
 Public $FILELOG As String
+Public $FILETMPLOG As String
 '**************************************************
 Public $DATATIME As String
 Public $SECUREMODE As String
@@ -586,6 +587,7 @@ Else
   If Not Exist(User.Home & "/.config/dnfdrake/log/tmp.log") Then
      File.Save(User.Home & "/.config/dnfdrake/log/tmp.log", "")
   Endif
+  $FILETMPLOG = User.Home & "/.config/dnfdrake/log/tmp.log"
  ' ABILITAZIONE TASTO LOG 
   If $LOG = "LOG" Then
     BTNVIEWLOG.Visible = True
@@ -1033,7 +1035,7 @@ Private Sub UpdateConsole()
      txtConsole.Insert(sStr)
      
 'FILE DI LOG TEMPORANEO PER LE TRANSAZIONI ************************************************
-     File.Save(User.Home & "/.config/dnfdrake/log/tmp.log", File.Load(User.Home & "/.config/dnfdrake/log/tpm.log") & sStr)
+     File.Save($FILETMPLOG, File.Load($FILETMPLOG) & sStr)
 
 'CREA UN FILE DI LOG DI TUTTA LA SESSIONE *************************************************     
   If $LOG = "LOG" Then

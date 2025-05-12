@@ -33,6 +33,7 @@ Endif
 End
 
 Public Sub BTNRESUME_Click()
+  Fmain.TMPLOGCLEAN
   BTNRESUME.Enabled = False
   Fmain.Mouse = Mouse.Wait 
   If Fmain.BTNDISTUPDATE.Visible = True
@@ -62,6 +63,7 @@ Public Sub BTNRESUME_Click()
 End
 
 Public Sub BTNREUPADTE_Click()
+  Fmain.TMPLOGCLEAN
   BTNREUPADTE.Enabled = False
   Fmain.Mouse = Mouse.Wait 
   If Fmain.BTNDISTUPDATE.Visible = True

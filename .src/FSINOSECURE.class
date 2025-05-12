@@ -132,7 +132,7 @@ Public Sub LOADTEXT()
   'Shell "cat " & Fmain.$PATHLOG & "/last.log" & " | sed -n '/=/,/*/p'" To TextArea1.Text
   'Shell "cat " & Fmain.$PATHLOG & "/last.log" To TextArea1.Text
 
-  Shell "cat " & User.Home & "/.config/dnfdrake/log/lasti.log" & " | sed -n '/Package/,/*/p'" To TextArea1.Text
+  Shell "cat " & User.Home & "/.config/dnfdrake/log/tmp.log" & " | sed -n '/Package/,/*/p'" To TextArea1.Text
   
   Me.Mouse = Mouse.Default
   BTNSI.Enabled = True

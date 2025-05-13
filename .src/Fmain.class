@@ -164,17 +164,20 @@ Public Sub Form_Open()
  'controllo esistenza delle directory del programma********************************
    If Not Exist(User.Home &/ ".config/dnfdrake/") Then
       Mkdir User.Home &/ "/.config/dnfdrake/"
+      Wait 0.2
    Endif
    If Not Exist(User.Home &/ ".config/dnfdrake/tmp") Then
       Mkdir User.Home &/ "/.config/dnfdrake/tmp"
+      Wait 0.2
    Endif
    If Not Exist(User.Home &/ ".config/dnfdrake/log") Then
       Mkdir User.Home &/ "/.config/dnfdrake/log"
+      Wait 0.2
    Endif
    If Not Exist("/tmp/dnfdrake/") Then
       Mkdir "/tmp/dnfdrake/"
       Wait 0.2
-   Endif
+   Endif  
 
 'lettura della lingua di sistema e gestione test nuove lingue**********************
 'SE SI STA TESTANDO UNA LINGUA ESEGUE QUESTO***************************************
@@ -578,16 +581,7 @@ Else
     Quit 
   Endif 
 
-
-
-
-
-
 'CREAZIONE FILE DI LOG - NUOVO LOG DNF5********************************************************************   
-  If Not Exist(User.Home & "/.config/dnfdrake/log/tmp.log") Then
-     File.Save(User.Home & "/.config/dnfdrake/log/tmp.log", "")
-  Endif
-  $FILETMPLOG = User.Home & "/.config/dnfdrake/log/tmp.log"
  ' ABILITAZIONE TASTO LOG 
   If $LOG = "LOG" Then
     BTNVIEWLOG.Visible = True
@@ -598,12 +592,13 @@ Else
   Else 
     BTNVIEWLOG.Enabled = False
   Endif
+  
+  If Not Exist(User.Home & "/.config/dnfdrake/log/tmp.log") Then
+     File.Save(User.Home & "/.config/dnfdrake/log/tmp.log", "")
+  Endif
+  $FILETMPLOG = User.Home & "/.config/dnfdrake/log/tmp.log"
  '*********************************************************************************
-  
-  
-  
-  
-  
+
 
 'Azzera le variabili***************************************************************************
    $ListpkgWR = 0
@@ -631,7 +626,7 @@ Else
 'PULISCE LE LISTE PROVVISORIE DI INSTALLAZIONE/RIMOZIONE
   TMPLISTCLEAN
 'Carica il pront**********************************************************************************
- Print #$hProcess, "PS1=" & Chr$(34) & $DNFDRAKEASK & Chr$(34) & gb.NewLine;
+ ' Print #$hProcess, "PS1=" & Chr$(34) & $DNFDRAKEASK & Chr$(34) & gb.NewLine;
  
 'Scrive il path in $RPMPATH se dnfdrake avviato con doppio click su rpm***************************
  $RPMPATH = Replace$(Application.Args[1], " ", Chr$(92) & " ")
@@ -1034,13 +1029,19 @@ Private Sub UpdateConsole()
  'MODIFICA DNF5*****************************************************************************************************
      txtConsole.Insert(sStr)
      
-'FILE DI LOG TEMPORANEO PER LE TRANSAZIONI ************************************************
-     File.Save($FILETMPLOG, File.Load($FILETMPLOG) & sStr)
 
 'CREA UN FILE DI LOG DI TUTTA LA SESSIONE *************************************************     
   If $LOG = "LOG" Then
-     File.Save($FILELOG, File.Load($FILELOG) & sStr)
+     If Exist($FILELOG) Then
+        File.Save($FILELOG, File.Load($FILELOG) & sStr)       
+     Endif
   Endif
+  
+'FILE DI LOG TEMPORANEO PER LE TRANSAZIONI ************************************************
+   If Exist($FILETMPLOG) Then
+      File.Save($FILETMPLOG, File.Load($FILETMPLOG) & sStr)    
+   Endif
+    
     
 '*****************************************AZIONI EXTRA ************************************
 
@@ -1760,10 +1761,11 @@ Public Sub btninfo_Click()
      Print #$hProcess, "dnf provides " & txtpkg.Text & $VERBOSE & gb.NewLine;
      PICLOGODISTRO.Visible = False  
    Endif
-   If Cmbtipoinfo.Index = 1                                         'DIPENDENZE
-      txtConsole.Text = ""
-      Print #$hProcess, "dnf deplist " & txtpkg.Text & " | grep dependency" & $VERBOSE & gb.NewLine;
-      PICLOGODISTRO.Visible = False  
+   If Cmbtipoinfo.Index = 1        
+       Message.Info("Sorry, but this feature is not implemented in dnf5!", "Ok")                                 'DIPENDENZE
+      ' txtConsole.Text = ""
+      ' Print #$hProcess, "dnf deplist " & txtpkg.Text & " | grep dependency" & $VERBOSE & gb.NewLine;
+      ' PICLOGODISTRO.Visible = False  
    Endif
    If Cmbtipoinfo.Index = 2                                            'FILE
      txtConsole.Text = ""

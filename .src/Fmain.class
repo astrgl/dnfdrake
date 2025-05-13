@@ -631,9 +631,9 @@ Else
 
    
 'PULISCE LE LISTE PROVVISORIE DI INSTALLAZIONE/RIMOZIONE
-  TMPLISTCLEAN
+  TMPLISTCLEAN'
 'Carica il pront**********************************************************************************
- ' Print #$hProcess, "PS1=" & Chr$(34) & $DNFDRAKEASK & Chr$(34) & gb.NewLine;
+  Print #$hProcess, "PS1=" & Chr$(34) & $DNFDRAKEASK & Chr$(34) & gb.NewLine;
  
 'Scrive il path in $RPMPATH se dnfdrake avviato con doppio click su rpm***************************
  $RPMPATH = Replace$(Application.Args[1], " ", Chr$(92) & " ")

@@ -1773,8 +1773,9 @@ Public Sub btninfo_Click()
          Print #$hProcess, "rpm -ql " & txtpkg.Text & $VERBOSE & gb.NewLine;
          PICLOGODISTRO.Visible = False  
       Else
-         Print #$hProcess, "repoquery -l " & txtpkg.Text & $VERBOSE & gb.NewLine;
-         PICLOGODISTRO.Visible = False  
+         Message.Info("Sorry, but this feature is not implemented in dnf5!", "Ok") 
+         ' Print #$hProcess, "repoquery -l " & txtpkg.Text & $VERBOSE & gb.NewLine;
+         ' PICLOGODISTRO.Visible = False  
       Endif
    Endif
    If Cmbtipoinfo.index = 4                                             'HOMEPAGE                                              

@@ -103,6 +103,11 @@ Public $USEARRAY As String[]         'ARRAY CONTENETE GLI UTENTI DEL SISTEMA
 Public $USERDEFAULT As String        'UTENTE DI SISTEMA DI DEFAULT    
 Public $MSGBTNCOMMAND As String      'MESSAGGIO SUL PULSANTE COMMAND CHE I COMANDI VERRANNO ESEGUITI COME ROOT
 
+
+'************************************************************
+'Public $FL As File
+
+
 Public Sub Form_Open()
 'COMANDI
  Dim flCMD As File 
@@ -158,6 +163,8 @@ Public Sub Form_Open()
  'Avvio il processo****************************************************************
  
  $hProcess = Exec ["sh", "--noediting"] For Input Output As "Process"
+ 
+
   
 '**********************************************************************************
  
@@ -755,6 +762,8 @@ Endif
     Endif
     
     '$LANG = "en_US" 'MODIFICA PER DNF5**************************
+    
+    '$FL = Open $FILELOG For Write 
 End
 
 Public Sub EXCLUDETEST()
@@ -787,6 +796,7 @@ Public Sub Form_Close()
        Endif 
     Else 
      EXITROUTIN
+     '$FL.Close
     Endif 
 End
 
@@ -1028,12 +1038,18 @@ Private Sub UpdateConsole()
     txtConsole.Pos = txtConsole.Length
  'MODIFICA DNF5*****************************************************************************************************
      txtConsole.Insert(sStr)
+     ' Print #$FL, sStr
      
 
 'CREA UN FILE DI LOG DI TUTTA LA SESSIONE *************************************************     
-  If $LOG = "LOG" Then
+   If $LOG = "LOG" Then
      If Exist($FILELOG) Then
-        File.Save($FILELOG, File.Load($FILELOG) & sStr)       
+        File.Save($FILELOG, File.Load($FILELOG) & sStr)    
+  '       ' Dim FL As File
+  '       ' FL = Open $FILELOG For Append 
+  '        'Write #$FL, sStr
+  '       ' FL.Close
+  '       'Shell "echo " & sStr & " >> " & $FILELOG
      Endif
   Endif
   
@@ -1732,7 +1748,7 @@ Public Sub Btnexp2_Click()
 End
 
 Public Sub btninfo_Click()
-   
+   TMPLOGCLEAN
    Btnclear_Click
    TABHIDE
    If Listpkg.Visible = True Then
@@ -1788,6 +1804,7 @@ Public Sub btninfo_Click()
 End 
 
 Public Sub btncerca_Click()
+     TMPLOGCLEAN
      $STATUS = 1                                  ' AGGIUNTA A VERSIONE 1.17.32 PER LA GESTIONE DEL TASTO PULISCI
    If Cmbtipo.index = 0 Then                      'TUTTI
     If $OFFLINE = 0 
@@ -3714,7 +3731,7 @@ Public Sub ListpkgUPGRADE_Click()
 End
 
 Public Sub BTNVERSLOCK_Click()
-
+    TMPLOGCLEAN
      Dim a As String
      Dim s As String
      Dim spkg As String

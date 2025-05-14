@@ -1044,18 +1044,22 @@ Private Sub UpdateConsole()
 'CREA UN FILE DI LOG DI TUTTA LA SESSIONE *************************************************     
    If $LOG = "LOG" Then
      If Exist($FILELOG) Then
-        File.Save($FILELOG, File.Load($FILELOG) & sStr)    
-  '       ' Dim FL As File
-  '       ' FL = Open $FILELOG For Append 
-  '        'Write #$FL, sStr
-  '       ' FL.Close
+       ' File.Save($FILELOG, File.Load($FILELOG) & sStr)    
+          Dim FL As File
+          FL = Open $FILELOG For Append 
+          Write #FL, sStr
+          FL.Close
   '       'Shell "echo " & sStr & " >> " & $FILELOG
      Endif
   Endif
   
 'FILE DI LOG TEMPORANEO PER LE TRANSAZIONI ************************************************
    If Exist($FILETMPLOG) Then
-      File.Save($FILETMPLOG, File.Load($FILETMPLOG) & sStr)    
+      Dim FTL As File
+      FTL = Open $FILETMPLOG For Append 
+      Write #FTL, sStr
+      FL.Close
+      'File.Save($FILETMPLOG, File.Load($FILETMPLOG) & sStr)    
    Endif
     
     
@@ -2969,7 +2973,7 @@ End
 
 
 Public Sub Btnclear_Click()
-
+    TMPLOGCLEAN
     Listpkg.SelectAll
     Listpkg.Clear
     Listpkg.UnSelectAll

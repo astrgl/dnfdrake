@@ -1036,11 +1036,8 @@ Private Sub UpdateConsole()
 '*****************************************************************************************
     $sText = Mid$($sText, iPos + 1)
     txtConsole.Pos = txtConsole.Length
+    txtConsole.Insert(sStr)
  'MODIFICA DNF5*****************************************************************************************************
-     txtConsole.Insert(sStr)
-     ' Print #$FL, sStr
-     
-
 'CREA UN FILE DI LOG DI TUTTA LA SESSIONE *************************************************     
    If $LOG = "LOG" Then
      If Exist($FILELOG) Then
@@ -1049,7 +1046,6 @@ Private Sub UpdateConsole()
           FL = Open $FILELOG For Append 
           Write #FL, sStr
           FL.Close
-  '       'Shell "echo " & sStr & " >> " & $FILELOG
      Endif
   Endif
   
@@ -1058,16 +1054,10 @@ Private Sub UpdateConsole()
       Dim FTL As File
       FTL = Open $FILETMPLOG For Append 
       Write #FTL, sStr
-      FL.Close
-      'File.Save($FILETMPLOG, File.Load($FILETMPLOG) & sStr)    
+      FTL.Close
    Endif
-    
-    
+
 '*****************************************AZIONI EXTRA ************************************
-
-
-
-
 'INVIA L'ULTIMA RIGA ALLA FINESTRA FRUN E CONTROLLA GLI ERRORI************************    
     If FRUN.Visible = True   
        FRUN.MONITORVIEW.Text = sStr
@@ -2206,13 +2196,13 @@ Private Sub CERCAUPDATE()
         If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
             p = p + ListpkgUPGRADE.Count
 'FIX LUNGHEZZA NOME******************************************            
-               If Len(s) < 80 Then
-                 s = s & "     ***...name too long***"
+               If Len(s) < 140 Then
+               '   s = s & "     ***...name too long***"
                  N = Len(s)
-                 While N < 80
-                   s = s & " "
-                   N = N + 1
-                 Wend 
+               While N < 140
+                 s = s & " "
+                 N = N + 1
+               Wend 
                Endif
 '***********************************************************
             ListpkgUPGRADE.add(p, s & "     Upgrades")
@@ -2224,10 +2214,10 @@ Private Sub CERCAUPDATE()
                 If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If InStr(s, RTrim$(LTrim$(txtpkg.Text)), 0, gb.IgnoreCase)
                   p = p + ListpkgUPGRADE.Count
 'FIX LUNGHEZZA NOME******************************************            
-               If Len(s) < 80 Then
-                 s = s & "     ***...name too long***"
+               If Len(s) < 140 Then
+               '   s = s & "     ***...name too long***"
                  N = Len(s)
-                 While N < 80
+                 While N < 140
                    s = s & " "
                    N = N + 1
                  Wend 
@@ -2243,10 +2233,10 @@ Private Sub CERCAUPDATE()
                 If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If InStr(s, RTrim$(LTrim$(txtpkg.Text)))
                   p = p + ListpkgUPGRADE.Count
 'FIX LUNGHEZZA NOME******************************************            
-               If Len(s) < 80 Then
-                 s = s & "     ***...name too long***"
+               If Len(s) < 140 Then
+               '   s = s & "     ***...name too long***"
                  N = Len(s)
-                 While N < 80
+                 While N < 140
                    s = s & " "
                    N = N + 1
                  Wend 
@@ -2279,6 +2269,7 @@ Private Sub CERCAAVAILABLE()
      Dim s As String
      Dim t As Stream
      Dim p As Integer
+     Dim N As Integer 
      Me.Mouse = Mouse.Wait  
       ListpkgAVAILABLE.Mode = 2
       ListpkgAVAILABLE.Enabled = True
@@ -2288,6 +2279,16 @@ Private Sub CERCAAVAILABLE()
      For Each s In t.Lines
         If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
             p = p + ListpkgAVAILABLE.Count
+'FIX LUNGHEZZA NOME******************************************            
+               If Len(s) < 142 Then
+               '   s = s & "     ***...name too long***"
+                 N = Len(s)
+                 While N < 142
+                   s = s & " "
+                   N = N + 1
+                 Wend 
+               Endif
+'***********************************************************
             ListpkgAVAILABLE.add(p, s & "   Available")
                 If $COLORTEXT = "color"
                   ListpkgAVAILABLE[p].Foreground = &H00F47E59
@@ -2296,6 +2297,16 @@ Private Sub CERCAAVAILABLE()
             If $CASE = 1 Then
                  If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If InStr(s, RTrim$(LTrim$(txtpkg.Text)), 0, gb.IgnoreCase)
                     p = p + ListpkgAVAILABLE.Count
+'FIX LUNGHEZZA NOME******************************************            
+               If Len(s) < 142 Then
+               '   s = s & "     ***...name too long***"
+                 N = Len(s)
+                 While N < 142
+                   s = s & " "
+                   N = N + 1
+                 Wend 
+               Endif
+'***********************************************************
                     ListpkgAVAILABLE.add(p, s & "   Available")
                       If $COLORTEXT = "color"
                         ListpkgAVAILABLE[p].Foreground = &H00F47E59
@@ -2304,6 +2315,16 @@ Private Sub CERCAAVAILABLE()
             Else  
                  If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If InStr(s, RTrim$(LTrim$(txtpkg.Text)))
                     p = p + ListpkgAVAILABLE.Count
+'FIX LUNGHEZZA NOME******************************************            
+               If Len(s) < 142 Then
+               '   s = s & "     ***...name too long***"
+                 N = Len(s)
+                 While N < 142
+                   s = s & " "
+                   N = N + 1
+                 Wend 
+               Endif
+'***********************************************************
                     ListpkgAVAILABLE.add(p, s & "   Available")
                       If $COLORTEXT = "color"
                         ListpkgAVAILABLE[p].Foreground = &H00F47E59
@@ -2330,6 +2351,9 @@ Private Sub CERCAINSTALLED()
      Dim s As String
      Dim t As Stream
      Dim p As Integer
+     
+      Dim N As Integer
+     
      Me.Mouse = Mouse.Wait  
      ListpkgINSTALLATI.Mode = 2
      ListpkgINSTALLATI.Enabled = True
@@ -2339,6 +2363,16 @@ Private Sub CERCAINSTALLED()
      For Each s In t.Lines 
             If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
                p = p + ListpkgINSTALLATI.Count
+               'FIX LUNGHEZZA NOME******************************************            
+               If Len(s) < 140 Then
+               '   s = s & "     ***...name too long***"
+                 N = Len(s)
+                 While N < 140
+                    s = s & " "
+                    N = N + 1
+                 Wend 
+               Endif
+               '************************************************************
                ListpkgINSTALLATI.add(p, s & "     Installed")
                   If $COLORTEXT = "color"
                     ListpkgINSTALLATI[p].Foreground = &H0038D079
@@ -2347,6 +2381,16 @@ Private Sub CERCAINSTALLED()
                If $CASE = 1 Then
                   If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If InStr(s, RTrim$(LTrim$(txtpkg.Text)), 0, gb.IgnoreCase) Then
                      p = p + ListpkgINSTALLATI.Count
+                'FIX LUNGHEZZA NOME******************************************            
+                      If Len(s) < 140 Then
+                     '   s = s & "     ***...name too long***"
+                         N = Len(s)
+                         While N < 140
+                            s = s & " "
+                           N = N + 1
+                         Wend 
+                      Endif
+               '************************************************************
                      ListpkgINSTALLATI.add(p, s & "     Installed")
                         If $COLORTEXT = "color"
                            ListpkgINSTALLATI[p].Foreground = &H0038D079
@@ -2355,6 +2399,16 @@ Private Sub CERCAINSTALLED()
                Else  
                   If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If InStr(s, RTrim$(LTrim$(txtpkg.Text))) Then
                      p = p + ListpkgINSTALLATI.Count
+                'FIX LUNGHEZZA NOME******************************************            
+                      If Len(s) < 140 Then
+                     '   s = s & "     ***...name too long***"
+                         N = Len(s)
+                         While N < 140
+                            s = s & " "
+                           N = N + 1
+                         Wend 
+                      Endif
+               '************************************************************
                      ListpkgINSTALLATI.add(p, s & "     Installed")
                         If $COLORTEXT = "color"
                            ListpkgINSTALLATI[p].Foreground = &H0038D079

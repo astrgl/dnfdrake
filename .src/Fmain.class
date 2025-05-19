@@ -157,6 +157,9 @@ Public Sub Form_Open()
 '**********************************************************************************
  
  'controllo esistenza delle directory del programma***************************************************
+   If Not Exist(User.Home &/ ".config/") Then
+      Mkdir User.Home &/ "/.config/"
+   Endif
    If Not Exist(User.Home &/ ".config/dnfdrake/") Then
       Mkdir User.Home &/ "/.config/dnfdrake/"
    Endif

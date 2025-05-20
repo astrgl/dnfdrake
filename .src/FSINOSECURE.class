@@ -4,6 +4,7 @@
 'variabili di sistema
  Public $SI As String
  Public $NO As String
+ Public $ASK As String
  Public $SECURE As Integer
 Public Sub Form_Open()
  'pulsanti
@@ -59,13 +60,15 @@ Endif
    
 'PAROLE CHIAVE*******************************************************************
     'MODIFICA PER DNF5flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & Fmain.$LANG For Read   ' ...oppure "Input"
-  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-en_US" For Read    
+  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & Fmain.$LANG For Read    
  While Not Eof(flKEY)
    Input #flKEY, s$KEY
    ss$KEY.Add(s$KEY)
   Wend
    Close #flKEY
   For jKEY = 0 To ss$KEY.Max
+    
+    $ASK = Replace(ss$KEY[2], "_", " ") & "?"
 'risposta si
       $SI = Replace(ss$KEY[5], "_", " ")
 'risposta no
@@ -131,9 +134,43 @@ Public Sub LOADTEXT()
   Me.Mouse = Mouse.Wait
   'Shell "cat " & Fmain.$PATHLOG & "/last.log" & " | sed -n '/=/,/*/p'" To TextArea1.Text
   'Shell "cat " & Fmain.$PATHLOG & "/last.log" To TextArea1.Text
-
-  Shell "cat " & User.Home & "/.config/dnfdrake/log/tmp.log" & " | sed -n '/Package/,/*/p'" To TextArea1.Text
+ ' Public Sub FIXTXTUPDATE()
+  ' Dim fl As File
+  ' Dim s As String
+  ' Dim s1 As String
+  ' Dim s2 As String
+  ' Dim txt As String
+  ' fl = Open Fmain.$FILETMPLOG
+  ' While Not Eof(fl)
+  '    s = fl.ReadLine()
+  ' Wend
+  ' fl.Close
+  ' 
+  ' If InStr(s, Fmain.$PROCEDERE) Then
+  '    'Message.info("OK", "ok")
+  '    Shell "cat " & User.Home & "/.config/dnfdrake/log/tmp.log" & " | sed -n '/Package/,/*/p'" To TextArea1.Text
+  ' Else 
+  '    Dim ss As String[]
+  '    'Shell "cat " & Fmain.$FILETMPLOG & " |grep Total" To s
+  '    'ss = Scan(s, "* Total *")
+  '    'Shell "cat " & Fmain.$FILETMPLOG & " |grep After" To s1
+  '    Shell "cat " & Fmain.$FILETMPLOG & " |grep ]:" To s2
+  '    Dim sss As String[]
+  '    sss = Scan(s2, "*]:* ")
+  '    'Shell "sed -i 's/Total " & ss[1] & "//g' " & $FILETMPLOG
+  '    ' Shell "sed -i " & Chr(34) & "/Total " & ss[1] & " /d" & Chr(34) & Fmain.$FILETMPLOG
+  '    Shell "cat " & User.Home & "/.config/dnfdrake/log/tmp.log" & " | sed -n '/Package/,/*/p'" To txt 
+  '    'TextArea1.Text = txt & gb.NewLine & "Total " & ss[1] & s1 & sss[0] & "]:" & gb.NewLine
+  '    TextArea1.Text = txt & gb.NewLine & sss[0] & "]:" & gb.NewLine
+  ' Endif
   
+  
+'End
+  
+  
+  Shell "cat " & User.Home & "/.config/dnfdrake/log/tmp.log" & " | sed -n '/Package/,/*/p'" To TextArea1.Text
+  LBLASK.Text = $ASK
+  'Fmain.FIXTXTUPDATE
   Me.Mouse = Mouse.Default
   BTNSI.Enabled = True
   BTNNO.Enabled = True

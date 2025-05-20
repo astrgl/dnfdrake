@@ -3,6 +3,7 @@
 { Form Form
   Move(0,0,1366,700)
   #Scaled = False
+  Enabled = False
   Text = ("DnfDrake")
   Icon = Picture["dnfdrake.png"]
   Resizable = False
@@ -135,7 +136,6 @@
   }
   { Btncrono Button
     Move(434,42,110,28)
-    Enabled = False
   }
   { Btnclear Button
     Move(1232,665,112,28)
@@ -430,5 +430,9 @@
   { BTNGEOMETRY Button
     Move(42,630,35,28)
     ToolTip = ("Ridimensione e posiziona la finestra")
+  }
+  { TMRSINO #Timer
+    #Move(1176,77)
+    Delay = 500
   }
 }

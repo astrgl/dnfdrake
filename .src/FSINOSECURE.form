@@ -1,22 +1,28 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,127,74)
+  MoveScaled(0,0,164,79)
   Icon = Picture["dnfdrake.svg"]
   Resizable = False
   { BTNSI Button
-    MoveScaled(7,69,16,4)
+    MoveScaled(7,73,16,4)
   }
   { BTNNO Button
-    MoveScaled(104,69,16,4)
+    MoveScaled(141,73,16,4)
   }
   { TextArea1 TextArea
-    MoveScaled(1,1,125,67)
+    MoveScaled(1,1,162.1429,67)
     Font = Font["Monospace"]
   }
   { Timer1 #Timer
-    #MoveScaled(60,65)
+    #MoveScaled(79,61)
     Enabled = True
     Delay = 10
+  }
+  { LBLASK Label
+    MoveScaled(64.5714,70,35,4)
+    Alignment = Align.Center
+    Border = Border.Plain
+    BorderRadius = 15
   }
 }

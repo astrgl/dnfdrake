@@ -164,11 +164,12 @@ Public Sub Form_Open()
  
  $hProcess = Exec ["sh", "--noediting"] For Input Output As "Process"
  
-
-  
 '**********************************************************************************
- 
  'controllo esistenza delle directory del programma********************************
+   If Not Exist(User.Home &/ ".config/") Then
+      Mkdir User.Home &/ "/.config/"
+   Endif
+      Wait 0.2
    If Not Exist(User.Home &/ ".config/dnfdrake/") Then
       Mkdir User.Home &/ "/.config/dnfdrake/"
       Wait 0.2
@@ -207,8 +208,8 @@ Public Sub Form_Open()
 
 'MODIFICA LINGUA*******************************************************************
 ' 
-  If $LANG = "it_IT" Or $LANG = "en_US" Or $LANG = "en_GB" Or $LANG = "fr_FR" Or $LANG = "pl_PL" Or $LANG = "br_BR" Or $LANG = "es_ES" Or $LANG = "de_DE" Or $LANG = "ca_ES" Or $LANG = "ru_RU" Or $LANG = $templang 
-    Else
+  If $LANG = "it_IT" Or $LANG = "en_US" Or $LANG = "en_GB" Or $LANG = "fr_FR" Or $LANG = "pl_PL" Or $LANG = "br_BR" Or $LANG = "es_ES" Or $LANG = "de_DE" Or $LANG = "ca_ES" Or $LANG = "ru_RU" Or $LANG = $templang Then
+  Else
         txtlang.Text = "US" 
         $LANG = "en_US"
         Print #$hProcess, "LANG=en_US.UTF-8" & gb.NewLine;
@@ -220,7 +221,7 @@ Public Sub Form_Open()
         Print #$hProcess, "LC_CTYPE=en_US.UTF-8" & gb.NewLine;
         Message.Info("Your language is unavailable.The interface will change to fallback EN-US", "OK")
    
-      Endif
+  Endif
 '***********************************************************************************    
 
 'VERIFICA SE IMPOSTATO AGGIORNAMENTO ROCK O ROLLING******************
@@ -643,13 +644,14 @@ Else
 
 ' ABILITAZIONE / DISABILITAZIONE NODO VERBOSE
 $VERBOSE = " | tee /dev/null " '& User.Home & "/.config/dnfdrake/log/last.log"
+
+'$VERBOSE = " | tee " & $FILETMPLOG 
 '$VERBOSE = " | tee " & User.Home & "/.config/dnfdrake/log/last.log"
 
 'FUNZIONE DA MODIFICARE PER RENDERE IGNORECASE ATTIVO DI DEFAULT**************************  
   'VERIFICA SE IMPOSTATO IGNORE CASE E GESTISCE ATTIVAZIONE DI DEFAULT DELLA FUNZIONE  ***
   If Exist(User.Home &/ ".config/dnfdrake/ignorecase") Then
     If File.Load(User.Home &/ ".config/dnfdrake/ignorecase") = "" Then
-       'Message.Info("VUOTO", "ok")
        File.Save(User.Home &/ "/.config/dnfdrake/ignorecase", "1") 
     Endif
   Else
@@ -815,6 +817,7 @@ Public Sub Process_Read()
       Endif 
       If InStr($sText, $PROCEDERE) > 0 Then                        'PROCEDERE AD INSTALLARE
           If $SECUREMODE = "SECURE" Then
+            Wait 0.05
             FSINOSECURE.Show
           Else 
             FSINO.Show    
@@ -1041,7 +1044,6 @@ Private Sub UpdateConsole()
 'CREA UN FILE DI LOG DI TUTTA LA SESSIONE *************************************************     
    If $LOG = "LOG" Then
      If Exist($FILELOG) Then
-       ' File.Save($FILELOG, File.Load($FILELOG) & sStr)    
           Dim FL As File
           FL = Open $FILELOG For Append 
           Write #FL, sStr
@@ -2022,6 +2024,35 @@ Public Sub VERIFYSUSPEND()
     PICSUSPENDLOCK.Visible = False
   Endif          
 End
+' Public Sub FIXTXTUPDATE()
+'   Dim fl As File
+'   Dim s As String
+'   Dim s1 As String
+'   Dim s2 As String
+'   Dim s3 As String
+'   fl = Open $FILETMPLOG
+'   While Not Eof(fl)
+'      s = fl.ReadLine()
+'   Wend
+'   fl.Close
+'   If InStr(s, $PROCEDERE) Then
+'      Message.info("OK", "ok")
+'   Else 
+'      Dim ss As String[]
+'      Shell "cat " & $FILETMPLOG & " |grep Total" To s
+'      ss = Scan(s, "* Total *")
+'      Shell "cat " & $FILETMPLOG & " |grep After" To s1
+'      Shell "cat " & $FILETMPLOG & " |grep ]:" To s2
+'      Dim sss As String[]
+'      sss = Scan(s2, "*]:* ")
+'      'Shell "sed -i 's/Total " & ss[1] & "//g' " & $FILETMPLOG
+'      Shell "sed -i " & Chr(34) & "/Total " & ss[1] & " /d" & Chr(34) & $FILETMPLOG
+'      FSINOSECURE.TextArea1.Text = FSINOSECURE.TextArea1.Text & gb.NewLine & "Total " & ss[1] & s1 & sss[0] & "]:" & gb.NewLine
+'   Endif
+'   
+'   
+' End
+
 
 Private Sub RESOLUTION()
 
@@ -3020,7 +3051,7 @@ Public Sub Btncrono_Click()
    Btnexp2_Click  
    Endif
    txtConsole.Text = ""
-   Print #$hProcess, "dnf history" & gb.NewLine;
+   Print #$hProcess, "dnf history list" & gb.NewLine;
    PICLOGODISTRO.Visible = False  
   
 End
@@ -4614,6 +4645,7 @@ End
 
 Public Sub BORDOCONNECT_MouseDown()
 End
+
 
 Public Sub BTNGEOMETRY_Click()
 

@@ -39,7 +39,9 @@ Public Sub Form_Open()
  
   Wait 0.2
   Fmain.Enabled = False  
-  btnstop.SetFocus
+  If FRUN.Visible = True Then
+     btnstop.SetFocus 
+  Endif
   
   If Fmain.PICLOGODISTRO.Visible = True Then
      Fmain.PICLOGODISTRO.Visible = False

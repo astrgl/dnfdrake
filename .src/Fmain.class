@@ -1854,7 +1854,7 @@ Public Sub btncerca_Click()
               Endif
              txtConsole.Text = ""  
             Me.Mouse = Mouse.Wait  
-            Print #$hProcess, "dnf list installed" & gb.NewLine;
+            Print #$hProcess, "dnf list --installed" & gb.NewLine;
              PICLOGODISTRO.Visible = False 
           Else
               If Btnexp1.Text = "EXP1" Then
@@ -1862,7 +1862,7 @@ Public Sub btncerca_Click()
               Endif
                 Btnclear_Click
                 Me.Mouse = Mouse.Wait  
-                Print #$hProcess, "dnf list installed| grep " & txtpkg.Text & gb.NewLine;
+                Print #$hProcess, "dnf list --installed| grep " & txtpkg.Text & gb.NewLine;
                  PICLOGODISTRO.Visible = False 
           Endif
      $MEMOCOMMAND = "MOUSEDEFAULT"
@@ -1889,7 +1889,7 @@ Public Sub btncerca_Click()
                 Endif
               txtConsole.Text = ""
               Me.Mouse = Mouse.Wait  
-              Print #$hProcess, "dnf list available" & gb.NewLine; 
+              Print #$hProcess, "dnf list --available" & gb.NewLine; 
                PICLOGODISTRO.Visible = False 
             Else
                 If Btnexp1.Text = "EXP1" Then
@@ -1897,7 +1897,7 @@ Public Sub btncerca_Click()
                 Endif
                 Btnclear_Click
                 Me.Mouse = Mouse.Wait  
-                Print #$hProcess, "dnf " & $SEARCH & " list available | grep " & txtpkg.Text & gb.NewLine;
+                Print #$hProcess, "dnf " & $SEARCH & " list --available | grep " & txtpkg.Text & gb.NewLine;
                  PICLOGODISTRO.Visible = False   
             Endif
      $MEMOCOMMAND = "MOUSEDEFAULT"
@@ -1924,7 +1924,7 @@ Public Sub btncerca_Click()
                 Endif
                txtConsole.Text = ""
                Me.Mouse = Mouse.Wait  
-               Print #$hProcess, "dnf list upgrades" & gb.NewLine;
+               Print #$hProcess, "dnf list --upgrades" & gb.NewLine;
                 PICLOGODISTRO.Visible = False  
             Else
                 If Btnexp1.Text = "EXP1" Then
@@ -1932,7 +1932,7 @@ Public Sub btncerca_Click()
                 Endif
                 Btnclear_Click
                 Me.Mouse = Mouse.Wait  
-                Print #$hProcess, "dnf list upgrades  |grep " & txtpkg.Text & gb.NewLine;
+                Print #$hProcess, "dnf list --upgrades  |grep " & txtpkg.Text & gb.NewLine;
                  PICLOGODISTRO.Visible = False  
             Endif
      $MEMOCOMMAND = "MOUSEDEFAULT"
@@ -1962,11 +1962,11 @@ If Cmbtipo.index = 4 Then                     'AUTOREMOVE
       Endif
       If $LOG = "LOG" Then
           Me.Mouse = Mouse.Wait  
-          Print #$hProcess, "dnf list autoremove" & $VERBOSE & gb.NewLine;
+          Print #$hProcess, "dnf list --autoremove" & $VERBOSE & gb.NewLine;
            PICLOGODISTRO.Visible = False 
         Else 
           Me.Mouse = Mouse.Wait  
-          Print #$hProcess, "dnf list autoremove" & gb.NewLine;
+          Print #$hProcess, "dnf list --autoremove" & gb.NewLine;
            PICLOGODISTRO.Visible = False 
       Endif
     $MEMOCOMMAND = "MOUSEDEFAULT" 
@@ -1991,7 +1991,7 @@ If Cmbtipo.index = 4 Then                     'AUTOREMOVE
      btnpkg.Visible = False
   '*************************************************
      Me.Mouse = Mouse.Wait  
-     Print #$hProcess, "dnf list autoremove" & $VERBOSE & gb.NewLine;
+     Print #$hProcess, "dnf list --autoremove" & $VERBOSE & gb.NewLine;
       PICLOGODISTRO.Visible = False 
      Me.Mouse = Mouse.Wait  
      $MEMOCOMMAND = "AUTOREMOVE"
@@ -2543,7 +2543,7 @@ Private Sub CERCAAUTOREMOVE()
      BTNTABINSTALLED.SetFocus
      BTNTABINSTALLED_Click
     ' LBLBTNINSTALLATI.Visible = False
-     t = Open User.Home & "/.config/dnfdrake/log/last.log"
+     t = Open User.Home & "/.config/dnfdrake/log/tmp.log"
      For Each s In t.Lines 
             If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") Then
                p = p + ListpkgINSTALLATI.Count

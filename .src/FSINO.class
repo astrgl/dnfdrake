@@ -51,7 +51,11 @@ Public Sub Form_Open()
 'PAROLE CHIAVE*******************************************************************
  
   'MODIFICA PER DNF5 flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & Fmain.$LANG For Read   ' ...oppure "Input"
-  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-en_US" For Read 
+ If Fmain.$DNFVERSION = "DNF5" Then
+  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY5-" & Fmain.$LANG For Read   ' ...oppure "Input"
+ Else 
+  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & Fmain.$LANG For Read   ' ...oppure "Input"
+ Endif 
  While Not Eof(flKEY)
    Input #flKEY, s$KEY
    ss$KEY.Add(s$KEY)

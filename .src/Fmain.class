@@ -2752,7 +2752,7 @@ Private Sub DSTUPDATE()
 End
 Private Sub DNFVERSION()
   
-  Shell " rpm -qa |grep dnf-5 " To $DNFVERSION
+  Shell "dnf --version |grep dnf " To $DNFVERSION
   If InStr($DNFVERSION, "dnf-5") Or If InStr($DNFVERSION, "dnf5") Then
      $DNFVERSION = "DNF5"
      LBLDNFVERSION.Text = "DNF5"

@@ -34,7 +34,7 @@
     Alignment = Align.Center
   }
   { !txtpkg TextBox
-    Move(77,7,494,28)
+    Move(119,7,455,28)
     #Public = True
     Expand = True
     Alignment = Align.Left
@@ -434,5 +434,11 @@
   { TMRSINO #Timer
     #Move(1176,77)
     Delay = 500
+  }
+  { LBLDNFVERSION Label
+    Move(75,7,42,28)
+    Alignment = Align.Center
+    Border = Border.Plain
+    BorderRadius = 14
   }
 }

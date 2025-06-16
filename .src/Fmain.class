@@ -2754,8 +2754,10 @@ Private Sub DNFVERSION()
   Shell " rpm -qa |grep dnf-5 " To $DNFVERSION
   If InStr($DNFVERSION, "dnf-5") Then
      $DNFVERSION = "DNF5"
+     LBLDNFVERSION.Text = "DNF5"
   Else 
      $DNFVERSION = "DNF4"         
+     LBLDNFVERSION.Text = "DNF4"
   Endif
   
 End

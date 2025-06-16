@@ -21,6 +21,7 @@
   }
   { LBLASK Label
     MoveScaled(64.5714,70,35,4)
+    Visible = False
     Alignment = Align.Center
     Border = Border.Plain
     BorderRadius = 15

@@ -433,9 +433,10 @@ Endif
       $NONRIUSCITO = ss$KEY[7]
       $NONRIUSCITO = Replace($NONRIUSCITO, "_", " ") 
 ' NULLA DA FARE
-      $NULLADAFARE = ss$KEY[8]
-      $NULLADAFARE = Replace($NULLADAFARE, "_", " ")          
-
+    If $DNFVERSION = "DNF5" Then
+       $NULLADAFARE = ss$KEY[8]
+       $NULLADAFARE = Replace($NULLADAFARE, "_", " ")          
+    Endif
        Next
   flKEY.Close
    'COMBOTIPO************************************************************************

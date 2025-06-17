@@ -4,7 +4,7 @@
 'variabili di sistema
  Public $SI As String
  Public $NO As String
- Public $ASK As String
+ 'Public $ASK As String
  Public $SECURE As Integer
 Public Sub Form_Open()
  'pulsanti
@@ -73,7 +73,7 @@ Endif
    Close #flKEY
   For jKEY = 0 To ss$KEY.Max
     
-    $ASK = Replace(ss$KEY[2], "_", " ") & "?"
+    '$ASK = Replace(ss$KEY[2], "_", " ") & "?"
 'risposta si
       $SI = Replace(ss$KEY[5], "_", " ")
 'risposta no
@@ -174,7 +174,7 @@ Public Sub LOADTEXT()
   
   
   Shell "cat " & User.Home & "/.config/dnfdrake/log/tmp.log" & " | sed -n '/Package/,/*/p'" To TextArea1.Text
-  LBLASK.Text = $ASK
+  'LBLASK.Text = $ASK
   'Fmain.FIXTXTUPDATE
   Me.Mouse = Mouse.Default
   BTNSI.Enabled = True

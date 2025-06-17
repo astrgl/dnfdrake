@@ -55,6 +55,7 @@ Endif
    Close #flTTP
   For jTTP = 0 To ss$TTP.Max
       FSINO.Text = Replace(ss$TTP[23], "_", " ")
+      LBLASK.Text = Replace(ss$TTP[101], "_", " ")
        Next
    flTTP.Close  
    

@@ -14,7 +14,7 @@
     BorderRadius = 8
   }
   { BORDOCONNECT Label
-    Move(42,7,28,27)
+    Move(40,7,28,27)
     Alignment = Align.Center
     Border = Border.Plain
     BorderRadius = 14
@@ -28,13 +28,13 @@
     Text = ("MONITOR")
   }
   { PCTDISCONNECT PictureBox
-    Move(42,7,28,27)
+    Move(40,7,28,27)
     Visible = False
     Picture = Picture.Load("icon:/16/disconnect")
     Alignment = Align.Center
   }
   { !txtpkg TextBox
-    Move(119,7,455,28)
+    Move(119,7,452,28)
     #Public = True
     Expand = True
     Alignment = Align.Left
@@ -265,7 +265,7 @@
     Delay = 1500
   }
   { PCTCONNECT PictureBox
-    Move(42,7,28,27)
+    Move(40,7,28,27)
     Visible = False
     Picture = Picture.Load("icon:/16/connect")
     Alignment = Align.Center
@@ -436,7 +436,7 @@
     Delay = 500
   }
   { LBLDNFVERSION Label
-    Move(75,7,42,28)
+    Move(73,7,42,28)
     Alignment = Align.Center
     Border = Border.Plain
     BorderRadius = 14

@@ -114,8 +114,8 @@
     Text = ("Secure Mode")
   }
   { CHKCLEARLOG CheckBox
-    MoveScaled(48,65,29,4)
-    Text = ("Delete Log after               days")
+    MoveScaled(48,65,32,4)
+    Text = ("Delete Log after                 days")
     Value = CheckBox.True
   }
   { CMBDAYSLOG ComboBox
@@ -126,7 +126,7 @@
     MoveScaled(4,77,77,4)
     Border = Border.Plain
     BorderRadius = 12
-    Text = ("Default user of system:                                     User home dir: ")
+    Text = ("Default user of system:                                        User home dir: ")
   }
   { CMBUSERDEFAULT ComboBox
     MoveScaled(27,77.4286,16,3.2857)

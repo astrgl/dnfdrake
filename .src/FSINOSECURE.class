@@ -1,11 +1,12 @@
 ' Gambas class file
 
-
+' Gambas class file
 'variabili di sistema
  Public $SI As String
  Public $NO As String
  'Public $ASK As String
  Public $SECURE As Integer
+ Public $SEDWORD As String
 Public Sub Form_Open()
  'pulsanti
  Dim flBTN As File  
@@ -43,7 +44,7 @@ Endif
   For jBTN = 0 To ss$BTN.Max
      BTNSI.Text = ss$BTN[16]
      BTNNO.Text = ss$BTN[17]
-      Next
+     Next
    flBTN.Close      
    
 'TITOLI E TOOTIP*******************************************************************
@@ -77,7 +78,9 @@ Endif
 'risposta si
       $SI = Replace(ss$KEY[5], "_", " ")
 'risposta no
-        $NO = Replace(ss$KEY[6], "_", " ")
+      $NO = Replace(ss$KEY[6], "_", " ")
+' PAROLA CHIAVE PER SED
+     $SEDWORD = Replace(ss$KEY[9], "_", " ")    
     Next
    flKEY.Close
  '*********************************************************************************
@@ -137,45 +140,13 @@ End
 
 Public Sub LOADTEXT()
   Me.Mouse = Mouse.Wait
-  'Shell "cat " & Fmain.$PATHLOG & "/last.log" & " | sed -n '/=/,/*/p'" To TextArea1.Text
-  'Shell "cat " & Fmain.$PATHLOG & "/last.log" To TextArea1.Text
- ' Public Sub FIXTXTUPDATE()
-  ' Dim fl As File
-  ' Dim s As String
-  ' Dim s1 As String
-  ' Dim s2 As String
-  ' Dim txt As String
-  ' fl = Open Fmain.$FILETMPLOG
-  ' While Not Eof(fl)
-  '    s = fl.ReadLine()
-  ' Wend
-  ' fl.Close
-  ' 
-  ' If InStr(s, Fmain.$PROCEDERE) Then
-  '    'Message.info("OK", "ok")
-  '    Shell "cat " & User.Home & "/.config/dnfdrake/log/tmp.log" & " | sed -n '/Package/,/*/p'" To TextArea1.Text
-  ' Else 
-  '    Dim ss As String[]
-  '    'Shell "cat " & Fmain.$FILETMPLOG & " |grep Total" To s
-  '    'ss = Scan(s, "* Total *")
-  '    'Shell "cat " & Fmain.$FILETMPLOG & " |grep After" To s1
-  '    Shell "cat " & Fmain.$FILETMPLOG & " |grep ]:" To s2
-  '    Dim sss As String[]
-  '    sss = Scan(s2, "*]:* ")
-  '    'Shell "sed -i 's/Total " & ss[1] & "//g' " & $FILETMPLOG
-  '    ' Shell "sed -i " & Chr(34) & "/Total " & ss[1] & " /d" & Chr(34) & Fmain.$FILETMPLOG
-  '    Shell "cat " & User.Home & "/.config/dnfdrake/log/tmp.log" & " | sed -n '/Package/,/*/p'" To txt 
-  '    'TextArea1.Text = txt & gb.NewLine & "Total " & ss[1] & s1 & sss[0] & "]:" & gb.NewLine
-  '    TextArea1.Text = txt & gb.NewLine & sss[0] & "]:" & gb.NewLine
-  ' Endif
   
+  If Fmain.$DNFVERSION = "DNF5" Then
+     Shell "cat " & User.Home & "/.config/dnfdrake/log/tmp.log" & " | sed -n '/" & $SEDWORD & "/,/*/p'" To TextArea1.Text 
+  Else 
+     Shell "cat " & Fmain.$PATHLOG & "/last.log" & " | sed -n '/=/,/*/p'" To TextArea1.Text  
+  Endif 
   
-'End
-  
-  
-  Shell "cat " & User.Home & "/.config/dnfdrake/log/tmp.log" & " | sed -n '/Package/,/*/p'" To TextArea1.Text
-  'LBLASK.Text = $ASK
-  'Fmain.FIXTXTUPDATE
   Me.Mouse = Mouse.Default
   BTNSI.Enabled = True
   BTNNO.Enabled = True

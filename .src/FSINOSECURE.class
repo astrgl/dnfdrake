@@ -144,9 +144,9 @@ Public Sub LOADTEXT()
   Me.Mouse = Mouse.Wait
   
   If Fmain.$DNFVERSION = "DNF5" Then
-     Shell "cat " & User.Home & "/.config/dnfdrake/log/tmp.log" & " | sed -n '/" & $SEDWORD & "/,/*/p'" To TextArea1.Text 
+     Shell "cat " & Fmain.$PATHLOG & "/tmp.log" & " | sed -n '/" & $SEDWORD & "/,/*/p'" To TextArea1.Text 
   Else 
-     Shell "cat " & Fmain.$PATHLOG & "/last.log" & " | sed -n '/=/,/*/p'" To TextArea1.Text  
+     Shell "cat " & Fmain.$PATHLOG & "/tmp.log" & " | sed -n '/=/,/*/p'" To TextArea1.Text  
   Endif 
   
   Me.Mouse = Mouse.Default

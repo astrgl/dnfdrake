@@ -86,7 +86,11 @@ Dim b As Byte
        Wait 0.01
      Next
      TXTSTATO.Text = $LOADAGG
-     Shell "dnf list --upgrades --refresh > " & User.Home & "/.config/dnfdrake/updates.txt " Wait
+     Shell "dnf list --upgrades > " & User.Home & "/.config/dnfdrake/updates.txt " Wait
+
+'MODIFICA SOSPESA PER VERIFICARE SE IL PROBLEMA DELLA VISUALIZZAZIONE AGGIORNAMENTI SI RIPRESENTA, SENZA MODIFICA È PIÙ VELOCE****
+     'Shell "dnf list --upgrades --refresh > " & User.Home & "/.config/dnfdrake/updates.txt " Wait
+
      For b = 80 To 100
        ProgressBar1.Value = b / 100
        Wait 0.01

@@ -80,7 +80,9 @@ Endif
 'risposta no
       $NO = Replace(ss$KEY[6], "_", " ")
 ' PAROLA CHIAVE PER SED
-     $SEDWORD = Replace(ss$KEY[9], "_", " ")    
+   If Fmain.$DNFVERSION = "DNF5" Then
+      $SEDWORD = Replace(ss$KEY[9], "_", " ")         
+   Endif
     Next
    flKEY.Close
  '*********************************************************************************

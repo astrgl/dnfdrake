@@ -144,7 +144,7 @@ Public Sub LOADTEXT()
   Me.Mouse = Mouse.Wait
   
   If Fmain.$DNFVERSION = "DNF5" Then
-     Shell "cat " & Fmain.$FILETMPLOG & " | sed -n '/" & $SEDWORD & "/,/*/p'" To TextArea1.Text 
+     Shell "cat " & Fmain.$FILETMPLOG & " | sed -n '/" & $SEDWORD & "/,/*/p'" To TextArea1.Text
   Else 
      Shell "cat " & Fmain.$FILETMPLOG & " | sed -n '/=/,/*/p'" To TextArea1.Text  
   Endif 

@@ -206,8 +206,6 @@ Public Sub Form_Open()
 ' 
   If $LANG = "it_IT" Or $LANG = "en_US" Or $LANG = "en_GB" Or $LANG = "fr_FR" Or $LANG = "pl_PL" Or $LANG = "br_BR" Or $LANG = "es_ES" Or $LANG = "de_DE" Or $LANG = "ca_ES" Or $LANG = "ru_RU" Or $LANG = $templang Then
   Else
-        '$LANG = "en_US"
-       
         txtlang.Text = "US" 
         $LANG = "en_US"
         Print #$hProcess, "LANG=en_US.UTF-8" & gb.NewLine;
@@ -217,7 +215,7 @@ Public Sub Form_Open()
         Print #$hProcess, "LC_COLLATE=C" & gb.NewLine;
         Wait 0.1
         Print #$hProcess, "LC_CTYPE=en_US.UTF-8" & gb.NewLine;
-        Message.Info("Your language is unavailable.The interface will change to fallback EN-US", "OK")
+        'Message.Info("Your language is unavailable.The interface will change to fallback EN-US", "OK")
    
   Endif
 '***********************************************************************************    

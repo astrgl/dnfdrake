@@ -4,6 +4,7 @@
   MoveScaled(0,0,164,79)
   Icon = Picture["dnfdrake.svg"]
   Resizable = False
+  Opacity = 95
   { BTNSI Button
     MoveScaled(7,73,16,4)
   }

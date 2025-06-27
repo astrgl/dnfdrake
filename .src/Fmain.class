@@ -1775,13 +1775,14 @@ Public Sub btninfo_Click()
      PICLOGODISTRO.Visible = False  
    Endif
    If Cmbtipoinfo.Index = 1        
-      If $DNFVERSION = "DNF5" Then
-         Message.Info("Sorry, but this feature is not implemented in dnf5!", "Ok")                                 'DIPENDENZE
-       Else 
+      ' If $DNFVERSION = "DNF5" Then
+      '    Message.Info("Sorry, but this feature is not implemented in dnf5!", "Ok")                                 'DIPENDENZE
+      '  Else 
         txtConsole.Text = ""
-        Print #$hProcess, "dnf deplist " & txtpkg.Text & " | grep dependency" & $VERBOSE & gb.NewLine;
+        'VECCHIO COMANDO **** Print #$hProcess, "dnf deplist " & txtpkg.Text & " | grep dependency" & $VERBOSE & gb.NewLine;
+        Print #$hProcess, "dnf repoquery --requires " & txtpkg.Text & $VERBOSE & gb.NewLine;
         PICLOGODISTRO.Visible = False  
-       Endif  
+       ' Endif  
    Endif
    If Cmbtipoinfo.Index = 2                                            'FILE
      txtConsole.Text = ""

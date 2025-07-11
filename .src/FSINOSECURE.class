@@ -89,8 +89,9 @@ Endif
 'risposta no
       $NO = Replace(ss$KEY[6], "_", " ")
 ' PAROLA CHIAVE PER SED
-   If Fmain.$DNFVERSION = "DNF5" Then
+   If Fmain.$DNFVERSIONNUMBER > 50000 Then
       $SEDWORD = Replace(ss$KEY[9], "_", " ")         
+      Print $SEDWORD
    Endif
     Next
    flKEY.Close
@@ -152,7 +153,7 @@ End
 Public Sub LOADTEXT()
   Me.Mouse = Mouse.Wait
   
-  If Fmain.$DNFVERSION = "DNF5" Then
+  If Fmain.$DNFVERSIONNUMBER > 50000 Then
      Shell "cat " & Fmain.$FILETMPLOG & " | sed -n '/" & $SEDWORD & "/,/*/p'" To TextArea1.Text
   Else 
      Shell "cat " & Fmain.$FILETMPLOG & " | sed -n '/=/,/*/p'" To TextArea1.Text  

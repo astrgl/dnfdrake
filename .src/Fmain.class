@@ -408,6 +408,7 @@ If $DNFVERSIONNUMBER > 53399 Then
   flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY5_14-" & $LANG For Read   ' ...oppure "Input"
 Else If $DNFVERSIONNUMBER > 50000 Then 
     flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY5-" & $LANG For Read
+    Print "5.11.0"
 Else   
     flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & $LANG For Read   ' ...oppure "Input"
 Endif

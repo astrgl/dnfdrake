@@ -77,6 +77,7 @@ Public $PATHICONS As String         'PATH DELLE ICONE
 Public $TEMAASK As String           'TRADUZIONE DOMANDA TEMA
 Public $DISTRO As String            'VERIFICA DISTRO IN ESECUZIONE
 Public $DNFVERSION As String        'VERSIONE DI DNF
+Public $DNFVERSIONNUMBER As Integer 'NUMERO VERSIONE DI DNF
 'VARIABILI EXTRA OPTIONS*****************************************************************************
 Public $SEARCH As String
 'PAROLE CHIAVE LETTURA STRINGA E MESSAGGI************************************************************
@@ -403,11 +404,12 @@ Else
 
 'PAROLE CHIAVE*******************************************************************
 DNFVERSION
-If $DNFVERSION = "DNF5" Then
-  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY5-" & $LANG For Read   ' ...oppure "Input"
-Else 
- flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & $LANG For Read   ' ...oppure "Input"
-  'flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-en_US" For Read 
+If $DNFVERSIONNUMBER > 53399 Then
+  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY5_14-" & $LANG For Read   ' ...oppure "Input"
+Else If $DNFVERSIONNUMBER > 50000 Then 
+    flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY5-" & $LANG For Read
+Else   
+    flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & $LANG For Read   ' ...oppure "Input"
 Endif
  While Not Eof(flKEY)
    Input #flKEY, s$KEY
@@ -2748,15 +2750,35 @@ Private Sub DSTUPDATE()
   '*********************************
 End
 Private Sub DNFVERSION()
-  
-  Shell "dnf --version |grep dnf " To $DNFVERSION
-  If InStr($DNFVERSION, "dnf-5") Or If InStr($DNFVERSION, "dnf5") Then
-     $DNFVERSION = "DNF5"
-     LBLDNFVERSION.Text = "DNF5"
-  Else 
-     $DNFVERSION = "DNF4"         
-     LBLDNFVERSION.Text = "DNF4"
-  Endif
+  Dim s As String
+  Dim ss As String[]
+  Dim n As Integer
+  Dim m As Integer
+  Dim j As Byte
+  $DNFVERSIONNUMBER = 0
+  'Shell "dnf --version |grep dnf " To $DNFVERSION
+  Shell "dnf --version |grep dnf |sed -n 1p |sed 's/.* //g'" To $DNFVERSION
+  ss = Split($DNFVERSION, ".", "", True)
+  m = 10000
+  For j = 0 To ss.Max
+    $DNFVERSIONNUMBER = $DNFVERSIONNUMBER + (Val(ss[j]) * m)
+    m = m / 10
+  Next 
+  Fmain.Title = Fmain.Title & " - dnf " & $DNFVERSION
+ 
+ 
+ 
+  ' Print $DNFVERSIONNUMBER
+
+  ' If InStr($DNFVERSION, "dnf-5") Or If InStr($DNFVERSION, "dnf5") Then
+  '    $DNFVERSION = "DNF5"
+  '    'LBLDNFVERSION.Text = "DNF5"
+  '    'Fmain.Title = Fmain.Title & " - Dnf-" & $DNFVERSIONNUMBER
+  ' Else 
+  '    $DNFVERSION = "DNF4"         
+  '    'LBLDNFVERSION.Text = "DNF4"
+  '    'Fmain.Title = Fmain.Title & " - Dnf4"
+  ' Endif
   
 End
 

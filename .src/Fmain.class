@@ -404,13 +404,13 @@ Else
 
 'PAROLE CHIAVE*******************************************************************
 DNFVERSION
-If $DNFVERSIONNUMBER > 53399 Then
+If $DNFVERSIONNUMBER > 50213 Then
   flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY5_14-" & $LANG For Read   ' ...oppure "Input"
 Else If $DNFVERSIONNUMBER > 50000 Then 
     flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY5-" & $LANG For Read
-    Print "5.11.0"
 Else   
     flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & $LANG For Read   ' ...oppure "Input"
+    
 Endif
  While Not Eof(flKEY)
    Input #flKEY, s$KEY
@@ -436,7 +436,7 @@ Endif
       $NONRIUSCITO = ss$KEY[7]
       $NONRIUSCITO = Replace($NONRIUSCITO, "_", " ") 
 ' NULLA DA FARE
-    If $DNFVERSION = "DNF5" Then
+    If $DNFVERSIONNUMBER > 50000 Then
        $NULLADAFARE = ss$KEY[8]
        $NULLADAFARE = Replace($NULLADAFARE, "_", " ")          
     Endif
@@ -2774,7 +2774,7 @@ Private Sub DNFVERSION()
   m = 10000
   For j = 0 To ss.Max
     $DNFVERSIONNUMBER = $DNFVERSIONNUMBER + (Val(ss[j]) * m)
-    m = m / 10
+    m = m / 100
   Next 
   Fmain.Title = Fmain.Title & " - dnf " & $DNFVERSION
  

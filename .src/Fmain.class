@@ -2756,8 +2756,19 @@ Private Sub DNFVERSION()
   Dim m As Integer
   Dim j As Byte
   $DNFVERSIONNUMBER = 0
-  'Shell "dnf --version |grep dnf " To $DNFVERSION
-  Shell "dnf --version |grep dnf |sed -n 1p |sed 's/.* //g'" To $DNFVERSION
+  Shell "dnf --version |grep dnf " To $DNFVERSION
+  If InStr($DNFVERSION, "dnf-5") Or If InStr($DNFVERSION, "dnf5") Then
+     $DNFVERSION = "DNF5"
+  Else 
+     $DNFVERSION = "DNF4"         
+  Endif
+  
+  If $DNFVERSION = "DNF5"
+     Shell "dnf --version |grep dnf |sed -n 1p |sed 's/.* //g'" To $DNFVERSION
+  Else 
+    Shell "dnf --version |sed -n 1p" To $DNFVERSION
+  Endif 
+  
   ss = Split($DNFVERSION, ".", "", True)
   m = 10000
   For j = 0 To ss.Max

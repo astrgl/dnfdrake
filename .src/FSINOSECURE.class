@@ -68,7 +68,7 @@ Endif
  '  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & Fmain.$LANG For Read   ' ...oppure "Input"
  ' Endif 
  
- If Fmain.$DNFVERSIONNUMBER > 53399 Then
+ If Fmain.$DNFVERSIONNUMBER > 50213 Then
   flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY5_14-" & Fmain.$LANG For Read   ' ...oppure "Input"
 Else If Fmain.$DNFVERSIONNUMBER > 50000 Then 
     flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY5-" & Fmain.$LANG For Read

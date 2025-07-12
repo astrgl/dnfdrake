@@ -2777,6 +2777,7 @@ Private Sub DNFVERSION()
     m = m / 100
   Next 
   Fmain.Title = Fmain.Title & " - dnf " & $DNFVERSION
+  Print $DNFVERSIONNUMBER
  
  
  

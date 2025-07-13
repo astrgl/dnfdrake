@@ -2777,10 +2777,6 @@ Private Sub DNFVERSION()
     m = m / 100
   Next 
   Fmain.Title = Fmain.Title & " - dnf " & $DNFVERSION
-  Print $DNFVERSIONNUMBER
- 
- 
- 
   ' Print $DNFVERSIONNUMBER
 
   ' If InStr($DNFVERSION, "dnf-5") Or If InStr($DNFVERSION, "dnf5") Then

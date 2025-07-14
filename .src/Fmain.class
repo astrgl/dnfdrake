@@ -3076,6 +3076,7 @@ Public Sub Btncommand_Click()
       txtConsole.Height = 476 - (768 - Fmain.Height) + 70  'MODIFICA*********************************
     Endif
     PICLOGODISTRO.Visible = False  
+    txtCommand.SetFocus
   Else
       Btncommand.Text = Left(Btncommand.Text, -2)
       HBox1.Visible = False
@@ -3085,8 +3086,7 @@ Public Sub Btncommand_Click()
       btnCtrlZ.Visible = False
       Btnexp2_Click 
       PICLOGODISTRO.Visible = True
-       
-      
+      txtpkg.SetFocus
   Endif
 
 End

@@ -91,7 +91,7 @@ Endif
 ' PAROLA CHIAVE PER SED
    If Fmain.$DNFVERSIONNUMBER > 50000 Then
       $SEDWORD = Replace(ss$KEY[9], "_", " ")         
-      Print $SEDWORD
+      ' Print $SEDWORD
    Endif
     Next
    flKEY.Close

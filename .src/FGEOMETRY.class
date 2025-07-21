@@ -8,9 +8,9 @@ Public Sub Form_Open()
     SPBXX.Enabled = True
     SPBXY.Enabled = True  
   Else 
-  LBLDESCRIZIONE2.Tooltip = "This function not work with wayland :-(" 
-  SPBXX.Tooltip = LBLDESCRIZIONE2.Tooltip
-  SPBXY.Tooltip = LBLDESCRIZIONE2.Tooltip
+    LBLDESCRIZIONE2.Tooltip = "This function not work with wayland :-(" 
+    SPBXX.Tooltip = LBLDESCRIZIONE2.Tooltip
+    SPBXY.Tooltip = LBLDESCRIZIONE2.Tooltip
   Endif
   BTNEXIT.Picture = Fmain.Btnclose.Picture
   BTNEXIT.Tooltip = Fmain.Btnclose.Tooltip

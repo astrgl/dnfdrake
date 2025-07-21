@@ -2751,9 +2751,9 @@ Private Sub DSTUPDATE()
   '*********************************
 End
 Private Sub DNFVERSION()
-  Dim s As String
+  ' Dim s As String
   Dim ss As String[]
-  Dim n As Integer
+  ' Dim n As Integer
   Dim m As Integer
   Dim j As Byte
   $DNFVERSIONNUMBER = 0

@@ -1,23 +1,26 @@
 
-DnfDrake is a frontend for DNF Packge Manager
-This software is licensed under 
-the GNU General Public License version 3 (GPLv3)
+Dnf Drake — это интерфейс для
+менеджера пакетов DNF.
+Это программное обеспечение лицензировано
+в соответствии с лицензией
+GNU General Public License версии 3 (GPLv3).
 
-Author :
+Автор :
 Astragalo (Mauro Carbini)
 mauro.carbini@gmail.com
 
-Translation and Testing:
+Перевод и тестирование:
 rugyada
 raphael
 angrypenguin (Damian Marcin Szymański)
 zeroability
 Ben Bullard
 mandian
-and the Transifex OpenMandriva teams
+и Transifex OpenMandriva teams
+VictorR2007 Poca
 
-A special thanks to the:
-Gambas.it group
-Oxygen and Breeze icon theme
+Особая благодарность:
+Группе Gambas.it
+Тема значков Oxygen и Breeze
 
-Dedicated to all MIB friends!
+Посвящается всем друзьям MIB!

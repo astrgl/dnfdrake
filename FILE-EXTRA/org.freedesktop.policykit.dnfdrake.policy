@@ -6,8 +6,10 @@
     <action id="org.freedesktop.policykit.pkexec.dnfdrake">
     <description>Run DnfDrake program</description>
      <description xml:lang="it">Esegui DnfDrake come root</description>
+     <description xml:lang="ru">Запустить программу DnfDrake</description>
     <message>Authentication is required to run DnfDrake as root</message>
      <message xml:lang="it">È richiesto autenticarsi per eseguire DnfDrake come root</message>
+     <message xml:lang="ru">Для запуска программы DnfDrake, выполните аутентификацию.</message>
     <icon_name>accessories-text-editor</icon_name>
     <defaults>
         <allow_any>auth_admin</allow_any>

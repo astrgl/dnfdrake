@@ -33,6 +33,8 @@ Public Sub Form_Open()
   BTNSI.Y = BTNSI.Y + (FSINOSECURE.Height - 518)
   BTNNO.X = BTNNO.X + (FSINOSECURE.Width - 889)
   BTNNO.Y = BTNNO.Y + (FSINOSECURE.Height - 518)
+  LBLASK.Y = LBLASK.Y + (FSINOSECURE.Height - 518)
+  LBLASK.X = LBLASK.X + (FSINOSECURE.Width - 889) 
 Endif
 '**************************************************
  flBTN = Open "/usr/share/dnfdrake/dnfdrake-BTN-" & Fmain.$LANG For Read   ' ...oppure "Input"

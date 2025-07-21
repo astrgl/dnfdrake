@@ -76,12 +76,13 @@ Public Sub Form_Open()
           Else 
             CHKSECUREMODE.Value = False
         Endif
-        
 End
 
 Public Sub BTNDEFAULT_Click()
   BTNDEFAULT.Enabled = False
   Print #Fmain.$hProcess, "rm -f " & User.Home & "/.config/dnfdrake/dnfdrake-COMMAND" & gb.NewLine;
+  Wait 0.2
+  Print #Fmain.$hProcess, "rm -f " & User.Home & "/.config/dnfdrake/memosize" & gb.NewLine;
   Message.Info("For Apply The Change Restart Dnfdrake", "OK")
   Me.Close
 End

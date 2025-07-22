@@ -30,11 +30,11 @@ Public Sub Form_Open()
   FSINOSECURE.Height = FSINOSECURE.Height * (Fmain.$RISOLUZIONEY / 786)
   TextArea1.Width = TextArea1.Width * (Fmain.$RISOLUZIONEX / 1366)
   TextArea1.Height = TextArea1.Height * (Fmain.$RISOLUZIONEY / 786)
-  BTNSI.Y = BTNSI.Y + (FSINOSECURE.Height - 518)
-  BTNNO.X = BTNNO.X + (FSINOSECURE.Width - 889)
-  BTNNO.Y = BTNNO.Y + (FSINOSECURE.Height - 518)
-  LBLASK.Y = LBLASK.Y + (FSINOSECURE.Height - 518)
-  LBLASK.X = LBLASK.X + (FSINOSECURE.Width - 889) 
+  BTNSI.Y = BTNSI.Y + (FSINOSECURE.Height - 553)
+  BTNNO.X = BTNNO.X + (FSINOSECURE.Width - 1148)
+  BTNNO.Y = BTNNO.Y + (FSINOSECURE.Height - 553)
+  LBLASK.Y = LBLASK.Y + (FSINOSECURE.Height - 553)
+  LBLASK.X = LBLASK.X + ((FSINOSECURE.Width - 1148) / 2) 
 Endif
 '**************************************************
  flBTN = Open "/usr/share/dnfdrake/dnfdrake-BTN-" & Fmain.$LANG For Read   ' ...oppure "Input"

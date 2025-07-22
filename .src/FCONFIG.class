@@ -31,7 +31,8 @@ Public Sub Form_Open()
           CHKCLEARLOG_Click  
         Endif
         
-        If Exist(User.Home &/ ".config/dnfdrake/distrosync") Then
+        'If Exist(User.Home &/ ".config/dnfdrake/distrosync") Then
+         If FMAIN.BTNDISTUPDATE.Visible = True
            TXTUPDATE.Text = "DistroSync command"
            TXTUPDATECMD.Text = "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync"
            TXTUPDATECMD.Enabled = False
@@ -79,6 +80,7 @@ Public Sub Form_Open()
 End
 
 Public Sub BTNDEFAULT_Click()
+  FMAIN.$RESETSIZE = 1
   BTNDEFAULT.Enabled = False
   Print #Fmain.$hProcess, "rm -f " & User.Home & "/.config/dnfdrake/dnfdrake-COMMAND" & gb.NewLine;
   Wait 0.2

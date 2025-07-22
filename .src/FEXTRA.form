@@ -83,9 +83,9 @@
     Value = CheckBox.True
   }
   { CHKBTNDISTROUPDATE CheckBox
-    MoveScaled(3,30,32,4)
-    ToolTip = ("Use for Rolling - Cooker")
-    Text = ("Distro Update (Rolling -Cooker)")
+    MoveScaled(3,30,32.2857,4)
+    ToolTip = ("Use for Rome - Cooker - Rosa ")
+    Text = ("DistroSync (Rome-Cooker-Rosa)")
   }
   { BTNEXIT Button
     MoveScaled(45,80.4286,16,4)

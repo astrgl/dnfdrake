@@ -104,6 +104,7 @@ Public $ROOTMODE As Integer          'VARIABILE CHE MEMORIZZA SE IL PROGRAMMA È
 Public $USEARRAY As String[]         'ARRAY CONTENETE GLI UTENTI DEL SISTEMA
 Public $USERDEFAULT As String        'UTENTE DI SISTEMA DI DEFAULT    
 Public $MSGBTNCOMMAND As String      'MESSAGGIO SUL PULSANTE COMMAND CHE I COMANDI VERRANNO ESEGUITI COME ROOT
+Public $RESETSIZE As Integer         'SERVE PER CANCELLARE LA MEMO DELLE DIMENSIONI FINESTRA SE SI DA RESET DEFAULT IN FCONFIG
 
 Public Sub Form_Open()
 'COMANDI
@@ -233,7 +234,7 @@ Public Sub Form_Open()
     ' IMPOSTA IL DISTROSYNC DI DEFAULT SE SI USA ROME o COCKER DI OMA***********************
    If Not Exist(User.Home &/ ".config/dnfdrake/distrosync") Then 
    Shell "lsb_release -c" To $DISTRO
-    If InStr($DISTRO, "ROME", 0, gb.IgnoreCase) Or If InStr($DISTRO, "Nickel", 0, gb.IgnoreCase) Then
+    If InStr($DISTRO, "ROME", 0, gb.IgnoreCase) Or If InStr($DISTRO, "Nickel", 0, gb.IgnoreCase) Or If InStr($DISTRO, "13", 0, gb.IgnoreCase) Then
         Shell "echo 1 > " & User.Home &/ ".config/dnfdrake/distrosync" Wait
       Else 
         Shell "echo 0 > " & User.Home &/ ".config/dnfdrake/distrosync" Wait 
@@ -633,7 +634,7 @@ Endif
    $CLEARTXTPKG = 0
    $MEMOPW = "NOPW"
    $FLATDRAKESEARCH = ""
-
+   $RESETSIZE = 0
    
 'PULISCE LE LISTE PROVVISORIE DI INSTALLAZIONE/RIMOZIONE
   TMPLISTCLEAN'
@@ -2987,7 +2988,9 @@ Public Sub USERDEFAULTCHECK()
   
 End
 Public Sub SAVESIZE()
-   File.save(User.Home & "/.config/dnfdrake/memosize", Fmain.X & " " & Fmain.y & " " & Fmain.Width & " " & (Fmain.Height + 70))
+  If $RESETSIZE = 0 Then
+     File.save(User.Home & "/.config/dnfdrake/memosize", Fmain.X & " " & Fmain.y & " " & Fmain.Width & " " & (Fmain.Height + 70))
+  Endif
 End
 Public Sub LOADSIZE()
  Dim flSIZE As File 

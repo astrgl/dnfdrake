@@ -845,7 +845,7 @@ Public Sub Process_Read()
   Endif 
     If InStr($sText, $DNFDRAKEASK) > 0 Then
       $STATUS = 0
-      $PRINTLOG = 0
+      ' $PRINTLOG = 0         GESTIONE DI PRINTLOG SPOSTATA IN TMPLOGCLEAN
 'SERVE A GESTIRE LA RICERCA CON OPZIONE TUTTI**********************************
         If $ListpkgWR = 3 And $ListpkgCK = 3 Then
           $ListpkgWR = 0
@@ -1408,7 +1408,6 @@ Public Sub btninstall_Click()
 End
 
 Public Sub txtpkg_KeyPress()
-
 End
 
 Public Sub txtpkg_Activate()
@@ -2656,6 +2655,9 @@ Public Sub TMPLOGCLEAN()
    Endif
    file.Save(User.Home & "/.config/dnfdrake/log/tmp.log", "")
 '*********************************************************************************   
+  If $PRINTLOG = 1 Then
+     $PRINTLOG = 0
+  Endif
 
 End
 
@@ -4287,6 +4289,7 @@ Public Sub BTNREPLAY_Click()
       $PRINTLOG = 1
       'Print #$hProcess, "cat " & $PATHLOG & "/last.log"
       txtConsole.Text = File.Load($FILELOG)
+      
       PICLOGODISTRO.Visible = False  
   Endif
 End

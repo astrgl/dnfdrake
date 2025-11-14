@@ -68,12 +68,14 @@ Public Sub ProgressBar1_MouseDown()
 End
 
 Public Sub Timer1_Timer()
+ProgressBar1.Visible = True
 
 If $CONNECTION = 1 Then 
 Dim b As Byte
     For b = 1 To 10
        ProgressBar1.Value = b / 100
-       BTNSKIP.Enabled = False
+       BTNSKIP.Visible = False
+       'BTNSKIP.Enabled = False
        Wait 0.01
      Next
     TXTSTATO.Text = $LOADINST

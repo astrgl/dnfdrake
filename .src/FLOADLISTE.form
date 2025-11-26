@@ -19,7 +19,7 @@
   }
   { Timer1 #Timer
     Enabled = True
-    Delay = 1500
+    Delay = 2000
   }
   { BTNSKIP Button
     Move(280,49,110,28)

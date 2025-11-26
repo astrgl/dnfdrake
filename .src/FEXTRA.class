@@ -156,6 +156,20 @@ Public Sub Form_Open()
     CHKEASYPASSWORD.Enabled = False
   Endif 
   
+  If InStr(Fmain.$DISTRO, "Rosa", 0, gb.IgnoreCase) Then 
+     CHKDNF5.Visible = True 
+     If Exist("/bin/dnf5") Then
+        CHKDNF5.Enabled = True
+        Dim $LINK As String
+        Shell ("readlink /bin/dnf") To $LINK
+        If InStr($LINK, "dnf5", 0, gb.IgnoreCase) Then 
+           CHKDNF5.Value = True
+        Else    
+          CHKDNF5.Value = False
+        Endif
+     Endif
+  Endif
+  
 End
 
 Public Sub BTNCLOSE_Click()
@@ -364,7 +378,24 @@ If Fmain.$ROOTMODE = 0 Then
         Shell ("rm -f " & User.Home &/ ".config/dnfdrake/easypassword") Wait 
   Endif    
 Endif
-
+  If CHKDNF5.Visible = True Then
+     If CHKDNF5.Enabled = True Then
+         If CHKDNF5.Value = True Then
+            Shell ("rm -f /bin/dnf") Wait 
+            Shell ("ln -s /bin/dnf5  /bin/dnf ") Wait 
+            'If Not Exist(User.Home &/ ".config/dnfdrake/dnf5")
+               File.Save(User.Home &/ ".config/dnfdrake/dnf5", "")
+            'Endif    
+         Else    
+            Shell ("rm -f /bin/dnf") Wait 
+            Shell ("ln -s /bin/dnf-3  /bin/dnf ") Wait 
+            If Exist(User.Home &/ ".config/dnfdrake/dnf5") Then
+               Kill User.Home &/ ".config/dnfdrake/dnf5"                   
+            Endif             
+         Endif
+     Endif
+     Fmain.DNFVERSION
+  Endif
   Me.Close
 End
 

@@ -121,8 +121,8 @@
   { CMBTHEMES ComboBox
     MoveScaled(11,56.7143,16,3.5714)
     Background = Color.Transparent
-    List = [("Oxygen"), ("Breeze"), ("Breeze Dark")]
     Border = False
+    List = [("Oxygen"), ("Breeze"), ("Breeze Dark")]
   }
   { Label10 Label
     MoveScaled(20,52.7143,24,3)
@@ -134,5 +134,11 @@
   { CHKEASYPASSWORD CheckBox
     MoveScaled(36,47,24,4)
     Text = ("Easy Password")
+  }
+  { CHKDNF5 CheckBox
+    MoveScaled(36,36,24,4)
+    Visible = False
+    Enabled = False
+    Text = ("Use DNF5")
   }
 }

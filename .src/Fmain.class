@@ -784,7 +784,8 @@ End
 
 
 Public Sub Form_Close()
-    SAVESIZE    
+    SAVESIZE 
+    LOADDNF5   
     If $CLOSEPASS = 0 Then
        Dim iAnswer As Integer = Message.Question($ASKEXIT, $SI, $NO)
        If (iAnswer = 1) Then
@@ -2753,7 +2754,7 @@ Private Sub DSTUPDATE()
   FRUNSHOW
   '*********************************
 End
-Private Sub DNFVERSION()
+Public Sub DNFVERSION()
   ' Dim s As String
   Dim ss As String[]
   ' Dim n As Integer
@@ -2779,7 +2780,7 @@ Private Sub DNFVERSION()
     $DNFVERSIONNUMBER = $DNFVERSIONNUMBER + (Val(ss[j]) * m)
     m = m / 100
   Next 
-  Fmain.Title = Fmain.Title & " - dnf " & $DNFVERSION
+  Fmain.Title = Left(Fmain.Title, 8) & " - dnf " & $DNFVERSION
   ' Print $DNFVERSIONNUMBER
 
   ' If InStr($DNFVERSION, "dnf-5") Or If InStr($DNFVERSION, "dnf5") Then
@@ -2946,8 +2947,6 @@ Public Sub SELECTIONVIEW()
   Endif
 End 
 Public Sub LOADLOGO()
-
-
    If InStr($DISTRO, "OpenMandriva", 0, gb.IgnoreCase) Then
     If $THEMES = "Oxygen" Or If $THEMES = "Breeze" Then
             PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/OMA.png")
@@ -2967,6 +2966,27 @@ Public Sub LOADLOGO()
   Endif     
    
 End
+Public Sub LOADDNF5()
+  
+  If InStr($DISTRO, "ROSA", 0, gb.IgnoreCase) Then
+     Dim $LINK As String
+     Shell ("readlink /bin/dnf") To $LINK
+     If Exist(User.Home &/ "/.config/dnfdrake/dnf5") And If Exist("/bin/dnf5") Then
+        If InStr($LINK, "dnf5", 0, gb.IgnoreCase) Then
+        Else  
+            Shell ("rm -f /bin/dnf") Wait 
+            Shell ("ln -s /bin/dnf5  /bin/dnf ") Wait 
+        Endif
+     Else  
+        If InStr($LINK, "dnf5", 0, gb.IgnoreCase) Then
+           Shell ("rm -f /bin/dnf") Wait 
+           Shell ("ln -s /bin/dnf-3  /bin/dnf ") Wait    
+        Endif    
+     Endif
+  Endif
+  
+End
+
 Public Sub USERDEFAULTCHECK()
   
   If Fmain.$ROOTMODE = 1 Then

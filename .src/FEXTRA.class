@@ -378,6 +378,7 @@ If Fmain.$ROOTMODE = 0 Then
         Shell ("rm -f " & User.Home &/ ".config/dnfdrake/easypassword") Wait 
   Endif    
 Endif
+'*********************************************************************************************
   If CHKDNF5.Visible = True Then
      If CHKDNF5.Enabled = True Then
          If CHKDNF5.Value = True Then
@@ -395,7 +396,9 @@ Endif
          Endif
      Endif
      Fmain.DNFVERSION
+     FMAIN.LOADKEYWORD
   Endif
+'***********************************************************************************************  
   Me.Close
 End
 

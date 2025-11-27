@@ -1,23 +1,23 @@
 # Gambas Form File 3.0
 
 { Form Form
-  Move(0,0,609,91)
+  Move(0,0,672,105)
   #Scaled = False
   Icon = Picture["dnfdrake.svg"]
   Resizable = False
   { ProgressBar1 ProgressBar
-    Move(14,35,469,21)
+    Move(14,30,644,7)
     Pulse = True
   }
   { LBLATTIVITA Label
-    Move(14,7,581,21)
-    Alignment = Align.Center
+    Move(0,4,672,21)
+    Alignment = Align.Top
   }
   { BTNSTOP Button
-    Move(490,32,105,28)
+    Move(280,70,110,28)
   }
   { MONITORVIEW Label
-    Move(14,63,581,21)
+    Move(0,42,672,21)
     Alignment = Align.Top
   }
 }

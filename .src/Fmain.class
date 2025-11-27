@@ -87,6 +87,7 @@ Public $PROCEDERE As String
 Public $NULLADAFARE As String
 'Public $RIMOSSI As String
 Public $FATTO As String
+Public $ULTIMARIGA As String
 Public $NONRIUSCITO As String
 Public $DIALOGDIRTITLE As String
 Public $DIALOGFILETITLE As String
@@ -118,10 +119,7 @@ Public Sub Form_Open()
  Dim s$BTN As String
  Dim ss$BTN As New String[]
 'parole chiave
- Dim flKEY As File  
- Dim jKEY As Byte
- Dim s$KEY As String
- Dim ss$KEY As New String[]
+ 'TRASFERITO IN LOADKEYWORD
 'testi e tooltip
  Dim flTTP As File  
  Dim jTTP As Byte
@@ -405,44 +403,8 @@ Else
 
 'PAROLE CHIAVE*******************************************************************
 DNFVERSION
-If $DNFVERSIONNUMBER > 50213 Then
-  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY5_14-" & $LANG For Read   ' ...oppure "Input"
-Else If $DNFVERSIONNUMBER > 50000 Then 
-    flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY5-" & $LANG For Read
-Else   
-    flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & $LANG For Read   ' ...oppure "Input"
-    
-Endif
- While Not Eof(flKEY)
-   Input #flKEY, s$KEY
-   ss$KEY.Add(s$KEY)
-  Wend
-   Close #flKEY
-  For jKEY = 0 To ss$KEY.Max
-'richiesta password
-      $PASSWORD = ss$KEY[0] 
-      $PASSWORD = Replace($PASSWORD, "_", " ")
-'operazione annullata se è richiesta password
-      $RQSTPASSWORD = ss$KEY[1]
-      $RQSTPASSWORD = Replace($RQSTPASSWORD, "_", " ")
-'PROCEDERE AD INSTALLARE
-      $PROCEDERE = ss$KEY[2]
-      $PROCEDERE = Replace($PROCEDERE, "_", " ") 
-' USATO DA DNFDRAKETRAY  ss$KEY[3]
+LOADKEYWORD
 
-' OPERAZIONE TERMINATA (FATTO)
-      $FATTO = ss$KEY[4]
-      $FATTO = Replace($FATTO, "_", " ")
-' OPERAZIONE TERMINATA NON RIUSCITA (NON RIUSCITA)
-      $NONRIUSCITO = ss$KEY[7]
-      $NONRIUSCITO = Replace($NONRIUSCITO, "_", " ") 
-' NULLA DA FARE
-    If $DNFVERSIONNUMBER > 50000 Then
-       $NULLADAFARE = ss$KEY[8]
-       $NULLADAFARE = Replace($NULLADAFARE, "_", " ")          
-    Endif
-       Next
-  flKEY.Close
    'COMBOTIPO************************************************************************
   flCMBT = Open "/usr/share/dnfdrake/dnfdrake-CMBT-" & $LANG For Read   ' ...oppure "Input"
 
@@ -836,12 +798,15 @@ Public Sub Process_Read()
     '****************************************************************************************
       If InStr($sText, $FATTO) > 0 Then                         ' OPERAZIONE TERMINATA (FATTO)"
         FOK.Show
+        $ULTIMARIGA = $FATTO
       Endif
       If InStr($sText, $NONRIUSCITO) > 0 Then                   ' OPERAZIONE TERMINATA (NON RIUSCITO)"
         FOK.Show
+        $ULTIMARIGA = $NONRIUSCITO
       Endif
       If InStr($sText, $NULLADAFARE) > 0 Then                   ' NULLA DA FARE"
         FOK.Show
+        $ULTIMARIGA = $NULLADAFARE
       Endif
   Endif 
     If InStr($sText, $DNFDRAKEASK) > 0 Then
@@ -1072,6 +1037,9 @@ Private Sub UpdateConsole()
        If PICLOGODISTRO.Visible = True Then
           PICLOGODISTRO.Visible = False
        Endif
+       If sStr = $DNFDRAKEASK And If FRUN.ProgressBar1.Value = 1 Then
+          FRUN.MONITORVIEW.Text = $ULTIMARIGA
+       Endif
     Endif    
     If FPROGRESSWAIT.Visible = True Then
        FPROGRESSWAIT.MONITORVIEW.Text = sStr
@@ -1081,8 +1049,9 @@ Private Sub UpdateConsole()
       FRUN.ProgressBar1.Pulse = False    
       FRUN.ProgressBar1.Value = 1
       FRUN.BTNSTOP.Text = Fmain.Btnclose.Text
-      FRUN.MONITORVIEW.Visible = False
+      ' FRUN.MONITORVIEW.Visible = False
       FRUN.Text = "DnfDrake,  " & "Error!" 
+      FRUN.MONITORVIEW.Text = "Error!"
       FERROR.Show
       Wait 0.2
       FERROR.TextArea1.Text = txtConsole.Text
@@ -1093,8 +1062,10 @@ Private Sub UpdateConsole()
       FRUN.ProgressBar1.Value = 1
       FRUN.BTNSTOP.Text = $OK
       FRUN.BTNSTOP.Picture = Picture.Load($PATHICONS & "ok" & FMain.$THEMESSUFFIX)
-      FRUN.MONITORVIEW.Visible = False
+      ' FRUN.MONITORVIEW.Visible = False
       FRUN.Text = "DnfDrake,  " & $FATTO
+      FRUN.MONITORVIEW.Text = $FATTO
+      
    Endif
 'CHIUSURA FPROGRESSWAIT **************************************************************
       If sStr = $DNFDRAKEASK And FPROGRESSWAIT.Visible = True Then
@@ -2009,6 +1980,51 @@ Endif
 If Cmbtipo.index = 5 Then 
         CERCANODEPS
 Endif     
+End
+Public Sub LOADKEYWORD()
+ Dim flKEY As File  
+ Dim jKEY As Byte
+ Dim s$KEY As String
+ Dim ss$KEY As New String[]
+  If $DNFVERSIONNUMBER > 50213 Then
+  flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY5_14-" & $LANG For Read   ' ...oppure "Input"
+Else If $DNFVERSIONNUMBER > 50000 Then 
+    flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY5-" & $LANG For Read
+Else   
+    flKEY = Open "/usr/share/dnfdrake/dnfdrake-KEY-" & $LANG For Read   ' ...oppure "Input"
+    
+Endif
+ While Not Eof(flKEY)
+   Input #flKEY, s$KEY
+   ss$KEY.Add(s$KEY)
+  Wend
+   Close #flKEY
+  For jKEY = 0 To ss$KEY.Max
+'richiesta password
+      $PASSWORD = ss$KEY[0] 
+      $PASSWORD = Replace($PASSWORD, "_", " ")
+'operazione annullata se è richiesta password
+      $RQSTPASSWORD = ss$KEY[1]
+      $RQSTPASSWORD = Replace($RQSTPASSWORD, "_", " ")
+'PROCEDERE AD INSTALLARE
+      $PROCEDERE = ss$KEY[2]
+      $PROCEDERE = Replace($PROCEDERE, "_", " ") 
+' USATO DA DNFDRAKETRAY  ss$KEY[3]
+
+' OPERAZIONE TERMINATA (FATTO)
+      $FATTO = ss$KEY[4]
+      $FATTO = Replace($FATTO, "_", " ")
+' OPERAZIONE TERMINATA NON RIUSCITA (NON RIUSCITA)
+      $NONRIUSCITO = ss$KEY[7]
+      $NONRIUSCITO = Replace($NONRIUSCITO, "_", " ") 
+' NULLA DA FARE
+    If $DNFVERSIONNUMBER > 50000 Then
+       $NULLADAFARE = ss$KEY[8]
+       $NULLADAFARE = Replace($NULLADAFARE, "_", " ")          
+    Endif
+       Next
+  flKEY.Close
+  
 End
 
 Public Sub NODEPSTMPCLEAR()
@@ -3152,7 +3168,7 @@ Public Sub Btnclear_Click()
     ListpkgNODEPS.UnSelectAll
 
     txtConsole.text = ""
-'GESTIONE PER POTER INSTALLARE DA TXTPKG SE PRESENTI AGGIONAMENTI
+'GESTIONE PER POTER INSTALLARE DA TXTPKG SE PRESENTI AGGIORNAMENTI
       If $OFFLINE = 1 Then
         If Btncommand.Text = Btncommand.Text Then
               If Btnexp2.Text = "EXP2" 
@@ -3497,9 +3513,9 @@ Public Sub Btndownload_Click()
                            Else
                               Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine;
                               PICLOGODISTRO.Visible = False  
-                              If $SECUREMODE = "SECURE" Then
-                                 FPROGRESSWAIT.Show
-                              Endif 
+                              ' If $SECUREMODE = "SECURE" Then
+                              '    FPROGRESSWAIT.Show
+                              ' Endif 
                            Endif
                  Endif
                  If ListpkgAVAILABLE.Visible = True 
@@ -3519,9 +3535,9 @@ Public Sub Btndownload_Click()
                            Else
                               Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine;
                               PICLOGODISTRO.Visible = False  
-                              If $SECUREMODE = "SECURE" Then
-                                 FPROGRESSWAIT.Show
-                              Endif
+                              ' If $SECUREMODE = "SECURE" Then
+                              '    FPROGRESSWAIT.Show
+                              ' Endif
                            Endif
                  Endif   
                   If ListpkgUPGRADE.Visible = True 
@@ -3541,9 +3557,9 @@ Public Sub Btndownload_Click()
                            Else
                               Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine;
                               PICLOGODISTRO.Visible = False  
-                              If $SECUREMODE = "SECURE" Then
-                                 FPROGRESSWAIT.Show
-                              Endif
+                              ' If $SECUREMODE = "SECURE" Then
+                              '    FPROGRESSWAIT.Show
+                              ' Endif
                            Endif
                   Endif
           Else
@@ -3564,17 +3580,20 @@ Public Sub Btndownload_Click()
                         Else
                           Print #$hProcess, "dnf download " & spkg & $VERBOSE & gb.NewLine;
                           PICLOGODISTRO.Visible = False  
-                          If $SECUREMODE = "SECURE" Then
-                             FPROGRESSWAIT.Show
-                          Endif
+                          ' If $SECUREMODE = "SECURE" Then
+                          '    FPROGRESSWAIT.Show
+                          ' Endif
                         Endif 
                   Endif
-          Endif    
+          Endif 
+        If $SECUREMODE = "SECURE" Then
+           FPROGRESSWAIT.Show
+         Endif      
       Endif
                   Btnclear_Click
                   If Btnexp2.Text = "EXP2" Then
                      Btnexp2_Click  
-                  Endif
+                  Endif       
   Endif 
 End
 

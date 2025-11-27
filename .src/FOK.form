@@ -1,11 +1,11 @@
 # Gambas Form File 3.0
 
 { Form Form
-  Move(0,0,350,77)
+  Move(0,0,672,77)
   #Scaled = False
   Icon = Picture["dnfdrake.svg"]
   Resizable = False
   { Btnclose Button
-    Move(119,21,112,28)
+    Move(280,25,112,28)
   }
 }

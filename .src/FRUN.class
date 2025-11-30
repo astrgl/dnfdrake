@@ -88,6 +88,7 @@ $CLOSEPASS = 1
 'PULIZIA PACCHETTI INSTALLAZIONI NODEPS**********************************************
   Fmain.NODEPSTMPCLEAR
 '************************************************************************************
+Fmain.$ULTIMARIGA = ""
 If ProgressBar1.Value = 1 Then
     If Fmain.txtConsole.Visible = True Then
       Endif

@@ -106,6 +106,10 @@ Public $USEARRAY As String[]         'ARRAY CONTENETE GLI UTENTI DEL SISTEMA
 Public $USERDEFAULT As String        'UTENTE DI SISTEMA DI DEFAULT    
 Public $MSGBTNCOMMAND As String      'MESSAGGIO SUL PULSANTE COMMAND CHE I COMANDI VERRANNO ESEGUITI COME ROOT
 Public $RESETSIZE As Integer         'SERVE PER CANCELLARE LA MEMO DELLE DIMENSIONI FINESTRA SE SI DA RESET DEFAULT IN FCONFIG
+Public $PARZIALEBAR As String        'DIVISORE PROGRESSBAR
+Public $TOTALRBAR As String          'DIVIDENDO PROGRESSBAR
+Public $LINKDNF5 As String           'SERVE PER LA LETTURA DEL LINK A DNF
+Public $CHKDNF5 As Integer           'SE IN USO DNF5 È A 1 SE IN USO DNF4 A 0
 
 Public Sub Form_Open()
 'COMANDI
@@ -597,6 +601,7 @@ LOADKEYWORD
    $MEMOPW = "NOPW"
    $FLATDRAKESEARCH = ""
    $RESETSIZE = 0
+   $ULTIMARIGA = ""
    
 'PULISCE LE LISTE PROVVISORIE DI INSTALLAZIONE/RIMOZIONE
   TMPLISTCLEAN'
@@ -729,6 +734,13 @@ Endif
           $FLATDRAKESEARCH = ""
        Endif 
     Endif
+ 'VERIFICA SE È IN USO DNF5**************************************
+    Shell ("readlink /bin/dnf") To $LINKDNF5
+        If InStr($LINKDNF5, "dnf5", 0, gb.IgnoreCase) Then 
+           $CHKDNF5 = 1
+        Else    
+          $CHKDNF5 = 0
+        Endif   
     
     '$LANG = "en_US" 'MODIFICA PER DNF5**************************
     
@@ -1010,6 +1022,13 @@ Private Sub UpdateConsole()
 '*****************************************************************************************
     $sText = Mid$($sText, iPos + 1)
     txtConsole.Pos = txtConsole.Length
+ 'PULIZIA CARATTERI ERRATI IN CONSOLE******************      
+     ' If $SEARCH = " showduplicate " Then
+     '    sStr = Replace(sStr, "[m", "")
+     '    sStr = Replace(sStr, "[0m", "")
+     ' Endif
+     
+'*****************************************************
     txtConsole.Insert(sStr)
  'MODIFICA DNF5*****************************************************************************************************
 'CREA UN FILE DI LOG DI TUTTA LA SESSIONE *************************************************     
@@ -1034,6 +1053,30 @@ Private Sub UpdateConsole()
 'INVIA L'ULTIMA RIGA ALLA FINESTRA FRUN E CONTROLLA GLI ERRORI************************    
     If FRUN.Visible = True   
        FRUN.MONITORVIEW.Text = sStr
+       
+       '***********GESTIONE AVANZAMENTO PROGRESSBAR****************************************
+       
+    If $CHKDNF5 = 1 Then       
+      If sStr <> $DNFDRAKEASK Then 
+        If Left(sStr, 1) = "[" Then
+          Dim POSDIVISORE As Integer
+          POSDIVISORE = InStr(sStr, "/")
+          $PARZIALEBAR = Left(Right(Left(sStr, POSDIVISORE), POSDIVISORE - 1), POSDIVISORE - 2)
+          $TOTALRBAR = Left(Right(Left(sStr, 2 * POSDIVISORE - 1), POSDIVISORE - 1), POSDIVISORE - 2)
+          FRUN.ProgressBar1.Pulse = False
+          FRUN.ProgressBar1.Value = CInt($PARZIALEBAR) / CInt($TOTALRBAR)
+        Else 
+          If $ULTIMARIGA = $FATTO Or If $ULTIMARIGA = $NULLADAFARE Then
+          Else   
+             FRUN.ProgressBar1.Pulse = True  
+          Endif  
+       Endif
+       
+      Else 
+      Endif  
+    Endif 
+       '***********************************************************************************
+       
        If PICLOGODISTRO.Visible = True Then
           PICLOGODISTRO.Visible = False
        Endif
@@ -1049,7 +1092,7 @@ Private Sub UpdateConsole()
       FRUN.ProgressBar1.Pulse = False    
       FRUN.ProgressBar1.Value = 1
       FRUN.BTNSTOP.Text = Fmain.Btnclose.Text
-      ' FRUN.MONITORVIEW.Visible = False
+      ' FRUN.MONITORVIEW.Visible = False    'MODIFICA PER GESTIONE AVANZAMENTO PROGRESSBAR E LAYOUT
       FRUN.Text = "DnfDrake,  " & "Error!" 
       FRUN.MONITORVIEW.Text = "Error!"
       FERROR.Show
@@ -1062,7 +1105,7 @@ Private Sub UpdateConsole()
       FRUN.ProgressBar1.Value = 1
       FRUN.BTNSTOP.Text = $OK
       FRUN.BTNSTOP.Picture = Picture.Load($PATHICONS & "ok" & FMain.$THEMESSUFFIX)
-      ' FRUN.MONITORVIEW.Visible = False
+      ' FRUN.MONITORVIEW.Visible = False    'MODIFICA PER GESTIONE AVANZAMENTO PROGRESSBAR E LAYOUT
       FRUN.Text = "DnfDrake,  " & $FATTO
       FRUN.MONITORVIEW.Text = $FATTO
       
@@ -1798,7 +1841,15 @@ Public Sub btncerca_Click()
           Btnclear_Click
 '****************************************************************
           Me.Mouse = Mouse.Wait  
-          Print #$hProcess, "dnf " & $SEARCH & " list | grep " & txtpkg.Text & gb.NewLine;
+           ' If $CHKDNF5 = 0
+              Print #$hProcess, "dnf " & " list " & $SEARCH & " | grep " & txtpkg.Text & " |tee /dev/null" & gb.NewLine;  
+            'lse    
+              'If $SEARCH = " --showduplicates " Then
+             ' Print #$hProcess, "dnf " & " list --available " & $SEARCH & "| grep " & txtpkg.Text & " |tee /dev/null" & gb.NewLine;
+              'Else   
+                ' Print #$hProcess, "dnf " & " list " & $SEARCH & "| grep " & txtpkg.Text & " |tee /dev/null" & gb.NewLine;
+              'Endif
+            'Endif
           PICLOGODISTRO.Visible = False 
         Endif
         Endif
@@ -1876,7 +1927,19 @@ Public Sub btncerca_Click()
                 Endif
                 Btnclear_Click
                 Me.Mouse = Mouse.Wait  
-                Print #$hProcess, "dnf " & $SEARCH & " list --available | grep " & txtpkg.Text & gb.NewLine;
+                
+                'If $CHKDNF5 = 0
+                   Print #$hProcess, "dnf " & " list --available " & $SEARCH & " | grep " & txtpkg.Text & " |tee /dev/null" & gb.NewLine;  
+                'Else    
+                   'rint #$hProcess, "dnf " & " list --available " & $SEARCH & "| grep " & txtpkg.Text & " |tee /dev/null" & gb.NewLine;
+               'Endif
+                
+                ' If $SEARCH = " --showduplicates " Then
+                '   Print #$hProcess, "dnf " & " list --available " & $SEARCH & txtpkg.Text & " |tee /dev/null" & gb.NewLine;
+                ' Else   
+                '   Print #$hProcess, "dnf " & " list --available " & $SEARCH & " | grep " & txtpkg.Text & " |tee /dev/null" & gb.NewLine;
+                ' Endif
+                
                  PICLOGODISTRO.Visible = False   
             Endif
      $MEMOCOMMAND = "MOUSEDEFAULT"
@@ -2048,35 +2111,6 @@ Public Sub VERIFYSUSPEND()
     PICSUSPENDLOCK.Visible = False
   Endif          
 End
-' Public Sub FIXTXTUPDATE()
-'   Dim fl As File
-'   Dim s As String
-'   Dim s1 As String
-'   Dim s2 As String
-'   Dim s3 As String
-'   fl = Open $FILETMPLOG
-'   While Not Eof(fl)
-'      s = fl.ReadLine()
-'   Wend
-'   fl.Close
-'   If InStr(s, $PROCEDERE) Then
-'      Message.info("OK", "ok")
-'   Else 
-'      Dim ss As String[]
-'      Shell "cat " & $FILETMPLOG & " |grep Total" To s
-'      ss = Scan(s, "* Total *")
-'      Shell "cat " & $FILETMPLOG & " |grep After" To s1
-'      Shell "cat " & $FILETMPLOG & " |grep ]:" To s2
-'      Dim sss As String[]
-'      sss = Scan(s2, "*]:* ")
-'      'Shell "sed -i 's/Total " & ss[1] & "//g' " & $FILETMPLOG
-'      Shell "sed -i " & Chr(34) & "/Total " & ss[1] & " /d" & Chr(34) & $FILETMPLOG
-'      FSINOSECURE.TextArea1.Text = FSINOSECURE.TextArea1.Text & gb.NewLine & "Total " & ss[1] & s1 & sss[0] & "]:" & gb.NewLine
-'   Endif
-'   
-'   
-' End
-
 
 Private Sub RESOLUTION()
 

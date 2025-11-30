@@ -4,12 +4,12 @@
   MoveScaled(0,0,87,89)
   Icon = Picture["dnfdrake.svg"]
   { Label3 Label
-    MoveScaled(49,71,34,4)
+    MoveScaled(47,71,36,4)
     Border = Border.Plain
     BorderRadius = 12
   }
   { Label1 Label
-    MoveScaled(4,71,34,4)
+    MoveScaled(4,71,36,4)
     Border = Border.Plain
     BorderRadius = 12
   }
@@ -86,7 +86,7 @@
     MoveScaled(3.7143,59.4286,79,4)
   }
   { CHKCOLORTEXT CheckBox
-    MoveScaled(5,71,32,4)
+    MoveScaled(5,71,34,4)
     Text = ("  Color text active")
   }
   { TXTREINSTALL Label
@@ -110,7 +110,7 @@
     Value = CheckBox.True
   }
   { CHKSECUREMODE CheckBox
-    MoveScaled(50,71,32,4)
+    MoveScaled(48,71,34,4)
     Text = ("Secure Mode")
   }
   { CHKCLEARLOG CheckBox

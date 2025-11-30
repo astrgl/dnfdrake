@@ -57,8 +57,9 @@ Public Sub Form_Open()
       CHKOFFLINE.Value = False
   Endif
   
- If Fmain.$SEARCH = " --showduplicate" 
+ If Fmain.$SEARCH = " --showduplicates " 
    CHKDUPLICATE.Value = True
+   Fmain.$SEARCH = ""
    Endif
    
  If Fmain.BTNDISTUPDATE.Visible = True Then
@@ -175,7 +176,7 @@ End
 Public Sub BTNCLOSE_Click()
    BTNCLOSE.Enabled = False   
    If CHKDUPLICATE.VALUE = True Then
-   Fmain.$SEARCH = Fmain.$SEARCH & " " & "--showduplicate"
+   Fmain.$SEARCH = Fmain.$SEARCH & " --showduplicates "
    CHKOFFLINE.Value = False 
    Message.Info($SHOWDUPLICATE, "OK")
    Else
@@ -387,12 +388,14 @@ Endif
             'If Not Exist(User.Home &/ ".config/dnfdrake/dnf5")
                File.Save(User.Home &/ ".config/dnfdrake/dnf5", "")
             'Endif    
+            Fmain.$CHKDNF5 = 1
          Else    
             Shell ("rm -f /bin/dnf") Wait 
             Shell ("ln -s /bin/dnf-3  /bin/dnf ") Wait 
             If Exist(User.Home &/ ".config/dnfdrake/dnf5") Then
                Kill User.Home &/ ".config/dnfdrake/dnf5"                   
             Endif             
+            Fmain.$CHKDNF5 = 0
          Endif
      Endif
      Fmain.DNFVERSION
@@ -418,5 +421,17 @@ End
 Public Sub Form_Close()
 
   Fmain.Enabled = True
+
+End
+
+Public Sub CHKDNF5_Click()
+
+  
+
+End
+
+Public Sub CHKDUPLICATE_Click()
+
+  
 
 End

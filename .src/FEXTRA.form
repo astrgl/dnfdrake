@@ -34,7 +34,7 @@
   }
   { CHKDUPLICATE CheckBox
     MoveScaled(4,10,24,4)
-    Text = (" --showduplicate")
+    Text = ("showduplicate")
   }
   { TXTSEARCH Label
     MoveScaled(20,5.4286,24,3)

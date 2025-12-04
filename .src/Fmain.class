@@ -1178,10 +1178,10 @@ Public Sub txtCommand_Activate()
         Else  
  ' ESEGUE I COMANDI NORMALI**************************************** 
             Dim sLig As String
-            sLig = txtCommand.Text & gb.NewLine
+            sLig = txtCommand.Text & " | tee /dev/null " & gb.NewLine
             txtCommand.Clear
             sLig = Conv$(sLig, Desktop.Charset, System.Charset)
-            Print #$hProcess, sLig;
+            Print #$hProcess, sLig; 
         Endif
   Endif 
 End

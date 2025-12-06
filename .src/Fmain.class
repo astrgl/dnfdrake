@@ -110,6 +110,7 @@ Public $PARZIALEBAR As String        'DIVISORE PROGRESSBAR
 Public $TOTALRBAR As String          'DIVIDENDO PROGRESSBAR
 Public $LINKDNF5 As String           'SERVE PER LA LETTURA DEL LINK A DNF
 Public $CHKDNF5 As Integer           'SE IN USO DNF5 È A 1 SE IN USO DNF4 A 0
+Public $CLEAROVERFLOW As Integer      'SERVE PER PULIRE DALLE TAB IN CASO DI OVERFLOW DI RICERCA
 
 Public Sub Form_Open()
 'COMANDI
@@ -602,7 +603,7 @@ LOADKEYWORD
    $FLATDRAKESEARCH = ""
    $RESETSIZE = 0
    $ULTIMARIGA = ""
-   
+   $CLEAROVERFLOW = 0
 'PULISCE LE LISTE PROVVISORIE DI INSTALLAZIONE/RIMOZIONE
   TMPLISTCLEAN'
 'Carica il pront**********************************************************************************
@@ -2043,7 +2044,12 @@ Endif
 '********************************************************************************************
 If Cmbtipo.index = 5 Then 
         CERCANODEPS
-Endif     
+Endif    
+If $CLEAROVERFLOW = 1 Then
+   $CLEAROVERFLOW = 0
+   Btnclear_Click
+Endif
+ 
 End
 Public Sub FIXINSTALLATI()
   If Fmain.$CHKDNF5 = 1 Then
@@ -2379,6 +2385,7 @@ Private Sub CERCAAVAILABLE()
             If p > 1500000000 Then
                Dim i As Integer
                Message.Info("Search stopped: too many results. Narrow your search!", "Ok")
+               $CLEAROVERFLOW = 1
                Break
             Endif
 'FIX LUNGHEZZA NOME******************************************            

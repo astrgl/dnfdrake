@@ -2377,8 +2377,8 @@ Private Sub CERCAAVAILABLE()
             p = p + ListpkgAVAILABLE.Count
 'PROTEZIONE PER OVERFLOW INCASO DI RICERCA CON TROPPI RISULTATI*************************
             If p > 1500000000 Then
+               Dim i As Integer
                Message.Info("Search stopped: too many results. Narrow your search!", "Ok")
-               Btnclear_Click
                Break
             Endif
 'FIX LUNGHEZZA NOME******************************************            

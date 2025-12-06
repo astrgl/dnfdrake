@@ -165,8 +165,10 @@ End
 
 
 Public Sub Form_Close()
+'MODIFICA PER MOSTRARE IN DISPONIBILI SOLO I FILE NONINSTALLATI************************************
+FMAIN.FIXINSTALLATI
 Fmain.Btnclear_click
-Fmain.TMPLISTCLEAN
+Fmain.TMPLISTCLEAN    
 Fmain.EXCLUDETEST
 If FINSTALL.Visible = False Then
   Fmain.Enabled = True

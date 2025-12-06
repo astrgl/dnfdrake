@@ -725,6 +725,7 @@ If Exist("/tmp/draketray/updates.txt") Then
    Shell ("cp -f /tmp/draketray/updates.txt " & User.Home & "/.config/dnfdrake/") Wait 
    Kill "/tmp/draketray/updates.txt"
 Endif
+FIXINSTALLATI
 '*******************************************************
 'Crea le liste**** SPOSTATO***********************************************************************
     If $OFFLINE = 1 And If FUSERDEFAULT.Visible = False And If $FLATDRAKESEARCH = "" Then
@@ -2044,6 +2045,12 @@ If Cmbtipo.index = 5 Then
         CERCANODEPS
 Endif     
 End
+Public Sub FIXINSTALLATI()
+  If Fmain.$CHKDNF5 = 1 Then
+      Shell "awk 'FNR==NR {a[$1]++; next} !a[$1]' " & User.Home & "/.config/dnfdrake/installati.txt " & User.Home & "/.config/dnfdrake/noninstallati.txt" & " > " & User.Home & "/.config/dnfdrake/noninstallati-temp.txt" Wait 
+     Shell "mv -f " & User.Home & "/.config/dnfdrake/noninstallati-temp.txt " & User.Home & "/.config/dnfdrake/noninstallati.txt" Wait 
+  Endif
+End
 Public Sub LOADKEYWORD()
  Dim flKEY As File  
  Dim jKEY As Byte
@@ -2368,6 +2375,12 @@ Private Sub CERCAAVAILABLE()
      For Each s In t.Lines
         If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
             p = p + ListpkgAVAILABLE.Count
+'PROTEZIONE PER OVERFLOW INCASO DI RICERCA CON TROPPI RISULTATI*************************
+            If p > 1500000000 Then
+               Message.Info("Search stopped: too many results. Narrow your search!", "Ok")
+               Btnclear_Click
+               Break
+            Endif
 'FIX LUNGHEZZA NOME******************************************            
                If Len(s) < 142 Then
                '   s = s & "     ***...name too long***"

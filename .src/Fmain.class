@@ -131,10 +131,7 @@ Public Sub Form_Open()
  Dim s$TTP As String
  Dim ss$TTP As New String[]
 'combox tipo pacchetto installato non installato ecc.
- Dim flCMBT As File  
- Dim jCMBT As Byte
- Dim s$CMBT As String
- Dim ss$CMBT As New String[] 
+'TRASFERITO IN LOADCOMBOTIPO
 'combox tipo info.
  Dim flCMBI As File  
  Dim jCMBI As Byte
@@ -410,27 +407,8 @@ Else
 DNFVERSION
 LOADKEYWORD
 
-   'COMBOTIPO************************************************************************
-  flCMBT = Open "/usr/share/dnfdrake/dnfdrake-CMBT-" & $LANG For Read   ' ...oppure "Input"
-
- While Not Eof(flCMBT)
-   Input #flCMBT, s$CMBT
-   ss$CMBT.Add(s$CMBT)
-  Wend
-   Close #flCMBT
-  For jCMBT = 3 To ss$CMBT.Max
-      Cmbtipo.Add(Replace(ss$CMBT[0], "_", " "))
-      Cmbtipo.Add(Replace(ss$CMBT[1], "_", " "))
-      Cmbtipo.Add(Replace(ss$CMBT[2], "_", " "))
-      Cmbtipo.Add(Replace(ss$CMBT[3], "_", " "))
-      Cmbtipo.Add("Autoremove")
-      BTNTABINSTALLED.Text = (Replace(ss$CMBT[1], "_", " "))
-      BTNTABAVIABLE.Text = (Replace(ss$CMBT[2], "_", " "))
-      BTNTABUPDATE.Text = (Replace(ss$CMBT[3], "_", " "))
-       Next
-   flCMBT.Close
- '*********************************************************************************
- 
+   'COMBOTIPO**********************************************************************
+LOADCOMBOTIPO 
 'TITOLI E TOOTIP*******************************************************************
   flTTP = Open "/usr/share/dnfdrake/dnfdrake-TTP-" & $LANG For Read   ' ...oppure "Input"
  While Not Eof(flTTP)
@@ -1765,62 +1743,99 @@ Public Sub Btnexp2_Click()
 End
 
 Public Sub btninfo_Click()
-   TMPLOGCLEAN
-   Btnclear_Click
-   TABHIDE
-   If Listpkg.Visible = True Then
-   Endif
-   If Cmbtipoinfo.index = 5 Then                                'REPO
+ Dim $PKGINFO As String
+ Dim s As String
+ Dim a As String
+ Dim OS As Integer
+ OS = 0
+ TMPLOGCLEAN
+'REPOSITORY*******************************************************************
+  If Cmbtipoinfo.index = 5 Then                                
+    Btnclear_Click
+    TABHIDE
+    If Btnexp2.Text = "EXP2" Then
+       Btnexp2_Click 
+    Endif
+    txtConsole.Text = ""
+    Print #$hProcess, "dnf repolist" & gb.NewLine;
+    PICLOGODISTRO.Visible = False  
+'ALTRE VOCI - PRIMA VERIFICA SE È STATO DIGITATO O SELEZIONATO IL PACCHETTO****     
+  Else
+ 'VERIFICA SE È STATA FATTA UNA RICERCA O SE È STOTO INSERITO UN NOME E COSTRUISCE IL $PKGINFO PER LA RICERCA***********
+    If (Listpkg.Visible = False And ListpkgAVAILABLE.Visible = False And ListpkgUPGRADE.Visible = False) Or ($OFFLINE = 0) Then
+         $PKGINFO = RTrim$(LTrim$(txtpkg.Text))
         If Btnexp2.Text = "EXP2" Then
-           Btnexp2_Click 
+            Btnexp2_Click 
         Endif
-      txtConsole.Text = ""
-      Print #$hProcess, "dnf repolist" & gb.NewLine;
-      PICLOGODISTRO.Visible = False  
-   Else
-      If txtpkg.text = "" Then 
-          Message.Info($SELECTPKG, "OK")
-   Else
-      If Btnexp2.Text = "EXP2" Then
-          Btnexp2_Click 
-   Endif
-   If Cmbtipoinfo.index = 0                                         'GENERALE
-      txtConsole.Text = ""
-      Print #$hProcess, "dnf info " & txtpkg.Text & $VERBOSE & gb.NewLine;
-      PICLOGODISTRO.Visible = False  
-   Endif
-   If Cmbtipoinfo.Index = 3                                         'CHANGELOG
-     txtConsole.Text = ""
-     Print #$hProcess, "dnf provides " & txtpkg.Text & $VERBOSE & gb.NewLine;
-     PICLOGODISTRO.Visible = False  
-   Endif
-   If Cmbtipoinfo.Index = 1        
-      ' If $DNFVERSION = "DNF5" Then
-      '    Message.Info("Sorry, but this feature is not implemented in dnf5!", "Ok")                                 'DIPENDENZE
-      '  Else 
-        txtConsole.Text = ""
-        'VECCHIO COMANDO **** Print #$hProcess, "dnf deplist " & txtpkg.Text & " | grep dependency" & $VERBOSE & gb.NewLine;
-        Print #$hProcess, "dnf repoquery --requires " & txtpkg.Text & $VERBOSE & gb.NewLine;
-        PICLOGODISTRO.Visible = False  
-       ' Endif  
-   Endif
-   If Cmbtipoinfo.Index = 2                                            'FILE
-     txtConsole.Text = ""
-      If Cmbtipo.Index = 1
-         Print #$hProcess, "rpm -ql " & txtpkg.Text & $VERBOSE & gb.NewLine;
-         PICLOGODISTRO.Visible = False  
-      Else
-          Print #$hProcess, "dnf repoquery -l " & txtpkg.Text & $VERBOSE & gb.NewLine;
-          PICLOGODISTRO.Visible = False  
+    Else
+'VERIFICA NUMERO DI PACCHETTI SELEZIONATI***************************************************
+        If Val(Str(ListpkgINSTALLATI.Selection.Count)) > 25 Or If Val(Str(ListpkgAVAILABLE.Selection.Count)) > 25 Or If Val(Str(ListpkgUPGRADE.Selection.Count)) > 25 Then
+          OS = 1
+           Message.Info("Search stopped: too many results. Narrow your search!", "OK")
+           If ListpkgINSTALLATI.Visible = True Then
+              ListpkgINSTALLATI.UnSelectAll             
+           Endif
+        Else            
+ 'COSTRUISCE $PKGINFO IN BASE ALLE SELEZIONI****************
+          If ListpkgINSTALLATI.Visible = True 
+            For Each a In ListpkgINSTALLATI.Selection
+              s = ListpkgINSTALLATI[a].Text
+              s = Scan(s, "* * *")[0]
+              $PKGINFO = $PKGINFO & " " & s 
+            Next
+          Endif   
+          If ListpkgAVAILABLE.Visible = True 
+            For Each a In ListpkgAVAILABLE.Selection
+              s = ListpkgAVAILABLE[a].Text
+              s = Scan(s, "* * *")[0]
+              $PKGINFO = $PKGINFO & " " & s 
+            Next
+          Endif    
+          If ListpkgUPGRADE.Visible = True 
+            For Each a In ListpkgUPGRADE.Selection
+              s = ListpkgUPGRADE[a].Text
+              s = Scan(s, "* * *")[0]
+              $PKGINFO = $PKGINFO & " " & s 
+            Next
+          Endif
+        Endif 
+    Endif  
+'VERIFICA $PKGINFO E PULISCE LA VIDEATA PER LA RICERCA*************************************
+    If $PKGINFO = "" Then
+      If OS = 0 Then
+         Message.Info($SELECTPKG, "OK") 
       Endif
-   Endif
-   If Cmbtipoinfo.index = 4                                             'HOMEPAGE                                              
-      txtConsole.Text = ""
-      Print #$hProcess, "dnf info " & txtpkg.Text & " | grep URL" & $VERBOSE & gb.NewLine;
-      PICLOGODISTRO.Visible = False  
-   Endif
-  Endif
- Endif
+    Else 
+      Btnclear_Click
+      TABHIDE 
+      PICLOGODISTRO.Visible = False
+      txtpkg.Text = $PKGINFO  
+'GENERALE*************************************************              
+        If Cmbtipoinfo.index = 0                                         
+           Print #$hProcess, "dnf info " & $PKGINFO & $VERBOSE & gb.NewLine;
+'PROVIDES**************************************************
+        Endif
+        If Cmbtipoinfo.Index = 3                                         
+           Print #$hProcess, "dnf provides " & $PKGINFO & $VERBOSE & gb.NewLine;
+        Endif
+'REQUIRES**************************************************
+        If Cmbtipoinfo.Index = 1      
+           Print #$hProcess, "dnf repoquery --requires " & $PKGINFO & $VERBOSE & gb.NewLine;
+        Endif
+'FILE******************************************************       
+        If Cmbtipoinfo.Index = 2                                           
+            If Cmbtipo.Index = 1
+               Print #$hProcess, "rpm -ql " & $PKGINFO & $VERBOSE & gb.NewLine;
+            Else
+            Print #$hProcess, "dnf repoquery -l " & $PKGINFO & $VERBOSE & gb.NewLine;
+            Endif
+        Endif
+'HOMEPAGE******************************************************
+        If Cmbtipoinfo.index = 4                                             
+           Print #$hProcess, "dnf info " & $PKGINFO & " | grep URL" & $VERBOSE & gb.NewLine;
+        Endif
+    Endif
+ Endif  
 End 
 
 Public Sub btncerca_Click()
@@ -2102,6 +2117,34 @@ Endif
   flKEY.Close
   
 End
+Public Sub LOADCOMBOTIPO()
+ Dim flCMBT As File  
+ Dim jCMBT As Byte
+ Dim s$CMBT As String
+ Dim ss$CMBT As New String[] 
+
+  flCMBT = Open "/usr/share/dnfdrake/dnfdrake-CMBT-" & $LANG For Read   ' ...oppure "Input"
+
+ While Not Eof(flCMBT)
+   Input #flCMBT, s$CMBT
+   ss$CMBT.Add(s$CMBT)
+  Wend
+   Close #flCMBT
+  For jCMBT = 3 To ss$CMBT.Max
+      Cmbtipo.Add(Replace(ss$CMBT[0], "_", " "))
+      Cmbtipo.Add(Replace(ss$CMBT[1], "_", " "))
+      Cmbtipo.Add(Replace(ss$CMBT[2], "_", " "))
+      Cmbtipo.Add(Replace(ss$CMBT[3], "_", " "))
+      Cmbtipo.Add("Autoremove")
+      BTNTABINSTALLED.Text = (Replace(ss$CMBT[1], "_", " "))
+      BTNTABAVIABLE.Text = (Replace(ss$CMBT[2], "_", " "))
+      BTNTABUPDATE.Text = (Replace(ss$CMBT[3], "_", " "))
+       Next
+   flCMBT.Close
+ '*********************************************************************************
+  
+End
+
 
 Public Sub NODEPSTMPCLEAR()
   Dim R As String
@@ -3946,9 +3989,6 @@ End
 
 
 Public Sub CHKoffline_Click()
-
-  
-
 End
 
 Public Sub TimerUPLISTE_Timer()

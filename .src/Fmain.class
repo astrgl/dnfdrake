@@ -2673,9 +2673,21 @@ Btnclear_Click
 PICLOGODISTRO.Visible = False
 Me.Mouse = Mouse.Wait  
 Wait 0.05
-Shell "echo ==========Name==========: ==========Summary========== >" & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait
-Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait 
-Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/globalsearch.txt" Wait 
+'FORMATTAZIONE OUTPUT IN BASE ALLA VERSIONE DI DNF 
+ If $DNFVERSIONNUMBER > 50213 Then 'DNF5 DA 5.2.17 (OMA) IN POI .....PER ORA
+   Shell "echo -e " & Chr$(34) & " ======================== Name ========================\t======================== Summary ======================== " & Chr$(34) & " > " & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait
+   Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait
+   Shell "awk -F '\t' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/globalsearch.txt" Wait
+ Else If $DNFVERSIONNUMBER > 50000 Then 'DNF5 5.2.11 (ROSA)
+   Shell "echo ======================== Name ========================: ======================== Summary ======================== >" & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait
+   Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait 
+   Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/globalsearch.txt" Wait 
+ Else   'DNF4 
+   Shell "echo ======================== Name ========================: ======================== Summary ======================== >" & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait
+   Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait 
+   Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/globalsearch.txt" Wait 
+ Endif
+
 ListpkgSEARCH.Enabled = True
 ListpkgSEARCH.Visible = True 
 CORNICE.Background = &007F00FF& 
@@ -2685,7 +2697,7 @@ ListpkgUPGRADE.Visible = False
 ListpkgNODEPS.Visible = False
 t = Open User.Home & "/.config/dnfdrake/globalsearch.txt"
  For Each s In t.Lines 
-    If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") Or InStr(s, "==========") Then  'And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
+    If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") Or InStr(s, "========================") Then  'And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
       p = p + ListpkgSEARCH.Count
       ListpkgSEARCH.add(p, s)
       If $COLORTEXT = "color"
@@ -2693,7 +2705,7 @@ t = Open User.Home & "/.config/dnfdrake/globalsearch.txt"
       Endif
     Endif
   Next
-  If ListpkgSEARCH.Count = 0 Then
+  If ListpkgSEARCH.Count < 2 Then
      ListpkgSEARCH.Mode = 0
      ListpkgSEARCH.Add(1, $NOTPACKAGES)
      If $COLORTEXT = "color"

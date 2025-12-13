@@ -562,7 +562,7 @@ LOADCOMBOTIPO
    $ListpkgWR = 0
    $ListpkgCK = 0
    $CHKERROR = 0
-   Cmbtipo.Index = 0
+   Cmbtipo.Index = 5
    Cmbtipoinfo.Index = 0
    CMBVERSLOCK.index = 0
    $OFFLINE = 1
@@ -1189,12 +1189,19 @@ Private Sub TABHIDE()
     LBLBTNINSTALLATI.Visible = False
     LBLBTNAVAILABLE.Visible = False
     LBLBTNUPDATE.Visible = False
+    ListpkgSEARCH.Visible = False
     
 End 
 Private Sub EXITROUTIN()
       Dim $PID As String
       If Exist(User.Home & "/.config/dnfdrake/repolist.tmp") Then
          Shell "rm -f " & User.Home & "/.config/dnfdrake/repolist.tmp " Wait 
+      Endif
+      If Exist(User.Home & "/.config/dnfdrake/globalsearch.txt") Then
+         Shell "rm -f " & User.Home & "/.config/dnfdrake/globalsearch.txt " Wait 
+      Endif
+      If Exist(User.Home & "/.config/dnfdrake/globalsearch.tmp") Then
+         Shell "rm -f " & User.Home & "/.config/dnfdrake/globalsearch.tmp " Wait 
       Endif
       
       $hProcess.Kill
@@ -1841,59 +1848,49 @@ End
 Public Sub btncerca_Click()
      TMPLOGCLEAN
      $STATUS = 1                                  ' AGGIUNTA A VERSIONE 1.17.32 PER LA GESTIONE DEL TASTO PULISCI
-   If Cmbtipo.index = 0 Then                      'TUTTI
-    If $OFFLINE = 0 
-     If txtpkg.Text = "" Then
+'TUTTI********************************************************* 
+  If Cmbtipo.index = 0 Then                      
+    If $OFFLINE = 0 Then
+      TABHIDE
+      If txtpkg.Text = "" Then
           txtConsole.Text = ""
           Me.Mouse = Mouse.Wait  
           Print #$hProcess, "dnf list " & gb.NewLine; 
           If Btnexp2.Text = "EXP2" Then
              Btnexp2_Click 
           Endif
-       Else
+      Else
           If Btnexp1.Text = "EXP1" Then
              Btnexp1_Click 
           Endif
           If $ListpkgWR = 0 And $ListpkgCK = 0
-          Btnclear_Click
-'****************************************************************
+             Btnclear_Click
           Me.Mouse = Mouse.Wait  
-           ' If $CHKDNF5 = 0
               Print #$hProcess, "dnf " & " list " & $SEARCH & " | grep " & txtpkg.Text & " |tee /dev/null" & gb.NewLine;  
-            'lse    
-              'If $SEARCH = " --showduplicates " Then
-             ' Print #$hProcess, "dnf " & " list --available " & $SEARCH & "| grep " & txtpkg.Text & " |tee /dev/null" & gb.NewLine;
-              'Else   
-                ' Print #$hProcess, "dnf " & " list " & $SEARCH & "| grep " & txtpkg.Text & " |tee /dev/null" & gb.NewLine;
-              'Endif
-            'Endif
           PICLOGODISTRO.Visible = False 
-        Endif
-        Endif
-'**********************************************************          
+      Endif
+    Endif
  'RICERCA OFFLINE*********************************************************************
     $MEMOCOMMAND = "MOUSEDEFAULT"
-    Else
-     Btnclear_Click
-     If Btnexp1.Text = "EXP1" Then
-     Btnexp1_Click 
-     Endif
-     BTNTABINSTALLED.Visible = True
-     BTNTABAVIABLE.Visible = True
-     BTNTABUPDATE.Visible = True
-     Me.Mouse = Mouse.Wait  
-     CERCAUPDATE
-     Me.Mouse = Mouse.Wait  
-     CERCAAVAILABLE
-     Me.Mouse = Mouse.Wait  
-     CERCAINSTALLED
+  Else
+      Btnclear_Click
+      If Btnexp1.Text = "EXP1" Then
+         Btnexp1_Click 
+      Endif
+      BTNTABINSTALLED.Visible = True
+      BTNTABAVIABLE.Visible = True
+      BTNTABUPDATE.Visible = True
+      Me.Mouse = Mouse.Wait  
+      CERCAUPDATE
+      Me.Mouse = Mouse.Wait  
+      CERCAAVAILABLE
+      Me.Mouse = Mouse.Wait  
+      CERCAINSTALLED
     Endif
- Endif
-   '****************************************************************************
+  Endif
+'INSTALLATI****************************************************************************
    If Cmbtipo.index = 1 Then 
-'ENDIF IN CODA **************************************************************************
-
-     If $OFFLINE = 0                        'INSTALLATI
+     If $OFFLINE = 0                        
         TABHIDE
           If txtpkg.Text = "" Then
               If Btnexp2.Text = "EXP2" Then
@@ -1926,138 +1923,145 @@ Public Sub btncerca_Click()
          BTNINSTALVIEW
     Endif  
   Endif  
-'***********************************************************************************   
-   If Cmbtipo.index = 2 Then                          'NON INSTALLATI
+'NON INSTALLATI*****************************************************************************   
+   If Cmbtipo.index = 2 Then                          
       If $OFFLINE = 0 
          TABHIDE
-            If txtpkg.Text = ""
-                If Btnexp2.Text = "EXP2" Then
+        If txtpkg.Text = ""
+            If Btnexp2.Text = "EXP2" Then
                    Btnexp2_Click 
-                Endif
-              txtConsole.Text = ""
-              Me.Mouse = Mouse.Wait  
-              Print #$hProcess, "dnf list --available" & gb.NewLine; 
-               PICLOGODISTRO.Visible = False 
-            Else
-                If Btnexp1.Text = "EXP1" Then
-                   Btnexp1_Click 
-                Endif
-                Btnclear_Click
-                Me.Mouse = Mouse.Wait  
-                
-                'If $CHKDNF5 = 0
-                   Print #$hProcess, "dnf " & " list --available " & $SEARCH & " | grep " & txtpkg.Text & " |tee /dev/null" & gb.NewLine;  
-                'Else    
-                   'rint #$hProcess, "dnf " & " list --available " & $SEARCH & "| grep " & txtpkg.Text & " |tee /dev/null" & gb.NewLine;
-               'Endif
-                
-                ' If $SEARCH = " --showduplicates " Then
-                '   Print #$hProcess, "dnf " & " list --available " & $SEARCH & txtpkg.Text & " |tee /dev/null" & gb.NewLine;
-                ' Else   
-                '   Print #$hProcess, "dnf " & " list --available " & $SEARCH & " | grep " & txtpkg.Text & " |tee /dev/null" & gb.NewLine;
-                ' Endif
-                
-                 PICLOGODISTRO.Visible = False   
             Endif
-     $MEMOCOMMAND = "MOUSEDEFAULT"
-    'RICERCA OFFLINE*********************************************************************
-     Else
-            TABHIDE
-            Btnclear_Click
-          
-          If Btnexp1.Text = "EXP1" Then
-             Btnexp1_Click 
-          Endif
-             Me.Mouse = Mouse.Wait  
-             CERCAAVAILABLE
-             BTNAVAILABLEVIEW
-     Endif
-  Endif  
-'*************************************************************************************************  
-   If Cmbtipo.index = 3 Then                            'UPDATE
-      If $OFFLINE = 0 
-        TABHIDE
-            If txtpkg.Text = ""
-                If Btnexp2.Text = "EXP2" Then
-                  Btnexp2_Click 
-                Endif
-               txtConsole.Text = ""
-               Me.Mouse = Mouse.Wait  
-               Print #$hProcess, "dnf list --upgrades" & gb.NewLine;
-                PICLOGODISTRO.Visible = False  
-            Else
-                If Btnexp1.Text = "EXP1" Then
-                  Btnexp1_Click 
-                Endif
-                Btnclear_Click
-                Me.Mouse = Mouse.Wait  
-                Print #$hProcess, "dnf list --upgrades  |grep " & txtpkg.Text & gb.NewLine;
-                 PICLOGODISTRO.Visible = False  
-            Endif
-     $MEMOCOMMAND = "MOUSEDEFAULT"
-    'RICERCA OFFLINE*********************************************************************
-     Else
-           TABHIDE
-           Btnclear_Click
+            txtConsole.Text = ""
+            Me.Mouse = Mouse.Wait  
+            Print #$hProcess, "dnf list --available" & gb.NewLine; 
+            PICLOGODISTRO.Visible = False 
+        Else
             If Btnexp1.Text = "EXP1" Then
                Btnexp1_Click 
             Endif
-              Me.Mouse = Mouse.Wait  
-              CERCAUPDATE
-              BTNUPDATEVIEW
-     Endif
-  Endif
-'AUTORMOVE LIST*****************************************************************************  
-If Cmbtipo.index = 4 Then                     'AUTOREMOVE
-      Dim $RESX As Integer
-      Dim $RESY As Integer
-      $RESX = Fmain.Width
-      $RESY = Fmain.Height + 70
-   If $OFFLINE = 0 
+            Btnclear_Click
+            Me.Mouse = Mouse.Wait  
+            Print #$hProcess, "dnf " & " list --available " & $SEARCH & " | grep " & txtpkg.Text & " |tee /dev/null" & gb.NewLine; 
+            PICLOGODISTRO.Visible = False   
+        Endif
+      $MEMOCOMMAND = "MOUSEDEFAULT"
+     'RICERCA OFFLINE*********************************************************************
+    Else
       TABHIDE
       Btnclear_Click
+        If Btnexp1.Text = "EXP1" Then
+           Btnexp1_Click 
+        Endif
+        Me.Mouse = Mouse.Wait  
+        CERCAAVAILABLE
+        BTNAVAILABLEVIEW
+    Endif
+  Endif  
+'UPDATE***********************************************************************************  
+    If Cmbtipo.index = 3 Then                            
+      If $OFFLINE = 0 
+        TABHIDE
+        If txtpkg.Text = ""
+          If Btnexp2.Text = "EXP2" Then
+             Btnexp2_Click 
+          Endif
+          txtConsole.Text = ""
+          Me.Mouse = Mouse.Wait  
+          Print #$hProcess, "dnf list --upgrades" & gb.NewLine;
+          PICLOGODISTRO.Visible = False  
+        Else
+          If Btnexp1.Text = "EXP1" Then
+             Btnexp1_Click 
+          Endif
+          Btnclear_Click
+          Me.Mouse = Mouse.Wait  
+          Print #$hProcess, "dnf list --upgrades  |grep " & txtpkg.Text & gb.NewLine;
+          PICLOGODISTRO.Visible = False  
+        Endif
+        $MEMOCOMMAND = "MOUSEDEFAULT"
+       'RICERCA OFFLINE*********************************************************************
+      Else
+        TABHIDE
+        Btnclear_Click
+        If Btnexp1.Text = "EXP1" Then
+           Btnexp1_Click 
+        Endif
+        Me.Mouse = Mouse.Wait  
+        CERCAUPDATE
+        BTNUPDATEVIEW
+    Endif
+  Endif
+'AUTORMOVE LIST*****************************************************************************  
+  If Cmbtipo.index = 4 Then                     
+     Dim $RESX As Integer
+     Dim $RESY As Integer
+     $RESX = Fmain.Width
+     $RESY = Fmain.Height + 70
+     If $OFFLINE = 0 
+        TABHIDE
+        Btnclear_Click
       If Btnexp2.Text = "EXP2" Then
          Btnexp2_Click 
       Endif
       If $LOG = "LOG" Then
-          Me.Mouse = Mouse.Wait  
-          Print #$hProcess, "dnf list --autoremove" & $VERBOSE & gb.NewLine;
-           PICLOGODISTRO.Visible = False 
-        Else 
-          Me.Mouse = Mouse.Wait  
-          Print #$hProcess, "dnf list --autoremove" & gb.NewLine;
-           PICLOGODISTRO.Visible = False 
+         Me.Mouse = Mouse.Wait  
+         Print #$hProcess, "dnf list --autoremove" & $VERBOSE & gb.NewLine;
+         PICLOGODISTRO.Visible = False 
+       Else 
+         Me.Mouse = Mouse.Wait  
+         Print #$hProcess, "dnf list --autoremove" & gb.NewLine;
+         PICLOGODISTRO.Visible = False 
       Endif
-    $MEMOCOMMAND = "MOUSEDEFAULT" 
-   Else 
-     Btnclear_Click
+      $MEMOCOMMAND = "MOUSEDEFAULT" 
+  Else 
+      Btnclear_Click
 'CORREZIONE VISUALIZZAZIONE MASCHERA ****************************************
-     If Btnexp1.Text = "EXP1" Then
-        Btnexp1_Click
-     Endif
+      If Btnexp1.Text = "EXP1" Then
+         Btnexp1_Click
+      Endif
  'MODIFICHE RISPETTO A BTNEXP1
-     If Fmain.Width > 1366 Then
-       txtConsole.Width = 1330 + ($RESX - 1366)
-       txtConsole.Height = 476 + ($RESY - 768)
-    Else
-     txtConsole.Width = 1330 - (1366 - $RESX)
-     txtConsole.Height = 476 - (768 - $RESY) 
-    Endif
-     txtConsole.X = 10
-     txtConsole.Y = 147
-     txtConsole.Visible = True
-     listpkg.Visible = False
-     btnpkg.Visible = False
+      If Fmain.Width > 1366 Then
+         txtConsole.Width = 1330 + ($RESX - 1366)
+         txtConsole.Height = 476 + ($RESY - 768)
+      Else
+         txtConsole.Width = 1330 - (1366 - $RESX)
+         txtConsole.Height = 476 - (768 - $RESY) 
+      Endif
+      txtConsole.X = 10
+      txtConsole.Y = 147
+      txtConsole.Visible = True
+      listpkg.Visible = False
+      btnpkg.Visible = False
   '*************************************************
-     Me.Mouse = Mouse.Wait  
-     Print #$hProcess, "dnf list --autoremove" & $VERBOSE & gb.NewLine;
+      Me.Mouse = Mouse.Wait  
+      Print #$hProcess, "dnf list --autoremove" & $VERBOSE & gb.NewLine;
       PICLOGODISTRO.Visible = False 
-     Me.Mouse = Mouse.Wait  
-     $MEMOCOMMAND = "AUTOREMOVE"
-   Endif    
-Endif
-'********************************************************************************************
-If Cmbtipo.index = 5 Then 
+      Me.Mouse = Mouse.Wait  
+      $MEMOCOMMAND = "AUTOREMOVE"
+    Endif    
+  Endif
+
+
+
+
+'GLOBAL*******************************************************************************************
+  If Cmbtipo.index = 5 Then 
+    If txtpkg.Text = "" Then
+       Message.Info($SELECTPKG, "OK")
+    Else   
+       TABHIDE
+       Btnclear_Click
+       If Btnexp1.Text = "EXP1" Then
+          Btnexp1_Click 
+       Endif
+       Me.Mouse = Mouse.Wait  
+       GLOBALSEARCH
+    Endif
+  Endif
+
+
+'NODEPS*******************************************************************************************
+If Cmbtipo.index = 6 Then 
         CERCANODEPS
 Endif    
 If $CLEAROVERFLOW = 1 Then
@@ -2136,6 +2140,7 @@ Public Sub LOADCOMBOTIPO()
       Cmbtipo.Add(Replace(ss$CMBT[2], "_", " "))
       Cmbtipo.Add(Replace(ss$CMBT[3], "_", " "))
       Cmbtipo.Add("Autoremove")
+      Cmbtipo.Add("Global Search", 6)
       BTNTABINSTALLED.Text = (Replace(ss$CMBT[1], "_", " "))
       BTNTABAVIABLE.Text = (Replace(ss$CMBT[2], "_", " "))
       BTNTABUPDATE.Text = (Replace(ss$CMBT[3], "_", " "))
@@ -2199,6 +2204,8 @@ If BTNFULLSCREEN.Visible = True
   ListpkgUPGRADE.Height = ListpkgUPGRADE.Height + ($RISOLUZIONEY - 768)
   ListpkgNODEPS.Width = ListpkgNODEPS.Width + ($RISOLUZIONEX - 1366)
   ListpkgNODEPS.Height = ListpkgNODEPS.Height + ($RISOLUZIONEY - 768)
+  ListpkgSEARCH.Width = ListpkgSEARCH.Width + ($RISOLUZIONEX - 1366)
+  ListpkgSEARCH.Height = ListpkgSEARCH.Height + ($RISOLUZIONEY - 768)
   TXTINFOBOX.Width = TXTINFOBOX.Width + ($RISOLUZIONEX - 1366)
   TXTINFOBOX.Height = TXTINFOBOX.Height + ($RISOLUZIONEY - 768)
   HBox1.Y = HBox1.Y + ($RISOLUZIONEY - 768)
@@ -2274,6 +2281,8 @@ Else
   ListpkgUPGRADE.Height = 476
   ListpkgNODEPS.Width = 1332 - 8
   ListpkgNODEPS.Height = 476
+  ListpkgSEARCH.Width = 1332 - 8
+  ListpkgSEARCH.Height = 476
   TXTINFOBOX.Width = 770
   TXTINFOBOX.Height = 476
   HBox1.Y = 662
@@ -2651,7 +2660,50 @@ t = Open User.Home & "/.config/dnfdrake/nodeps.txt"
 
 Me.Mouse = Mouse.default  
 End
-
+Private Sub GLOBALSEARCH()
+Dim s As String
+Dim t As Stream
+Dim p As Integer
+Btnclear_Click
+ If ListpkgSEARCH.Count > 0 Then
+    ListpkgSEARCH.SelectAll
+    ListpkgSEARCH.Clear
+    ListpkgSEARCH.UnSelectAll
+ Endif
+PICLOGODISTRO.Visible = False
+Me.Mouse = Mouse.Wait  
+Wait 0.05
+Shell "echo ==========Name==========: ==========Summary========== >" & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait
+Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait 
+Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/globalsearch.txt" Wait 
+ListpkgSEARCH.Enabled = True
+ListpkgSEARCH.Visible = True 
+CORNICE.Background = &007F00FF& 
+ListpkgINSTALLATI.Visible = False
+ListpkgAVAILABLE.Visible = False
+ListpkgUPGRADE.Visible = False 
+ListpkgNODEPS.Visible = False
+t = Open User.Home & "/.config/dnfdrake/globalsearch.txt"
+ For Each s In t.Lines 
+    If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") Or InStr(s, "==========") Then  'And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
+      p = p + ListpkgSEARCH.Count
+      ListpkgSEARCH.add(p, s)
+      If $COLORTEXT = "color"
+         ListpkgSEARCH[p].Foreground = &00FF00FF&
+      Endif
+    Endif
+  Next
+  If ListpkgSEARCH.Count = 0 Then
+     ListpkgSEARCH.Mode = 0
+     ListpkgSEARCH.Add(1, $NOTPACKAGES)
+     If $COLORTEXT = "color"
+       ListpkgSEARCH[1].Foreground = &007F00FF&
+     Endif
+     ListpkgSEARCH.Enabled = False
+  Endif
+  t.Close  
+Me.Mouse = Mouse.default  
+End
 
 Private Sub CERCAAUTOREMOVE()
   
@@ -3377,9 +3429,12 @@ Public Sub Listpkg_DblClick()
    txtpkg.Text = ""
    If Listpkg.Count > 0 Then
    Listpkg.MoveCurrent
-   Listpkg.Item.Selected = True
-   txtpkg.Text = txtpkg.Text & " " & Listpkg.Item.Text
-   Listpkg.UnselectAll
+   Try Listpkg.Item.Selected = True
+       If Error Then
+       Else
+          txtpkg.Text = txtpkg.Text & " " & Listpkg.Item.Text
+           Listpkg.UnselectAll
+       Endif   
    Endif
 End
 
@@ -3388,11 +3443,14 @@ Public Sub ListpkgINSTALLATI_DblClick()
    txtpkg.Text = ""
    If ListpkgINSTALLATI.Count > 0 Then
    ListpkgINSTALLATI.MoveCurrent
-   ListpkgINSTALLATI.Item.Selected = True
-   S = ListpkgINSTALLATI.Item.Text
-   s = Scan(s, "* * *")[0]
-   txtpkg.Text = txtpkg.Text & " " & s
-   ListpkgINSTALLATI.UnselectAll
+   Try ListpkgINSTALLATI.Item.Selected = True
+      If Error Then
+      Else
+         S = ListpkgINSTALLATI.Item.Text
+         s = Scan(s, "* * *")[0]
+         txtpkg.Text = txtpkg.Text & " " & s
+         ListpkgINSTALLATI.UnselectAll
+      Endif  
    Endif
 
 End
@@ -3402,11 +3460,14 @@ Public Sub ListpkgAVAILABLE_DblClick()
    txtpkg.Text = ""
    If ListpkgAVAILABLE.Count > 0 Then
    ListpkgAVAILABLE.MoveCurrent
-   ListpkgAVAILABLE.Item.Selected = True
-   S = ListpkgAVAILABLE.Item.Text
-   s = Scan(s, "* * *")[0]
-   txtpkg.Text = txtpkg.Text & " " & s
-   ListpkgAVAILABLE.UnselectAll
+   Try ListpkgAVAILABLE.Item.Selected = True
+      If Error Then
+      Else
+         S = ListpkgAVAILABLE.Item.Text
+         s = Scan(s, "* * *")[0]
+         txtpkg.Text = txtpkg.Text & " " & s
+         ListpkgAVAILABLE.UnselectAll
+      Endif    
    Endif
 End
 
@@ -3416,13 +3477,36 @@ Public Sub ListpkgUPGRADE_DblClick()
    txtpkg.Text = ""
    If ListpkgUPGRADE.Count > 0 Then
    ListpkgUPGRADE.MoveCurrent
-   ListpkgUPGRADE.Item.Selected = True
-   S = ListpkgUPGRADE.Item.Text
-   s = Scan(s, "* * *")[0]
-   txtpkg.Text = txtpkg.Text & " " & s
-   ListpkgUPGRADE.UnselectAll
+   Try ListpkgUPGRADE.Item.Selected = True
+      If Error Then
+      Else
+        S = ListpkgUPGRADE.Item.Text
+        s = Scan(s, "* * *")[0]
+        txtpkg.Text = txtpkg.Text & " " & s
+        ListpkgUPGRADE.UnselectAll
+      Endif   
    Endif
 End
+Public Sub ListpkgSEARCH_DblClick()
+   Dim s As String
+   Dim c As Integer
+   txtpkg.Text = ""
+   If ListpkgSEARCH.Count > 0 Then
+   ListpkgSEARCH.MoveCurrent
+   Try ListpkgSEARCH.Item.Selected = True
+       If Error Then
+       Else
+          S = ListpkgSEARCH.Item.Text
+          c = InStr(s, ".")
+          s = Left(s, c - 1)
+          txtpkg.Text = RTrim$(LTrim$(s))
+          Cmbtipo.Index = 0
+          btncerca_Click
+       Endif    
+  Endif
+  
+End
+
 
 Public Sub ListpkgINSTALLATI_Menu()
 
@@ -3505,9 +3589,7 @@ Public Sub ListpkgUPGRADE_Menu()
      Endif      
   Endif
 End
-Public Sub ListpkgNODEPS_Menu()
-
-  
+Public Sub ListpkgNODEPS_Menu()  
  Dim s As String
 
    If ListpkgNODEPS.Count > 0 Then
@@ -3532,6 +3614,35 @@ Public Sub ListpkgNODEPS_Menu()
      Endif      
   Endif
   
+End
+Public Sub ListpkgSEARCH_Menu()
+
+ Dim s As String
+ Dim c As Integer 
+ s = ""
+  If ListpkgSEARCH.Count > 0 Then
+     ListpkgSEARCH.MoveCurrent
+     Try ListpkgSEARCH.Item.Selected = True
+       If Error Then
+       Else
+         S = ListpkgSEARCH.Item.Text
+         c = InStr(s, ".")
+         s = Left(s, c - 1)
+         ListpkgSEARCH.Item.Selected = False
+       Endif 
+  Endif
+   
+  If $INFOENABLED = 0 Then
+     If s = ""
+       Else     
+          TXTINFOBOX.Visible = True
+          Wait 0.5
+          Shell "dnf info " & s Wait To $INFOTEXT
+          TXTINFOBOX.Text = $INFOTEXT    
+          TXTINFOBOX.SetFocus
+          $INFOENABLED = 1
+     Endif   
+  Endif
 End
 
 Public Sub ListpkgNODEPS_Select()
@@ -4769,9 +4880,9 @@ If Listpkg.Mode <> 0 Then
 Endif
 
  If CHKNODEPS.Value = True Then
-       Cmbtipo.Add(Cmbtipo[1].Text & " (NoDeps)", 5)
+       Cmbtipo.Add(Cmbtipo[1].Text & " (NoDeps)", 6)
     Else    
-       Cmbtipo.Remove(5)
+       Cmbtipo.Remove(6)
        If ListpkgNODEPS.Visible = True
           Btnclear_Click
        Endif   
@@ -4779,7 +4890,7 @@ Endif
     Endif
 
 If PICLOGODISTRO.Visible = True And If CHKNODEPS.Value = True Then
-  Cmbtipo.Index = 5
+  Cmbtipo.Index = 6
 Endif
 
 
@@ -4788,7 +4899,7 @@ Public Sub CHKNODEPS_Menu()
   
   Message.Info($NODEPSINFO, "Ok")
   
-End
+  End
 
 Public Sub PICLOGODISTRO_MouseDown()
 End
@@ -4831,6 +4942,7 @@ End
 
 Public Sub BORDOCONNECT_MouseDown()
 End
+
 
 
 Public Sub BTNGEOMETRY_Click()

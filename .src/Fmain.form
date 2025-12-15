@@ -254,7 +254,6 @@
     Visible = False
     Font = Font["Monospace"]
     ToolTip = ("Double click for search package")
-    Mode = Select.None
     Grid = True
   }
   { BTNTABINSTALLED Button

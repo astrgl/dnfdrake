@@ -484,6 +484,7 @@ LOADCOMBOTIPO
       $TEMAASK = Replace(ss$TTP[95], "_", " ")
       BTNGEOMETRY.Tooltip = Replace(ss$TTP[99], "_", " ")
       $MSGBTNCOMMAND = Replace(ss$TTP[100], "_", " ")
+      ListpkgSEARCH.Tooltip = Replace(ss$TTP[102], "_", " ")
      Next
    flTTP.Close
 'TEMA DELLE ICONE**************************************************************      
@@ -2134,13 +2135,13 @@ Public Sub LOADCOMBOTIPO()
    ss$CMBT.Add(s$CMBT)
   Wend
    Close #flCMBT
-  For jCMBT = 3 To ss$CMBT.Max
+  For jCMBT = 4 To ss$CMBT.Max
       Cmbtipo.Add(Replace(ss$CMBT[0], "_", " "))
       Cmbtipo.Add(Replace(ss$CMBT[1], "_", " "))
       Cmbtipo.Add(Replace(ss$CMBT[2], "_", " "))
       Cmbtipo.Add(Replace(ss$CMBT[3], "_", " "))
       Cmbtipo.Add("Autoremove")
-      Cmbtipo.Add("Global Search", 6)
+      Cmbtipo.Add(Replace(ss$CMBT[4], "_", " "))
       BTNTABINSTALLED.Text = (Replace(ss$CMBT[1], "_", " "))
       BTNTABAVIABLE.Text = (Replace(ss$CMBT[2], "_", " "))
       BTNTABUPDATE.Text = (Replace(ss$CMBT[3], "_", " "))

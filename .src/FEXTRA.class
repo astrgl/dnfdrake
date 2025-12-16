@@ -42,6 +42,20 @@ Public Sub Form_Open()
    flTTP.Close
    BTNEXIT.Picture = Picture.Load(FMAIN.$PATHICONS & "close" & FMain.$THEMESSUFFIX)
    BTNCLOSE.Picture = Picture.Load(FMAIN.$PATHICONS & "ok" & FMain.$THEMESSUFFIX)
+   
+   CMBTIPOINDEX.Add(FMAIN.Cmbtipo[0].Text)
+   CMBTIPOINDEX.Add(FMAIN.Cmbtipo[1].Text)
+   CMBTIPOINDEX.Add(FMAIN.Cmbtipo[2].Text)
+   CMBTIPOINDEX.Add(FMAIN.Cmbtipo[3].Text)
+   CMBTIPOINDEX.Add(FMAIN.Cmbtipo[4].Text)
+   CMBTIPOINDEX.Add(FMAIN.Cmbtipo[5].Text)
+   Dim $INDEX As String
+   Try $INDEX = File.Load(User.Home &/ "/.config/dnfdrake/cmbtipoindex")
+   If Error Then
+      $INDEX = 5
+   Endif
+   $INDEX = Replace($INDEX, " ", "")
+   CMBTIPOINDEX.Index = $INDEX
  '*********************************************************************************
  
  If Fmain.$SECUREMODE = "SECURE" Then
@@ -368,6 +382,7 @@ Endif
       FMain.LOADICONS
       FMAIN.LOADLOGO
    Endif
+   
 '********************************************************************************************
 If Fmain.$ROOTMODE = 0 Then
   If CHKEASYPASSWORD.Value = True Then
@@ -402,6 +417,9 @@ Endif
      FMAIN.LOADKEYWORD
   Endif
 '***********************************************************************************************  
+  File.Save(User.Home &/ "/.config/dnfdrake/cmbtipoindex", CMBTIPOINDEX.Index)
+  FMAIN.Cmbtipo.Index = CMBTIPOINDEX.Index
+    
   Me.Close
 End
 

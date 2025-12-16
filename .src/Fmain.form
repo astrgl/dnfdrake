@@ -153,6 +153,7 @@
     Font = Font["Monospace"]
     Mode = Select.Multiple
     ShowCheck = True
+    Highlight = True
   }
   { Btnexp2 Button
     Move(966,98,42,28)
@@ -223,6 +224,7 @@
     Font = Font["Monospace"]
     Mode = Select.Multiple
     ShowCheck = True
+    Highlight = True
     Grid = True
   }
   { ListpkgINSTALLATI ListView
@@ -231,6 +233,7 @@
     Font = Font["Monospace"]
     Mode = Select.Multiple
     ShowCheck = True
+    Highlight = True
     Grid = True
   }
   { ListpkgAVAILABLE ListView
@@ -239,6 +242,7 @@
     Font = Font["Monospace"]
     Mode = Select.Multiple
     ShowCheck = True
+    Highlight = True
     Grid = True
   }
   { ListpkgUPGRADE ListView
@@ -247,6 +251,7 @@
     Font = Font["Monospace"]
     Mode = Select.Multiple
     ShowCheck = True
+    Highlight = True
     Grid = True
   }
   { ListpkgSEARCH ListView
@@ -254,6 +259,7 @@
     Visible = False
     Font = Font["Monospace"]
     ToolTip = ("Double click for search package")
+    Highlight = True
     Grid = True
   }
   { BTNTABINSTALLED Button

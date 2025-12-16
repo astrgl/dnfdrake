@@ -15,6 +15,7 @@
   { ProgressBar1 ProgressBar
     Move(14,49,644,7)
     Visible = False
+    NoTabFocus = True
     Label = False
   }
   { Timer1 #Timer

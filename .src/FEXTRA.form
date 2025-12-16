@@ -116,7 +116,7 @@
     MoveScaled(2,56,60,5)
     Border = Border.Plain
     BorderRadius = 10
-    Text = ("Themes: ")
+    Text = ("Themes:                                          Default Search:")
   }
   { CMBTHEMES ComboBox
     MoveScaled(11,56.7143,16,3.5714)
@@ -140,5 +140,10 @@
     Visible = False
     Enabled = False
     Text = ("Use DNF5")
+  }
+  { CMBTIPOINDEX ComboBox
+    MoveScaled(44,56.7143,16,3.5714)
+    Background = Color.Transparent
+    Border = False
   }
 }

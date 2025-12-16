@@ -563,7 +563,13 @@ LOADCOMBOTIPO
    $ListpkgWR = 0
    $ListpkgCK = 0
    $CHKERROR = 0
-   Cmbtipo.Index = 5
+   Dim $INDEX As String
+   Try $INDEX = File.Load(User.Home &/ "/.config/dnfdrake/cmbtipoindex")
+   If Error Then
+      $INDEX = 5     
+   Endif
+   $INDEX = Replace($INDEX, " ", "")   
+   Cmbtipo.Index = $INDEX
    Cmbtipoinfo.Index = 0
    CMBVERSLOCK.index = 0
    $OFFLINE = 1

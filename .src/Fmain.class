@@ -111,6 +111,7 @@ Public $TOTALRBAR As String          'DIVIDENDO PROGRESSBAR
 Public $LINKDNF5 As String           'SERVE PER LA LETTURA DEL LINK A DNF
 Public $CHKDNF5 As Integer           'SE IN USO DNF5 È A 1 SE IN USO DNF4 A 0
 Public $CLEAROVERFLOW As Integer      'SERVE PER PULIRE DALLE TAB IN CASO DI OVERFLOW DI RICERCA
+Public $HISTORYINFO As String         'FRASE DI ASSISTENZA PER HISTORY INFO
 
 Public Sub Form_Open()
 'COMANDI
@@ -485,6 +486,8 @@ LOADCOMBOTIPO
       BTNGEOMETRY.Tooltip = Replace(ss$TTP[99], "_", " ")
       $MSGBTNCOMMAND = Replace(ss$TTP[100], "_", " ")
       ListpkgSEARCH.Tooltip = Replace(ss$TTP[102], "_", " ")
+      $HISTORYINFO = Replace(ss$TTP[103], "_", " ")
+      
      Next
    flTTP.Close
 'TEMA DELLE ICONE**************************************************************      
@@ -1420,7 +1423,7 @@ Public Sub btninstall_Click()
 End
 
 Public Sub txtpkg_GotFocus()
-If txtpkg.Text = "For more info for history type id here!" Then
+If txtpkg.Text = $HISTORYINFO Then
    txtpkg.Foreground = Color.Default
    txtpkg.Text = ""
 Endif
@@ -3311,25 +3314,20 @@ Public Sub Btncrono_Click()
 
    Btnclear_Click
    If Btnexp2.Text = "EXP2" Then
-   Btnexp2_Click  
+      Btnexp2_Click  
    Endif
    txtConsole.Text = ""
-   
-   ' Shell ("dnf history list  > " & User.Home & "/.config/dnfdrake/tmp/history.tmp") Wait 
-   ' txtConsole.Text = File.Load(User.Home & "/.config/dnfdrake/tmp/history.tmp")
-   ' 
-   If txtpkg.Text = "" Then
+   If (RTrim$(LTrim$(txtpkg.Text))) = "" Then
       Print #$hProcess, "dnf history list " & gb.NewLine;
       txtpkg.Foreground = Color.Red
-      txtpkg.Text = "For more info for history type id here!"
+      txtpkg.Text = $HISTORYINFO
    Else   
-      Print #$hProcess, "dnf history info " & txtpkg.text & " | tee /dev/null " & gb.NewLine;
+      Print #$hProcess, "dnf history info " & (RTrim$(LTrim$(txtpkg.Text))) & " | tee /dev/null " & gb.NewLine;
    Endif
-   
    PICLOGODISTRO.Visible = False  
   
 End
-
+ 
 
 Public Sub Btnclear_Click()
     TMPLOGCLEAN

@@ -1204,12 +1204,15 @@ Private Sub EXITROUTIN()
       If Exist(User.Home & "/.config/dnfdrake/repolist.tmp") Then
          Shell "rm -f " & User.Home & "/.config/dnfdrake/repolist.tmp " Wait 
       Endif
-      If Exist(User.Home & "/.config/dnfdrake/globalsearch.txt") Then
-         Shell "rm -f " & User.Home & "/.config/dnfdrake/globalsearch.txt " Wait 
+      If Exist(User.Home & "/.config/dnfdrake/tmp/globalsearch.txt") Then
+         Shell "rm -f " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt " Wait 
       Endif
-      If Exist(User.Home & "/.config/dnfdrake/globalsearch.tmp") Then
-         Shell "rm -f " & User.Home & "/.config/dnfdrake/globalsearch.tmp " Wait 
+      If Exist(User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp") Then
+         Shell "rm -f " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp " Wait 
       Endif
+      '  If Exist(User.Home & "/.config/dnfdrake/tmp/history.tmp") Then
+      '    Shell "rm -f " & User.Home & "/.config/dnfdrake/tmp/history.tmp " Wait 
+      ' Endif
       
       $hProcess.Kill
     ' PARTE CHE SERVE A KILLARE IL PROCESSO DI DNFDRAKE SE È STATO LANCIATO DNFDRAKETRAY ********** 
@@ -1416,12 +1419,16 @@ Public Sub btninstall_Click()
      '*********************************
 End
 
-Public Sub txtpkg_KeyPress()
+Public Sub txtpkg_GotFocus()
+If txtpkg.Text = "For more info for history type id here!" Then
+   txtpkg.Foreground = Color.Default
+   txtpkg.Text = ""
+Endif
 End
 
 Public Sub txtpkg_Activate()
- btncerca_Click
-End
+    btncerca_Click
+ End
 
 Public Sub btnremove_Click()
     TMPLOGCLEAN
@@ -2682,17 +2689,17 @@ Me.Mouse = Mouse.Wait
 Wait 0.05
 'FORMATTAZIONE OUTPUT IN BASE ALLA VERSIONE DI DNF 
  If $DNFVERSIONNUMBER > 50213 Then 'DNF5 DA 5.2.17 (OMA) IN POI .....PER ORA
-   Shell "echo -e " & Chr$(34) & " ======================== Name ========================\t======================== Summary ======================== " & Chr$(34) & " > " & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait
-   Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait
-   Shell "awk -F '\t' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/globalsearch.txt" Wait
+   Shell "echo -e " & Chr$(34) & " ======================== Name ========================\t======================== Summary ======================== " & Chr$(34) & " > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
+   Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
+   Shell "awk -F '\t' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait
  Else If $DNFVERSIONNUMBER > 50000 Then 'DNF5 5.2.11 (ROSA)
-   Shell "echo ======================== Name ========================: ======================== Summary ======================== >" & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait
-   Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait 
-   Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/globalsearch.txt" Wait 
+   Shell "echo ======================== Name ========================: ======================== Summary ======================== >" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
+   Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait 
+   Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait 
  Else   'DNF4 
-   Shell "echo ======================== Name ========================: ======================== Summary ======================== >" & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait
-   Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/globalsearch.tmp" Wait 
-   Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/globalsearch.txt" Wait 
+   Shell "echo ======================== Name ========================: ======================== Summary ======================== >" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
+   Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait 
+   Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait 
  Endif
 
 ListpkgSEARCH.Enabled = True
@@ -2702,7 +2709,7 @@ ListpkgINSTALLATI.Visible = False
 ListpkgAVAILABLE.Visible = False
 ListpkgUPGRADE.Visible = False 
 ListpkgNODEPS.Visible = False
-t = Open User.Home & "/.config/dnfdrake/globalsearch.txt"
+t = Open User.Home & "/.config/dnfdrake/tmp/globalsearch.txt"
  For Each s In t.Lines 
     If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") Or InStr(s, "========================") Then  'And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
       p = p + ListpkgSEARCH.Count
@@ -3307,7 +3314,18 @@ Public Sub Btncrono_Click()
    Btnexp2_Click  
    Endif
    txtConsole.Text = ""
-   Print #$hProcess, "dnf history list" & gb.NewLine;
+   
+   ' Shell ("dnf history list  > " & User.Home & "/.config/dnfdrake/tmp/history.tmp") Wait 
+   ' txtConsole.Text = File.Load(User.Home & "/.config/dnfdrake/tmp/history.tmp")
+   ' 
+   If txtpkg.Text = "" Then
+      Print #$hProcess, "dnf history list " & gb.NewLine;
+      txtpkg.Foreground = Color.Red
+      txtpkg.Text = "For more info for history type id here!"
+   Else   
+      Print #$hProcess, "dnf history info " & txtpkg.text & " | tee /dev/null " & gb.NewLine;
+   Endif
+   
    PICLOGODISTRO.Visible = False  
   
 End

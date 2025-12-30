@@ -49,6 +49,7 @@ Public Sub Form_Open()
    CMBTIPOINDEX.Add(FMAIN.Cmbtipo[3].Text)
    CMBTIPOINDEX.Add(FMAIN.Cmbtipo[4].Text)
    CMBTIPOINDEX.Add(FMAIN.Cmbtipo[5].Text)
+   CMBTIPOINDEX.Add(FMAIN.Cmbtipo[6].Text)
    Dim $INDEX As String
    Try $INDEX = File.Load(User.Home &/ "/.config/dnfdrake/cmbtipoindex")
    If Error Then
@@ -449,6 +450,18 @@ Public Sub CHKDNF5_Click()
 End
 
 Public Sub CHKDUPLICATE_Click()
+
+  
+
+End
+
+Public Sub CMBTIPOINDEX_Click()
+
+  
+
+End
+
+Public Sub CHKNODEPS_Click()
 
   
 

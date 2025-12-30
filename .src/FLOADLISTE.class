@@ -73,6 +73,8 @@ BTNSKIP.Enabled = False
 BTNSKIP.Visible = False
 If $CONNECTION = 1 Then 
 Dim b As Byte
+    Shell "dnf repoquery --qf " & Chr$(34) & "%{group}" & Chr$(92) & "n" & Chr$(34) & " > " & User.Home & "/.config/dnfdrake/tmp/GRUPPI.txt " Wait 'GENERA L'ELENCO DEI GRUPPI"
+     Shell ("dnf repoquery  --qf '%{group}\t  %{name}\t %{summary}\t %{version}\t %{release}\t %{arch}\t %{installsize}\t  %{repoid}\t\n' > " & User.Home & "/.config/dnfdrake/tmp/tuttigruppi.txt") Wait 'CREA L'ELENCO DELLE INFO DEI GRUPPI
     For b = 1 To 10
        ProgressBar1.Value = b / 100
        Wait 0.01
@@ -181,6 +183,7 @@ Else
   Fmain.$RPMPATH = ""
 Endif
 Fmain.DRAKETRAYUPDATE  
+FMAIN.Cmbtipo.Index = FMAIN.$INDEX
 
 '*********************NON DOVREBBE SERVIRE PIÙ******************************************************
 ' If Exist(User.Home &/ ".config/dnfdrake/memosize") Then

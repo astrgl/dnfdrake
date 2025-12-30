@@ -63,6 +63,14 @@
     BorderRadius = 5
     BorderColor = &H257DD0
   }
+  { LBLBTNGROUP Label
+    Move(560,108,126,38)
+    Visible = False
+    Border = Border.Plain
+    BorderWidth = 2
+    BorderRadius = 5
+    BorderColor = &HFFFF00
+  }
   { CORNICE Label
     Move(7,140,1337,490)
     Background = Color.Transparent
@@ -113,7 +121,7 @@
     Move(791,7,110,28)
   }
   { Btnexp1 Button
-    Move(966,70,42,28)
+    Move(1064,70,42,28)
     Visible = False
     Text = ("EXP1")
   }
@@ -156,7 +164,7 @@
     Highlight = True
   }
   { Btnexp2 Button
-    Move(966,98,42,28)
+    Move(1064,98,42,28)
     Visible = False
     Text = ("EXP2")
   }
@@ -194,7 +202,7 @@
     Move(1232,112,112,28)
   }
   { TXTSTATUS Label
-    Move(1008,98,63,28)
+    Move(1106,98,63,28)
     Visible = False
     Border = Border.Plain
   }
@@ -254,6 +262,22 @@
     Highlight = True
     Grid = True
   }
+  { TRVWGRUPPI TreeView
+    Move(15,149,247,463)
+    Visible = False
+    ToolTip = ("Double click to search for packages")
+    Border = False
+    ShowLines = True
+    Highlight = True
+  }
+  { !CLNVWGRUPPI ColumnView
+    Move(262,149,1071,463)
+    #Public = True
+    Visible = False
+    NoTabFocus = True
+    Border = False
+    Highlight = True
+  }
   { ListpkgSEARCH ListView
     Move(14,147,1323,476)
     Visible = False
@@ -263,7 +287,7 @@
     Grid = True
   }
   { BTNTABINSTALLED Button
-    Move(182,112,120,28)
+    Move(181,112,120,28)
     Visible = False
     Border = False
   }
@@ -273,7 +297,7 @@
     Border = False
   }
   { BTNTABUPDATE Button
-    Move(434,112,120,28)
+    Move(436,112,119,28)
     Visible = False
     Border = False
   }
@@ -329,7 +353,7 @@
     ToolTip = ("Replay Last Log or view package list")
   }
   { BTNADDPKGLIST Button
-    Move(574,112,28,28)
+    Move(690,112,28,28)
     Visible = False
   }
   { PICBTNDISTUPDATE PictureBox
@@ -338,11 +362,11 @@
     Alignment = Align.Center
   }
   { BTNPKGLISTVIEW Button
-    Move(864,112,28,28)
+    Move(980,112,28,28)
     Visible = False
   }
   { TXTPKGLISTLABEL TextBox
-    Move(604,112,94,28)
+    Move(720,112,94,28)
     Visible = False
     Enabled = False
     Foreground = Color.TextForeground
@@ -350,14 +374,14 @@
     Alignment = Align.Right
   }
   { TXTPKGLISTNOME TextBox
-    Move(696,112,168,28)
+    Move(812,112,168,28)
     Visible = False
     Enabled = False
     Foreground = Color.TextForeground
     Text = ("None")
   }
   { BTNPKGLISTCLEAN Button
-    Move(892,112,28,28)
+    Move(1008,112,28,28)
     Visible = False
   }
   { BTNEXCLUDE Button
@@ -451,5 +475,11 @@
   { TMRSINO #Timer
     #Move(1176,77)
     Delay = 500
+  }
+  { BTNTABGROUP Button
+    Move(563,112,119,28)
+    Visible = False
+    Text = ("Group")
+    Border = False
   }
 }

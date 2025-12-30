@@ -112,6 +112,7 @@ Public $LINKDNF5 As String           'SERVE PER LA LETTURA DEL LINK A DNF
 Public $CHKDNF5 As Integer           'SE IN USO DNF5 Ãˆ A 1 SE IN USO DNF4 A 0
 Public $CLEAROVERFLOW As Integer      'SERVE PER PULIRE DALLE TAB IN CASO DI OVERFLOW DI RICERCA
 Public $HISTORYINFO As String         'FRASE DI ASSISTENZA PER HISTORY INFO
+Public $INDEX As String              'CARICA LA MEMORIA DI CMBTIPO
 
 Public Sub Form_Open()
 'COMANDI
@@ -487,7 +488,7 @@ LOADCOMBOTIPO
       $MSGBTNCOMMAND = Replace(ss$TTP[100], "_", " ")
       ListpkgSEARCH.Tooltip = Replace(ss$TTP[102], "_", " ")
       $HISTORYINFO = Replace(ss$TTP[103], "_", " ")
-      
+      CLNVWGRUPPI.Tooltip = Replace(ss$TTP[102], "_", " ")
      Next
    flTTP.Close
 'TEMA DELLE ICONE**************************************************************      
@@ -566,13 +567,8 @@ LOADCOMBOTIPO
    $ListpkgWR = 0
    $ListpkgCK = 0
    $CHKERROR = 0
-   Dim $INDEX As String
-   Try $INDEX = File.Load(User.Home &/ "/.config/dnfdrake/cmbtipoindex")
-   If Error Then
-      $INDEX = 5     
-   Endif
-   $INDEX = Replace($INDEX, " ", "")   
-   Cmbtipo.Index = $INDEX
+   LOADINDEX 'STITUISCE PRECEDENTE PER RENDERE PUBLIC $INDEX
+   'Cmbtipo.Index = $INDEX 'SPOSTATO ALL'USCITA DI FLOADLISTE
    Cmbtipoinfo.Index = 0
    CMBVERSLOCK.index = 0
    $OFFLINE = 1
@@ -731,10 +727,7 @@ FIXINSTALLATI
         Else    
           $CHKDNF5 = 0
         Endif   
-    
-    '$LANG = "en_US" 'MODIFICA PER DNF5**************************
-    
-    '$FL = Open $FILELOG For Write 
+
 End
 
 Public Sub EXCLUDETEST()
@@ -1192,6 +1185,7 @@ Private Sub TABHIDE()
     BTNTABINSTALLED.Visible = False
     BTNTABAVIABLE.Visible = False
     BTNTABUPDATE.Visible = False
+    BTNTABGROUP.Visible = False
     ListpkgINSTALLATI.Visible = False
     ListpkgAVAILABLE.Visible = False
     ListpkgUPGRADE.Visible = False
@@ -1199,7 +1193,10 @@ Private Sub TABHIDE()
     LBLBTNINSTALLATI.Visible = False
     LBLBTNAVAILABLE.Visible = False
     LBLBTNUPDATE.Visible = False
+    LBLBTNGROUP.Visible = False
     ListpkgSEARCH.Visible = False
+    TRVWGRUPPI.Visible = False
+    CLNVWGRUPPI.Visible = False
     
 End 
 Private Sub EXITROUTIN()
@@ -1822,6 +1819,16 @@ Public Sub btninfo_Click()
               $PKGINFO = $PKGINFO & " " & s 
             Next
           Endif
+          
+          '***************************************************************************
+          
+          If CLNVWGRUPPI.Visible = True Then
+            $PKGINFO = Trim(CLNVWGRUPPI.Current[1]) & "." & Trim(CLNVWGRUPPI.Current[5])
+          Endif
+          
+          '****************************************************************************
+          
+          
         Endif 
     Endif  
 'VERIFICA $PKGINFO E PULISCE LA VIDEATA PER LA RICERCA*************************************
@@ -2075,10 +2082,12 @@ Public Sub btncerca_Click()
        GLOBALSEARCH
     Endif
   Endif
-
+If Cmbtipo.index = 6 Then 
+   Cmbtipo_Click  
+Endif
 
 'NODEPS*******************************************************************************************
-If Cmbtipo.index = 6 Then 
+If Cmbtipo.index = 7 Then 
         CERCANODEPS
 Endif    
 If $CLEAROVERFLOW = 1 Then
@@ -2093,6 +2102,17 @@ Public Sub FIXINSTALLATI()
      Shell "mv -f " & User.Home & "/.config/dnfdrake/noninstallati-temp.txt " & User.Home & "/.config/dnfdrake/noninstallati.txt" Wait 
   Endif
 End
+Public Sub LOADINDEX()
+  
+  ' Dim $INDEX As String
+   Try $INDEX = File.Load(User.Home &/ "/.config/dnfdrake/cmbtipoindex")
+   If Error Then
+      $INDEX = 5     
+   Endif
+   $INDEX = Replace($INDEX, " ", "")   
+  
+End
+
 Public Sub LOADKEYWORD()
  Dim flKEY As File  
  Dim jKEY As Byte
@@ -2158,6 +2178,7 @@ Public Sub LOADCOMBOTIPO()
       Cmbtipo.Add(Replace(ss$CMBT[3], "_", " "))
       Cmbtipo.Add("Autoremove")
       Cmbtipo.Add(Replace(ss$CMBT[4], "_", " "))
+      Cmbtipo.Add("Group")
       BTNTABINSTALLED.Text = (Replace(ss$CMBT[1], "_", " "))
       BTNTABAVIABLE.Text = (Replace(ss$CMBT[2], "_", " "))
       BTNTABUPDATE.Text = (Replace(ss$CMBT[3], "_", " "))
@@ -2166,8 +2187,178 @@ Public Sub LOADCOMBOTIPO()
  '*********************************************************************************
   
 End
+Public Sub LOADTREEVIEWGRUPPI()
+  Dim GRFILE As File
+  Dim GRLINE, GRPART, GRCurrentKey, GRParentKey As String
+  Dim GRPARTS As String[]
+  Dim GRFPATH As String = User.Home & "/.config/dnfdrake/tmp/GRUPPI.txt"
+ ' Dim GRFPATH As String = "/home/mauro/GRUPPI.txt"
+  
+  ' Definiamo le icone di sistema (32 o 16 pixel)
+  ' Dim hFolderIcon As Picture = Stock["icon:/16/directory"]
+  ' Dim hFileIcon As Picture = Stock["icon:/16/file"]
+
+  TRVWGRUPPI.Clear()
+  If Not Exist(GRFPATH) Then Return
+
+  GRFILE = Open GRFPATH For Read
+  While Not Eof(GRFILE)
+    Line Input #GRFILE, GRLine
+    If Not Trim(GRLINE) Then Continue
+    
+    GRPARTS = Split(GRLINE, "/")
+    GRParentKey = ""
+    GRCurrentKey = ""
+
+    For i As Integer = 0 To GRPARTS.Max
+      GRPART = GRPARTS[i]
+      If GRCurrentKey = "" Then
+        GRCurrentKey = GRPART
+      Else
+        GRCurrentKey &= "/" & GRPART
+      Endif
+
+      If Not TRVWGRUPPI.Exist(GRCurrentKey) Then
+        ' Se ï¿½ l'ultimo elemento della riga lo consideriamo un file,
+        ' altrimenti ï¿½ una cartella.
+        ' Dim hIcon As Picture = IIf(i = GRPARTS.Max, hFileIcon, hFolderIcon)
+        Dim GRIcon As Picture
+        GRIcon = Picture.Load($PATHICONS & "search" & $THEMESSUFFIX)
+        'hIcon = Stock."16/" & GRCurrentKey)
+        TRVWGRUPPI.Add(GRCurrentKey, GRPART, GRIcon, GRParentKey)
+      Endif
+      
+      GRParentKey = GRCurrentKey
+    Next
+  Wend
+  Close #GRFILE
+End 
+
+Public Sub SEARCHLIST()
+
+  Dim $path As String
+  Dim hFile As File
+  Dim sLinea As String
+  Dim aCampi As String[]
+  Dim iContatore As Integer = 0
+  $path = User.Home & "/.config/dnfdrake/tmp/tuttiresult.txt"
+  '$path = User.Home & "/tutti - gruppo.txt"
+  ' 1. Configurazione iniziale del ColumnView
+  CLNVWGRUPPI.Columns.Count = 8
+  CLNVWGRUPPI.Columns[0].Title = "Group"  
+  CLNVWGRUPPI.Columns[1].Title = "Name"
+  CLNVWGRUPPI.Columns[2].Title = "Summary"
+  CLNVWGRUPPI.Columns[3].Title = "Version"
+  CLNVWGRUPPI.Columns[4].Title = "Release"
+  CLNVWGRUPPI.Columns[5].Title = "Arch"
+  CLNVWGRUPPI.Columns[6].Title = "Size"
+  CLNVWGRUPPI.Columns[7].Title = "Repository"  ' ... imposta gli altri titoli se necessario ...
+
+  If TRVWGRUPPI.Current.ParentKey = "" Then 'SERVE PER FILTRARE L'INFO DEL GRUPPPO GENOTORE E FIGLIO
+     Shell "awk -F " & Chr$(34) & Chr$(92) & "t" & Chr$(34) & " '$1 == " & Chr$(34) & TRVWGRUPPI.Current.Text & Chr$(34) & " ' " & User.Home & "/.config/dnfdrake/tmp/tuttigruppi.txt > " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.txt" Wait 
+     ' Shell "awk '$1 == " & Chr$(34) & TRVWGRUPPI.Current.Text & Chr$(34) & " ' " & User.Home & "/.config/dnfdrake/tmp/tuttigruppi.txt > " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.txt" Wait 
+  Else 
+     Shell "awk -F " & Chr$(34) & Chr$(92) & "t" & Chr$(34) & " '$1 == " & Chr$(34) & TRVWGRUPPI.Current.ParentKey & "/" & TRVWGRUPPI.Current.Text & Chr$(34) & " ' " & User.Home & "/.config/dnfdrake/tmp/tuttigruppi.txt > " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.txt" Wait 
+  Endif
+  ' Svuota il controllo prima di caricare nuovi dati
+  CLNVWGRUPPI.Clear()
+
+  ' 2. Lettura del file
+  If Not Exist($path) Then Return
+  
+  hFile = Open $path For Read
+  
+  While Not Eof(hFile)
+    Line Input #hFile, sLinea
+    
+    ' Salta eventuali righe vuote
+    If Trim(sLinea) = "" Then Continue
+    
+    ' Divide la riga in base al separatore (es. spazio o tabulazione)
+    ' Se il separatore ï¿½ la virgola, usa Split(sLinea, ",")
+      aCampi = Split(sLinea, "\t")
+   
+    ' Verifica che ci siano abbastanza colonne per evitare errori
+    If aCampi.Count >= 8 Then
+      iContatore += 1
+      
+      ' 3. Aggiunta al ColumnView
+      ' Add(ChiaveUnivoca, TestoPrimaColonna)
+      CLNVWGRUPPI.Add(Str(iContatore), aCampi[0])
+      
+      ' Popola le colonne dalla 2 alla 7 (indice 1-6)
+      CLNVWGRUPPI[Str(iContatore)][1] = aCampi[1]
+      CLNVWGRUPPI[Str(iContatore)][2] = aCampi[2]
+      CLNVWGRUPPI[Str(iContatore)][3] = aCampi[3]
+      CLNVWGRUPPI[Str(iContatore)][4] = aCampi[4]
+      CLNVWGRUPPI[Str(iContatore)][5] = aCampi[5]
+      CLNVWGRUPPI[Str(iContatore)][6] = aCampi[6]
+      CLNVWGRUPPI[Str(iContatore)][7] = aCampi[7]
+
+    Endif
+  Wend
+
+  Close #hFile
+  Wait 0.01
+  CLNVWGRUPPI.Columns[0].Width = 0
+  
+End
+Public Sub TRVWGRUPPI_DblClick()
+  SEARCHLIST
+  'CLNVWGRUPPI.Columns[0].Width = 0
+End
+Public Sub CLNVWGRUPPI_Select()
+  TXTPKG.Text = Trim(CLNVWGRUPPI.Current[1]) & "." & Trim(CLNVWGRUPPI.Current[5])
+End
 
 
+' Public Sub CLNVWGRUPPI_DblClick()
+'   
+'   TXTPKG.Text = Trim(CLNVWGRUPPI.Current[1]) & "." & Trim(CLNVWGRUPPI.Current[5])
+'   Cmbtipo.Index = 0
+'   btncerca_Click
+'   BTNTABGROUP.Visible = True
+'   LBLBTNGROUP.Visible = True
+' 
+' End
+
+'   ' Verifica se il tasto premuto è Invio o Invio del tastierino numerico
+'   If Key.Code = Key.Return Or If Key.Code = Key.Enter Then
+'     
+'     ' Controlla se c'è un elemento selezionato per evitare errori
+'     If ColumnView1.Current Then
+'       MiaRoutine(ColumnView1.Current.Text)
+'     Endif
+'     
+'   Endif
+' 
+' End Sub
+Public Sub CLNVWGRUPPI_Activate()
+  
+     TXTPKG.Text = Trim(CLNVWGRUPPI.Current[1]) & "." & Trim(CLNVWGRUPPI.Current[5])
+     Cmbtipo.Index = 0
+     btncerca_Click
+     BTNTABGROUP.Visible = True
+     LBLBTNGROUP.Visible = True
+
+End
+
+Public Sub CLNVWGRUPPI_Menu()
+  Dim s As String
+  s = Trim(CLNVWGRUPPI.Current[1]) & "." & Trim(CLNVWGRUPPI.Current[5])
+ If $INFOENABLED = 0 Then
+     If s = ""
+       Else     
+          TXTINFOBOX.Visible = True
+          Wait 0.5
+          Shell "dnf info " & s Wait To $INFOTEXT
+          TXTINFOBOX.Text = $INFOTEXT    
+          TXTINFOBOX.SetFocus
+          $INFOENABLED = 1
+     Endif   
+  Endif
+
+End
 Public Sub NODEPSTMPCLEAR()
   Dim R As String
   Shell ("find  " & User.Home &/ ".config/dnfdrake/tmp/ |grep .rpm") To R
@@ -2223,6 +2414,13 @@ If BTNFULLSCREEN.Visible = True
   ListpkgNODEPS.Height = ListpkgNODEPS.Height + ($RISOLUZIONEY - 768)
   ListpkgSEARCH.Width = ListpkgSEARCH.Width + ($RISOLUZIONEX - 1366)
   ListpkgSEARCH.Height = ListpkgSEARCH.Height + ($RISOLUZIONEY - 768)
+  
+  TRVWGRUPPI.Width = TRVWGRUPPI.Width * ($RISOLUZIONEX / 1366)
+  TRVWGRUPPI.Height = TRVWGRUPPI.Height + ($RISOLUZIONEY - 768)
+  CLNVWGRUPPI.Width = CLNVWGRUPPI.Width * (TRVWGRUPPI.Width / 247)
+  CLNVWGRUPPI.Height = CLNVWGRUPPI.Height + ($RISOLUZIONEY - 768)
+  CLNVWGRUPPI.X = TRVWGRUPPI.X + TRVWGRUPPI.Width
+ 
   TXTINFOBOX.Width = TXTINFOBOX.Width + ($RISOLUZIONEX - 1366)
   TXTINFOBOX.Height = TXTINFOBOX.Height + ($RISOLUZIONEY - 768)
   HBox1.Y = HBox1.Y + ($RISOLUZIONEY - 768)
@@ -2300,6 +2498,13 @@ Else
   ListpkgNODEPS.Height = 476
   ListpkgSEARCH.Width = 1332 - 8
   ListpkgSEARCH.Height = 476
+  
+  TRVWGRUPPI.Height = 463
+  TRVWGRUPPI.Width = 247
+  CLNVWGRUPPI.Height = 463
+  CLNVWGRUPPI.Width = 1071
+  CLNVWGRUPPI.X = 262
+  
   TXTINFOBOX.Width = 770
   TXTINFOBOX.Height = 476
   HBox1.Y = 662
@@ -3266,6 +3471,53 @@ Else
   Endif 
   txtpkg.SetFocus
 Endif
+
+
+
+If Cmbtipo.index = 6 Then             ' GRUPPI
+   TABHIDE
+   TRVWGRUPPI.Visible = True
+   CLNVWGRUPPI.Visible = True
+   PICLOGODISTRO.Visible = False
+   CORNICE.Background = &00FFFF00& 
+   Wait 0.05 
+   If TRVWGRUPPI.Count > 0 Then
+   Else   
+      LOADTREEVIEWGRUPPI
+   Endif
+   btncerca.Enabled = False
+   ' btninstall.Enabled = False
+   ' btnremove.Enabled = False
+   ' BTNPKGUPDATE.Enabled = False
+   ' BTNDOWNDGRADE.Enabled = False
+   ' BTNREINSTALL.Enabled = False
+Else 
+   btncerca.Enabled = True   
+   Btnclear_Click
+   '  btninstall.Enabled = True
+   ' btnremove.Enabled = True
+   ' BTNPKGUPDATE.Enabled = True
+   ' BTNDOWNDGRADE.Enabled = True
+   ' BTNREINSTALL.Enabled = True
+Endif
+
+
+If Cmbtipo.index = 5 Or If Cmbtipo.Index = 6 Then             'GLOBAL SEARCH O GRUPPI 
+   
+   btninstall.Enabled = False
+   btnremove.Enabled = False
+   BTNPKGUPDATE.Enabled = False
+   BTNDOWNDGRADE.Enabled = False
+   BTNREINSTALL.Enabled = False
+Else 
+   btninstall.Enabled = True
+   btnremove.Enabled = True
+   BTNPKGUPDATE.Enabled = True
+   BTNDOWNDGRADE.Enabled = True
+   BTNREINSTALL.Enabled = True
+Endif
+
+
 End
 
 Public Sub Label1_MouseDown()
@@ -3278,7 +3530,7 @@ Public Sub Btncommand_Click()
   txtCommand.SetFocus
   If txtCommand.Visible = False Then
     Btncommand.Text = Btncommand.Text & " ^"
-    Message.Info($MSGBTNCOMMAND, "Ok")
+    ' Message.Info($MSGBTNCOMMAND, "Ok")
     HBox1.Visible = True
     HBox1.Tooltip = $HBOX1TOOLTIP
     txtCommand.Visible = True
@@ -3376,6 +3628,20 @@ Public Sub Btnclear_Click()
       If txtCommand.Visible = False Then
        PICLOGODISTRO.Visible = True
       Endif 
+  If Cmbtipo.index = 5 Or If Cmbtipo.Index = 6 Then             'GLOBAL SEARCH O GRUPPI 
+   
+   btninstall.Enabled = False
+   btnremove.Enabled = False
+   BTNPKGUPDATE.Enabled = False
+   BTNDOWNDGRADE.Enabled = False
+   BTNREINSTALL.Enabled = False
+Else 
+   btninstall.Enabled = True
+   btnremove.Enabled = True
+   BTNPKGUPDATE.Enabled = True
+   BTNDOWNDGRADE.Enabled = True
+   BTNREINSTALL.Enabled = True
+Endif
 End
 
 Public Sub BTNABOUT_Click()
@@ -4120,7 +4386,12 @@ If ListpkgUPGRADE.Mode <> 0 Then
    Endif
 Endif
 End
+Public Sub BTNTABGROUP_Click()
+Cmbtipo.Index = 6
+txtpkg.text = ""
+  
 
+End
 
 Public Sub ListpkgINSTALLATI_Click()
 End
@@ -4915,17 +5186,17 @@ If Listpkg.Mode <> 0 Then
 Endif
 
  If CHKNODEPS.Value = True Then
-       Cmbtipo.Add(Cmbtipo[1].Text & " (NoDeps)", 6)
+       Cmbtipo.Add(Cmbtipo[1].Text & " (NoDeps)", 7)
     Else    
-       Cmbtipo.Remove(6)
+       Cmbtipo.Remove(7)
        If ListpkgNODEPS.Visible = True
           Btnclear_Click
        Endif   
        Cmbtipo.Index = 0
     Endif
 
-If PICLOGODISTRO.Visible = True And If CHKNODEPS.Value = True Then
-  Cmbtipo.Index = 6
+If (PICLOGODISTRO.Visible = True Or Cmbtipo.Index = 6) And If CHKNODEPS.Value = True Then
+  Cmbtipo.Index = 7
 Endif
 
 
@@ -4977,6 +5248,7 @@ End
 
 Public Sub BORDOCONNECT_MouseDown()
 End
+
 
 
 

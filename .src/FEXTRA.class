@@ -306,6 +306,8 @@ Endif
       Endif
    Else
        Fmain.$OFFLINE = 0
+       'Fmain.TABHIDE
+       Fmain.Cmbtipo.Index = 0
        Fmain.PCTCONNECT.Visible = True
        Fmain.PCTDISCONNECT.Visible = False
         If Fmain.Btnexp1.Text = "UEXP1" Then
@@ -315,6 +317,7 @@ Endif
           Fmain.$CASE = 0
           Message.Info("Igore Case option have been temporarily disabled", "OK")    
         Endif
+       
     Endif
     
     If CHKBTNVERBOSE.Value = True Then
@@ -418,8 +421,10 @@ Endif
      FMAIN.LOADKEYWORD
   Endif
 '***********************************************************************************************  
-  File.Save(User.Home &/ "/.config/dnfdrake/cmbtipoindex", CMBTIPOINDEX.Index)
-  FMAIN.Cmbtipo.Index = CMBTIPOINDEX.Index
+  If CHKOFFLINE.Value = True Then
+     File.Save(User.Home &/ "/.config/dnfdrake/cmbtipoindex", CMBTIPOINDEX.Index)
+     FMAIN.Cmbtipo.Index = CMBTIPOINDEX.Index
+  Endif
     
   Me.Close
 End
@@ -456,13 +461,12 @@ Public Sub CHKDUPLICATE_Click()
 End
 
 Public Sub CMBTIPOINDEX_Click()
-
-  
-
 End
 
 Public Sub CHKNODEPS_Click()
 
-  
+End
+
+Public Sub CHKOFFLINE_Click()
 
 End

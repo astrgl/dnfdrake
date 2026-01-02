@@ -1181,7 +1181,7 @@ Static Private Function Normalize(sStr As String) As String
   Endif
 End
 
-Private Sub TABHIDE()
+Public Sub TABHIDE()
     BTNTABINSTALLED.Visible = False
     BTNTABAVIABLE.Visible = False
     BTNTABUPDATE.Visible = False
@@ -2064,10 +2064,6 @@ Public Sub btncerca_Click()
       $MEMOCOMMAND = "AUTOREMOVE"
     Endif    
   Endif
-
-
-
-
 'GLOBAL*******************************************************************************************
   If Cmbtipo.index = 5 Then 
     If txtpkg.Text = "" Then
@@ -2082,8 +2078,11 @@ Public Sub btncerca_Click()
        GLOBALSEARCH
     Endif
   Endif
+ 'LA RICERCA CON I GRUPPI VISIBILI ESEGUE UNA RICERCA GLOBALE*************************************** 
 If Cmbtipo.index = 6 Then 
-   Cmbtipo_Click  
+   'Cmbtipo_Click  
+   Cmbtipo.Index = 5 
+   btncerca_Click
 Endif
 
 'NODEPS*******************************************************************************************
@@ -2102,6 +2101,121 @@ Public Sub FIXINSTALLATI()
      Shell "mv -f " & User.Home & "/.config/dnfdrake/noninstallati-temp.txt " & User.Home & "/.config/dnfdrake/noninstallati.txt" Wait 
   Endif
 End
+
+Public Sub COLORINSTALLATILISTSEARCH()
+  Dim SPATH As String = User.Home & "/.config/dnfdrake/tmp/tuttigruppinstallati.txt"
+  'Dim SPATH As String = User.Home & "/.config/dnfdrake/tmp/test.txt"
+  Dim hFile As File
+  Dim sRigaFile, sTestoOriginale, sTestoTagliato As String
+  Dim aCampi As String[]
+  Dim colFile As New Collection
+
+  ' 1. Carica la seconda colonna del file nella Collection (Ricerca veloce)
+  If Not Exist(SPATH) Then Return
+  hFile = Open SPATH For Read
+  While Not Eof(hFile)
+    Line Input #hFile, sRigaFile
+    aCampi = Split(sRigaFile, gb.Tab, "", True)
+    If aCampi.Count >= 2 Then 
+      ' Usiamo il valore del file come CHIAVE
+      colFile[aCampi[1]] = True
+    Endif
+  Wend
+  hFile.Close()
+  
+  'colFile["A"] = "draketray"
+  ' 2. Scorre la ListView e confronta solo la parte prima del punto
+  If ListpkgSEARCH.MoveFirst() Then Return 
+
+  Do
+    sTestoOriginale = ListpkgSEARCH.Item.Text
+    
+    ' Taglia la stringa della ListView al primo punto
+    If InStr(sTestoOriginale, ".") > 0 Then
+      sTestoTagliato = Left(sTestoOriginale, InStr(sTestoOriginale, ".") - 1)
+    Else
+      sTestoTagliato = sTestoOriginale
+    Endif
+    ' Verifica se la parte tagliata esiste nella collezione del file
+    If colFile.Exist(sTestoTagliato) Then
+      ListpkgSEARCH.Item.Foreground = Color.Green
+      If InStr(ListpkgSEARCH.Item.Text, "Name") Then
+        ListpkgSEARCH.Item.Foreground = Color.Default
+      Endif
+     Else
+      ListpkgSEARCH.Item.Foreground = Color.Orange
+      If InStr(ListpkgSEARCH.Item.Text, "Name") Then
+        ListpkgSEARCH.Item.Foreground = Color.Default
+      Endif
+    Endif
+    ' If colFile.Exist("draketray") Then
+    '   Message.Info("questo", "ok")
+    ' Else 
+    '  colFile.  
+    ' Endif
+    ' colFile["A"] = "draketray"
+    ' colFile["B"] = "Secondo elemento"
+
+     ' Print sTestoTagliato
+    ' Dim elemento As String
+    ' For Each elemento In colFile
+    '     Print colFile.Key & elemento
+    ' Next
+
+  Loop Until ListpkgSEARCH.MoveNext()
+End
+
+Public Sub COLORAINSTALLATIGROUP()
+  Dim sPercorso As String = User.Home & "/.config/dnfdrake/tmp/tuttigruppinstallati.txt"
+  Dim hFile As File
+  Dim sRigaFile As String
+  Dim aCampi As String[]
+  Dim sValoreFile As String
+
+  ' 1. Carica i valori del file in una Collection per una ricerca ultra-veloce
+  ' Usiamo una Collection perch� il metodo .Exist() � istantaneo
+  Dim colFile As New Collection
+  
+  If Not Exist(sPercorso) Then Return
+  
+  hFile = Open sPercorso For Read
+  While Not Eof(hFile)
+    Line Input #hFile, sRigaFile
+    aCampi = Split(sRigaFile, gb.Tab, "", True)
+    If aCampi.Count >= 2 Then 
+      ' Aggiungiamo il valore del file come CHIAVE della collection
+      colFile[aCampi[1]] = True
+    Endif
+  Wend
+  hFile.Close()
+
+  ' 2. Scorrere la ColumnView e colorare se il valore esiste nella Collection
+  ' MoveFirst restituisce True se la lista � vuota
+  If CLNVWGRUPPI.MoveFirst() Then Return 
+
+  Do
+    ' Recuperiamo il valore della seconda colonna (indice 1)
+    sValoreFile = CLNVWGRUPPI.Item[1]
+
+    ' Verifichiamo se questo valore era presente nel file
+    If colFile.Exist(sValoreFile) Then
+      ' Coloriamo lo sfondo della riga di verde
+      ' Color.LightGreen � pi� leggibile del verde puro (Color.Green)
+      CLNVWGRUPPI.Item.Foreground = Color.Green
+      
+      ' Opzionale: colorare solo il testo
+      ' ColumnView1.Item.Foreground = Color.DarkGreen
+    Else
+      ' Opzionale: resettare il colore se non c'� corrispondenza
+      CLNVWGRUPPI.Item.Foreground = Color.Orange
+    Endif
+
+  Loop Until CLNVWGRUPPI.MoveNext()
+
+End
+
+
+
 Public Sub LOADINDEX()
   
   ' Dim $INDEX As String
@@ -2299,10 +2413,16 @@ Public Sub SEARCHLIST()
   Wend
 
   Close #hFile
-  Wait 0.01
-  CLNVWGRUPPI.Columns[0].Width = 0
+  ' Wait 0.01
+  ' CLNVWGRUPPI.Columns[0].Width = 0
+
+  COLORAINSTALLATIGROUP
   
 End
+Public Sub CLNVWGRUPPI_BeforeSort()
+  ' Forza la colonna 0 a rimanere invisibile dopo ogni clic sull'header
+  After 0.01 Do CLNVWGRUPPI.Columns[0].Width = 0
+End Sub
 Public Sub TRVWGRUPPI_DblClick()
   SEARCHLIST
   'CLNVWGRUPPI.Columns[0].Width = 0
@@ -2922,20 +3042,23 @@ t = Open User.Home & "/.config/dnfdrake/tmp/globalsearch.txt"
     If InStr(s, ".x86_64") Or InStr(s, ".noarch") Or InStr(s, ".znver1") Or InStr(s, ".aarch64") Or InStr(s, ".i686") Or InStr(s, "========================") Then  'And If RTrim$(LTrim$(txtpkg.Text)) = "" Then
       p = p + ListpkgSEARCH.Count
       ListpkgSEARCH.add(p, s)
-      If $COLORTEXT = "color"
-         ListpkgSEARCH[p].Foreground = &00FF00FF&
-      Endif
+      ' If $COLORTEXT = "color"
+      '    ListpkgSEARCH[p].Foreground = &00FF00FF&
+      ' Endif
     Endif
   Next
   If ListpkgSEARCH.Count < 2 Then
      ListpkgSEARCH.Mode = 0
      ListpkgSEARCH.Add(1, $NOTPACKAGES)
-     If $COLORTEXT = "color"
-       ListpkgSEARCH[1].Foreground = &007F00FF&
-     Endif
+     ' If $COLORTEXT = "color"
+     '   ListpkgSEARCH[1].Foreground = &007F00FF&
+     ' Endif
      ListpkgSEARCH.Enabled = False
   Endif
   t.Close  
+  
+  COLORINSTALLATILISTSEARCH
+  
 Me.Mouse = Mouse.default  
 End
 
@@ -3219,6 +3342,7 @@ Public Sub LOADICONS()
     BTNTABINSTALLED.Picture = Picture.Load($PATHICONS & "installed.png")
     BTNTABAVIABLE.Picture = Picture.Load($PATHICONS & "install.png")
     BTNTABUPDATE.Picture = Picture.Load($PATHICONS & "update.png")
+    BTNTABGROUP.Picture = Picture.Load($PATHICONS & "details.png")
     BTNPKGLISTCLEAN.Picture = Picture.Load($PATHICONS & "trash" & $THEMESSUFFIX)
     BTNADDPKGLIST.Picture = Picture.Load($PATHICONS & "insert-text" & $THEMESSUFFIX)
     BTNPKGLISTVIEW.Picture = Picture.Load($PATHICONS & "view-log" & $THEMESSUFFIX)
@@ -3485,14 +3609,14 @@ If Cmbtipo.index = 6 Then             ' GRUPPI
    Else   
       LOADTREEVIEWGRUPPI
    Endif
-   btncerca.Enabled = False
+   'btncerca.Enabled = False
    ' btninstall.Enabled = False
    ' btnremove.Enabled = False
    ' BTNPKGUPDATE.Enabled = False
    ' BTNDOWNDGRADE.Enabled = False
    ' BTNREINSTALL.Enabled = False
 Else 
-   btncerca.Enabled = True   
+   'btncerca.Enabled = True   
    Btnclear_Click
    '  btninstall.Enabled = True
    ' btnremove.Enabled = True

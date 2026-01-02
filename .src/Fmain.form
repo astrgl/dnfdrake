@@ -7,7 +7,6 @@
   Text = ("DnfDrake")
   Icon = Picture["dnfdrake.png"]
   Resizable = False
-  AutoResize = True
   { Label2 Label
     Move(312,74,236,35)
     Border = Border.Plain
@@ -231,6 +230,7 @@
     Visible = False
     Font = Font["Monospace"]
     Mode = Select.Multiple
+    Border = False
     ShowCheck = True
     Highlight = True
     Grid = True
@@ -240,6 +240,7 @@
     Visible = False
     Font = Font["Monospace"]
     Mode = Select.Multiple
+    Border = False
     ShowCheck = True
     Highlight = True
     Grid = True
@@ -249,6 +250,7 @@
     Visible = False
     Font = Font["Monospace"]
     Mode = Select.Multiple
+    Border = False
     ShowCheck = True
     Highlight = True
     Grid = True
@@ -258,6 +260,7 @@
     Visible = False
     Font = Font["Monospace"]
     Mode = Select.Multiple
+    Border = False
     ShowCheck = True
     Highlight = True
     Grid = True
@@ -265,6 +268,7 @@
   { TRVWGRUPPI TreeView
     Move(15,149,247,463)
     Visible = False
+    Foreground = Color.Royal
     ToolTip = ("Double click to search for packages")
     Border = False
     ShowLines = True
@@ -275,6 +279,7 @@
     #Public = True
     Visible = False
     NoTabFocus = True
+    Sorted = True
     Border = False
     Highlight = True
   }
@@ -283,6 +288,7 @@
     Visible = False
     Font = Font["Monospace"]
     ToolTip = ("Double click for search package")
+    Border = False
     Highlight = True
     Grid = True
   }
@@ -345,7 +351,7 @@
     Move(567,147,770,476)
     Visible = False
     Font = Font["Monospace"]
-    Foreground = Color.TextForeground
+    Foreground = Color.Violet
     Wrap = True
   }
   { BTNREPLAY Button

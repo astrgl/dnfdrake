@@ -73,22 +73,34 @@ BTNSKIP.Enabled = False
 BTNSKIP.Visible = False
 If $CONNECTION = 1 Then 
 Dim b As Byte
-    Shell "dnf repoquery --qf " & Chr$(34) & "%{group}" & Chr$(92) & "n" & Chr$(34) & " > " & User.Home & "/.config/dnfdrake/tmp/GRUPPI.txt " Wait 'GENERA L'ELENCO DEI GRUPPI"
-     Shell ("dnf repoquery  --qf '%{group}\t  %{name}\t %{summary}\t %{version}\t %{release}\t %{arch}\t %{installsize}\t  %{repoid}\t\n' > " & User.Home & "/.config/dnfdrake/tmp/tuttigruppi.txt") Wait 'CREA L'ELENCO DELLE INFO DEI GRUPPI
+    
+     
     For b = 1 To 10
+       ProgressBar1.Value = b / 100
+       Wait 0.01
+     Next
+     Shell "dnf repoquery --qf " & Chr$(34) & "%{group}" & Chr$(92) & "n" & Chr$(34) & " > " & User.Home & "/.config/dnfdrake/tmp/GRUPPI.txt " Wait 'GENERA L'ELENCO DEI GRUPPI"
+     
+     Shell ("dnf repoquery  --qf '%{group}\t  %{name}\t %{summary}\t %{version}\t %{release}\t %{arch}\t %{installsize}\t  %{repoid}\t\n' > " & User.Home & "/.config/dnfdrake/tmp/tuttigruppi.txt") Wait 'CREA L'ELENCO DELLE INFO DEI GRUPPI
+     
+     Shell ("dnf repoquery --installed --qf '%{group}\t  %{name}\t %{summary}\t %{version}\t %{release}\t %{arch}\t %{installsize}\t  %{repoid}\t\n' > " & User.Home & "/.config/dnfdrake/tmp/tuttigruppinstallati.txt") Wait 'CREA L'ELENCO DELLE INFO DEI GRUPPI PER GLI INSTALLATI
+     
+     'Shell ("sed -i '/^[[:space:]]*$/d' " & User.Home & "/.config/dnfdrake/tmp/tuttigruppinstallati.txt") Wait ' ELIMINALE RIGHE VUOTE
+     
+     For b = 10 To 20
        ProgressBar1.Value = b / 100
        Wait 0.01
      Next
     TXTSTATO.Text = $LOADINST
     Print Fmain.$hProcess, " dnf clean all" & gb.NewLine; 
     Shell "dnf list --installed > " & User.Home & "/.config/dnfdrake/installati.txt " Wait
-     For b = 10 To 40
+     For b = 20 To 50
        ProgressBar1.Value = b / 100
        Wait 0.01
      Next
      TXTSTATO.Text = $LOADNONINST
      Shell "dnf list --available > " & User.Home & "/.config/dnfdrake/noninstallati.txt" Wait
-     For b = 40 To 80
+     For b = 50 To 80
        ProgressBar1.Value = b / 100
        Wait 0.01
      Next
@@ -171,6 +183,11 @@ End
 Public Sub Form_Close()
 'MODIFICA PER MOSTRARE IN DISPONIBILI SOLO I FILE NONINSTALLATI************************************
 FMAIN.FIXINSTALLATI
+'TEST***********************************
+
+'Fmain.FIXGROUPINSTALLATI
+
+
 Fmain.Btnclear_click
 Fmain.TMPLISTCLEAN    
 Fmain.EXCLUDETEST

@@ -3002,6 +3002,15 @@ t = Open User.Home & "/.config/dnfdrake/nodeps.txt"
 
 Me.Mouse = Mouse.default  
 End
+Public Sub FixFileWithCondition()  'CORREGGE IL FILE TMP DELLA RICERCA GLOBALE PER LA COLORAZIONE
+  Dim sCommand As String
+  ' Applica lo spazio iniziale solo se la riga contiene ":"
+  ' Poi rimuove gli spazi prima di ":" in ogni caso
+  sCommand = "sed -i '/:/ s/^/ /; s/ \\+:/:/g' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp"
+  Shell sCommand Wait
+ End Sub
+
+
 Private Sub GLOBALSEARCH()
 Dim s As String
 Dim t As Stream
@@ -3015,19 +3024,20 @@ Btnclear_Click
 PICLOGODISTRO.Visible = False
 Me.Mouse = Mouse.Wait  
 Wait 0.05
-'FORMATTAZIONE OUTPUT IN BASE ALLA VERSIONE DI DNF 
- If $DNFVERSIONNUMBER > 50213 Then 'DNF5 DA 5.2.17 (OMA) IN POI .....PER ORA
-   Shell "echo -e " & Chr$(34) & " ======================== Name ========================\t======================== Summary ======================== " & Chr$(34) & " > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
-   Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
-   Shell "awk -F '\t' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait
- Else If $DNFVERSIONNUMBER > 50000 Then 'DNF5 5.2.11 (ROSA)
-   Shell "echo ======================== Name ========================: ======================== Summary ======================== >" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
-   Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait 
-   Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait 
- Else   'DNF4 
-   Shell "echo ======================== Name ========================: ======================== Summary ======================== >" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
-   Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait 
-   Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait 
+' FORMATTAZIONE Output In BASE ALLA VERSIONE DI DNF 
+If $DNFVERSIONNUMBER > 50213 Then 'DNF5 DA 5.2.17 (OMA) IN POI .....PER ORA
+  Shell "echo -e " & Chr$(34) & " ======================== Name ========================\t======================== Summary ======================== " & Chr$(34) & " > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
+  Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
+  Shell "awk -F '\t' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait
+Else If $DNFVERSIONNUMBER > 50000 Then 'DNF5 5.2.11 (ROSA)
+  Shell "echo ======================== Name ========================: ======================== Summary ======================== >" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
+  Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait 
+  Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait 
+Else   'DNF4 
+  Shell "echo ======================== Name ========================: ======================== Summary ======================== >" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
+  Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait 
+  FixFileWithCondition
+  Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait 
  Endif
 
 ListpkgSEARCH.Enabled = True
@@ -3654,7 +3664,7 @@ Public Sub Btncommand_Click()
   txtCommand.SetFocus
   If txtCommand.Visible = False Then
     Btncommand.Text = Btncommand.Text & " ^"
-    ' Message.Info($MSGBTNCOMMAND, "Ok")
+    Message.Info($MSGBTNCOMMAND, "Ok")
     HBox1.Visible = True
     HBox1.Tooltip = $HBOX1TOOLTIP
     txtCommand.Visible = True

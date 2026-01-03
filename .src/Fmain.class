@@ -2374,6 +2374,13 @@ Public Sub SEARCHLIST()
   Else 
      Shell "awk -F " & Chr$(34) & Chr$(92) & "t" & Chr$(34) & " '$1 == " & Chr$(34) & TRVWGRUPPI.Current.ParentKey & "/" & TRVWGRUPPI.Current.Text & Chr$(34) & " ' " & User.Home & "/.config/dnfdrake/tmp/tuttigruppi.txt > " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.txt" Wait 
   Endif
+  ' SERVE A FILTRARE IL RISULTATO IN BASE AL TESTO DI TXTPKG*******************************************
+  If txtpkg.Text = "" Then
+  Else 
+     Shell "grep -i " & Chr$(34) & Trim(txtpkg.Text) & Chr$(34) & " " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.txt > " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.tmp" Wait
+     Shell "mv -f " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.tmp " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.txt" Wait 
+  Endif
+  
   ' Svuota il controllo prima di caricare nuovi dati
   CLNVWGRUPPI.Clear()
 
@@ -2414,7 +2421,7 @@ Public Sub SEARCHLIST()
 
   Close #hFile
   ' Wait 0.01
-  ' CLNVWGRUPPI.Columns[0].Width = 0
+  CLNVWGRUPPI.Columns[0].Width = 0
 
   COLORAINSTALLATIGROUP
   
@@ -3024,6 +3031,9 @@ Btnclear_Click
 PICLOGODISTRO.Visible = False
 Me.Mouse = Mouse.Wait  
 Wait 0.05
+If InStr(txtpkg.Text, ".") Then
+   txtpkg.Text = Left(txtpkg.Text, InStr(txtpkg.Text, ".") - 1)
+Endif
 ' FORMATTAZIONE Output In BASE ALLA VERSIONE DI DNF 
 If $DNFVERSIONNUMBER > 50213 Then 'DNF5 DA 5.2.17 (OMA) IN POI .....PER ORA
   Shell "echo -e " & Chr$(34) & " ======================== Name ========================\t======================== Summary ======================== " & Chr$(34) & " > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
@@ -4247,6 +4257,7 @@ Public Sub BtnCFG_Click()
 End
 
 Public Sub Btnpathfile_Click()
+Cmbtipo.Index = 0
 txtpkg.Text = ""
 Btnclear_Click
 Dim $PATHFILE As String
@@ -4276,7 +4287,7 @@ End
 Public Sub Btnpathpkglist_Click()
  
  Dim $PATHFILE As String
-
+ Cmbtipo.Index = 0
  txtpkg.Text = ""
  Btnclear_Click
    If Exist(User.Home &/ ".config/dnfdrake/log/pkglist.txt") Then

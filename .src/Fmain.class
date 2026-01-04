@@ -113,6 +113,14 @@ Public $CHKDNF5 As Integer           'SE IN USO DNF5 È A 1 SE IN USO DNF4 A 0
 Public $CLEAROVERFLOW As Integer      'SERVE PER PULIRE DALLE TAB IN CASO DI OVERFLOW DI RICERCA
 Public $HISTORYINFO As String         'FRASE DI ASSISTENZA PER HISTORY INFO
 Public $INDEX As String              'CARICA LA MEMORIA DI CMBTIPO
+Public $CLNGROUPNAME As String
+Public $CLNNAME As String
+Public $CLNSUMMARYNAME As String
+Public $CLNVERSIONNAME As String
+Public $CLNRELEASENAME As String
+Public $CLNARCHNAME As String
+Public $CLNSIZENAME As String
+Public $CLNREPOSNAME As String
 
 Public Sub Form_Open()
 'COMANDI
@@ -401,6 +409,14 @@ Else
       BTNEXTRA.Text = Replace(ss$BTN[21], "_", " ")
       BTNVERSLOCK.Text = Replace(ss$BTN[22], "_", " ")
       BTNREINSTALL.Text = Replace(ss$BTN[23], "_", " ")
+      $CLNGROUPNAME = Replace(ss$BTN[26], "_", " ")
+      $CLNNAME = Replace(ss$BTN[27], "_", " ")
+      $CLNSUMMARYNAME = Replace(ss$BTN[28], "_", " ")
+      $CLNVERSIONNAME = Replace(ss$BTN[29], "_", " ")
+      $CLNRELEASENAME = Replace(ss$BTN[30], "_", " ")
+      $CLNARCHNAME = Replace(ss$BTN[31], "_", " ")
+      $CLNSIZENAME = Replace(ss$BTN[32], "_", " ")
+      $CLNREPOSNAME = Replace(ss$BTN[33], "_", " ")
       Next
 '  
    flBTN.Close      
@@ -489,6 +505,7 @@ LOADCOMBOTIPO
       ListpkgSEARCH.Tooltip = Replace(ss$TTP[102], "_", " ")
       $HISTORYINFO = Replace(ss$TTP[103], "_", " ")
       CLNVWGRUPPI.Tooltip = Replace(ss$TTP[102], "_", " ")
+      TRVWGRUPPI.Tooltip? = Replace(ss$TTP[104], "_", " ")
      Next
    flTTP.Close
 'TEMA DELLE ICONE**************************************************************      
@@ -506,10 +523,22 @@ LOADCOMBOTIPO
   $THEMES = Replace($THEMES, " ", "")
   If $THEMES = "Oxygen" Then
      $THEMESSUFFIX = ".png"
+      FMAIN.ListpkgNODEPS.Foreground = Color.default
+      Fmain.ListpkgINSTALLATI.Foreground = Color.default
+      Fmain.ListpkgAVAILABLE.Foreground = Color.default
+      Fmain.ListpkgUPGRADE.Foreground = Color.default
   Else If $THEMES = "Breeze"
      $THEMESSUFFIX = "-B.svg"
+      FMAIN.ListpkgNODEPS.Foreground = Color.default
+      Fmain.ListpkgINSTALLATI.Foreground = Color.default
+      Fmain.ListpkgAVAILABLE.Foreground = Color.default
+      Fmain.ListpkgUPGRADE.Foreground = Color.default
   Else If $THEMES = "BreezeDark"
      $THEMESSUFFIX = "-BD.svg"    
+      FMAIN.ListpkgNODEPS.Foreground = Color.Green
+      Fmain.ListpkgINSTALLATI.Foreground = Color.Green
+      Fmain.ListpkgAVAILABLE.Foreground = Color.Orange
+      Fmain.ListpkgUPGRADE.Foreground = Color.Royal
   Endif
   If Exist("/usr/share/dnfdrake/icons") Then
        $PATHICONS = "/usr/share/dnfdrake/icons/"
@@ -2172,12 +2201,12 @@ Public Sub COLORAINSTALLATIGROUP()
   Dim aCampi As String[]
   Dim sValoreFile As String
   Dim sValoreVersione As String
-  Dim sValoreRelease As String
+  Dim sValoreSize As String
   ' 1. Carica i valori del file in una Collection per una ricerca ultra-veloce
   ' Usiamo una Collection perch� il metodo .Exist() � istantaneo
   Dim colFile As New Collection
   Dim colVersione As New Collection
-  Dim colRelease As New Collection
+  Dim colSize As New Collection
   
   If Not Exist(sPercorso) Then Return
   
@@ -2189,7 +2218,7 @@ Public Sub COLORAINSTALLATIGROUP()
       ' Aggiungiamo il valore del file come CHIAVE della collection
       colFile[aCampi[1]] = True       'NOME PACCHETTO
       colVersione[aCampi[3]] = True   'VERSIONE PACCHETTO
-      colRelease[aCampi[6]] = True    'DIMENSIONE PACCHETTO
+      colSize[aCampi[6]] = True       'DIMENSIONE PACCHETTO
     Endif
   Wend
   hFile.Close()
@@ -2202,18 +2231,13 @@ Public Sub COLORAINSTALLATIGROUP()
     ' Recuperiamo il valore della seconda quarta e quinta colonna (indice 1, 3, 4)
     sValoreFile = CLNVWGRUPPI.Item[1]     'NOME PACCHETTO
     sValoreVersione = CLNVWGRUPPI.Item[3] 'VERSIONE PACCHETTO
-    sValoreRelease = CLNVWGRUPPI.Item[6]  'DIMENSIONE PACCHETTO
+    sValoreSize = CLNVWGRUPPI.Item[6]     'DIMENSIONE PACCHETTO
     ' Verifichiamo se questo valore era presente nel file
-    If colFile.Exist(sValoreFile) And If colVersione.Exist(sValoreVersione) And If colRelease.Exist(sValoreRelease) Then
-    'If colRelease.Exist(sValoreRelease) Then  
-      ' Coloriamo lo sfondo della riga di verde
-      ' Color.LightGreen � pi� leggibile del verde puro (Color.Green)
+    If colFile.Exist(sValoreFile) And If colVersione.Exist(sValoreVersione) And If colSize.Exist(sValoreSize) Then
       CLNVWGRUPPI.Item.Foreground = Color.Green
-      
       ' Opzionale: colorare solo il testo
       ' ColumnView1.Item.Foreground = Color.DarkGreen
     Else
-      ' Opzionale: resettare il colore se non c'� corrispondenza
       CLNVWGRUPPI.Item.Foreground = Color.Orange
     Endif
 
@@ -2366,14 +2390,14 @@ Public Sub SEARCHLIST()
   '$path = User.Home & "/tutti - gruppo.txt"
   ' 1. Configurazione iniziale del ColumnView
   CLNVWGRUPPI.Columns.Count = 8
-  CLNVWGRUPPI.Columns[0].Title = "Group"  
-  CLNVWGRUPPI.Columns[1].Title = "Name"
-  CLNVWGRUPPI.Columns[2].Title = "Summary"
-  CLNVWGRUPPI.Columns[3].Title = "Version"
-  CLNVWGRUPPI.Columns[4].Title = "Release"
-  CLNVWGRUPPI.Columns[5].Title = "Arch"
-  CLNVWGRUPPI.Columns[6].Title = "Size"
-  CLNVWGRUPPI.Columns[7].Title = "Repository"  ' ... imposta gli altri titoli se necessario ...
+  CLNVWGRUPPI.Columns[0].Title = $CLNGROUPNAME
+  CLNVWGRUPPI.Columns[1].Title = $CLNNAME
+  CLNVWGRUPPI.Columns[2].Title = $CLNSUMMARYNAME
+  CLNVWGRUPPI.Columns[3].Title = $CLNVERSIONNAME
+  CLNVWGRUPPI.Columns[4].Title = $CLNRELEASENAME
+  CLNVWGRUPPI.Columns[5].Title = $CLNARCHNAME
+  CLNVWGRUPPI.Columns[6].Title = $CLNSIZENAME
+  CLNVWGRUPPI.Columns[7].Title = $CLNREPOSNAME
 
   If TRVWGRUPPI.Current.ParentKey = "" Then 'SERVE PER FILTRARE L'INFO DEL GRUPPPO GENOTORE E FIGLIO
      Shell "awk -F " & Chr$(34) & Chr$(92) & "t" & Chr$(34) & " '$1 == " & Chr$(34) & TRVWGRUPPI.Current.Text & Chr$(34) & " ' " & User.Home & "/.config/dnfdrake/tmp/tuttigruppi.txt > " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.txt" Wait 
@@ -3023,7 +3047,6 @@ Public Sub FixFileWithCondition()  'CORREGGE IL FILE TMP DELLA RICERCA GLOBALE P
   sCommand = "sed -i '/:/ s/^/ /; s/ \\+:/:/g' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp"
   Shell sCommand Wait
  End Sub
-
 
 Private Sub GLOBALSEARCH()
 Dim s As String

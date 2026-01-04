@@ -24,3 +24,11 @@ VersionLock
 Reinstall
 &Wait
 &Retry
+Group
+Name
+Description
+Version
+Release
+Arch
+Size
+Repository

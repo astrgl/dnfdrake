@@ -24,3 +24,11 @@ VersionLock
 Reinstal·la
 &Wait
 &Retry
+Group
+Name
+Description
+Version
+Release
+Arch
+Size
+Repository

@@ -373,18 +373,30 @@ Endif
       FMain.$THEMESSUFFIX = ".png"
       FMain.LOADICONS
       FMAIN.LOADLOGO
+      FMAIN.ListpkgNODEPS.Foreground = Color.default
+      Fmain.ListpkgINSTALLATI.Foreground = Color.default
+      Fmain.ListpkgAVAILABLE.Foreground = Color.default
+      Fmain.ListpkgUPGRADE.Foreground = Color.default
    Else If CMBTHEMES.Index = 1 Then
       File.Save(User.Home &/ "/.config/dnfdrake/themes", "Breeze")
       FMain.$THEMES = "Breeze"
       FMain.$THEMESSUFFIX = "-B.svg"
       FMain.LOADICONS
       FMAIN.LOADLOGO
+      FMAIN.ListpkgNODEPS.Foreground = Color.default
+      Fmain.ListpkgINSTALLATI.Foreground = Color.default
+      Fmain.ListpkgAVAILABLE.Foreground = Color.default
+      Fmain.ListpkgUPGRADE.Foreground = Color.default
    Else If CMBTHEMES.Index = 2 Then
       File.Save(User.Home &/ "/.config/dnfdrake/themes", "BreezeDark")   
       FMain.$THEMES = "BreezeDark"  
       FMain.$THEMESSUFFIX = "-BD.svg"  
       FMain.LOADICONS
       FMAIN.LOADLOGO
+      FMAIN.ListpkgNODEPS.Foreground = Color.Green
+      Fmain.ListpkgINSTALLATI.Foreground = Color.Green
+      Fmain.ListpkgAVAILABLE.Foreground = Color.Orange
+      Fmain.ListpkgUPGRADE.Foreground = Color.Royal
    Endif
    
 '********************************************************************************************
@@ -424,6 +436,7 @@ Endif
   If CHKOFFLINE.Value = True Then
      File.Save(User.Home &/ "/.config/dnfdrake/cmbtipoindex", CMBTIPOINDEX.Index)
      FMAIN.Cmbtipo.Index = CMBTIPOINDEX.Index
+     Fmain.CLNVWGRUPPI.Clear
   Endif
     
   Me.Close

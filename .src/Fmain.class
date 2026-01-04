@@ -505,7 +505,7 @@ LOADCOMBOTIPO
       ListpkgSEARCH.Tooltip = Replace(ss$TTP[102], "_", " ")
       $HISTORYINFO = Replace(ss$TTP[103], "_", " ")
       CLNVWGRUPPI.Tooltip = Replace(ss$TTP[102], "_", " ")
-      TRVWGRUPPI.Tooltip? = Replace(ss$TTP[104], "_", " ")
+      TRVWGRUPPI.Tooltip = Replace(ss$TTP[104], "_", " ")
      Next
    flTTP.Close
 'TEMA DELLE ICONE**************************************************************      

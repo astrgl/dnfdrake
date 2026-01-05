@@ -33,7 +33,7 @@
     Alignment = Align.Center
   }
   { !txtpkg TextBox
-    Move(71,7,500,28)
+    Move(70,7,500,28)
     #Public = True
     Expand = True
     Alignment = Align.Left

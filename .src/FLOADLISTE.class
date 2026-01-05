@@ -185,9 +185,6 @@ Public Sub Form_Close()
 FMAIN.FIXINSTALLATI
 'TEST***********************************
 
-'Fmain.FIXGROUPINSTALLATI
-
-
 Fmain.Btnclear_click
 Fmain.TMPLISTCLEAN    
 Fmain.EXCLUDETEST
@@ -202,6 +199,7 @@ Endif
 Fmain.DRAKETRAYUPDATE  
 FMAIN.Cmbtipo.Index = FMAIN.$INDEX
 Fmain.CLNVWGRUPPI.Clear
+
 
 '*********************NON DOVREBBE SERVIRE PIÙ******************************************************
 ' If Exist(User.Home &/ ".config/dnfdrake/memosize") Then

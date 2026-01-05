@@ -510,6 +510,7 @@ LOADCOMBOTIPO
       CLNVWGRUPPI.Tooltip = Replace(ss$TTP[102], "_", " ")
       TRVWGRUPPI.Tooltip = Replace(ss$TTP[104], "_", " ")
       $MSGCONNECTION = Replace(ss$TTP[96], "_", " ")
+      $GROUPINFO = Replace(ss$TTP[105], "_", " ")
      Next
    flTTP.Close
 'TEMA DELLE ICONE**************************************************************      
@@ -1344,8 +1345,11 @@ Public Sub btninstall_Click()
     spkg = ""
 'VERIFICA NUMERO DI PACCHETTI SELEZIONATI*************************************    
     If Val(Str(ListpkgAVAILABLE.Selection.Count)) > 10 Then
-    Message.Info("It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for installation!", "OK")
-    BTNADDPKGLIST_Click
+      'FPOPUPMESSAGE.Show
+      ' After 0.05 Do FPOPUPMESSAGE.LBLMESSAGE.Text = "It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for installation!"
+      ' After 3 Do FPOPUPMESSAGE.Close
+      Message.Info("It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for installation!", "OK")
+      BTNADDPKGLIST_Click
     Endif 
 '*****************************************************************************
     If TXTPKGLISTNOME.Visible = True And If TXTPKGLISTNOME.Text = "Install Package List" Then
@@ -1453,7 +1457,7 @@ Public Sub btninstall_Click()
 End
 
 Public Sub txtpkg_GotFocus()
-If txtpkg.Text = $HISTORYINFO Then
+If txtpkg.Text = $HISTORYINFO Or If txtpkg.Text = $GROUPINFO Then
    txtpkg.Foreground = Color.Default
    txtpkg.Text = ""
 Endif
@@ -2410,7 +2414,7 @@ Public Sub SEARCHLIST()
      Shell "awk -F " & Chr$(34) & Chr$(92) & "t" & Chr$(34) & " '$1 == " & Chr$(34) & TRVWGRUPPI.Current.ParentKey & "/" & TRVWGRUPPI.Current.Text & Chr$(34) & " ' " & User.Home & "/.config/dnfdrake/tmp/tuttigruppi.txt > " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.txt" Wait 
   Endif
   ' SERVE A FILTRARE IL RISULTATO IN BASE AL TESTO DI TXTPKG*******************************************
-  If txtpkg.Text = "" Then
+  If txtpkg.Text = "" Or If txtpkg.Text = $GROUPINFO Then
   Else 
      Shell "grep -i " & Chr$(34) & Trim(txtpkg.Text) & Chr$(34) & " " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.txt > " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.tmp" Wait
      Shell "mv -f " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.tmp " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.txt" Wait 
@@ -2465,11 +2469,12 @@ Public Sub CLNVWGRUPPI_BeforeSort()
   ' Forza la colonna 0 a rimanere invisibile dopo ogni clic sull'header
   After 0.01 Do CLNVWGRUPPI.Columns[0].Width = 0
 End Sub
-Public Sub TRVWGRUPPI_DblClick()
+Public Sub TRVWGRUPPI_Activate()
   SEARCHLIST
   'CLNVWGRUPPI.Columns[0].Width = 0
 End
 Public Sub CLNVWGRUPPI_Select()
+  txtpkg.Foreground = Color.Default
   TXTPKG.Text = Trim(CLNVWGRUPPI.Current[1]) & "." & Trim(CLNVWGRUPPI.Current[5])
 End
 
@@ -2496,7 +2501,7 @@ End
 ' 
 ' End Sub
 Public Sub CLNVWGRUPPI_Activate()
-  
+     txtpkg.Foreground = Color.Default
      TXTPKG.Text = Trim(CLNVWGRUPPI.Current[1]) & "." & Trim(CLNVWGRUPPI.Current[5])
      Cmbtipo.Index = 0
      btncerca_Click
@@ -3067,6 +3072,7 @@ Private Sub GLOBALSEARCH()
 Dim s As String
 Dim t As Stream
 Dim p As Integer
+CHECKCONNECTION
 If $CONNECTION = 1 Then 
   
   Btnclear_Click
@@ -3660,10 +3666,10 @@ Else
   txtpkg.Enabled = True  
   Cmbtipo.Tooltip = $CMBTOOLTIP
   If $CLEARTXTPKG = 1
-    txtpkg.Text = ""
-    $CLEARTXTPKG = 0
+     txtpkg.Text = ""
+     $CLEARTXTPKG = 0
   Endif 
-  txtpkg.SetFocus
+   txtpkg.SetFocus
 Endif
 
 
@@ -3679,8 +3685,12 @@ If Cmbtipo.index = 6 Then             ' GRUPPI
    Else   
       LOADTREEVIEWGRUPPI
    Endif
-   txtpkg.Text = $GROUPINFO
-   'btncerca.Enabled = False
+   If FINSTALL.Visible = False Then
+      txtpkg.Foreground = Color.Red
+     After 0.3 Do txtpkg.Text = $GROUPINFO 
+     TRVWGRUPPI.SetFocus 
+   Endif
+    'btncerca.Enabled = False
    ' btninstall.Enabled = False
    ' btnremove.Enabled = False
    ' BTNPKGUPDATE.Enabled = False
@@ -3725,7 +3735,11 @@ Public Sub Btncommand_Click()
   txtCommand.SetFocus
   If txtCommand.Visible = False Then
     Btncommand.Text = Btncommand.Text & " ^"
-    Message.Info($MSGBTNCOMMAND, "Ok")
+    FPOPUPMESSAGE.Show
+    FPOPUPMESSAGE.LBLMESSAGE.Foreground = Color.Red
+    After 0.05 Do FPOPUPMESSAGE.LBLMESSAGE.Text = $MSGBTNCOMMAND
+    'Message.Info($MSGBTNCOMMAND, "Ok")
+    After 3 Do FPOPUPMESSAGE.Close
     HBox1.Visible = True
     HBox1.Tooltip = $HBOX1TOOLTIP
     txtCommand.Visible = True
@@ -5444,6 +5458,7 @@ End
 
 Public Sub BORDOCONNECT_MouseDown()
 End
+
 
 
 

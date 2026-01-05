@@ -1,0 +1,10 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,82.8571,14.2857)
+  Border = False
+  { LBLMESSAGE Label
+    MoveScaled(0,0,82.8571,14.2857)
+    Alignment = Align.Center
+  }
+}

@@ -2320,7 +2320,7 @@ Public Sub LOADCOMBOTIPO()
    ss$CMBT.Add(s$CMBT)
   Wend
    Close #flCMBT
-  For jCMBT = 4 To ss$CMBT.Max
+  For jCMBT = 5 To ss$CMBT.Max
       Cmbtipo.Add(Replace(ss$CMBT[0], "_", " "))
       Cmbtipo.Add(Replace(ss$CMBT[1], "_", " "))
       Cmbtipo.Add(Replace(ss$CMBT[2], "_", " "))
@@ -3095,11 +3095,8 @@ If $CONNECTION = 1 Then
     Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait 
     FixFileWithCondition
     Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait 
-  Endif
-Else 
-   Message.Info($MSGCONNECTION, "Ok")
-Endif
-  
+  Endif 
+    
 ListpkgSEARCH.Enabled = True
 ListpkgSEARCH.Visible = True 
 CORNICE.Background = &007F00FF& 
@@ -3130,6 +3127,9 @@ t = Open User.Home & "/.config/dnfdrake/tmp/globalsearch.txt"
   COLORINSTALLATILISTSEARCH
   
 Me.Mouse = Mouse.default  
+Else 
+   Message.Info($MSGCONNECTION, "Ok")
+Endif
 End
 
 Private Sub CERCAAUTOREMOVE()

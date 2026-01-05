@@ -2476,6 +2476,7 @@ End
 Public Sub CLNVWGRUPPI_Select()
   txtpkg.Foreground = Color.Default
   TXTPKG.Text = Trim(CLNVWGRUPPI.Current[1]) & "." & Trim(CLNVWGRUPPI.Current[5])
+  After 1.5 Do txtpkg.Text = ""
 End
 
 

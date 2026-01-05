@@ -112,7 +112,7 @@ Public $LINKDNF5 As String           'SERVE PER LA LETTURA DEL LINK A DNF
 Public $CHKDNF5 As Integer           'SE IN USO DNF5 È A 1 SE IN USO DNF4 A 0
 Public $CLEAROVERFLOW As Integer      'SERVE PER PULIRE DALLE TAB IN CASO DI OVERFLOW DI RICERCA
 Public $HISTORYINFO As String         'FRASE DI ASSISTENZA PER HISTORY INFO
-Public $INDEX As String              'CARICA LA MEMORIA DI CMBTIPO
+Public $INDEX As String               'CARICA LA MEMORIA DI CMBTIPO
 Public $CLNGROUPNAME As String
 Public $CLNNAME As String
 Public $CLNSUMMARYNAME As String
@@ -121,6 +121,9 @@ Public $CLNRELEASENAME As String
 Public $CLNARCHNAME As String
 Public $CLNSIZENAME As String
 Public $CLNREPOSNAME As String
+Public $GROUPINFO As String           'FRASE DI ASSISTENZA/INFO PER VISTA A GRUPPI 
+Public $CONNECTION As Integer         'STATO CONNESSIONE INTERNET 0=DISCONNESSO 1=CONNESSO
+Public $MSGCONNECTION As String       'MESSAGGIO DI CONNESSIONE NON DISPONIBILE
 
 Public Sub Form_Open()
 'COMANDI
@@ -506,6 +509,7 @@ LOADCOMBOTIPO
       $HISTORYINFO = Replace(ss$TTP[103], "_", " ")
       CLNVWGRUPPI.Tooltip = Replace(ss$TTP[102], "_", " ")
       TRVWGRUPPI.Tooltip = Replace(ss$TTP[104], "_", " ")
+      $MSGCONNECTION = Replace(ss$TTP[96], "_", " ")
      Next
    flTTP.Close
 'TEMA DELLE ICONE**************************************************************      
@@ -2093,7 +2097,7 @@ Public Sub btncerca_Click()
       $MEMOCOMMAND = "AUTOREMOVE"
     Endif    
   Endif
-'GLOBAL*******************************************************************************************
+'GLOBALSEARCH**************************************************************************************
   If Cmbtipo.index = 5 Then 
     If txtpkg.Text = "" Then
        Message.Info($SELECTPKG, "OK")
@@ -2323,7 +2327,7 @@ Public Sub LOADCOMBOTIPO()
       Cmbtipo.Add(Replace(ss$CMBT[3], "_", " "))
       Cmbtipo.Add("Autoremove")
       Cmbtipo.Add(Replace(ss$CMBT[4], "_", " "))
-      Cmbtipo.Add("Group")
+      Cmbtipo.Add(Replace(ss$CMBT[5], "_", " "))
       BTNTABINSTALLED.Text = (Replace(ss$CMBT[1], "_", " "))
       BTNTABAVIABLE.Text = (Replace(ss$CMBT[2], "_", " "))
       BTNTABUPDATE.Text = (Replace(ss$CMBT[3], "_", " "))
@@ -3048,38 +3052,54 @@ Public Sub FixFileWithCondition()  'CORREGGE IL FILE TMP DELLA RICERCA GLOBALE P
   Shell sCommand Wait
  End Sub
 
+Private Sub CHECKCONNECTION()
+Dim sOutput As String
+   Shell "ping -c1 -w1 8.8.8.8" To sOutput
+    If InStr(sOutput, "64") Then                                               'If '64 bytes from' exists in sOutput then..
+      $CONNECTION = 1
+    Else 
+      $CONNECTION = 0
+    End If 
+    
+End
+
 Private Sub GLOBALSEARCH()
 Dim s As String
 Dim t As Stream
 Dim p As Integer
-Btnclear_Click
- If ListpkgSEARCH.Count > 0 Then
-    ListpkgSEARCH.SelectAll
-    ListpkgSEARCH.Clear
-    ListpkgSEARCH.UnSelectAll
- Endif
-PICLOGODISTRO.Visible = False
-Me.Mouse = Mouse.Wait  
-Wait 0.05
-If InStr(txtpkg.Text, ".") Then
-   txtpkg.Text = Left(txtpkg.Text, InStr(txtpkg.Text, ".") - 1)
-Endif
+If $CONNECTION = 1 Then 
+  
+  Btnclear_Click
+  If ListpkgSEARCH.Count > 0 Then
+      ListpkgSEARCH.SelectAll
+      ListpkgSEARCH.Clear
+      ListpkgSEARCH.UnSelectAll
+  Endif
+  PICLOGODISTRO.Visible = False
+  Me.Mouse = Mouse.Wait  
+  Wait 0.05
+  If InStr(txtpkg.Text, ".") Then
+     txtpkg.Text = Left(txtpkg.Text, InStr(txtpkg.Text, ".") - 1)
+  Endif
 ' FORMATTAZIONE Output In BASE ALLA VERSIONE DI DNF 
-If $DNFVERSIONNUMBER > 50213 Then 'DNF5 DA 5.2.17 (OMA) IN POI .....PER ORA
-  Shell "echo -e " & Chr$(34) & " ======================== Name ========================\t======================== Summary ======================== " & Chr$(34) & " > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
-  Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
-  Shell "awk -F '\t' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait
-Else If $DNFVERSIONNUMBER > 50000 Then 'DNF5 5.2.11 (ROSA)
-  Shell "echo ======================== Name ========================: ======================== Summary ======================== >" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
-  Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait 
-  Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait 
-Else   'DNF4 
-  Shell "echo ======================== Name ========================: ======================== Summary ======================== >" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
-  Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait 
-  FixFileWithCondition
-  Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait 
- Endif
-
+  If $DNFVERSIONNUMBER > 50213 Then 'DNF5 DA 5.2.17 (OMA) IN POI .....PER ORA
+    Shell "echo -e " & Chr$(34) & " ======================== Name ========================\t======================== Summary ======================== " & Chr$(34) & " > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
+    Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
+    Shell "awk -F '\t' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait
+  Else If $DNFVERSIONNUMBER > 50000 Then 'DNF5 5.2.11 (ROSA)
+    Shell "echo ======================== Name ========================: ======================== Summary ======================== >" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
+    Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait 
+    Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait 
+  Else   'DNF4 
+    Shell "echo ======================== Name ========================: ======================== Summary ======================== >" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait
+    Shell "dnf search " & RTrim$(LTrim$(txtpkg.Text)) & " >>" & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp" Wait 
+    FixFileWithCondition
+    Shell "awk -F ':' '{printf " & Chr$(34) & " %-65s %s" & Chr$(92) & "n" & Chr$(34) & ", $1, $2}' " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp > " & User.Home & "/.config/dnfdrake/tmp/globalsearch.txt" Wait 
+  Endif
+Else 
+   Message.Info($MSGCONNECTION, "Ok")
+Endif
+  
 ListpkgSEARCH.Enabled = True
 ListpkgSEARCH.Visible = True 
 CORNICE.Background = &007F00FF& 
@@ -3659,6 +3679,7 @@ If Cmbtipo.index = 6 Then             ' GRUPPI
    Else   
       LOADTREEVIEWGRUPPI
    Endif
+   txtpkg.Text = $GROUPINFO
    'btncerca.Enabled = False
    ' btninstall.Enabled = False
    ' btnremove.Enabled = False

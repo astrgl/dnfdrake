@@ -6,7 +6,7 @@ Public $LOADNONINST As String
 Public $LOADAGG As String
 Public $UPDATEDIPS As String
 Public $CONNECTION As Integer       'STATO CONNESSIONE INTERNET 0=DISCONNESSO 1=CONNESSO
-Public $MSGCONNECTION As String     'MESSAGGIO DI CONNESSIONE NON DISPONIBILE
+'Public $MSGCONNECTION As String     'MESSAGGIO DI CONNESSIONE NON DISPONIBILE
 
 Public Sub Form_Open()
  Dim flTTP As File  
@@ -26,7 +26,7 @@ Public Sub Form_Open()
       $LOADINST = Replace(ss$TTP[34], "_", " ")
       $LOADNONINST = Replace(ss$TTP[35], "_", " ")
       $LOADAGG = Replace(ss$TTP[36], "_", " ")
-      $MSGCONNECTION = Replace(ss$TTP[96], "_", " ")
+      '$MSGCONNECTION = Replace(ss$TTP[96], "_", " ")
   Next
   flTTP.Close
   BTNSKIP.Picture = Picture.Load(FMAIN.$PATHICONS & "skip" & FMain.$THEMESSUFFIX)
@@ -125,7 +125,7 @@ Dim b As Byte
      Timer1.Enabled = False
   'CHECKUPDATES 'SPOSTATO IN FORM OPEN PER EVITARE DI RICARICARE LE LISTE SE SONO STATI SEGNALATI AGGIORNAMENTI 
 Else 
-  Message.Info($MSGCONNECTION, "Ok")
+  Message.Info(Fmain.$MSGCONNECTION, "Ok")
   BTNSKIP_Click
 Endif
   

@@ -2476,7 +2476,7 @@ End
 Public Sub CLNVWGRUPPI_Select()
   txtpkg.Foreground = Color.Default
   TXTPKG.Text = Trim(CLNVWGRUPPI.Current[1]) & "." & Trim(CLNVWGRUPPI.Current[5])
-  After 1.5 Do txtpkg.Text = ""
+  After 2 Do txtpkg.Text = ""
 End
 
 
@@ -2508,6 +2508,7 @@ Public Sub CLNVWGRUPPI_Activate()
      btncerca_Click
      BTNTABGROUP.Visible = True
      LBLBTNGROUP.Visible = True
+     After 2 Do txtpkg.Text = ""
 
 End
 
@@ -4906,6 +4907,10 @@ Public Sub BTNDISTUPDATE_Click()
      DSTRSYNC ' SOSTITUISCE IL CODICE PER EVITARE DI RIPETERLO *********************************
   Endif
   PICLOGODISTRO.Visible = False  
+  If txtpkg.Text = $GROUPINFO Then
+     txtpkg.Foreground = Color.Default
+     txtpkg.Text = ""
+  Endif
 End
 
 Public Sub BTNPICKER_Click()

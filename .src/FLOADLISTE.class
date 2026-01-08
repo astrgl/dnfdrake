@@ -157,6 +157,8 @@ Dim ss$UPD As New String[]
       File.Save("/tmp/draketray/locktray", "0")
       Fmain.Cmbtipo.index = 3
       Fmain.btncerca_CLICK
+      Fmain.txtpkg.Foreground = Color.Default
+      After 0.35 Do Fmain.txtpkg.Text = ""
    Endif
  Endif
 End 

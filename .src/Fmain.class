@@ -155,7 +155,7 @@ Public Sub Form_Open()
  Dim jDSTSYNC As Byte
  Dim s$DSTSYNC As String
  Dim ss$DSTSYNC As New String[] 
- 
+    
 'IMPOSTA LA DIMENSIONE DELLA FINESTRA IN BASE ALLA RISOLUZIONE DELLO SCHERMO
    Shell "xrandr --current |grep '*'" To $RISOLUZIONE
    $RISOLUZIONEX = Val(Str(Right(Left($risoluzione, 7), 4)))
@@ -4194,6 +4194,11 @@ Public Sub Btndownload_Click()
    Dim s As String
    Dim spkg As String
    spkg = ""
+  If txtpkg.Text = $HISTORYINFO Or If txtpkg.Text = $GROUPINFO Then
+     txtpkg.Foreground = Color.Default
+     txtpkg.Text = ""
+  Endif
+
 'APRE LA FINESTRA PER SELEZIONARE DOVE SCARICARE IL PACCHETTO 
    Dialog.Title = $DIALOGDIRTITLE
    Dialog.Path = $pathdir                       'IMPOSTA LA FINESTRA IN HOME UTENTE
@@ -4324,6 +4329,11 @@ Public Sub BtnCFG_Click()
 End
 
 Public Sub Btnpathfile_Click()
+If txtpkg.Text = $HISTORYINFO Or If txtpkg.Text = $GROUPINFO Then
+   txtpkg.Foreground = Color.Default
+   txtpkg.Text = ""
+Endif
+
 Cmbtipo.Index = 0
 txtpkg.Text = ""
 Btnclear_Click
@@ -4352,6 +4362,10 @@ Catch
 End
 
 Public Sub Btnpathpkglist_Click()
+If txtpkg.Text = $HISTORYINFO Or If txtpkg.Text = $GROUPINFO Then
+   txtpkg.Foreground = Color.Default
+   txtpkg.Text = ""
+Endif
  
  Dim $PATHFILE As String
  Cmbtipo.Index = 0

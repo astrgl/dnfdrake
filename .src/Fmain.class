@@ -2140,22 +2140,23 @@ Public Sub FIXINSTALLATI()
 End
 
 Public Sub COLORINSTALLATILISTSEARCH()
-  Dim SPATH As String = User.Home & "/.config/dnfdrake/tmp/tuttigruppinstallati.txt"
+  'Dim SPATH As String = User.Home & "/.config/dnfdrake/tmp/tuttigruppinstallati.txt"
   'Dim SPATH As String = User.Home & "/.config/dnfdrake/tmp/test.txt"
+  Dim SPATH As String = User.Home & "/.config/dnfdrake/installati.txt"
   Dim hFile As File
   Dim sRigaFile, sTestoOriginale, sTestoTagliato As String
   Dim aCampi As String[]
   Dim colFile As New Collection
 
-  ' 1. Carica la seconda colonna del file nella Collection (Ricerca veloce)
+  ' 1. Carica la prima colonna del file nella Collection (Ricerca veloce)
   If Not Exist(SPATH) Then Return
   hFile = Open SPATH For Read
   While Not Eof(hFile)
     Line Input #hFile, sRigaFile
-    aCampi = Split(sRigaFile, gb.Tab, "", True)
+    aCampi = Split(sRigaFile, "   ", "", True)
     If aCampi.Count >= 2 Then 
       ' Usiamo il valore del file come CHIAVE
-      colFile[aCampi[1]] = True
+      colFile[aCampi[0]] = True
     Endif
   Wend
   hFile.Close()
@@ -2168,13 +2169,15 @@ Public Sub COLORINSTALLATILISTSEARCH()
     sTestoOriginale = ListpkgSEARCH.Item.Text
     
     ' Taglia la stringa della ListView al primo punto
-    If InStr(sTestoOriginale, ".") > 0 Then
-      sTestoTagliato = Left(sTestoOriginale, InStr(sTestoOriginale, ".") - 1)
+    If InStr(sTestoOriginale, "     ") > 0 Then
+      sTestoTagliato = Left(sTestoOriginale, InStr(sTestoOriginale, "     ") - 1)
     Else
       sTestoTagliato = sTestoOriginale
     Endif
+    'sTestoTagliato = File.BaseName(sTestoOriginale)
+    'Message.info(sTestoTagliato, "ok")
     ' Verifica se la parte tagliata esiste nella collezione del file
-    If colFile.Exist(sTestoTagliato) Then
+    If colFile.Exist(Trim(sTestoTagliato)) Then
       ListpkgSEARCH.Item.Foreground = Color.Green
       If InStr(ListpkgSEARCH.Item.Text, "Name") Then
         ListpkgSEARCH.Item.Foreground = Color.Default
@@ -2407,7 +2410,7 @@ Public Sub SEARCHLIST()
   CLNVWGRUPPI.Columns[6].Title = $CLNSIZENAME
   CLNVWGRUPPI.Columns[7].Title = $CLNREPOSNAME
 
-  If TRVWGRUPPI.Current.ParentKey = "" Then 'SERVE PER FILTRARE L'INFO DEL GRUPPPO GENOTORE E FIGLIO
+  If TRVWGRUPPI.Current.ParentKey = "" Then 'SERVE PER FILTRARE L'INFO DEL GRUPPPO GENITORE E FIGLIO
      Shell "awk -F " & Chr$(34) & Chr$(92) & "t" & Chr$(34) & " '$1 == " & Chr$(34) & TRVWGRUPPI.Current.Text & Chr$(34) & " ' " & User.Home & "/.config/dnfdrake/tmp/tuttigruppi.txt > " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.txt" Wait 
      ' Shell "awk '$1 == " & Chr$(34) & TRVWGRUPPI.Current.Text & Chr$(34) & " ' " & User.Home & "/.config/dnfdrake/tmp/tuttigruppi.txt > " & User.Home & "/.config/dnfdrake/tmp/tuttiresult.txt" Wait 
   Else 

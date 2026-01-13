@@ -4002,9 +4002,10 @@ Public Sub ListpkgUPGRADE_DblClick()
       Endif   
    Endif
 End
-Public Sub ListpkgSEARCH_DblClick()
+Public Sub ListpkgSEARCH_Activate()
    Dim s As String
    Dim c As Integer
+   Dim $s As String[]
    txtpkg.Text = ""
    If ListpkgSEARCH.Count > 0 Then
    ListpkgSEARCH.MoveCurrent
@@ -4012,14 +4013,15 @@ Public Sub ListpkgSEARCH_DblClick()
        If Error Then
        Else
           S = ListpkgSEARCH.Item.Text
-          c = InStr(s, ".")
-          s = Left(s, c - 1)
+          $s = Split(s, " ", "", True)
+          s = $s[0]
+          s = File.BaseName(s)
           txtpkg.Text = RTrim$(LTrim$(s))
           Cmbtipo.Index = 0
           btncerca_Click
        Endif    
   Endif
-  
+
 End
 
 

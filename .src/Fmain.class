@@ -2205,57 +2205,119 @@ Public Sub COLORINSTALLATILISTSEARCH()
   Loop Until ListpkgSEARCH.MoveNext()
 End
 
-Public Sub COLORAINSTALLATIGROUP()
-  Dim sPercorso As String = User.Home & "/.config/dnfdrake/tmp/tuttigruppinstallati.txt"
+' Public Sub COLORAINSTALLATIGROUP()
+'   Dim sPercorso As String = User.Home & "/.config/dnfdrake/tmp/tuttigruppinstallati.txt"
+'   Dim hFile As File
+'   Dim sRigaFile As String
+'   Dim aCampi As String[]
+'   Dim sValoreFile As String
+'   Dim sValoreVersione As String
+'   Dim sValoreSize As String
+'   ' 1. Carica i valori del file in una Collection per una ricerca ultra-veloce
+'   ' Usiamo una Collection perch� il metodo .Exist() � istantaneo
+'   Dim colFile As New Collection
+'   Dim colVersione As New Collection
+'   Dim colSize As New Collection
+'   
+'   If Not Exist(sPercorso) Then Return
+'   
+'   hFile = Open sPercorso For Read
+'   While Not Eof(hFile)
+'     Line Input #hFile, sRigaFile
+'     aCampi = Split(sRigaFile, gb.Tab, "", True)
+'     If aCampi.Count >= 5 Then 
+'       ' Aggiungiamo il valore del file come CHIAVE della collection
+'       colFile[aCampi[1]] = True       'NOME PACCHETTO
+'       colVersione[aCampi[3]] = True   'VERSIONE PACCHETTO
+'       colSize[aCampi[6]] = True       'DIMENSIONE PACCHETTO
+'     Endif
+'   Wend
+'   hFile.Close()
+' 
+'   ' 2. Scorrere la ColumnView e colorare se il valore esiste nella Collection
+'   ' MoveFirst restituisce True se la lista � vuota
+'   If CLNVWGRUPPI.MoveFirst() Then Return 
+' 
+'   Do
+'     ' Recuperiamo il valore della seconda quarta e quinta colonna (indice 1, 3, 4)
+'     sValoreFile = CLNVWGRUPPI.Item[1]     'NOME PACCHETTO
+'     sValoreVersione = CLNVWGRUPPI.Item[3] 'VERSIONE PACCHETTO
+'     sValoreSize = CLNVWGRUPPI.Item[6]     'DIMENSIONE PACCHETTO
+'     ' Verifichiamo se questo valore era presente nel file
+'     If colFile.Exist(sValoreFile) And If colVersione.Exist(sValoreVersione) And If colSize.Exist(sValoreSize) Then
+'       CLNVWGRUPPI.Item.Foreground = Color.Green
+'       ' Opzionale: colorare solo il testo
+'       ' ColumnView1.Item.Foreground = Color.DarkGreen
+'     Else
+'       CLNVWGRUPPI.Item.Foreground = Color.Orange
+'     Endif
+' 
+'   Loop Until CLNVWGRUPPI.MoveNext()
+' 
+' End
+
+Public Sub COLORAINSTALLATIGROUP() 'ALTERNATIVA IN TEST************************************************
+  
+  Dim sPercorso As String = User.Home & "/.config/dnfdrake/installati.txt"
   Dim hFile As File
   Dim sRigaFile As String
   Dim aCampi As String[]
   Dim sValoreFile As String
   Dim sValoreVersione As String
-  Dim sValoreSize As String
+  Dim sValoreRelease As String
   ' 1. Carica i valori del file in una Collection per una ricerca ultra-veloce
   ' Usiamo una Collection perch� il metodo .Exist() � istantaneo
   Dim colFile As New Collection
   Dim colVersione As New Collection
-  Dim colSize As New Collection
+  Dim sRawVersion As String
+  Dim sCleanVersion As String
+  Dim ipos As Integer
   
   If Not Exist(sPercorso) Then Return
-  
+
   hFile = Open sPercorso For Read
   While Not Eof(hFile)
     Line Input #hFile, sRigaFile
-    aCampi = Split(sRigaFile, gb.Tab, "", True)
-    If aCampi.Count >= 5 Then 
+    sRigaFile = Trim(sRigaFile) ' Pulisce spazi iniziali/finali
+    aCampi = Split(sRigaFile, " ", "", True)
+     If aCampi.Count >= 2 Then 
+       sRawVersion = aCampi[1]
+       iPos = InStr(sRawVersion, ":")
+       If iPos > 0 Then
+          ' Se presente, prendiamo tutto quello che c'� DOPO il ":"
+          sCleanVersion = Mid(sRawVersion, iPos + 1)
+        Else
+          ' Se non presente, manteniamo la versione originale
+          sCleanVersion = sRawVersion
+        Endif 
       ' Aggiungiamo il valore del file come CHIAVE della collection
-      colFile[aCampi[1]] = True       'NOME PACCHETTO
-      colVersione[aCampi[3]] = True   'VERSIONE PACCHETTO
-      colSize[aCampi[6]] = True       'DIMENSIONE PACCHETTO
+      colFile[Trim(File.BaseName(aCampi[0]))] = True       'NOME PACCHETTO
+      colVersione[Trim(sCleanVersion)] = True              ' VERSIONE+RELEASE
     Endif
   Wend
   hFile.Close()
-
   ' 2. Scorrere la ColumnView e colorare se il valore esiste nella Collection
   ' MoveFirst restituisce True se la lista � vuota
   If CLNVWGRUPPI.MoveFirst() Then Return 
-
   Do
     ' Recuperiamo il valore della seconda quarta e quinta colonna (indice 1, 3, 4)
     sValoreFile = CLNVWGRUPPI.Item[1]     'NOME PACCHETTO
     sValoreVersione = CLNVWGRUPPI.Item[3] 'VERSIONE PACCHETTO
-    sValoreSize = CLNVWGRUPPI.Item[6]     'DIMENSIONE PACCHETTO
+    sValoreRelease = CLNVWGRUPPI.Item[4]
     ' Verifichiamo se questo valore era presente nel file
-    If colFile.Exist(sValoreFile) And If colVersione.Exist(sValoreVersione) And If colSize.Exist(sValoreSize) Then
+     If colFile.Exist(Trim(sValoreFile)) And If colVersione.Exist(Trim(sValoreVersione) & "-" & Trim(sValoreRelease)) Then
       CLNVWGRUPPI.Item.Foreground = Color.Green
-      ' Opzionale: colorare solo il testo
-      ' ColumnView1.Item.Foreground = Color.DarkGreen
     Else
       CLNVWGRUPPI.Item.Foreground = Color.Orange
     Endif
 
   Loop Until CLNVWGRUPPI.MoveNext()
-
+  
+  ' Dim elemento As String
+  ' For Each elemento In colFile
+  '     Print colVersione.Key & elemento
+  ' Next
 End
-
 
 
 Public Sub LOADINDEX()
@@ -3089,8 +3151,10 @@ If $CONNECTION = 1 Then
   PICLOGODISTRO.Visible = False
   Me.Mouse = Mouse.Wait  
   Wait 0.05
-  If InStr(txtpkg.Text, ".") Then
-     txtpkg.Text = Left(txtpkg.Text, InStr(txtpkg.Text, ".") - 1)
+  If InStr(txtpkg.Text, ".x86_64") Or InStr(txtpkg.Text, ".noarch") Or InStr(txtpkg.Text, ".znver1") Or InStr(txtpkg.Text, ".aarch64") Or InStr(txtpkg.Text, ".i686")
+  'If RInStr(txtpkg.Text, ".") Then
+     'txtpkg.Text = Left(txtpkg.Text, InStr(txtpkg.Text, ".") - 1)
+      txtpkg.Text = File.BaseName(txtpkg.Text)
   Endif
 ' FORMATTAZIONE Output In BASE ALLA VERSIONE DI DNF 
   If $DNFVERSIONNUMBER > 50213 Then 'DNF5 DA 5.2.17 (OMA) IN POI .....PER ORA

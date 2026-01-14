@@ -83,7 +83,8 @@ Dim b As Byte
      
      Shell ("dnf repoquery  --qf '%{group}\t  %{name}\t %{summary}\t %{version}\t %{release}\t %{arch}\t %{installsize}\t  %{repoid}\t\n' > " & User.Home & "/.config/dnfdrake/tmp/tuttigruppi.txt") Wait 'CREA L'ELENCO DELLE INFO DEI GRUPPI
      
-     Shell ("dnf repoquery --installed --qf '%{group}\t  %{name}\t %{summary}\t %{version}\t %{release}\t %{arch}\t %{installsize}\t  %{repoid}\t\n' > " & User.Home & "/.config/dnfdrake/tmp/tuttigruppinstallati.txt") Wait 'CREA L'ELENCO DELLE INFO DEI GRUPPI PER GLI INSTALLATI
+     ' ESCLUSO PER TEST NUOVO COLORAINSTALLATIGROUP CHE USA LA LISTA INSTALLATI
+     ' Shell ("dnf repoquery --installed --qf '%{group}\t  %{name}\t %{summary}\t %{version}\t %{release}\t %{arch}\t %{installsize}\t  %{repoid}\t\n' > " & User.Home & "/.config/dnfdrake/tmp/tuttigruppinstallati.txt") Wait 'CREA L'ELENCO DELLE INFO DEI GRUPPI PER GLI INSTALLATI
      
      'Shell ("sed -i '/^[[:space:]]*$/d' " & User.Home & "/.config/dnfdrake/tmp/tuttigruppinstallati.txt") Wait ' ELIMINALE RIGHE VUOTE
      

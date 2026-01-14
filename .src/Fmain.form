@@ -233,7 +233,6 @@
     Border = False
     ShowCheck = True
     Highlight = True
-    Grid = True
   }
   { ListpkgINSTALLATI ListView
     Move(14,147,1323,476)
@@ -243,7 +242,6 @@
     Border = False
     ShowCheck = True
     Highlight = True
-    Grid = True
   }
   { ListpkgAVAILABLE ListView
     Move(14,147,1323,476)
@@ -253,7 +251,6 @@
     Border = False
     ShowCheck = True
     Highlight = True
-    Grid = True
   }
   { ListpkgUPGRADE ListView
     Move(14,147,1323,476)
@@ -263,7 +260,6 @@
     Border = False
     ShowCheck = True
     Highlight = True
-    Grid = True
   }
   { TRVWGRUPPI TreeView
     Move(15,149,247,463)
@@ -290,7 +286,6 @@
     ToolTip = ("Double click for search package")
     Border = False
     Highlight = True
-    Grid = True
   }
   { BTNTABINSTALLED Button
     Move(181,112,120,28)

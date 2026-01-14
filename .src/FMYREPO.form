@@ -93,7 +93,6 @@
     Mode = Select.Multiple
     ShowCheck = True
     Highlight = True
-    Grid = True
   }
   { LabelName2 Label
     MoveScaled(11,5,49,3)

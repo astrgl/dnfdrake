@@ -2143,12 +2143,17 @@ Public Sub COLORINSTALLATILISTSEARCH()
   'Dim SPATH As String = User.Home & "/.config/dnfdrake/tmp/tuttigruppinstallati.txt"
   'Dim SPATH As String = User.Home & "/.config/dnfdrake/tmp/test.txt"
   Dim SPATH As String = User.Home & "/.config/dnfdrake/installati.txt"
+  Dim SPATHUPD As String = User.Home & "/.config/dnfdrake/updates.txt"
   Dim hFile As File
+  Dim hFileUPD As File
   Dim sRigaFile, sTestoOriginale, sTestoTagliato As String
+  Dim sRigaFileUPD, sTestoOriginaleUPD, sTestoTagliatoUPD As String
   Dim aCampi As String[]
+  Dim aCampiUPD As String[]
   Dim colFile As New Collection
+  Dim colFileUPD As New Collection
 
-  ' 1. Carica la prima colonna del file nella Collection (Ricerca veloce)
+' Carica la prima colonna del file INSTALLATI nella Collection (Ricerca veloce) 
   If Not Exist(SPATH) Then Return
   hFile = Open SPATH For Read
   While Not Eof(hFile)
@@ -2160,6 +2165,19 @@ Public Sub COLORINSTALLATILISTSEARCH()
     Endif
   Wend
   hFile.Close()
+  
+' Carica la prima colonna del file UPDATES nella Collection (Ricerca veloce)   
+  If Not Exist(SPATHUPD) Then Return
+  hFileUPD = Open SPATHUPD For Read
+  While Not Eof(hFileUPD)
+    Line Input #hFileUPD, sRigaFileUPD
+    aCampiUPD = Split(sRigaFileUPD, "   ", "", True)
+    If aCampiUPD.Count >= 2 Then 
+      ' Usiamo il valore del file come CHIAVE
+      colFileUPD[aCampiUPD[0]] = True
+    Endif
+  Wend
+  hFileUPD.Close()
   
   'colFile["A"] = "draketray"
   ' 2. Scorre la ListView e confronta solo la parte prima del punto
@@ -2176,7 +2194,7 @@ Public Sub COLORINSTALLATILISTSEARCH()
     Endif
     'sTestoTagliato = File.BaseName(sTestoOriginale)
     'Message.info(sTestoTagliato, "ok")
-    ' Verifica se la parte tagliata esiste nella collezione del file
+    ' Verifica se la parte tagliata esiste nella collezione del file INSTALLATI  E LO COLORA
     If colFile.Exist(Trim(sTestoTagliato)) Then
       ListpkgSEARCH.Item.Foreground = Color.Green
       If InStr(ListpkgSEARCH.Item.Text, "Name") Then
@@ -2188,20 +2206,10 @@ Public Sub COLORINSTALLATILISTSEARCH()
         ListpkgSEARCH.Item.Foreground = Color.Default
       Endif
     Endif
-    ' If colFile.Exist("draketray") Then
-    '   Message.Info("questo", "ok")
-    ' Else 
-    '  colFile.  
-    ' Endif
-    ' colFile["A"] = "draketray"
-    ' colFile["B"] = "Secondo elemento"
-
-     ' Print sTestoTagliato
-    ' Dim elemento As String
-    ' For Each elemento In colFile
-    '     Print colFile.Key & elemento
-    ' Next
-
+    ' Verifica se la parte tagliata esiste nella collezione del file UPDATES E LO COLORA
+    If colFileUPD.Exist(Trim(sTestoTagliato)) Then
+        ListpkgSEARCH.Item.Foreground = Color.Blue
+    Endif     
   Loop Until ListpkgSEARCH.MoveNext()
 End
 
@@ -4083,6 +4091,9 @@ Public Sub ListpkgSEARCH_Activate()
           txtpkg.Text = RTrim$(LTrim$(s))
           Cmbtipo.Index = 0
           btncerca_Click
+          If ListpkgSEARCH.Item.Foreground = Color.Blue Then
+             After 0.1 Do BTNTABUPDATE_Click
+          Endif
        Endif    
   Endif
 

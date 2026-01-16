@@ -511,6 +511,7 @@ LOADCOMBOTIPO
       TRVWGRUPPI.Tooltip = Replace(ss$TTP[104], "_", " ")
       $MSGCONNECTION = Replace(ss$TTP[96], "_", " ")
       $GROUPINFO = Replace(ss$TTP[105], "_", " ")
+      LBLHEADERTRVW.Text = Replace(ss$TTP[106], "_", " ")
      Next
    flTTP.Close
 'TEMA DELLE ICONE**************************************************************      
@@ -1229,6 +1230,7 @@ Public Sub TABHIDE()
     LBLBTNUPDATE.Visible = False
     LBLBTNGROUP.Visible = False
     ListpkgSEARCH.Visible = False
+    LBLHEADERTRVW.Visible = False
     TRVWGRUPPI.Visible = False
     CLNVWGRUPPI.Visible = False
     
@@ -2197,12 +2199,12 @@ Public Sub COLORINSTALLATILISTSEARCH()
     ' Verifica se la parte tagliata esiste nella collezione del file INSTALLATI  E LO COLORA
     If colFile.Exist(Trim(sTestoTagliato)) Then
       ListpkgSEARCH.Item.Foreground = Color.Green
-      If InStr(ListpkgSEARCH.Item.Text, "Name") Then
+      If InStr(ListpkgSEARCH.Item.Text, "= Name =") Then
         ListpkgSEARCH.Item.Foreground = Color.Default
       Endif
      Else
       ListpkgSEARCH.Item.Foreground = Color.Orange
-      If InStr(ListpkgSEARCH.Item.Text, "Name") Then
+      If InStr(ListpkgSEARCH.Item.Text, "= Name =") Then
         ListpkgSEARCH.Item.Foreground = Color.Default
       Endif
     Endif
@@ -2213,73 +2215,33 @@ Public Sub COLORINSTALLATILISTSEARCH()
   Loop Until ListpkgSEARCH.MoveNext()
 End
 
-' Public Sub COLORAINSTALLATIGROUP()
-'   Dim sPercorso As String = User.Home & "/.config/dnfdrake/tmp/tuttigruppinstallati.txt"
-'   Dim hFile As File
-'   Dim sRigaFile As String
-'   Dim aCampi As String[]
-'   Dim sValoreFile As String
-'   Dim sValoreVersione As String
-'   Dim sValoreSize As String
-'   ' 1. Carica i valori del file in una Collection per una ricerca ultra-veloce
-'   ' Usiamo una Collection perch� il metodo .Exist() � istantaneo
-'   Dim colFile As New Collection
-'   Dim colVersione As New Collection
-'   Dim colSize As New Collection
-'   
-'   If Not Exist(sPercorso) Then Return
-'   
-'   hFile = Open sPercorso For Read
-'   While Not Eof(hFile)
-'     Line Input #hFile, sRigaFile
-'     aCampi = Split(sRigaFile, gb.Tab, "", True)
-'     If aCampi.Count >= 5 Then 
-'       ' Aggiungiamo il valore del file come CHIAVE della collection
-'       colFile[aCampi[1]] = True       'NOME PACCHETTO
-'       colVersione[aCampi[3]] = True   'VERSIONE PACCHETTO
-'       colSize[aCampi[6]] = True       'DIMENSIONE PACCHETTO
-'     Endif
-'   Wend
-'   hFile.Close()
-' 
-'   ' 2. Scorrere la ColumnView e colorare se il valore esiste nella Collection
-'   ' MoveFirst restituisce True se la lista � vuota
-'   If CLNVWGRUPPI.MoveFirst() Then Return 
-' 
-'   Do
-'     ' Recuperiamo il valore della seconda quarta e quinta colonna (indice 1, 3, 4)
-'     sValoreFile = CLNVWGRUPPI.Item[1]     'NOME PACCHETTO
-'     sValoreVersione = CLNVWGRUPPI.Item[3] 'VERSIONE PACCHETTO
-'     sValoreSize = CLNVWGRUPPI.Item[6]     'DIMENSIONE PACCHETTO
-'     ' Verifichiamo se questo valore era presente nel file
-'     If colFile.Exist(sValoreFile) And If colVersione.Exist(sValoreVersione) And If colSize.Exist(sValoreSize) Then
-'       CLNVWGRUPPI.Item.Foreground = Color.Green
-'       ' Opzionale: colorare solo il testo
-'       ' ColumnView1.Item.Foreground = Color.DarkGreen
-'     Else
-'       CLNVWGRUPPI.Item.Foreground = Color.Orange
-'     Endif
-' 
-'   Loop Until CLNVWGRUPPI.MoveNext()
-' 
-' End
 
 Public Sub COLORAINSTALLATIGROUP() 'ALTERNATIVA IN TEST************************************************
   
   Dim sPercorso As String = User.Home & "/.config/dnfdrake/installati.txt"
+  Dim sPercorsoUPD As String = User.Home & "/.config/dnfdrake/updates.txt"
   Dim hFile As File
+  Dim hFileUPD As File
   Dim sRigaFile As String
+  Dim sRigaFileUPD As String
   Dim aCampi As String[]
+  Dim aCampiUPD As String[]
   Dim sValoreFile As String
+  Dim sValoreFileUPD As String
   Dim sValoreVersione As String
+  Dim sValoreVersioneUPD As String
   Dim sValoreRelease As String
+  Dim sValoreReleaseUPD As String
   ' 1. Carica i valori del file in una Collection per una ricerca ultra-veloce
   ' Usiamo una Collection perch� il metodo .Exist() � istantaneo
   Dim colFile As New Collection
-  Dim colVersione As New Collection
+  Dim colFileUPD As New Collection
   Dim sRawVersion As String
+  Dim sRawVersionUPD As String
   Dim sCleanVersion As String
+  Dim sCleanVersionUPD As String
   Dim ipos As Integer
+  Dim iposUPD As Integer
   
   If Not Exist(sPercorso) Then Return
 
@@ -2299,8 +2261,7 @@ Public Sub COLORAINSTALLATIGROUP() 'ALTERNATIVA IN TEST*************************
           sCleanVersion = sRawVersion
         Endif 
       ' Aggiungiamo il valore del file come CHIAVE della collection
-      colFile[Trim(File.BaseName(aCampi[0]))] = True       'NOME PACCHETTO
-      colVersione[Trim(sCleanVersion)] = True              ' VERSIONE+RELEASE
+      colFile[Trim(File.BaseName(aCampi[0])) & Trim(sCleanVersion)] = True       'NOME PACCHETTO
     Endif
   Wend
   hFile.Close()
@@ -2311,19 +2272,55 @@ Public Sub COLORAINSTALLATIGROUP() 'ALTERNATIVA IN TEST*************************
     ' Recuperiamo il valore della seconda quarta e quinta colonna (indice 1, 3, 4)
     sValoreFile = CLNVWGRUPPI.Item[1]     'NOME PACCHETTO
     sValoreVersione = CLNVWGRUPPI.Item[3] 'VERSIONE PACCHETTO
-    sValoreRelease = CLNVWGRUPPI.Item[4]
+    sValoreRelease = CLNVWGRUPPI.Item[4]   'VERSIONE RELEASE
     ' Verifichiamo se questo valore era presente nel file
-     If colFile.Exist(Trim(sValoreFile)) And If colVersione.Exist(Trim(sValoreVersione) & "-" & Trim(sValoreRelease)) Then
-      CLNVWGRUPPI.Item.Foreground = Color.Green
+    If colFile.Exist(Trim(sValoreFile) & Trim(sValoreVersione) & "-" & Trim(sValoreRelease)) Then
+       CLNVWGRUPPI.Item.Foreground = Color.Green
     Else
-      CLNVWGRUPPI.Item.Foreground = Color.Orange
-    Endif
-
+       CLNVWGRUPPI.Item.Foreground = Color.Orange  
+    Endif 
   Loop Until CLNVWGRUPPI.MoveNext()
+ 
+  If Not Exist(sPercorsoUPD) Then Return
+
+  hFileUPD = Open sPercorsoUPD For Read
+  While Not Eof(hFileUPD)
+    Line Input #hFileUPD, sRigaFileUPD
+    sRigaFileUPD = Trim(sRigaFileUPD) ' Pulisce spazi iniziali/finali
+    aCampiUPD = Split(sRigaFileUPD, " ", "", True)
+     If aCampiUPD.Count >= 2 Then 
+       sRawVersionUPD = aCampiUPD[1]
+       iposUPD = InStr(sRawVersionUPD, ":")
+       If iposUPD > 0 Then
+          ' Se presente, prendiamo tutto quello che c'� DOPO il ":"
+          sCleanVersionUPD = Mid(sRawVersionUPD, iposUPD + 1)
+        Else
+          ' Se non presente, manteniamo la versione originale
+          sCleanVersionUPD = sRawVersionUPD
+        Endif 
+      ' Aggiungiamo il valore del file come CHIAVE della collection
+      colFileUPD[Trim(File.BaseName(aCampiUPD[0])) & Trim(sCleanVersionUPD)] = True       'NOME PACCHETTO
+    Endif
+  Wend
+  hFileUPD.Close()
+  ' 2. Scorrere la ColumnView e colorare se il valore esiste nella Collection
+  ' MoveFirst restituisce True se la lista � vuota
+  If CLNVWGRUPPI.MoveFirst() Then Return 
+  Do
+    ' Recuperiamo il valore della seconda quarta e quinta colonna (indice 1, 3, 4)
+    sValoreFileUPD = CLNVWGRUPPI.Item[1]     'NOME PACCHETTO
+    sValoreVersioneUPD = CLNVWGRUPPI.Item[3] 'VERSIONE PACCHETTO
+    sValoreReleaseUPD = CLNVWGRUPPI.Item[4]   'VERSIONE RELEASE
+    ' Verifichiamo se questo valore era presente nel file
+    If colFileUPD.Exist(Trim(sValoreFileUPD) & Trim(sValoreVersioneUPD) & "-" & Trim(sValoreReleaseUPD)) Then
+       CLNVWGRUPPI.Item.Foreground = Color.Blue
+    Endif 
+  Loop Until CLNVWGRUPPI.MoveNext()
+  
   
   ' Dim elemento As String
   ' For Each elemento In colFile
-  '     Print colVersione.Key & elemento
+  '     Print colFile.Key '& elemento
   ' Next
 End
 
@@ -2579,6 +2576,9 @@ Public Sub CLNVWGRUPPI_Activate()
      TXTPKG.Text = Trim(CLNVWGRUPPI.Current[1]) & "." & Trim(CLNVWGRUPPI.Current[5])
      Cmbtipo.Index = 0
      btncerca_Click
+     If CLNVWGRUPPI.Item.Foreground = Color.Blue Then
+             After 0.05 Do BTNTABUPDATE_Click
+          Endif
      BTNTABGROUP.Visible = True
      LBLBTNGROUP.Visible = True
      After 2 Do txtpkg.Text = ""
@@ -2657,6 +2657,8 @@ If BTNFULLSCREEN.Visible = True
   ListpkgSEARCH.Width = ListpkgSEARCH.Width + ($RISOLUZIONEX - 1366)
   ListpkgSEARCH.Height = ListpkgSEARCH.Height + ($RISOLUZIONEY - 768)
   
+  LBLHEADERTRVW.Width = LBLHEADERTRVW.Width * ($RISOLUZIONEX / 1366)
+  'LBLHEADERTRVW.Height = LBLHEADERTRVW.Height + ($RISOLUZIONEY - 768)
   TRVWGRUPPI.Width = TRVWGRUPPI.Width * ($RISOLUZIONEX / 1366)
   TRVWGRUPPI.Height = TRVWGRUPPI.Height + ($RISOLUZIONEY - 768)
   CLNVWGRUPPI.Width = CLNVWGRUPPI.Width * (TRVWGRUPPI.Width / 247)
@@ -2741,7 +2743,9 @@ Else
   ListpkgSEARCH.Width = 1332 - 8
   ListpkgSEARCH.Height = 476
   
-  TRVWGRUPPI.Height = 463
+ ' LBLHEADERTRVW.Height = 26
+  LBLHEADERTRVW.Width = 247
+  TRVWGRUPPI.Height = 430
   TRVWGRUPPI.Width = 247
   CLNVWGRUPPI.Height = 463
   CLNVWGRUPPI.Width = 1071
@@ -3753,6 +3757,7 @@ Endif
 
 If Cmbtipo.index = 6 Then             ' GRUPPI
    TABHIDE
+   LBLHEADERTRVW.Visible = True
    TRVWGRUPPI.Visible = True
    CLNVWGRUPPI.Visible = True
    PICLOGODISTRO.Visible = False
@@ -3849,19 +3854,30 @@ Public Sub Btncommand_Click()
 End
 
 Public Sub Btncrono_Click()
-
+   txtpkg.SetFocus
    Btnclear_Click
    If Btnexp2.Text = "EXP2" Then
       Btnexp2_Click  
    Endif
    txtConsole.Text = ""
-   If (RTrim$(LTrim$(txtpkg.Text))) = "" Then
-      Print #$hProcess, "dnf history list " & gb.NewLine;
-      txtpkg.Foreground = Color.Red
-      txtpkg.Text = $HISTORYINFO
-   Else   
-      Print #$hProcess, "dnf history info " & (RTrim$(LTrim$(txtpkg.Text))) & " | tee /dev/null " & gb.NewLine;
+   If IsDigit(Trim(txtpkg.Text)) Then
+       Print #$hProcess, "dnf history info " & (RTrim$(LTrim$(txtpkg.Text))) & " | tee /dev/null " & gb.NewLine;
+   Else 
+       Print #$hProcess, "dnf history list " & gb.NewLine;
+      'After 0.05 Do txtpkg.Foreground = Color.Red
+      'txtpkg.Text = $HISTORYINFO
+      FPOPUPMESSAGE.Show
+      FPOPUPMESSAGE.LBLMESSAGE.Foreground = Color.default
+      After 0.05 Do FPOPUPMESSAGE.LBLMESSAGE.Text = $HISTORYINFO & Replace(Btncrono.Text, "&", "") & "!"
+      After 5 Do FPOPUPMESSAGE.Close
    Endif
+   ' If (RTrim$(LTrim$(txtpkg.Text))) = "" Then
+   '    Print #$hProcess, "dnf history list " & gb.NewLine;
+   '    txtpkg.Foreground = Color.Red
+   '    txtpkg.Text = $HISTORYINFO
+   ' Else   
+   '     Print #$hProcess, "dnf history info " & (RTrim$(LTrim$(txtpkg.Text))) & " | tee /dev/null " & gb.NewLine;     
+   ' Endif
    PICLOGODISTRO.Visible = False  
   
 End
@@ -4092,7 +4108,7 @@ Public Sub ListpkgSEARCH_Activate()
           Cmbtipo.Index = 0
           btncerca_Click
           If ListpkgSEARCH.Item.Foreground = Color.Blue Then
-             After 0.1 Do BTNTABUPDATE_Click
+             After 0.05 Do BTNTABUPDATE_Click
           Endif
        Endif    
   Endif

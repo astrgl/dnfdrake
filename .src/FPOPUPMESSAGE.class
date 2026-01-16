@@ -1,2 +1,7 @@
 ' Gambas class file
 
+
+Public Sub LBLMESSAGE_MouseDown()
+  Me.Close
+End
+

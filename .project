@@ -2,7 +2,7 @@
 Title=DnfDrake
 Startup=Fmain
 Icon=dnfdrake.svg
-Version=5.6.107
+Version=5.6.108
 Component=gb.image
 Component=gb.qt6
 Component=gb.form
@@ -10,7 +10,7 @@ Description="DnfDrake è un frontend a Dnf.\n\nTutto è iniziato partendo dalla 
 Authors="Autore: Mauro Carbini aka Astragalo\nMail: mauro.carbini@gmail.com"
 TabSize=2
 Translate=1
-Language=it
+Language=en
 ControlPublic=1
 Maintainer=Astragalo
 Vendor=Astragalo

@@ -261,11 +261,19 @@
     ShowCheck = True
     Highlight = True
   }
+  { LBLHEADERTRVW Label
+    Move(14,148,247,26)
+    Visible = False
+    Background = Color.Background
+    Alignment = Align.Center
+    Border = Border.Etched
+  }
   { TRVWGRUPPI TreeView
-    Move(15,149,247,463)
+    Move(15,175,247,430)
     Visible = False
     Foreground = Color.Royal
     ToolTip = ("Double click to search for packages")
+    Sorted = True
     Border = False
     ShowLines = True
     Highlight = True

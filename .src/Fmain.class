@@ -544,7 +544,7 @@ LOADCOMBOTIPO
       FMAIN.ListpkgNODEPS.Foreground = Color.Green
       Fmain.ListpkgINSTALLATI.Foreground = Color.Green
       Fmain.ListpkgAVAILABLE.Foreground = Color.Orange
-      Fmain.ListpkgUPGRADE.Foreground = Color.Royal
+      Fmain.ListpkgUPGRADE.Foreground = Color.Blue
   Endif
   If Exist("/usr/share/dnfdrake/icons") Then
        $PATHICONS = "/usr/share/dnfdrake/icons/"
@@ -733,6 +733,14 @@ Else
 Endif
 
 'COPIA E PULISCE  LE LISTE PRECARICATE DA DRAKETRAY*****************************
+If Exist("/tmp/draketray/GRUPPI.txt") Then
+   Shell ("cp -f /tmp/draketray/GRUPPI.txt " & User.Home & "/.config/dnfdrake/tmp") Wait 
+   Kill "/tmp/draketray/GRUPPI.txt" 
+Endif
+If Exist("/tmp/draketray/tuttigruppi.txt") Then
+   Shell ("cp -f /tmp/draketray/tuttigruppi.txt " & User.Home & "/.config/dnfdrake/tmp") Wait 
+   Kill "/tmp/draketray/tuttigruppi.txt" 
+Endif
 If Exist("/tmp/draketray/installati.txt") Then
    Shell ("cp -f /tmp/draketray/installati.txt " & User.Home & "/.config/dnfdrake/") Wait 
    Kill "/tmp/draketray/installati.txt" 
@@ -760,7 +768,7 @@ FIXINSTALLATI
         If InStr($LINKDNF5, "dnf5", 0, gb.IgnoreCase) Then 
            $CHKDNF5 = 1
         Else    
-          $CHKDNF5 = 0
+           $CHKDNF5 = 0
         Endif   
 
 End

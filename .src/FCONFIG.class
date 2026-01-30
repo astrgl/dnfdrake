@@ -33,13 +33,17 @@ Public Sub Form_Open()
         
         'If Exist(User.Home &/ ".config/dnfdrake/distrosync") Then
          If FMAIN.BTNDISTUPDATE.Visible = True
-           TXTUPDATE.Text = "DistroSync command"
+           TXTUPDATE.Text = ("DistroSync command")
            TXTUPDATECMD.Text = "sudo dnf clean all; dnf clean all; dnf repolist; sudo dnf --refresh --allowerasing distro-sync"
            TXTUPDATECMD.Enabled = False
         Else  
            TXTUPDATECMD.Enabled = True
         Endif
     '********************************************************************************
+        'Fmain.$ROOTMODE = 1
+        If Fmain.txtlang.Text = "RU" Then
+           CMBUSERDEFAULT.X = CMBUSERDEFAULT.x + 40
+        Endif
         If Fmain.$ROOTMODE = 1 Then
            USERDEFAULTCHECK  
            If Exist(User.Home &/ ".config/dnfdrake/userdefault") Then
@@ -61,7 +65,7 @@ Public Sub Form_Open()
               Endif   
            Endif
         Else 
-          LBLUSER.Text = "Function Disable in UserMode"
+          LBLUSER.Text = ("Function Disable in UserMode")
           CMBUSERDEFAULT.Enabled = False  
           CMBUSERDEFAULT.Visible = False 
         Endif
@@ -76,6 +80,23 @@ Public Sub Form_Open()
           CHKSECUREMODE.Value = True
           Else 
             CHKSECUREMODE.Value = False
+        Endif
+        
+        If Exist(User.Home & "/.config/dnfdrake/COLOR-CONSOLE.txt") Then
+          If Fmain.$COLORTEXTCONSOLE = "Default" Then
+            CMBCOLORTEXTCONSOLE.Index = 0
+          Endif
+          If Fmain.$COLORTEXTCONSOLE = "Green" Then
+            CMBCOLORTEXTCONSOLE.Index = 1
+          Endif
+          If Fmain.$COLORTEXTCONSOLE = "Red" Then
+            CMBCOLORTEXTCONSOLE.Index = 2
+          Endif
+          If Fmain.$COLORTEXTCONSOLE = "Blue" Then
+            CMBCOLORTEXTCONSOLE.Index = 3
+          Endif
+        Else 
+          CMBCOLORTEXTCONSOLE.Index = 0    
         Endif
 End
 
@@ -103,12 +124,14 @@ Public Sub BTNOK_Click()
    fl = Open User.Home &/ "/.config/dnfdrake/dnfdrake-COMMAND" For Create
    Print #fl, Replace(TXTINSTALLCMD.Text, " ", "_")
    Print #fl, Replace(TXTUNINSTALLCMD.Text, " ", "_")
+   
 'SERVE PER EVITARE DI SALVARE IL COMANDO DI DISTROSYNC*********************
    If TXTUPDATECMD.Enabled = True Then
       Print #fl, Replace(TXTUPDATECMD.Text, " ", "_")  
    Else 
       Print #fl, Replace(Fmain.$UPDATE, " ", "_")   
    Endif
+   
 '**************************************************************************
    Print #fl, Replace(TXTUPDATEPKGCMD.Text, " ", "_")
    Print #fl, Replace(TXTDOWNGRADECMD.Text, " ", "_")
@@ -119,11 +142,15 @@ Public Sub BTNOK_Click()
      Print #fl, "nero"  
    Endif
    Print #fl, Replace(TXTREINSTALLCMD.Text, " ", "_")
+   
+'*********************************************************************************************     
    If CHKLOG.Value = True Then
      Print #fl, "LOG"
      Else 
        Print #fl, "NOLOG"
    Endif
+   
+'*********************************************************************************************  
    If CHKSECUREMODE.Value = True Then
      Print #fl, "SECURE"
      Else 
@@ -138,9 +165,30 @@ Public Sub BTNOK_Click()
    Endif
   fl.Close
   
+'*********************************************************************************************  
   File.save(User.Home & "/.config/dnfdrake/userdefault", CMBUSERDEFAULT.Text)
-
-  Message.Info("Restart DnfDrake for the changes to be applied", "OK")
+  
+'*********************************************************************************************
+  If CMBCOLORTEXTCONSOLE.Index = 0 Then
+      File.save(User.Home & "/.config/dnfdrake/COLOR-CONSOLE.txt", "Default")
+      Fmain.$COLORTEXTCONSOLE = "Default"
+  Else If CMBCOLORTEXTCONSOLE.Index = 1 Then  
+      File.save(User.Home & "/.config/dnfdrake/COLOR-CONSOLE.txt", "Green")  
+      Fmain.$COLORTEXTCONSOLE = "Green"
+  Else If CMBCOLORTEXTCONSOLE.Index = 2 Then   
+      File.save(User.Home & "/.config/dnfdrake/COLOR-CONSOLE.txt", "Red") 
+      Fmain.$COLORTEXTCONSOLE = "Red" 
+  Else If CMBCOLORTEXTCONSOLE.Index = 3 Then   
+      File.save(User.Home & "/.config/dnfdrake/COLOR-CONSOLE.txt", "Blue") 
+      Fmain.$COLORTEXTCONSOLE = "Blue"    
+  Endif
+  Fmain.COLORCONSOLE
+  
+  FPOPUPMESSAGE.Show
+  After 0.05 Do FPOPUPMESSAGE.LBLMESSAGE.Text = (" Restart DnfDrake For the changes To be applied ")
+         'Message.Info($MSGBTNCOMMAND, "Ok")
+  After 3 Do FPOPUPMESSAGE.Close
+  'Message.Info("Restart DnfDrake for the changes to be applied", "OK")
   Me.Close
 End
 
@@ -208,6 +256,24 @@ End
 
 Public Sub CMBUSERDEFAULT_Click()
 
-  LBLUSER.Text = "Default user of system:                                     User home dir: " & "/home/" & CMBUSERDEFAULT.Text
+  LBLUSER.Text = ("Default user of system:                                     User home dir: " & "/home/" & CMBUSERDEFAULT.Text)
+
+End
+
+
+Public Sub LBLUSER_MouseDown()
+
+  
+
+End
+
+Public Sub Label4_MouseDown()
+
+  
+
+End
+Public Sub CMBCOLORTEXTCONSOLE_Click()
+
+  
 
 End

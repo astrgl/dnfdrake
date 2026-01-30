@@ -124,6 +124,7 @@ Public $CLNREPOSNAME As String
 Public $GROUPINFO As String           'FRASE DI ASSISTENZA/INFO PER VISTA A GRUPPI 
 Public $CONNECTION As Integer         'STATO CONNESSIONE INTERNET 0=DISCONNESSO 1=CONNESSO
 Public $MSGCONNECTION As String       'MESSAGGIO DI CONNESSIONE NON DISPONIBILE
+Public $COLORTEXTCONSOLE As String    'COLORE DEL TESTO NELLA CONSOLE
 
 Public Sub Form_Open()
 'COMANDI
@@ -213,6 +214,7 @@ Public Sub Form_Open()
        txtConsole.Text = ""   
  Else    
  ' SE NON CI SONO LINGUE IN TEST CARICA LA LINGUA DI SISTEMA DA USARE**************
+    'System.Language = "ru_RU.UTF-8"
     txtlang.Text = Left(Right(System.Language, -3), 2)
     $LANG = Left(System.Language, 5)
  Endif   
@@ -635,7 +637,14 @@ LOADCOMBOTIPO
   EXCLUDETEST
 
 ' ABILITAZIONE / DISABILITAZIONE NODO VERBOSE
-$VERBOSE = " | tee /dev/null " '& User.Home & "/.config/dnfdrake/log/last.log"
+
+'*********************************IN TEST******************************************************************      
+
+'$VERBOSE = " | tee /dev/null " '& User.Home & "/.config/dnfdrake/log/last.log"
+'USANDO TRASHFILE ANZICHÈ /DEV/NULL NON CREA PROBLEMI DI VISUALIZZAZIONE IN TRANSAZIONI CON TANTI PACCHETTI
+'$VERBOSE = " | tee " & User.Home & "/.config/dnfdrake/log/trashfile.log"
+$VERBOSE = " | tee "
+
 
 '$VERBOSE = " | tee " & $FILETMPLOG 
 '$VERBOSE = " | tee " & User.Home & "/.config/dnfdrake/log/last.log"
@@ -725,11 +734,11 @@ Else
   $ROOTMODE = 0 
   $pathdir = User.home & "/"
   Dim iAnswer As Integer = Message.Question("DnfDrake was started in user mode. To work correctly it should be started as superuser. Continue anyway?", $SI, $NO)
-       If (iAnswer = 1) Then
-       Else           
-         Stop Event
-         EXITROUTIN
-        Endif 
+    If (iAnswer = 1) Then
+    Else           
+       Stop Event
+       EXITROUTIN
+    Endif 
 Endif
 
 'COPIA E PULISCE  LE LISTE PRECARICATE DA DRAKETRAY*****************************
@@ -770,6 +779,15 @@ FIXINSTALLATI
         Else    
            $CHKDNF5 = 0
         Endif   
+'CARICA IL COLORE DEL TESTO DELLA CONSOLE*****************************************
+  If Exist(User.Home & "/.config/dnfdrake/COLOR-CONSOLE.txt") Then
+       $COLORTEXTCONSOLE = File.Load(User.Home & "/.config/dnfdrake/COLOR-CONSOLE.txt") 
+       $COLORTEXTCONSOLE = Replace($COLORTEXTCONSOLE, " ", "")
+       Print $COLORTEXTCONSOLE
+     Else 
+       $COLORTEXTCONSOLE = "Default"
+  Endif
+  COLORCONSOLE
 
 End
 
@@ -1003,7 +1021,13 @@ Private Sub UpdateConsole()
   Dim s As String
   Dim sok As String
   Dim p As Integer
- 
+  Dim $ESECUZIONE As String
+  $ESECUZIONE = ("Execution!")
+'SERVE PER FAR FUNZIONARE IL COLORE TESTO DELLA CONSOLE*************************************
+  If txtConsole.Line = 0 Then
+     txtConsole.Text = "<============================= DnfDrake " & $ESECUZIONE & " =============================>" & gb.NewLine   
+  Endif
+'*******************************************************************************************
   While Len($sText)
     iPos = InStr($sText, "\n")
     If iPos = 0 Then iPos = Len($sText)
@@ -1045,7 +1069,7 @@ Private Sub UpdateConsole()
         Endif
      Endif
      Endif
-'*****************************************************************************************
+'*****************************************************************************************      
     $sText = Mid$($sText, iPos + 1)
     txtConsole.Pos = txtConsole.Length
  'PULIZIA CARATTERI ERRATI IN CONSOLE******************      
@@ -1254,6 +1278,11 @@ Private Sub EXITROUTIN()
       If Exist(User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp") Then
          Shell "rm -f " & User.Home & "/.config/dnfdrake/tmp/globalsearch.tmp " Wait 
       Endif
+      
+'*********************************IN TEST******************************************************************      
+       If Exist(User.Home & "/.config/dnfdrake/log/trashfile.log") Then
+         Shell "rm -f " & User.Home & "/.config/dnfdrake/log/trashfile.log" Wait 
+      Endif
       '  If Exist(User.Home & "/.config/dnfdrake/tmp/history.tmp") Then
       '    Shell "rm -f " & User.Home & "/.config/dnfdrake/tmp/history.tmp " Wait 
       ' Endif
@@ -1355,10 +1384,13 @@ Public Sub btninstall_Click()
     spkg = ""
 'VERIFICA NUMERO DI PACCHETTI SELEZIONATI*************************************    
     If Val(Str(ListpkgAVAILABLE.Selection.Count)) > 10 Then
-      'FPOPUPMESSAGE.Show
-      ' After 0.05 Do FPOPUPMESSAGE.LBLMESSAGE.Text = "It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for installation!"
-      ' After 3 Do FPOPUPMESSAGE.Close
-      Message.Info("It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for installation!", "OK")
+      FPOPUPMESSAGE.Show
+    'FPOPUPMESSAGE.LBLMESSAGE.Foreground = Color.Red
+    After 0.05 Do FPOPUPMESSAGE.LBLMESSAGE.Text = "It seems that you are select many packages at the same time, this can cause errors," & gb.NewLine & "to avoid this DnfDrake has created a temporary list for reinstallation!"
+    'Message.Info($MSGBTNCOMMAND, "Ok")
+    After 3 Do FPOPUPMESSAGE.Close
+    Wait 2
+      'Message.Info("It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for installation!", "OK")
       BTNADDPKGLIST_Click
     Endif 
 '*****************************************************************************
@@ -1486,7 +1518,13 @@ Public Sub btnremove_Click()
  
 'VERIFICA NUMERO DI PACCHETTI SELEZIONATI*************************************    
     If Val(Str(ListpkgINSTALLATI.Selection.Count)) > 10 Then
-          Message.Info("It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for uninstallation! ", "OK")
+          FPOPUPMESSAGE.Show
+         'FPOPUPMESSAGE.LBLMESSAGE.Foreground = Color.Red
+          After 0.05 Do FPOPUPMESSAGE.LBLMESSAGE.Text = "It seems that you are select many packages at the same time, this can cause errors," & gb.NewLine & "to avoid this DnfDrake has created a temporary list for reinstallation!"
+         'Message.Info($MSGBTNCOMMAND, "Ok")
+          After 3 Do FPOPUPMESSAGE.Close
+          Wait 2
+         ' Message.Info("It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for uninstallation! ", "OK")
           BTNADDPKGLIST_Click
     Endif 
 '*****************************************************************************
@@ -1593,6 +1631,12 @@ Public Sub BTNPKGUPDATE_Click()
     spkg = ""
 'VERIFICA NUMERO DI PACCHETTI SELEZIONATI*************************************    
     If Val(Str(ListpkgUPGRADE.Selection.Count)) > 5 Then
+      FPOPUPMESSAGE.Show
+     'FPOPUPMESSAGE.LBLMESSAGE.Foreground = Color.Red
+      After 0.05 Do FPOPUPMESSAGE.LBLMESSAGE.Text = "It seems that you are select many packages at the same time, this can cause errors," & gb.NewLine & "to avoid this DnfDrake has created a temporary list for reinstallation!"
+     'Message.Info($MSGBTNCOMMAND, "Ok")
+      After 3 Do FPOPUPMESSAGE.Close
+      Wait 2'
       Message.Info("It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for installation!\n It is recommended to use 'Update Sys' or 'Distro Sync' button!", "OK")
       BTNADDPKGLIST_Click
     Endif 
@@ -2629,6 +2673,17 @@ Public Sub VERIFYSUSPEND()
     PICSUSPEND.Visible = True
     PICSUSPENDLOCK.Visible = False
   Endif          
+End
+Public Sub COLORCONSOLE()
+  If $COLORTEXTCONSOLE = "Default" Then
+      txtConsole.Foreground = Color.Default
+    Else If $COLORTEXTCONSOLE = "Green" Then
+      txtConsole.Foreground = Color.Green
+    Else If $COLORTEXTCONSOLE = "Red" Then
+      txtConsole.Foreground = Color.Red
+    Else If $COLORTEXTCONSOLE = "Blue" Then
+      txtConsole.Foreground = Color.Blue
+    Endif
 End
 
 Private Sub RESOLUTION()
@@ -5056,7 +5111,13 @@ Public Sub BTNREINSTALL_Click()
     spkg = ""
 'VERIFICA NUMERO DI PACCHETTI SELEZIONATI*************************************    
     If Val(Str(ListpkgINSTALLATI.Selection.Count)) > 10 Then
-    Message.Info("It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for reinstallation!", "OK")
+    FPOPUPMESSAGE.Show
+    'FPOPUPMESSAGE.LBLMESSAGE.Foreground = Color.Red
+    After 0.05 Do FPOPUPMESSAGE.LBLMESSAGE.Text = "It seems that you are select many packages at the same time, this can cause errors," & gb.NewLine & "to avoid this DnfDrake has created a temporary list for reinstallation!"
+    'Message.Info($MSGBTNCOMMAND, "Ok")
+    After 3 Do FPOPUPMESSAGE.Close
+    Wait 2
+    'Message.Info("It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for reinstallation!", "OK")
     BTNADDPKGLIST_Click
     Endif 
 '*****************************************************************************
@@ -5582,10 +5643,6 @@ End
 
 Public Sub BORDOCONNECT_MouseDown()
 End
-
-
-
-
 
 Public Sub BTNGEOMETRY_Click()
 

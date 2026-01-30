@@ -1,7 +1,7 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,87,89)
+  MoveScaled(0,0,87,95.7143)
   Icon = Picture["dnfdrake.svg"]
   { Label3 Label
     MoveScaled(47,71,36,4)
@@ -9,7 +9,7 @@
     BorderRadius = 12
   }
   { Label1 Label
-    MoveScaled(4,71,36,4)
+    MoveScaled(4,71,38,4)
     Border = Border.Plain
     BorderRadius = 12
   }
@@ -37,15 +37,15 @@
     MoveScaled(3.7143,32.4286,79,4)
   }
   { BTNCLOSE Button
-    MoveScaled(4,83,16,4)
+    MoveScaled(3.5714,89,16,4)
     Text = ("Close")
   }
   { BTNOK Button
-    MoveScaled(66,83,16,4)
+    MoveScaled(65.5714,89,16,4)
     Text = ("Apply")
   }
   { BTNDEFAULT Button
-    MoveScaled(35.4286,83,16,4)
+    MoveScaled(35,89,16,4)
     Text = ("Reset Default")
   }
   { TXTUPDATEPKG Label
@@ -123,12 +123,22 @@
     List = [("5"), ("15"), ("30"), ("60"), ("90"), ("180"), ("365")]
   }
   { LBLUSER Label
-    MoveScaled(4,77,79,4)
+    MoveScaled(4,76.5714,79,4)
     Border = Border.Plain
     BorderRadius = 12
     Text = ("Default user of system:                                        User home dir: ")
   }
   { CMBUSERDEFAULT ComboBox
-    MoveScaled(27,77.4286,16,3.2857)
+    MoveScaled(27,77,16,3.2857)
+  }
+  { Label4 Label
+    MoveScaled(4,82.2857,38,4)
+    Border = Border.Plain
+    BorderRadius = 12
+    Text = ("                                 Color font console")
+  }
+  { CMBCOLORTEXTCONSOLE ComboBox
+    MoveScaled(4.8571,82.5714,16.5714,3.4286)
+    List = [("Default"), ("Green"), ("Red"), ("Blue")]
   }
 }

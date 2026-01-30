@@ -31,6 +31,15 @@ Endif
 BTNRETRY.Picture = Picture.Load(FMAIN.$PATHICONS & "refresh" & FMain.$THEMESSUFFIX)
 BTNCLOSE.Picture = Picture.Load(FMAIN.$PATHICONS & "close" & FMain.$THEMESSUFFIX)
 
+   If Fmain.$COLORTEXTCONSOLE = "Default" Then
+      TextArea1.Foreground = Color.Default
+    Else If Fmain.$COLORTEXTCONSOLE = "Green" Then
+      TextArea1.Foreground = Color.Green
+    Else If Fmain.$COLORTEXTCONSOLE = "Red" Then
+      TextArea1.Foreground = Color.Red
+    Else If Fmain.$COLORTEXTCONSOLE = "Blue" Then
+      TextArea1.Foreground = Color.Blue
+    Endif
 End 
 Public Sub Form_Close()
   If $SECURE = 1 Then

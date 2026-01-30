@@ -7,6 +7,8 @@
  'Public $ASK As String
  Public $SECURE As Integer
  Public $SEDWORD As String
+ Public $INIZIOTAGLIO As String
+ 
 Public Sub Form_Open()
  'pulsanti
  Dim flBTN As File  
@@ -93,6 +95,7 @@ Endif
 ' PAROLA CHIAVE PER SED
    If Fmain.$DNFVERSIONNUMBER > 50000 Then
       $SEDWORD = Replace(ss$KEY[9], "_", " ")         
+      $INIZIOTAGLIO = Replace(ss$KEY[10], "_", " ")
       ' Print $SEDWORD
    Endif
     Next
@@ -110,6 +113,22 @@ Endif
  BTNNO.Enabled = False
  Timer1.Enabled = True
  $SECURE = 0
+ 
+ '***************************IN TEST*********************************************************
+  ' If Exist(User.Home & "/.config/dnfdrake/log/trashfile.log") Then
+  '    Shell "rm -f " & User.Home & "/.config/dnfdrake/log/trashfile.log" Wait 
+  ' Endif
+  ' 
+  If Fmain.$COLORTEXTCONSOLE = "Default" Then
+      TextArea1.Foreground = Color.Default
+    Else If Fmain.$COLORTEXTCONSOLE = "Green" Then
+      TextArea1.Foreground = Color.Green
+    Else If Fmain.$COLORTEXTCONSOLE = "Red" Then
+      TextArea1.Foreground = Color.Red
+    Else If Fmain.$COLORTEXTCONSOLE = "Blue" Then
+      TextArea1.Foreground = Color.Blue
+    Endif
+ 
 End
 
 Public Sub BTNSI_Click()
@@ -152,10 +171,41 @@ End
 Public Sub TextArea1_KeyPress()
 End
 
+Public Sub FIXTPMLOG()
+  Dim sLastLine As String
+  Dim $GREPCOMMAND As String
+  
+' tail -n 1 estrae solo l'ultima riga istantaneamente
+  Shell "tail -n 1 " & User.Home & "/.config/dnfdrake/log/tmp.log " To sLastLine
+  If InStr(sLastLine, Fmain.$PROCEDERE) > 0 Then 
+    'Print "NO-FIX"
+  Else 
+    'Print "FIX"
+    ' #1. Estrai la parte che ti interessa
+    ' #(Print s)permette al punto.di includere i ritorni a capo
+    'grep -zoP "(?s)Total.*?\[y/N\]:" tmp.log > blocco.txt
+    Shell "grep -zoP " & Chr(34) & "(?s)" & $INIZIOTAGLIO & ".*?" & Chr(92) & "[y/N" & Chr(92) & "]:" & Chr(34) & "  " & User.Home & "/.config/dnfdrake/log/tmp.log > " & User.Home & "/.config/dnfdrake/log/FIXtmp.log " Wait 
+    ' #2. Rimuovi la parte originale dal file
+    ' #Nota: assicurati che il pattern corrisponda esattamente(spazi inclusi)
+    'sed -z -i 's/Total.*\[y\/N\]://' tmp.log
+    'sed -z -i 's/Total.*\]://' tmp.log
+     Shell "sed -z -i 's/" & $INIZIOTAGLIO & ".*" & Chr(92) & "]://'" & " " & User.Home & "/.config/dnfdrake/log/tmp.log" Wait
+    '#3.Aggiungi il blocco In fondo e rimuovi il temporaneo
+    '#Usiamo tr - d '\0' per eliminare il carattere null aggiunto da grep -z
+    'tr -d '\0' < blocco.txt >> tmp.log && rm blocco.txt
+    Shell "tr -d '" & Chr(92) & "0' < " & User.Home & "/.config/dnfdrake/log/FIXtmp.log >> " & User.Home & "/.config/dnfdrake/log/tmp.log && rm " & User.Home & "/.config/dnfdrake/log/FIXtmp.log" Wait 
+    Endif
+  
+End
+
+
+
+
 Public Sub LOADTEXT()
   Me.Mouse = Mouse.Wait
   
   If Fmain.$DNFVERSIONNUMBER > 50000 Then
+     FIXTPMLOG
      Shell "cat " & Fmain.$FILETMPLOG & " | sed -n '/" & $SEDWORD & "/,/*/p'" To TextArea1.Text
   Else 
      Shell "cat " & Fmain.$FILETMPLOG & " | sed -n '/=/,/*/p'" To TextArea1.Text  
@@ -169,7 +219,8 @@ Public Sub LOADTEXT()
 End
 
 Public Sub Timer1_Timer()
-    LOADTEXT
-    Timer1.Enabled = False
+
+     LOADTEXT    
+     Timer1.Enabled = False
 
 End

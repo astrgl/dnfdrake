@@ -1631,14 +1631,15 @@ Public Sub BTNPKGUPDATE_Click()
     spkg = ""
 'VERIFICA NUMERO DI PACCHETTI SELEZIONATI*************************************    
     If Val(Str(ListpkgUPGRADE.Selection.Count)) > 5 Then
-      FPOPUPMESSAGE.Show
-     'FPOPUPMESSAGE.LBLMESSAGE.Foreground = Color.Red
-      After 0.05 Do FPOPUPMESSAGE.LBLMESSAGE.Text = "It seems that you are select many packages at the same time, this can cause errors," & gb.NewLine & "to avoid this DnfDrake has created a temporary list for reinstallation!"
-     'Message.Info($MSGBTNCOMMAND, "Ok")
-      After 3 Do FPOPUPMESSAGE.Close
-      Wait 2'
-      Message.Info("It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for installation!\n It is recommended to use 'Update Sys' or 'Distro Sync' button!", "OK")
-      BTNADDPKGLIST_Click
+       Dim $ASKUPDATE As String = ("It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for installation!\n It is recommended to use 'Update Sys' or 'Distro Sync' button!")
+       Dim iAnswer As Integer = Message.Question($ASKUPDATE, ("Continues"), ("Stop"))
+       If (iAnswer = 1) Then
+          BTNADDPKGLIST_Click
+       Else 
+        Return
+       Endif 
+      ' Message.Info("It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for installation!\n It is recommended to use 'Update Sys' or 'Distro Sync' button!", "OK")
+      ' BTNADDPKGLIST_Click
     Endif 
 '*****************************************************************************
     If TXTPKGLISTNOME.Visible = True And If TXTPKGLISTNOME.Text = "Update Package List" Then

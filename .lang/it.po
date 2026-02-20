@@ -1,10 +1,10 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: dnfdrake 3.21.2\n"
-"POT-Creation-Date: 2026-01-29 16:24 UTC\n"
-"PO-Revision-Date: 2026-01-29 16:27 UTC\n"
-"Last-Translator: mauro <mauro@EVA>\n"
+"Project-Id-Version: dnfdrake 3.21.3\n"
+"POT-Creation-Date: 2026-02-10 13:08 UTC\n"
+"PO-Revision-Date: 2026-02-20 16:54 UTC\n"
+"Last-Translator: mauro <mauro@EVA-ROSA>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +33,7 @@ msgstr ""
 msgid " Restart DnfDrake For the changes To be applied "
 msgstr ""
 
-#: FCONFIG.class:248 Fmain.class:3741
+#: FCONFIG.class:248 Fmain.class:3742
 msgid "cat /etc/passwd | grep /home | cut -d: -f1"
 msgstr ""
 
@@ -161,15 +161,15 @@ msgstr ""
 msgid "readlink /bin/dnf"
 msgstr ""
 
-#: FEXTRA.class:417 Fmain.class:3720
+#: FEXTRA.class:417 Fmain.class:3721
 msgid "rm -f /bin/dnf"
 msgstr ""
 
-#: FEXTRA.class:418 Fmain.class:3721
+#: FEXTRA.class:418 Fmain.class:3722
 msgid "ln -s /bin/dnf5  /bin/dnf "
 msgstr ""
 
-#: FEXTRA.class:425 Fmain.class:3726
+#: FEXTRA.class:425 Fmain.class:3727
 msgid "ln -s /bin/dnf-3  /bin/dnf "
 msgstr ""
 
@@ -361,11 +361,25 @@ msgstr "Esecuzione!"
 msgid "rm -f /tmp/draketray/locktray"
 msgstr ""
 
-#: Fmain.class:3607
+#: Fmain.class:1634
+msgid ""
+"It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for installation!\n"
+" It is recommended to use 'Update Sys' or 'Distro Sync' button!"
+msgstr "Sembra che tu stia selezionando molti pacchetti contemporaneamente, questo può causare errori, per evitarlo DnfDrake ha creato un elenco temporaneo per l'installazione! Si consiglia di utilizzare il pulsante 'Aggiorna sistema' o 'Sincronizzazione distribuzione'!"
+
+#: Fmain.class:1635
+msgid "Continues"
+msgstr "&Continua"
+
+#: Fmain.class:1635
+msgid "Stop"
+msgstr "&Interrompi"
+
+#: Fmain.class:3608
 msgid "/usr/bin/draketray.gambas"
 msgstr ""
 
-#: Fmain.class:3648
+#: Fmain.class:3649
 msgid "rm -f /tmp/dnfdrake/locktray"
 msgstr ""
 

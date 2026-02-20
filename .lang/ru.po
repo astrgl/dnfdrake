@@ -1,449 +1,64 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: dnfdrake 3.21.2\n"
-"PO-Revision-Date: 2026-01-29 16:28 UTC\n"
-"Last-Translator: mauro <mauro@EVA>\n"
+"Project-Id-Version: dnfdrake 3.21.3\n"
+"POT-Creation-Date: 2026-02-10 13:08 UTC\n"
+"PO-Revision-Date: 2026-02-20 16:49 UTC\n"
+"Last-Translator: mauro <mauro@EVA-ROSA>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Fmain.class:3607
-msgid "/usr/bin/draketray.gambas"
+#: .project:1 Fmain.form:103
+msgid "DnfDrake"
+msgstr "Dnfdrake"
+
+#: .project:2
+msgid ""
+"DnfDrake è un frontend a Dnf.\n"
+"\n"
+"Tutto è iniziato partendo dalla base del programma di esempio Console per Gambas di Princeton"
 msgstr ""
-
-#: FCONFIG.form:179
-msgid "5"
-msgstr "5"
-
-#: FCONFIG.form:179
-msgid "15"
-msgstr "15"
-
-#: FCONFIG.form:179
-msgid "30"
-msgstr "30"
-
-#: FCONFIG.form:179
-msgid "60"
-msgstr "60"
-
-#: FCONFIG.form:179
-msgid "90"
-msgstr "90"
-
-#: FCONFIG.form:179
-msgid "180"
-msgstr "180"
-
-#: FCONFIG.form:179
-msgid "365"
-msgstr "365"
-
-#: Fmain.form:477
-msgid "Add"
-msgstr "Добавить"
-
-#: FCONFIG.form:85
-msgid "Apply"
-msgstr "Применить"
-
-#: Fmain.form:579
-msgid "Autoremove"
-msgstr "Автоудаление"
-
-#: FCONFIG.form:202
-msgid "Blue"
-msgstr "Синий"
-
-#: FEXTRA.form:177
-msgid "Breeze"
-msgstr "Breeze"
-
-#: FEXTRA.form:177
-msgid "Breeze Dark"
-msgstr "Breeze, тёмный вариант"
-
-#: FCONFIG.class:248 Fmain.class:3741
-msgid "cat /etc/passwd | grep /home | cut -d: -f1"
-msgstr ""
-
-#: FEXTRA.form:106
-msgid "Check Updates"
-msgstr "Проверять обновления"
-
-#: Fmain.form:477
-msgid "Clear"
-msgstr "Очистить"
-
-#: FCONFIG.form:80 FSELECTION.form:25 FUPDATERESUME.form:32
-msgid "Close"
-msgstr "Закрыть"
-
-#: FCONFIG.form:197
-msgid "                                 Color font console"
-msgstr "                                 Цвет шрифта консоли"
-
-#: FCONFIG.form:139
-msgid "  Color text active"
-msgstr "  Активные цветным текстом"
-
-#: Fmain.form:321
-msgid "Create a list of packages to install"
-msgstr "Создать список пакетов для установки"
-
-#: Fmain.form:200
-msgid "CTRL-C"
-msgstr "Ctrl+C"
-
-#: Fmain.form:208
-msgid "CTRL-Z"
-msgstr "Ctrl-Z"
-
-#: FCONFIG.form:130
-msgid "Custom command"
-msgstr "Настраиваемая команда"
-
-#: FCONFIG.form:202
-msgid "Default"
-msgstr "По умолчанию"
-
-#: FCONFIG.form:186
-msgid "Default user of system:                                        User home dir: "
-msgstr "Пользователь по умолчанию:                                        Дом каталог: "
-
-#: Fmain.form:477
-msgid "Delete"
-msgstr "Удалить"
-
-#: FCONFIG.form:173
-msgid "Delete Log after                 days"
-msgstr "Удалять журнал через                 дней"
-
-#: FMYREPO.form:42
-msgid "Details"
-msgstr "Подробности"
-
-#: FEXTRA.form:151
-msgid "Disable suspend during updates"
-msgstr "Отключить остановку при обновлении"
-
-#: Fmain.form:487
-msgid "Distro Sync"
-msgstr "Distrosync"
-
-#: Fmain.form:488
-msgid "      Distro Sync"
-msgstr "      Distrosync"
-
-#: FEXTRA.form:132
-msgid "DistroSync (Rome-Cooker-Rosa)"
-msgstr "Distrosync (Rome-Cooker-Rosa)"
+"Dnfdrake — это интерфейс для Dnf.\n"
+"\n"
+"Всё началось с демонстрационной программы консоли Princeton Gambas."
 
 #: FCONFIG.class:36
 msgid "DistroSync command"
 msgstr "Команда  Distrosync"
 
-#: Fmain.form:508
-msgid "Dnf Clean Cache"
-msgstr "Очистить кэш"
-
-#: FERROR.form:17
-msgid "Dnf Clean Pkg"
-msgstr ""
-
-#: .project:1 Fmain.form:103
-msgid "DnfDrake"
-msgstr "Dnfdrake"
-
-#: FRUN.form:11
-msgid "DnfDrake, Please  Wait."
-msgstr "Подождите."
-
-#: FUPDATERESUME.form:17
-msgid "DnfDrake detected a previous update session, what do you want to do?"
-msgstr "Dnfdrake обнаружил предыдущую сессию обновления. Что сделать?"
-
-#: .project:2
-msgid "DnfDrake è un frontend a Dnf.\n\nTutto è iniziato partendo dalla base del programma di esempio Console per Gambas di Princeton"
-msgstr "Dnfdrake — это интерфейс для Dnf.\n\nВсё началось с демонстрационной программы консоли Princeton Gambas."
-
-#: FERROR.form:31
-msgid "DnfDrake have detected an error. Details:"
-msgstr "Dnfdrake обнаружил ошибку. Подробности:"
-
-#: Fmain.form:440
-msgid "Double click for search package"
-msgstr "Дважды щелкните для поиска пакета"
-
-#: Fmain.form:420
-msgid "Double click to search for packages"
-msgstr "Дважды щелкните для поиска пакетов"
-
-#: FCONFIG.form:118
-msgid "Downgrade command"
-msgstr "Команда понижения версии"
-
-#: FEXTRA.form:120
-msgid "DrakeTray Config"
-msgstr "Конфигурация Draketray"
-
-#: FEXTRA.form:190
-msgid "Easy Password"
-msgstr "Простой пароль"
-
-#: FMYREPO.form:108
-msgid "Enabled"
-msgstr "Включено"
-
-#: FMYREPO.form:158
-msgid " Enabled"
-msgstr " Включено"
-
-#: Fmain.form:564
-msgid "Exclude  "
-msgstr "Исключить  "
-
-#: Fmain.class:1025
-msgid "Execution!"
-msgstr "Исполнение!"
-
-#: FGEOMETRY.form:26
-msgid "Exit"
-msgstr "Выход"
-
-#: Fmain.form:237
-msgid "EXP1"
-msgstr ""
-
-#: Fmain.form:291
-msgid "EXP2"
-msgstr ""
-
-#: FEXTRA.form:96
-msgid "  Extra Option"
-msgstr "  Дополнительная опция"
-
-#: FEXTRA.form:55
-msgid "EXTRA OPTIONS"
-msgstr "Дополнительно"
-
 #: FCONFIG.class:68
 msgid "Function Disable in UserMode"
 msgstr "Функция отключена в пользовательском режиме"
-
-#: FMYREPO.form:113
-msgid "GPG"
-msgstr "GPG"
-
-#: FCONFIG.form:202
-msgid "Green"
-msgstr "Зеленый"
-
-#: Fmain.form:676
-msgid "Group"
-msgstr "Группа"
-
-#: FEXTRA.form:146
-msgid "Ignore Case"
-msgstr "Без учёта регистра"
-
-#: FEXTRA.form:88
-msgid "  Install/Uninstall"
-msgstr "  Установка/удаление"
-
-#: FCONFIG.form:59
-msgid "Install command"
-msgstr "Команда установки"
-
-#: FINSTALL.form:12
-msgid "Install Package"
-msgstr "Установить пакет"
-
-#: FEXTRA.form:185
-msgid "Interface"
-msgstr "Интерфейс"
-
-#: Fmain.form:477
-msgid "List"
-msgstr "Список"
-
-#: FEXTRA.class:425 Fmain.class:3726
-msgid "ln -s /bin/dnf-3  /bin/dnf "
-msgstr ""
-
-#: FEXTRA.class:418 Fmain.class:3721
-msgid "ln -s /bin/dnf5  /bin/dnf "
-msgstr ""
-
-#: Fmain.form:497
-msgid "Log"
-msgstr "Журнал"
-
-#: FGEOMETRY.form:64
-msgid "Max window size possible"
-msgstr "Максимально возможный размер окна"
-
-#: Fmain.form:126
-msgid "MONITOR"
-msgstr "Монитор"
-
-#: Fmain.form:574
-msgid "MyRepo"
-msgstr "Мой репо"
-
-#: FMYREPO.form:33
-msgid "My Repo Creator!"
-msgstr "Мой создатель репозиториев!"
-
-#: FMYREPO.form:151
-msgid "MyRepoList"
-msgstr "Мой список репозиториев"
-
-#: FEXTRA.form:163
-msgid "NoDeps"
-msgstr "Игнорировать ошибки зависимостей"
-
-#: Fmain.form:621
-msgid "Nodeps"
-msgstr "Игнорировать ошибки зависимостей"
-
-#: Fmain.form:554
-msgid "None"
-msgstr "Нет"
-
-#: FSELECTION.form:20
-msgid "OK"
-msgstr "OK"
-
-#: FUSERDEFAULT.form:21
-msgid "Ok"
-msgstr "Ok"
-
-#: FEXTRA.form:177
-msgid "Oxygen"
-msgstr "Oxygen"
-
-#: Fmain.form:545
-msgid " Package List:"
-msgstr " Список пакетов:"
-
-#: FLOADLISTE.form:19
-msgid "Preparazione Liste Pacchetti"
-msgstr "Подготовка списка пакетов"
-
-#: FEXTRA.class:180 Fmain.class:776
-msgid "readlink /bin/dnf"
-msgstr ""
-
-#: FCONFIG.form:202
-msgid "Red"
-msgstr "Красный"
-
-#: FCONFIG.form:147
-msgid "Reinstall command"
-msgstr "Команда переустановки"
-
-#: FMYREPO.form:118
-msgid "Remote"
-msgstr "Сетевые"
-
-#: Fmain.form:521
-msgid "Replay Last Log or view package list"
-msgstr "Воспроизвести последний журнал или просмотреть список пакетов"
-
-#: FCONFIG.form:90
-msgid "Reset Default"
-msgstr "По умолчанию"
 
 #: FCONFIG.class:188
 msgid " Restart DnfDrake For the changes To be applied "
 msgstr "Перезапустите DnfDrake чтобы изменения вступили в силу"
 
-#: FUPDATERESUME.form:22
-msgid "Resume"
-msgstr "Продолжить"
-
-#: FERROR.form:37
-msgid "Retry"
-msgstr "Повторить"
-
-#: FUPDATERESUME.form:27
-msgid "Reupdate"
-msgstr "Повторное обновление"
-
-#: Fmain.form:666
-msgid "Ridimensione e posiziona la finestra"
-msgstr "Изменить размер и положение окна"
-
-#: FEXTRA.class:417 Fmain.class:3720
-msgid "rm -f /bin/dnf"
+#: FCONFIG.class:248 Fmain.class:3742
+msgid "cat /etc/passwd | grep /home | cut -d: -f1"
 msgstr ""
 
-#: Fmain.class:3648
-msgid "rm -f /tmp/dnfdrake/locktray"
-msgstr ""
-
-#: Fmain.class:1301
-msgid "rm -f /tmp/draketray/locktray"
-msgstr ""
-
-#: FEXTRA.form:112
-msgid "Run on Startup"
-msgstr "Запускать с системой"
-
-#: FCONFIG.form:162
-msgid "Save Log"
-msgstr "Сохранить журнал"
-
-#: FEXTRA.form:80
-msgid "  Search"
-msgstr "  Поиск"
-
-#: FEXTRA.form:125
-msgid "Search Offline"
-msgstr "В автономном режиме"
-
-#: FCONFIG.form:168
-msgid "Secure Mode"
-msgstr "Безопасный режим"
-
-#: FSELECTION.form:10
-msgid "Selection"
-msgstr "Выбор"
-
-#: FEXTRA.form:72
-msgid "showduplicate"
-msgstr "Показать дубликат"
-
-#: FLOADLISTE.form:36
-msgid "Skip"
-msgstr "Пропустить"
-
-#: FGEOMETRY.form:69
-msgid "Standard size window 1366X768"
-msgstr "Окно стандартного размера 1366х768"
-
-#: FMYREPO.form:50
-msgid "Summary"
-msgstr "Описание"
-
-#: Fmain.form:592
-msgid "     Suspend"
-msgstr "     Остановить"
-
-#: FEXTRA.form:170
-msgid "Themes:                                         Default Search:"
-msgstr "Темы:                                        По умолчанию:"
-
-#: Fmain.form:661
-msgid "Type your choice!"
-msgstr "Введите свой выбор!"
+#: FCONFIG.form:59
+msgid "Install command"
+msgstr "Команда установки"
 
 #: FCONFIG.form:71
 msgid "Uninstall command"
 msgstr "Команда удаления"
+
+#: FCONFIG.form:80 FSELECTION.form:25 FUPDATERESUME.form:32
+msgid "Close"
+msgstr "Закрыть"
+
+#: FCONFIG.form:85
+msgid "Apply"
+msgstr "Применить"
+
+#: FCONFIG.form:90
+msgid "Reset Default"
+msgstr "По умолчанию"
 
 #: FCONFIG.form:98
 msgid "Update PKG command"
@@ -453,27 +68,434 @@ msgstr "Команда обновления"
 msgid "Update SYS command"
 msgstr "Команда обновления системы"
 
-#: Fmain.form:303
-msgid "US"
+#: FCONFIG.form:118
+msgid "Downgrade command"
+msgstr "Команда понижения версии"
+
+#: FCONFIG.form:130
+msgid "Custom command"
+msgstr "Настраиваемая команда"
+
+#: FCONFIG.form:139
+msgid "  Color text active"
+msgstr "  Активные цветным текстом"
+
+#: FCONFIG.form:147
+msgid "Reinstall command"
+msgstr "Команда переустановки"
+
+#: FCONFIG.form:162
+msgid "Save Log"
+msgstr "Сохранить журнал"
+
+#: FCONFIG.form:168
+msgid "Secure Mode"
+msgstr "Безопасный режим"
+
+#: FCONFIG.form:173
+msgid "Delete Log after                 days"
+msgstr "Удалять журнал через                 дней"
+
+#: FCONFIG.form:179
+msgid "15"
+msgstr "15"
+
+#: FCONFIG.form:179
+msgid "180"
+msgstr "180"
+
+#: FCONFIG.form:179
+msgid "30"
+msgstr "30"
+
+#: FCONFIG.form:179
+msgid "365"
+msgstr "365"
+
+#: FCONFIG.form:179
+msgid "5"
+msgstr "5"
+
+#: FCONFIG.form:179
+msgid "60"
+msgstr "60"
+
+#: FCONFIG.form:179
+msgid "90"
+msgstr "90"
+
+#: FCONFIG.form:186
+msgid "Default user of system:                                        User home dir: "
+msgstr "Пользователь по умолчанию:                                        Дом каталог: "
+
+#: FCONFIG.form:197
+msgid "                                 Color font console"
+msgstr "                                 Цвет шрифта консоли"
+
+#: FCONFIG.form:202
+msgid "Blue"
+msgstr "Синий"
+
+#: FCONFIG.form:202
+msgid "Default"
+msgstr "По умолчанию"
+
+#: FCONFIG.form:202
+msgid "Green"
+msgstr "Зеленый"
+
+#: FCONFIG.form:202
+msgid "Red"
+msgstr "Красный"
+
+#: FERROR.form:17
+msgid "Dnf Clean Pkg"
 msgstr ""
 
-#: FEXTRA.form:197
-msgid "Use DNF5"
-msgstr "Использовать dnf5"
+#: FERROR.form:31
+msgid "DnfDrake have detected an error. Details:"
+msgstr "Dnfdrake обнаружил ошибку. Подробности:"
+
+#: FERROR.form:37
+msgid "Retry"
+msgstr "Повторить"
+
+#: FEXTRA.class:180 Fmain.class:776
+msgid "readlink /bin/dnf"
+msgstr ""
+
+#: FEXTRA.class:417 Fmain.class:3721
+msgid "rm -f /bin/dnf"
+msgstr ""
+
+#: FEXTRA.class:418 Fmain.class:3722
+msgid "ln -s /bin/dnf5  /bin/dnf "
+msgstr ""
+
+#: FEXTRA.class:425 Fmain.class:3727
+msgid "ln -s /bin/dnf-3  /bin/dnf "
+msgstr ""
+
+#: FEXTRA.form:55
+msgid "EXTRA OPTIONS"
+msgstr "Дополнительно"
+
+#: FEXTRA.form:72
+msgid "showduplicate"
+msgstr "Показать дубликат"
+
+#: FEXTRA.form:80
+msgid "  Search"
+msgstr "  Поиск"
+
+#: FEXTRA.form:88
+msgid "  Install/Uninstall"
+msgstr "  Установка/удаление"
+
+#: FEXTRA.form:96
+msgid "  Extra Option"
+msgstr "  Дополнительная опция"
+
+#: FEXTRA.form:106
+msgid "Check Updates"
+msgstr "Проверять обновления"
+
+#: FEXTRA.form:112
+msgid "Run on Startup"
+msgstr "Запускать с системой"
+
+#: FEXTRA.form:120
+msgid "DrakeTray Config"
+msgstr "Конфигурация Draketray"
+
+#: FEXTRA.form:125
+msgid "Search Offline"
+msgstr "В автономном режиме"
 
 #: FEXTRA.form:131
 msgid "Use for Rome - Cooker - Rosa "
 msgstr "Использование для Rome - Cooker - Rosa "
 
+#: FEXTRA.form:132
+msgid "DistroSync (Rome-Cooker-Rosa)"
+msgstr "Distrosync (Rome-Cooker-Rosa)"
+
 #: FEXTRA.form:141
 msgid "Verbose Mode"
 msgstr "Подробный режим"
 
-#: FGEOMETRY.form:47
-msgid "Window position      X                    Y                    pixel"
-msgstr "Расположение окна X                    Y                   пикс."
+#: FEXTRA.form:146
+msgid "Ignore Case"
+msgstr "Без учёта регистра"
+
+#: FEXTRA.form:151
+msgid "Disable suspend during updates"
+msgstr "Отключить остановку при обновлении"
+
+#: FEXTRA.form:163
+msgid "NoDeps"
+msgstr "Игнорировать ошибки зависимостей"
+
+#: FEXTRA.form:170
+msgid "Themes:                                         Default Search:"
+msgstr "Темы:                                        По умолчанию:"
+
+#: FEXTRA.form:177
+msgid "Breeze"
+msgstr "Breeze"
+
+#: FEXTRA.form:177
+msgid "Breeze Dark"
+msgstr "Breeze, тёмный вариант"
+
+#: FEXTRA.form:177
+msgid "Oxygen"
+msgstr "Oxygen"
+
+#: FEXTRA.form:185
+msgid "Interface"
+msgstr "Интерфейс"
+
+#: FEXTRA.form:190
+msgid "Easy Password"
+msgstr "Простой пароль"
+
+#: FEXTRA.form:197
+msgid "Use DNF5"
+msgstr "Использовать dnf5"
 
 #: FGEOMETRY.form:21
 msgid "Window size                                   X                     pixel"
 msgstr "Размер окна                                   X                     пикс."
 
+#: FGEOMETRY.form:26
+msgid "Exit"
+msgstr "Выход"
+
+#: FGEOMETRY.form:47
+msgid "Window position      X                    Y                    pixel"
+msgstr "Расположение окна X                    Y                   пикс."
+
+#: FGEOMETRY.form:64
+msgid "Max window size possible"
+msgstr "Максимально возможный размер окна"
+
+#: FGEOMETRY.form:69
+msgid "Standard size window 1366X768"
+msgstr "Окно стандартного размера 1366х768"
+
+#: FINSTALL.form:12
+msgid "Install Package"
+msgstr "Установить пакет"
+
+#: FLOADLISTE.form:19
+msgid "Preparazione Liste Pacchetti"
+msgstr "Подготовка списка пакетов"
+
+#: FLOADLISTE.form:36
+msgid "Skip"
+msgstr "Пропустить"
+
+#: FMYREPO.form:33
+msgid "My Repo Creator!"
+msgstr "Мой создатель репозиториев!"
+
+#: FMYREPO.form:42
+msgid "Details"
+msgstr "Подробности"
+
+#: FMYREPO.form:50
+msgid "Summary"
+msgstr "Описание"
+
+#: FMYREPO.form:108
+msgid "Enabled"
+msgstr "Включено"
+
+#: FMYREPO.form:113
+msgid "GPG"
+msgstr "GPG"
+
+#: FMYREPO.form:118
+msgid "Remote"
+msgstr "Сетевые"
+
+#: FMYREPO.form:151
+msgid "MyRepoList"
+msgstr "Мой список репозиториев"
+
+#: FMYREPO.form:158
+msgid " Enabled"
+msgstr " Включено"
+
+#: FRUN.form:11
+msgid "DnfDrake, Please  Wait."
+msgstr "Подождите."
+
+#: FSELECTION.form:10
+msgid "Selection"
+msgstr "Выбор"
+
+#: FSELECTION.form:20
+msgid "OK"
+msgstr "OK"
+
+#: FUPDATERESUME.form:17
+msgid "DnfDrake detected a previous update session, what do you want to do?"
+msgstr "Dnfdrake обнаружил предыдущую сессию обновления. Что сделать?"
+
+#: FUPDATERESUME.form:22
+msgid "Resume"
+msgstr "Продолжить"
+
+#: FUPDATERESUME.form:27
+msgid "Reupdate"
+msgstr "Повторное обновление"
+
+#: FUSERDEFAULT.form:21
+msgid "Ok"
+msgstr "Ok"
+
+#: Fmain.class:1025
+msgid "Execution!"
+msgstr "Исполнение!"
+
+#: Fmain.class:1301
+msgid "rm -f /tmp/draketray/locktray"
+msgstr ""
+
+#: Fmain.class:1634
+msgid ""
+"It seems that you are select many packages at the same time, this can cause errors, to avoid this DnfDrake has created a temporary list for installation!\n"
+" It is recommended to use 'Update Sys' or 'Distro Sync' button!"
+msgstr ""
+"Выбрано одновременно слишком много пакетов. Это может вызвать ошибки. Чтобы этого избежать,\n"
+"DnfDrake создал временный список для установки! Рекомендуется использовать кнопку «Обновить» ​​или «Distrosync»!"
+
+#: Fmain.class:1635
+msgid "Continues"
+msgstr "Продолжить"
+
+#: Fmain.class:1635
+msgid "Stop"
+msgstr "Отменить"
+
+#: Fmain.class:3608
+msgid "/usr/bin/draketray.gambas"
+msgstr ""
+
+#: Fmain.class:3649
+msgid "rm -f /tmp/dnfdrake/locktray"
+msgstr ""
+
+#: Fmain.form:126
+msgid "MONITOR"
+msgstr "Монитор"
+
+#: Fmain.form:200
+msgid "CTRL-C"
+msgstr "Ctrl+C"
+
+#: Fmain.form:208
+msgid "CTRL-Z"
+msgstr "Ctrl-Z"
+
+#: Fmain.form:237
+msgid "EXP1"
+msgstr ""
+
+#: Fmain.form:291
+msgid "EXP2"
+msgstr ""
+
+#: Fmain.form:303
+msgid "US"
+msgstr ""
+
+#: Fmain.form:321
+msgid "Create a list of packages to install"
+msgstr "Создать список пакетов для установки"
+
+#: Fmain.form:420
+msgid "Double click to search for packages"
+msgstr "Дважды щелкните для поиска пакетов"
+
+#: Fmain.form:440
+msgid "Double click for search package"
+msgstr "Дважды щелкните для поиска пакета"
+
+#: Fmain.form:477
+msgid "Add"
+msgstr "Добавить"
+
+#: Fmain.form:477
+msgid "Clear"
+msgstr "Очистить"
+
+#: Fmain.form:477
+msgid "Delete"
+msgstr "Удалить"
+
+#: Fmain.form:477
+msgid "List"
+msgstr "Список"
+
+#: Fmain.form:487
+msgid "Distro Sync"
+msgstr "Distrosync"
+
+#: Fmain.form:488
+msgid "      Distro Sync"
+msgstr "      Distrosync"
+
+#: Fmain.form:497
+msgid "Log"
+msgstr "Журнал"
+
+#: Fmain.form:508
+msgid "Dnf Clean Cache"
+msgstr "Очистить кэш"
+
+#: Fmain.form:521
+msgid "Replay Last Log or view package list"
+msgstr "Воспроизвести последний журнал или просмотреть список пакетов"
+
+#: Fmain.form:545
+msgid " Package List:"
+msgstr " Список пакетов:"
+
+#: Fmain.form:554
+msgid "None"
+msgstr "Нет"
+
+#: Fmain.form:564
+msgid "Exclude  "
+msgstr "Исключить  "
+
+#: Fmain.form:574
+msgid "MyRepo"
+msgstr "Мой репо"
+
+#: Fmain.form:579
+msgid "Autoremove"
+msgstr "Автоудаление"
+
+#: Fmain.form:592
+msgid "     Suspend"
+msgstr "     Остановить"
+
+#: Fmain.form:621
+msgid "Nodeps"
+msgstr "Игнорировать ошибки зависимостей"
+
+#: Fmain.form:661
+msgid "Type your choice!"
+msgstr "Введите свой выбор!"
+
+#: Fmain.form:666
+msgid "Ridimensione e posiziona la finestra"
+msgstr "Изменить размер и положение окна"
+
+#: Fmain.form:676
+msgid "Group"
+msgstr "Группа"

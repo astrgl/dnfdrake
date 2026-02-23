@@ -733,7 +733,7 @@ If User.Home = "/root" Then
 Else 
   $ROOTMODE = 0 
   $pathdir = User.home & "/"
-  Dim iAnswer As Integer = Message.Question("DnfDrake was started in user mode. To work correctly it should be started as superuser. Continue anyway?", $SI, $NO)
+  Dim iAnswer As Integer = Message.Question(("DnfDrake was started in user mode. To work correctly it should be started as superuser. Continue anyway?"), $SI, $NO)
     If (iAnswer = 1) Then
     Else           
        Stop Event

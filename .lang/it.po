@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dnfdrake 3.21.3\n"
 "POT-Creation-Date: 2026-02-10 13:08 UTC\n"
-"PO-Revision-Date: 2026-02-20 16:54 UTC\n"
+"PO-Revision-Date: 2026-02-22 10:23 UTC\n"
 "Last-Translator: mauro <mauro@EVA-ROSA>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr ""
 
 #: FCONFIG.class:68
 msgid "Function Disable in UserMode"
-msgstr ""
+msgstr "Funzione Disabilitata in UserMode"
 
 #: FCONFIG.class:188
 msgid " Restart DnfDrake For the changes To be applied "
@@ -47,7 +47,7 @@ msgstr ""
 
 #: FCONFIG.form:80 FSELECTION.form:25 FUPDATERESUME.form:32
 msgid "Close"
-msgstr ""
+msgstr "&Chiudi"
 
 #: FCONFIG.form:85
 msgid "Apply"
@@ -155,7 +155,7 @@ msgstr "DnfDrake ha rilevato una errore. Dettagli:"
 
 #: FERROR.form:37
 msgid "Retry"
-msgstr ""
+msgstr "Riprova"
 
 #: FEXTRA.class:180 Fmain.class:776
 msgid "readlink /bin/dnf"
@@ -343,15 +343,19 @@ msgstr "DnfDrake ha rilevato un aggiornamento precedente, cosa vuoi fare?"
 
 #: FUPDATERESUME.form:22
 msgid "Resume"
-msgstr ""
+msgstr "&Riprendi"
 
 #: FUPDATERESUME.form:27
 msgid "Reupdate"
-msgstr ""
+msgstr "&Riaggiorna"
 
 #: FUSERDEFAULT.form:21
 msgid "Ok"
 msgstr ""
+
+#: Fmain.class:736
+msgid "DnfDrake was started in user mode. To work correctly it should be started as superuser. Continue anyway?"
+msgstr "DnfDrake è stato avviato in UserMode. Per lavorare correttamente deve essere avviato come superutente. Continuare ugualmente?"
 
 #: Fmain.class:1025
 msgid "Execution!"
@@ -465,7 +469,7 @@ msgstr ""
 
 #: Fmain.form:564
 msgid "Exclude  "
-msgstr ""
+msgstr "Escludi"
 
 #: Fmain.form:574
 msgid "MyRepo"

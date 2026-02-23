@@ -86,7 +86,7 @@ Dim i As Integer
           If InStr($RETRY, " --refresh upgrade") > 0 Then
               Print #Fmain.$hProcess, "dnf repolist; sudo dnf --refresh upgrade" & "| tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-update.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine;
           Else If InStr($RETRY, "distro-sync") > 0
-              Print #Fmain.$hProcess, "dnf repolist; sudo dnf --refresh --allowerasing distro-sync | tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine; 
+              Print #Fmain.$hProcess, "dnf repolist; sudo dnf distro-sync --refresh --allowerasing  | tee " & User.Home & "/.config/dnfdrake/log/" & Fmain.$DATATIME & "-dnfdrakelog-sync.log " & User.Home & "/.config/dnfdrake/log/last.log" & gb.NewLine; 
           Else 
             Print #Fmain.$hProcess, $RETRY  
           Endif

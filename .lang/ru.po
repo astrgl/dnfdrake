@@ -356,6 +356,10 @@ msgstr "Повторное обновление"
 msgid "Ok"
 msgstr "Ok"
 
+#: Fmain.class:736
+msgid "DnfDrake was started in user mode. To work correctly it should be started as superuser. Continue anyway?"
+msgstr ""
+
 #: Fmain.class:1025
 msgid "Execution!"
 msgstr "Выполнение!"

@@ -201,7 +201,7 @@ Fmain.$MEMOCOMMAND = ""
             Else    
 'MODIFICA REPO ESISTENTE*********************************************************  
                If InStr(CMBREPO.Text, "-dnfdrake.repo") Then
-                  Print #Fmain.$hProcess, "echo '#Questo file è crearo in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+                  Print #Fmain.$hProcess, "echo '#Questo file è creato in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
                   'Wait 0.05
                   Print #Fmain.$hProcess, "echo '[" & Left(CMBREPO.Text, -14) & "]' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
                  'Wait 0.05
@@ -227,7 +227,7 @@ Fmain.$MEMOCOMMAND = ""
                   Fmain.$MEMOCOMMAND = "TMPREPOCLEAR"
 'CREAZIONE NUOVO REPO*********************************************************  
                Else 
-                  Print #Fmain.$hProcess, "echo '#Questo file è crearo in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
+                  Print #Fmain.$hProcess, "echo '#Questo file è creato in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
                   'Wait 0.05
                   Print #Fmain.$hProcess, "echo '[" & CMBREPO.Text & "]' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine; 
                   'Wait 0.05
@@ -267,7 +267,7 @@ Fmain.$MEMOCOMMAND = ""
              Else 
 'MODIFICA REPO ESISTENTE*********************************************************       
                 If InStr(CMBREPO.Text, "-dnfdrake.repo") Then
-                   Print #Fmain.$hProcess, "echo '#Questo file è crearo in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+                   Print #Fmain.$hProcess, "echo '#Questo file è creato in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
                    'Wait 0.05
                    Print #Fmain.$hProcess, "echo '[" & Left(CMBREPO.Text, -14) & "]' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
                    'Wait 0.05
@@ -293,7 +293,7 @@ Fmain.$MEMOCOMMAND = ""
                    Fmain.$MEMOCOMMAND = "TMPREPOCLEAR"
 'CREAZIONE NUOVO REPO*********************************************************  
                 Else 
-                   Print #Fmain.$hProcess, "echo '#Questo file è crearo in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
+                   Print #Fmain.$hProcess, "echo '#Questo file è creato in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine;
                    'Wait 0.05
                    Print #Fmain.$hProcess, "echo '[" & CMBREPO.Text & "]' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & "-dnfdrake.repo " & gb.NewLine; 
                    'Wait 0.05
@@ -467,7 +467,7 @@ For I = 0 To X.Max
     LSTREPO.Key = I
     CMBREPO.Index = I
     CHKENABLED.Value = False
-    Print #Fmain.$hProcess, "echo '#Questo file è crearo in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+    Print #Fmain.$hProcess, "echo '#Questo file è creato in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
     Print #Fmain.$hProcess, "echo '[" & Left(CMBREPO.Text, -14) & "]' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
     Print #Fmain.$hProcess, "echo 'name=" & Left(CMBREPO.Text, -14) & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
     Print #Fmain.$hProcess, "echo 'baseurl=" & TXTPATH.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
@@ -516,7 +516,7 @@ For I = 0 To X.Max
     LSTREPO.Key = I
     CMBREPO.Index = I
     CHKENABLED.Value = True
-    Print #Fmain.$hProcess, "echo '#Questo file è crearo in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
+    Print #Fmain.$hProcess, "echo '#Questo file è creato in modo automatico da DnfDrake' >" & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;
     Print #Fmain.$hProcess, "echo '[" & Left(CMBREPO.Text, -14) & "]' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
     Print #Fmain.$hProcess, "echo 'name=" & Left(CMBREPO.Text, -14) & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine; 
     Print #Fmain.$hProcess, "echo 'baseurl=" & TXTPATH.Text & "' >> " & User.Home & "/.config/dnfdrake/" & CMBREPO.Text & gb.NewLine;

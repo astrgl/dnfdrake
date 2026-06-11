@@ -3699,11 +3699,19 @@ Public Sub LOADLOGO()
          Endif
   Else 
       If InStr($DISTRO, "ROSA", 0, gb.IgnoreCase) Then 
-         If $THEMES = "Oxygen" Or If $THEMES = "Breeze" Then
-            PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/ROSA.png")   
-         Else If $THEMES = "BreezeDark"
-            PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/ROSA-BD.png")   
-         Endif
+        If $LANG = "ru_RU" Then
+          If $THEMES = "Oxygen" Or If $THEMES = "Breeze" Then
+              PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/POCA.png")   
+           Else If $THEMES = "BreezeDark"
+              PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/POCA-BD.png")   
+           Endif
+        Else  
+          If $THEMES = "Oxygen" Or If $THEMES = "Breeze" Then
+                PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/ROSA.png")   
+           Else If $THEMES = "BreezeDark"
+                PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/ROSA-BD.png")   
+           Endif 
+        Endif
       Else 
          PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/LINUX.png")
       Endif

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dnfdrake 3.21.3\n"
 "POT-Creation-Date: 2026-02-10 13:08 UTC\n"
-"PO-Revision-Date: 2026-02-22 10:23 UTC\n"
+"PO-Revision-Date: 2026-02-23 12:50 UTC\n"
 "Last-Translator: mauro <mauro@EVA-ROSA>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -425,19 +425,19 @@ msgstr ""
 
 #: Fmain.form:477
 msgid "Add"
-msgstr ""
+msgstr "Aggiungi"
 
 #: Fmain.form:477
 msgid "Clear"
-msgstr ""
+msgstr "Pulisci"
 
 #: Fmain.form:477
 msgid "Delete"
-msgstr ""
+msgstr "Cancella"
 
 #: Fmain.form:477
 msgid "List"
-msgstr ""
+msgstr "Lista"
 
 #: Fmain.form:487
 msgid "Distro Sync"

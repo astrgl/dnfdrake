@@ -3696,7 +3696,7 @@ Public Sub LOADLOGO()
             PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/OMA.png")
          Else If $THEMES = "BreezeDark"
             PICLOGODISTRO.Picture = Picture.Load("/usr/share/dnfdrake/OMA-BD.png")   
-         Endif
+         Endif 
   Else 
       If InStr($DISTRO, "ROSA", 0, gb.IgnoreCase) Then 
         If $LANG = "ru_RU" Then

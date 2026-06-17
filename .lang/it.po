@@ -1,9 +1,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: dnfdrake 3.21.3\n"
-"POT-Creation-Date: 2026-02-10 13:08 UTC\n"
-"PO-Revision-Date: 2026-02-23 12:50 UTC\n"
+"Project-Id-Version: dnfdrake 3.21.6\n"
+"POT-Creation-Date: 2026-06-17 12:24 UTC\n"
+"PO-Revision-Date: 2026-06-17 12:25 UTC\n"
 "Last-Translator: mauro <mauro@EVA-ROSA>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -33,7 +33,7 @@ msgstr "Funzione Disabilitata in UserMode"
 msgid " Restart DnfDrake For the changes To be applied "
 msgstr ""
 
-#: FCONFIG.class:248 Fmain.class:3742
+#: FCONFIG.class:248 Fmain.class:3750
 msgid "cat /etc/passwd | grep /home | cut -d: -f1"
 msgstr ""
 
@@ -161,15 +161,15 @@ msgstr "Riprova"
 msgid "readlink /bin/dnf"
 msgstr ""
 
-#: FEXTRA.class:417 Fmain.class:3721
+#: FEXTRA.class:417 Fmain.class:3729
 msgid "rm -f /bin/dnf"
 msgstr ""
 
-#: FEXTRA.class:418 Fmain.class:3722
+#: FEXTRA.class:418 Fmain.class:3730
 msgid "ln -s /bin/dnf5  /bin/dnf "
 msgstr ""
 
-#: FEXTRA.class:425 Fmain.class:3727
+#: FEXTRA.class:425 Fmain.class:3735
 msgid "ln -s /bin/dnf-3  /bin/dnf "
 msgstr ""
 
@@ -349,7 +349,11 @@ msgstr "&Riprendi"
 msgid "Reupdate"
 msgstr "&Riaggiorna"
 
-#: FUSERDEFAULT.form:21
+#: FUSERDEFAULT.form:16
+msgid "Which is the default user?"
+msgstr "Quale utente usi di solito?"
+
+#: FUSERDEFAULT.form:25
 msgid "Ok"
 msgstr ""
 

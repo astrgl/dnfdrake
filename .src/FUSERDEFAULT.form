@@ -1,15 +1,19 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,54,12)
+  MoveScaled(0,0,67,12)
   { LBLMESSAGE Label
-    MoveScaled(4,2,29,3)
+    MoveScaled(4,2,42,4)
+    Alignment = Align.Center
+    Border = Border.Plain
+    BorderRadius = 5
+    Text = ("Which is the default user?")
   }
   { CMBUSERDEFAULT ComboBox
-    MoveScaled(33,2,16,4)
+    MoveScaled(46,2,16,4)
   }
   { BTNOK Button
-    MoveScaled(19,7,16,4)
+    MoveScaled(25.4286,7,16,4)
     Text = ("Ok")
   }
 }

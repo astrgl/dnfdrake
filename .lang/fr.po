@@ -1,8 +1,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: dnfdrake 3.21.3\n"
-"PO-Revision-Date: 2026-02-20 16:55 UTC\n"
+"Project-Id-Version: dnfdrake 3.21.6\n"
+"PO-Revision-Date: 2026-06-17 11:57 UTC\n"
 "Last-Translator: mauro <mauro@EVA-ROSA>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -65,7 +65,7 @@ msgstr ""
 msgid "Breeze Dark"
 msgstr ""
 
-#: FCONFIG.class:248 Fmain.class:3742
+#: FCONFIG.class:248 Fmain.class:3750
 msgid "cat /etc/passwd | grep /home | cut -d: -f1"
 msgstr ""
 
@@ -177,6 +177,10 @@ msgstr ""
 msgid "DnfDrake have detected an error. Details:"
 msgstr ""
 
+#: Fmain.class:736
+msgid "DnfDrake was started in user mode. To work correctly it should be started as superuser. Continue anyway?"
+msgstr ""
+
 #: Fmain.form:440
 msgid "Double click for search package"
 msgstr ""
@@ -277,11 +281,11 @@ msgstr "Il semble que vous sélectionniez plusieurs paquets simultanément, ce q
 msgid "List"
 msgstr ""
 
-#: FEXTRA.class:425 Fmain.class:3727
+#: FEXTRA.class:425 Fmain.class:3735
 msgid "ln -s /bin/dnf-3  /bin/dnf "
 msgstr ""
 
-#: FEXTRA.class:418 Fmain.class:3722
+#: FEXTRA.class:418 Fmain.class:3730
 msgid "ln -s /bin/dnf5  /bin/dnf "
 msgstr ""
 
@@ -325,7 +329,7 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: FUSERDEFAULT.form:21
+#: FUSERDEFAULT.form:25
 msgid "Ok"
 msgstr ""
 
@@ -385,7 +389,7 @@ msgstr ""
 msgid "Ridimensione e posiziona la finestra"
 msgstr ""
 
-#: FEXTRA.class:417 Fmain.class:3721
+#: FEXTRA.class:417 Fmain.class:3729
 msgid "rm -f /bin/dnf"
 msgstr ""
 
@@ -480,6 +484,10 @@ msgstr ""
 #: FEXTRA.form:141
 msgid "Verbose Mode"
 msgstr ""
+
+#: FUSERDEFAULT.form:16
+msgid "Which is the default user?"
+msgstr "Quel est l'utilisateur par défaut ?"
 
 #: FGEOMETRY.form:47
 msgid "Window position      X                    Y                    pixel"

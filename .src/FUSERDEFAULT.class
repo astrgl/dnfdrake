@@ -4,7 +4,7 @@
 Public Sub Form_Open()
   Dim i As Integer
   Fmain.Enabled = False
-  LBLMESSAGE.Text = "Quale utente usi di solito?"
+  'LBLMESSAGE.Text = "Quale utente usi di solito?"
   For i = 0 To Fmain.$USEARRAY.Max
      CMBUSERDEFAULT.Add(Fmain.$USEARRAY[i])
   Next

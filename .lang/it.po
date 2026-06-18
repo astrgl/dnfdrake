@@ -157,6 +157,14 @@ msgstr "DnfDrake ha rilevato una errore. Dettagli:"
 msgid "Retry"
 msgstr "Riprova"
 
+#: FEXTRA.class:87
+msgid "Draketray is running"
+msgstr ""
+
+#: FEXTRA.class:89
+msgid "Draketray is not running"
+msgstr ""
+
 #: FEXTRA.class:180 Fmain.class:776
 msgid "readlink /bin/dnf"
 msgstr ""

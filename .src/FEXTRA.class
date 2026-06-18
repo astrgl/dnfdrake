@@ -84,9 +84,9 @@ Public Sub Form_Open()
  Endif
 'GESTIONE DRAKETRAY****************************************************************
   If Right(Left($LOCK)) = "2" Then 
-     LBLDRAKETRAYSTATUS.Text = "Draketray is running"
+     LBLDRAKETRAYSTATUS.Text = ("Draketray is running")
   Else 
-     LBLDRAKETRAYSTATUS.Text = "Draketray is not running"
+     LBLDRAKETRAYSTATUS.Text = ("Draketray is not running")
   Endif
 
  If Fmain.$ROOTMODE = 0 Then    
@@ -260,7 +260,7 @@ If Fmain.$ROOTMODE = 0 Then
 Else  'SE ROORTMODE=1************************
   
   If CHKDNFDRAKETRAY.VALUE = True Then
-      If LBLDRAKETRAYSTATUS.Text = "Draketray is not running" Then
+      If LBLDRAKETRAYSTATUS.Text = ("Draketray is not running") Then
            If Right(Left($LOCK)) <> "2" Then
            Fmain.$KILL = 2
            'Shell ("sudo -u " & Fmain.$USERDEFAULT & " /usr/bin/draketray.gambas") NON AVVIABILE A ROOT

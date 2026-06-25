@@ -18,7 +18,19 @@ Public Sub Form_Open()
   BTNREUPADTE.Picture = Picture.Load(FMAIN.$PATHICONS & "refresh" & FMain.$THEMESSUFFIX)
   BTNANNULLA.Picture = Picture.Load(FMAIN.$PATHICONS & "stop" & FMain.$THEMESSUFFIX)
 End
-
+Public Sub Form_KeyPress()
+  If Key.Code = Key.Space Then
+    If BTNRESUME.HasFocus Then
+       BTNRESUME_Click
+    Endif
+    If BTNREUPADTE.HasFocus Then
+       BTNREUPADTE_Click
+    Endif
+    If BTNANNULLA.HasFocus Then
+       BTNANNULLA_Click
+    Endif
+  Endif
+End
 Private Sub FRUNSHOW()
   
  'GESTIONE FINESTRA FRUN***************************

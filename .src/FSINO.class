@@ -84,7 +84,16 @@ Endif
  BTNSI.SetFocus
 
 End
-
+Public Sub Form_KeyPress()
+  If Key.Code = Key.Space Then
+    If BTNSI.HasFocus Then
+       BTNSI_Click
+    Endif
+    If BTNNO.HasFocus Then
+       BTNNO_Click
+    Endif
+  Endif
+End
 Public Sub BTNSI_Click()
  BTNSI.Enabled = False
  Print #Fmain.$hProcess, $SI & gb.NewLine;

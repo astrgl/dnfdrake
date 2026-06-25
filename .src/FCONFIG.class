@@ -99,6 +99,19 @@ Public Sub Form_Open()
           CMBCOLORTEXTCONSOLE.Index = 0    
         Endif
 End
+Public Sub Form_KeyPress()
+  If Key.Code = Key.Space Then
+    If BTNCLOSE.HasFocus Then
+       BTNCLOSE_Click
+    Endif
+    If BTNDEFAULT.HasFocus Then
+       BTNDEFAULT_Click
+    Endif
+    If BTNOK.HasFocus Then
+       BTNOK_Click
+    Endif
+  Endif
+End
 
 Public Sub BTNDEFAULT_Click()
   FMAIN.$RESETSIZE = 1
@@ -273,7 +286,5 @@ Public Sub Label4_MouseDown()
 
 End
 Public Sub CMBCOLORTEXTCONSOLE_Click()
-
-  
 
 End

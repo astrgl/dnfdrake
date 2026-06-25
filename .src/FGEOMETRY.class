@@ -26,6 +26,19 @@ Public Sub Form_Open()
   SPBXY.Value = Fmain.Y
  
 End
+Public Sub Form_KeyPress()
+  If Key.Code = Key.Space Then
+    If BTNSTDSCREEN.HasFocus Then
+       BTNSTDSCREEN_Click
+    Endif
+    If BTNMAXSCREEN.HasFocus Then
+       BTNMAXSCREEN_Click
+    Endif
+    If BTNEXIT.HasFocus Then
+       BTNEXIT_Click
+    Endif
+  Endif
+End
 Public Sub FORM_Close()
   
   Fmain.Enabled = True

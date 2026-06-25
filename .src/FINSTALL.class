@@ -39,7 +39,22 @@ If Fmain.$SECUREMODE = "SECURE" Then
 Endif
 $SECURE = 0
 End
-
+Public Sub Form_KeyPress()
+  If Key.Code = Key.Space Then
+    If BTNINSTALL.HasFocus Then
+       BTNINSTALL_Click
+    Endif
+    If BTNPKGUPDATE.HasFocus Then
+       BTNPKGUPDATE_Click
+    Endif
+    If BTNPKGREINSTALL.HasFocus Then
+       BTNPKGREINSTALL_Click
+    Endif
+    If BTNANNULLA.HasFocus Then
+       BTNANNULLA_Click
+    Endif
+  Endif
+End
 Private Sub CLEARNAME()
   Dim i As Integer
   i = 0

@@ -41,6 +41,19 @@ BTNCLOSE.Picture = Picture.Load(FMAIN.$PATHICONS & "close" & FMain.$THEMESSUFFIX
       TextArea1.Foreground = Color.Blue
     Endif
 End 
+Public Sub Form_KeyPress()
+  If Key.Code = Key.Space Then
+    If BTNDNFCLEAN.HasFocus Then
+       BTNDNFCLEAN_Click
+    Endif
+    If BTNRETRY.HasFocus Then
+       BTNRETRY_Click
+    Endif
+    If BTNCLOSE.HasFocus Then
+       BTNCLOSE_Click
+    Endif
+  Endif
+End
 Public Sub Form_Close()
   If $SECURE = 1 Then
   Else 

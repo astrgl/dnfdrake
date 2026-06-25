@@ -10,6 +10,11 @@ Public Sub Form_Open()
   Next
       CMBUSERDEFAULT.Index = 0
 End
+Public Sub Form_KeyPress()
+  If Key.Code = Key.Space And BTNOK.Enabled = True Then
+     BTNOK_Click
+  Endif
+End
 
 Public Sub BTNOK_Click()
 

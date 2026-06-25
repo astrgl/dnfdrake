@@ -187,7 +187,16 @@ Public Sub Form_Open()
   Endif
   
 End
-
+Public Sub Form_KeyPress()
+  If Key.Code = Key.Space Then
+    If BTNCLOSE.HasFocus Then
+       BTNCLOSE_Click
+    Endif
+    If BTNEXIT.HasFocus Then
+       BTNEXIT_Click
+    Endif
+  Endif
+End
 Public Sub BTNCLOSE_Click()
    BTNCLOSE.Enabled = False   
    If CHKDUPLICATE.VALUE = True Then

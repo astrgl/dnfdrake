@@ -51,6 +51,11 @@ Endif
 $SECURE = 0
 End
 
+Public Sub Form_KeyPress()
+  If Key.Code = Key.Space And Btnclose.Enabled = True Then
+     Btnclose_Click
+  Endif
+End
 
 
 Public Sub Btnclose_Click()

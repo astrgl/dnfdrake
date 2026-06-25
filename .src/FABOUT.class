@@ -8,7 +8,11 @@ Fmain.Enabled = False
 BTNCLOSE.Picture = Picture.Load(FMAIN.$PATHICONS & "close" & FMain.$THEMESSUFFIX)
 LBLTITOLO.Text = "DnfDrake " & Application.Version
 End
-
+Public Sub Form_KeyPress()
+  If Key.Code = Key.Space And BTNCLOSE.Enabled = True Then
+     BTNCLOSE_Click
+  Endif
+End 
 
 Public Sub BTNCLOSE_Click()
   BTNCLOSE.Enabled = False

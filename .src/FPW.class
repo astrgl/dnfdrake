@@ -58,7 +58,6 @@ If Fmain.$SECUREMODE = "SECURE" Then
       Endif
 Endif
 
-
 If FRUN.Visible = True Then
     FRUN.$CLOSEPASS = 1
     FRUN.Close
@@ -76,6 +75,24 @@ Else
   Btnok_Click  
 Endif
 End
+
+Public Sub Form_KeyPress()
+  If Key.Code = Key.Space Then
+    If BTNANNULLA.HasFocus Then
+       BTNANNULLA_Click
+    Endif
+    If Btnok.HasFocus Then
+       Btnok_Click
+    Endif
+  Endif
+End
+Public Sub TXTPW_KeyPress()
+  If TXTPW.Text = $PWERRORMSG
+     TXTPW.Text = ""  
+  Endif  
+  TXTPW.Password = True
+End
+
 
 Public Sub TXTPW_Activate()
 If Fmain.$EASYPASSWORD = 1 Then
@@ -165,14 +182,6 @@ Public Sub TXTPW_MouseDown()
   TXTPW.Password = True
     
 End
-
-Public Sub TXTPW_KeyPress()
-  If TXTPW.Text = $PWERRORMSG
-     TXTPW.Text = ""  
-  Endif  
-  TXTPW.Password = True
-End
-
 
 
 Private Sub FRUNSHOW()

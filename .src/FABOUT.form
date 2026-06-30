@@ -6,9 +6,9 @@
   Resizable = False
   { TextArea1 TextArea
     MoveScaled(5.5714,8,52,62)
-    Enabled = False
     Foreground = Color.TextForeground
     Alignment = Align.Center
+    ReadOnly = True
   }
   { BTNCLOSE Button
     MoveScaled(23.4286,70.7143,16,4)

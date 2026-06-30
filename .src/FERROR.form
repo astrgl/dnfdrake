@@ -14,6 +14,7 @@
   { TextArea1 TextArea
     MoveScaled(1,6,113,61)
     Font = Font["Monospace"]
+    ReadOnly = True
   }
   { TextBox1 TextBox
     MoveScaled(1,1,113,4)
